@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Authors>Quantori Inc.</Authors>
+        <Description>Platform design is based on strong and well-defined borderline between procedural test cases structure and object-oriented code-behind.
+
+We think that test cases implementation approach (inside BDD paradigm) is literaly the same across different applications. That means that we can define and reuse grammar structures across different application domains. On top of this, while talking about single page web applications, we may take into account that atomic controls behavior is also the same across different domains.
+
+The whole automation code is divided into the following parts:
+- Feature files
+- Bindings
+- Wrappers
+- Infrastructure bindings
+- UI structure descriptive code
+- Supportive code</Description>
+        <Copyright>Quantori Inc.</Copyright>
+        <PackageVersion>1.0.1</PackageVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="ExcelDataReader" Version="3.6.0" />
+      <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
+      <PackageReference Include="FluentAssertions" Version="5.10.3" />
+      <PackageReference Include="JetBrains.Annotations" Version="2019.1.3" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.4" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.4" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.3" />
+      <PackageReference Include="NUnit" Version="3.12.0" />
+      <PackageReference Include="Selenium.Support" Version="3.141.0" />
+      <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
+      <PackageReference Include="SpecFlow" Version="3.1.97" />
+    </ItemGroup>
+
+</Project>
