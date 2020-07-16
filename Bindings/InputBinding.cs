@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Behavioral.Automation.Elements;
 using TechTalk.SpecFlow;
@@ -18,6 +19,12 @@ namespace Behavioral.Automation.Bindings
         [When("user enters \"(.*)\" into (.*)")]
         public void EnterInput([NotNull] string input, [NotNull] ITextElementWrapper element)
         {
+            var randomString = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8);
+            
+            if (input.Contains("__random_string"))
+            {
+                input = input.Replace("__random_string", randomString);
+            }
             element.EnterString(input);
         }
 
