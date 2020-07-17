@@ -114,8 +114,7 @@ namespace Behavioral.Automation.Services
         
         private Uri GetUriFromRelativePath(string url)
         {
-            var currentUri = new Uri(CurrentUrl);
-            return new Uri(currentUri.Scheme + "://" + currentUri.Host + url);
+            return new Uri(new Uri(CurrentUrl), url);
         }
 
         public ReadOnlyCollection<IWebElement> FindElements(string id)
