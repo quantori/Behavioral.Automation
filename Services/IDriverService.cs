@@ -38,5 +38,6 @@ namespace Behavioral.Automation.Services
         void SwitchToTheLastWindow();
         void SwitchToTheFirstWindow();
         void ResizeWindow(int Height, int Width);
+        string MakeScreenShot();
     }
 }

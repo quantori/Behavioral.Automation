@@ -7,7 +7,9 @@ using JetBrains.Annotations;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
+using System.Drawing.Imaging;
 
 namespace Behavioral.Automation.Services
 {
@@ -155,6 +157,13 @@ namespace Behavioral.Automation.Services
         public void ResizeWindow(int Height, int Width)
         {
             Driver.Manage().Window.Size = new Size(Width, Height);
+        }
+        
+        public string MakeScreenShot()
+        {
+            var fileName = "screenshot_" + DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss") + ".png";
+            Driver.GetScreenshot().SaveAsFile(fileName, ScreenshotImageFormat.Png);
+            return fileName;
         }
     }
 }
