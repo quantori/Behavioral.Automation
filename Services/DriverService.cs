@@ -30,6 +30,8 @@ namespace Behavioral.Automation.Services
         private WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(4));
         private ReadOnlyCollection<string> WindowHandles => Driver.WindowHandles;
 
+        private string SearchAttribute = ConfigServiceBase.SearchAttribute;
+
         public string Title => Driver.Title;
 
         public string CurrentUrl => Driver.Url;
@@ -38,7 +40,7 @@ namespace Behavioral.Automation.Services
         {
             try
             {
-                return Driver.FindElement(By.XPath($"//*[@automation-id='{id}']"));
+                return Driver.FindElement(By.XPath($"//*[@{SearchAttribute}='{id}']"));
             }
             catch (NoSuchElementException) 
             {
@@ -123,7 +125,7 @@ namespace Behavioral.Automation.Services
         {
             try
             {
-                return Driver.FindElements(By.XPath($"//*[@automation-id='{id}']"));
+                return Driver.FindElements(By.XPath($"//*[@{SearchAttribute}='{id}']"));
             }
             catch (NoSuchElementException)
             {
