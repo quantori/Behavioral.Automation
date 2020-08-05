@@ -38,7 +38,7 @@ namespace Behavioral.Automation.Services
         {
             try
             {
-                return Driver.FindElement(By.XPath($"//*[@automation-id='{id}']"));
+                return Driver.FindElement(By.XPath($"//*[@data-automation-id='{id}']"));
             }
             catch (NoSuchElementException) 
             {
@@ -123,7 +123,7 @@ namespace Behavioral.Automation.Services
         {
             try
             {
-                return Driver.FindElements(By.XPath($"//*[@automation-id='{id}']"));
+                return Driver.FindElements(By.XPath($"//*[@data-automation-id='{id}']"));
             }
             catch (NoSuchElementException)
             {
@@ -142,6 +142,11 @@ namespace Behavioral.Automation.Services
             Console.WriteLine(page);
         }
         
+        public void Refresh()
+        {
+            Driver.Navigate().Refresh();
+        }
+
         public void Navigate(string url)
         {
             Driver.Navigate().GoToUrl(url);
