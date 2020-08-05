@@ -16,5 +16,8 @@ Quantori Behavioral Automation is an open-source tool for UI testing automation 
 ## Build instructions
 Please read [DEVNOTES.md](DEVNOTES.md) for details.
 
+## Binding list
+List of available bindings can be found [here](BINDINGS.md)
+
 ## License
 Quantori Behavioral Automation tool is released under [Apache License, Version 2.0](LICENSE)
