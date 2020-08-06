@@ -17,8 +17,14 @@ namespace Behavioral.Automation.Services
         private const string DownloadPathString = "DOWNLOAD_PATH";
 
         private static readonly string AcceptInsecureCertificatesString = "ACCEPT_INSECURE_CERTIFICATES";
+
+        private const string SearchAttributeString = "SEARCH_ATTRIBUTE";
+
         public static string BaseUrl => ConfigRoot[BaseUrlString];
+
         public static string BrowserParameters => ConfigRoot[BrowserParametersString];
+
+        public static string SearchAttribute => ConfigRoot[SearchAttributeString]; 
 
         public static bool AcceptInsecureCertificates => ConfigRoot.GetValue<bool>(AcceptInsecureCertificatesString);
         public static string DownloadPath
@@ -28,7 +34,7 @@ namespace Behavioral.Automation.Services
                 if (ConfigRoot[DownloadPathString] != string.Empty)
                 {
                     return ConfigRoot[DownloadPathString];
-    }
+                }
 
                 return AppContext.BaseDirectory;
 }
