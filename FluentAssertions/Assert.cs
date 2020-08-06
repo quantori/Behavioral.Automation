@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Behavioral.Automation.Model;
@@ -81,8 +82,13 @@ namespace Behavioral.Automation.FluentAssertions
 
         private static string BuildMessage(string message)
         {
-            var executedSteps = _consumer.Get().Aggregate((x, y) => $"{x}\n{y}");
-            return $"{executedSteps}\n\nExpected:\n{_runner.ScenarioContext.StepContext.StepInfo.Text}\nActual:\n{message}";
+            IEnumerable<string> executedSteps = _consumer.Get();
+            string aggregatedSteps = "";
+            if (executedSteps.Any())
+            {
+                aggregatedSteps = _consumer.Get().Aggregate((x, y) => $"{x}\n{y}");
+            }
+            return $"{aggregatedSteps}\n\nExpected:\n{_runner.ScenarioContext.StepContext.StepInfo.Text}\nActual:\n{message}";
         }
 
         private static T TryGetValue<T>(Func<T> getValue, TimeSpan wait, int attempts = 10)

@@ -22,6 +22,8 @@ namespace Behavioral.Automation.Services
 
         ReadOnlyCollection<IWebElement> FindElements([NotNull] string id);
 
+        public void Refresh();
+
         void Navigate([NotNull] string url);
 
         void ScrollTo(IWebElement element);

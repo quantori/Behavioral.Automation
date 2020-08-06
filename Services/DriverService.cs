@@ -144,6 +144,11 @@ namespace Behavioral.Automation.Services
             Console.WriteLine(page);
         }
         
+        public void Refresh()
+        {
+            Driver.Navigate().Refresh();
+        }
+
         public void Navigate(string url)
         {
             Driver.Navigate().GoToUrl(url);
