@@ -21,6 +21,7 @@ namespace Behavioral.Automation.Bindings.Authorization
         public string HomeUrl { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
+        public bool IgnoreAuth { get; set; }
     }
 
 
@@ -29,12 +30,13 @@ namespace Behavioral.Automation.Bindings.Authorization
     {
         private readonly IDriverService _driverService;
         private readonly IBasicAuthConfig _basicAuthConfig;
-        private bool _signInRequired = false;
+        private bool _signInRequired = true;
 
         public BasicAuthBindings([NotNull]IDriverService driverService, IBasicAuthConfig basicAuthConfig)
         {
             _driverService = driverService;
             _basicAuthConfig = basicAuthConfig;
+            _signInRequired = !basicAuthConfig.IgnoreAuth;
         }
 
         [BeforeScenario(Order = 1), Scope(Tag = "BasicAuth")]

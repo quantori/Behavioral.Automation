@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 
 namespace Behavioral.Automation.Services.Mapping
@@ -41,16 +42,13 @@ namespace Behavioral.Automation.Services.Mapping
 
         public ControlDescription TryFind(string alias, string caption)
         {
-            foreach (var controlComposition in _mapping.Values)
-            {
-                if (controlComposition.Aliases.Contains(alias))
-                {
-                    var result = controlComposition.Descriptions.Find(x =>
-                        string.Equals(x.Caption, caption, StringComparison.OrdinalIgnoreCase));
-                    return result;
-                }
+            try{
+            return _mapping.Values.Where(composition => composition.Aliases.Contains(alias))
+                .SelectMany(composition => composition.Descriptions)
+                .SingleOrDefault(desciption => string.Equals(desciption.Caption, caption, StringComparison.OrdinalIgnoreCase));
+            } catch (InvalidOperationException ex) {
+                throw new InvalidOperationException($"More than one mapping is found for alias {alias} and caption {caption}", ex);
             }
-            return null;
         }
 
         public IMarkupStorageInitializer GetOrCreateControlScopeMarkupStorage(ControlScopeId controlScopeId)
