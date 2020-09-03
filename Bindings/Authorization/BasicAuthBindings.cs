@@ -45,7 +45,7 @@ namespace Behavioral.Automation.Bindings.Authorization
             if (_signInRequired)
             {
                 Uri uri = new Uri(_basicAuthConfig.HomeUrl);
-                string newUrl = $"{uri.Scheme}://{_basicAuthConfig.Login}:{_basicAuthConfig.Password}@{uri.Host}{uri.PathAndQuery}";
+                string newUrl = $"{uri.Scheme}://{_basicAuthConfig.Login}:{_basicAuthConfig.Password}@{uri.Authority}{uri.PathAndQuery}";
                 _driverService.Navigate(newUrl);
                 _signInRequired = false;
             }
