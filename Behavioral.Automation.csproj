@@ -19,7 +19,6 @@ The whole automation code is divided into the following parts:
         <PackageVersion>1.0.10</PackageVersion>
         <RepositoryUrl>https://github.com/quantori/Behavioral.Automation</RepositoryUrl>
     </PropertyGroup>
-    
     <ItemGroup>
       <PackageReference Include="ExcelDataReader" Version="3.6.0" />
       <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />

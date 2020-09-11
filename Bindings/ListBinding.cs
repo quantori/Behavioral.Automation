@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using FluentAssertions;
 using Behavioral.Automation.Elements;
 using Behavioral.Automation.Services;
