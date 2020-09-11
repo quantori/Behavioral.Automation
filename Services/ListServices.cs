@@ -92,6 +92,23 @@ namespace Behavioral.Automation.Services
                    list2.All(item => list1.Contains(item));
         }
 
+        public static bool CheckListContainValuesFromAnotherListInExactOrder(List<string> list1, List<string> list2)
+        {
+            if (list2.Count > list1.Count)
+            {
+                return false;
+            }
+            for (int i = 0; i < list2.Count; i++)
+            {
+                if (list1[i] != list2[i])
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
         public static bool CheckListContainValuesFromAnotherList(List<string> list1, List<string> list2)
         {
             return list1.Intersect(list2).Any();
