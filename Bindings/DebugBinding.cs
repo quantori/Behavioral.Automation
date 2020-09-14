@@ -19,7 +19,7 @@ namespace Behavioral.Automation.Bindings
         [Given("wait (.*) sec")]
         [When("wait (.*) sec")]
         [Then("wait (.*) sec")]
-        public void Wait([NotNull] string sec)
+        public void Wait([NotNull] int sec)
         {
             int intSec = Convert.ToInt32(sec);
             Thread.Sleep(intSec * 1000);
