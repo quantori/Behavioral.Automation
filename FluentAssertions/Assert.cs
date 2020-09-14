@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Behavioral.Automation.FluentAssertions.Abstractions;
 using Behavioral.Automation.Model;
 using Behavioral.Automation.Services;
 using OpenQA.Selenium;
@@ -46,7 +47,7 @@ namespace Behavioral.Automation.FluentAssertions
 
         public static void ShouldBecome<T>(Func<T> predicate, T value, string message, bool direction = true)
         {
-           
+
             for (int index = 0; index < Attempts; index++)
             {
                 if (TryGetValue(predicate, TimeSpan.FromMilliseconds(500)).Equals(value) == direction)
@@ -60,6 +61,74 @@ namespace Behavioral.Automation.FluentAssertions
             message ??= $"actual value is {actual}";
             
             True(actual.Equals(value) == direction, message);
+        }
+
+        public static void ShouldBecomeAll(List<IAssertionAccessor> assertions, string caption)
+        {
+            List<string> messages = new List<string>();
+            foreach(IAssertionAccessor assertion in assertions)
+            {
+                bool isValid = assertion.Validate();
+                if (assertion.Type == AssertionType.Continuous && !isValid)
+                {
+                    for (int i = 0; i < Attempts; i++)
+                    {
+                        isValid = WaitForAssertion(assertion, TimeSpan.FromMilliseconds(500));
+                        if (isValid) break;
+                    }
+                }
+                if (!isValid)
+                    messages.Add(assertion.Message ?? $"actual value is {assertion.ActualValue}");
+            }
+
+            True(!messages.Any(), $"{caption} is failed one or more checks: {string.Join(";", messages)}");
+        }
+
+
+        public static void ShouldBe(IAssertionAccessor assertion, string caption)
+        {
+            bool isValid = WaitForAssertion(assertion, TimeSpan.FromMilliseconds(500));
+            if (assertion.Type == AssertionType.Continuous && !isValid)
+            {
+                for (int i = 0; i < Attempts - 1; i++)
+                {
+                    isValid = WaitForAssertion(assertion, TimeSpan.FromMilliseconds(500));
+                    if (isValid) break;
+                }
+            }
+
+            True(isValid, assertion.Message ?? $"{caption} actual value is {assertion.ActualValue}");
+        }
+
+        private static bool WaitForAssertion(IAssertionAccessor assertion, TimeSpan timeout, int attempts = 10)
+        {
+            bool result;
+            int counter = 0;
+            while (true)
+            {
+                try
+                {
+                    result = assertion.Validate();
+                    if (result)
+                        return result;
+                    if (counter++ == attempts)
+                    {
+                        return false;
+                    }
+                }
+                catch (StaleElementReferenceException)
+                {
+                    Thread.Sleep(timeout);
+                    if (counter++ == attempts)
+                        throw;
+                }
+                catch (NullReferenceException)
+                {
+                    Thread.Sleep(timeout);
+                    if (counter++ == attempts)
+                        return assertion.Validate();
+                }
+            }
         }
 
         public static void True(bool condition, string message)
