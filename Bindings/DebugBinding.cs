@@ -1,5 +1,7 @@
-﻿using System.Threading;
+using System;
+using System.Threading;
 using TechTalk.SpecFlow;
+using JetBrains.Annotations;
 
 namespace Behavioral.Automation.Bindings
 {
@@ -12,6 +14,15 @@ namespace Behavioral.Automation.Bindings
         public void Wait()
         {
             Thread.Sleep(5000);
+        }
+
+        [Given("wait (.*) sec")]
+        [When("wait (.*) sec")]
+        [Then("wait (.*) sec")]
+        public void Wait([NotNull] int sec)
+        {
+            int intSec = Convert.ToInt32(sec);
+            Thread.Sleep(intSec * 1000);
         }
     }
 }
