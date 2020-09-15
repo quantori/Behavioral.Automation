@@ -102,7 +102,7 @@ Then "ArchiveEntries.xlsx" file should contain the following data:
 Example:
 Then "System" dropdown selected value should be empty
 
-* Check values which are avaolabale in the dropdown:
+* Check values which are available in the dropdown:
 [Then("the (.*?) should have the following values:")]
 Example:
 Then the "System" dropdown should have the following values:
@@ -194,7 +194,7 @@ Then the following controls should be empty:
 
 * Check that list contains given values: 
 [Given("(.*?) (contain|not contain) the following items:")]
-[Then("(.*?) should (contain|not contain) the following items:")]
+[Then("(.*?) should (contain|contain in exact order|not contain) the following items:")]
 
 
 ## Navigation Binding
