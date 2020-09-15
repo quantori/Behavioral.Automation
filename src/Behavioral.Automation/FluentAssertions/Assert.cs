@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Behavioral.Automation.Abstractions;
 using Behavioral.Automation.FluentAssertions.Abstractions;
 using Behavioral.Automation.Model;
 using Behavioral.Automation.Services;
@@ -13,11 +14,15 @@ namespace Behavioral.Automation.FluentAssertions
     public static class Assert
     {
         private const int Attempts = 30;
-
-        private static ITestRunner _runner;
+        private static ITestRunnerWrapper _runner;
         private static IScenarioExecutionConsumer _consumer;
 
         public static void SetRunner(ITestRunner runner)
+        {
+            _runner = new TestRunnerWrapper(runner);
+        }
+
+        public static void SetRunner(ITestRunnerWrapper runner)
         {
             _runner = runner;
         }
@@ -56,44 +61,23 @@ namespace Behavioral.Automation.FluentAssertions
                 }
                 Thread.Sleep(500);
             }
-            
-            var actual = TryGetValue(predicate, TimeSpan.FromMilliseconds(500)); 
+
+            var actual = TryGetValue(predicate, TimeSpan.FromMilliseconds(500));
             message ??= $"actual value is {actual}";
-            
+
             True(actual.Equals(value) == direction, message);
         }
-
-        public static void ShouldBecomeAll(List<IAssertionAccessor> assertions, string caption)
-        {
-            List<string> messages = new List<string>();
-            foreach(IAssertionAccessor assertion in assertions)
-            {
-                bool isValid = assertion.Validate();
-                if (assertion.Type == AssertionType.Continuous && !isValid)
-                {
-                    for (int i = 0; i < Attempts; i++)
-                    {
-                        isValid = WaitForAssertion(assertion, TimeSpan.FromMilliseconds(500));
-                        if (isValid) break;
-                    }
-                }
-                if (!isValid)
-                    messages.Add(assertion.Message ?? $"actual value is {assertion.ActualValue}");
-            }
-
-            True(!messages.Any(), $"{caption} is failed one or more checks: {string.Join(";", messages)}");
-        }
-
 
         public static void ShouldBe(IAssertionAccessor assertion, string caption)
         {
             bool isValid = WaitForAssertion(assertion, TimeSpan.FromMilliseconds(500));
-            if (assertion.Type == AssertionType.Continuous && !isValid)
+            if (assertion.Type == AssertionType.Continuous && (!isValid || !assertion.InterruptOnTrue))
             {
                 for (int i = 0; i < Attempts - 1; i++)
                 {
+                    Thread.Sleep(500);
                     isValid = WaitForAssertion(assertion, TimeSpan.FromMilliseconds(500));
-                    if (isValid) break;
+                    if (isValid && assertion.InterruptOnTrue) break;
                 }
             }
 
@@ -102,33 +86,7 @@ namespace Behavioral.Automation.FluentAssertions
 
         private static bool WaitForAssertion(IAssertionAccessor assertion, TimeSpan timeout, int attempts = 10)
         {
-            bool result;
-            int counter = 0;
-            while (true)
-            {
-                try
-                {
-                    result = assertion.Validate();
-                    if (result)
-                        return result;
-                    if (counter++ == attempts)
-                    {
-                        return false;
-                    }
-                }
-                catch (StaleElementReferenceException)
-                {
-                    Thread.Sleep(timeout);
-                    if (counter++ == attempts)
-                        throw;
-                }
-                catch (NullReferenceException)
-                {
-                    Thread.Sleep(timeout);
-                    if (counter++ == attempts)
-                        return assertion.Validate();
-                }
-            }
+            return assertion.Validate(attempts, timeout);
         }
 
         public static void True(bool condition, string message)

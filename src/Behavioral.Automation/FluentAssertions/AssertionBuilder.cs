@@ -7,7 +7,7 @@ using GlobalAssert = Behavioral.Automation.FluentAssertions.Assert;
 
 namespace Behavioral.Automation.FluentAssertions
 {
-    public class AssertionBuilder : IAssertionBuilder, IAssertionBuilderWithBehaviour
+    public class AssertionBuilder : IAssertionBuilder, IAssertionBuilderWithBehaviour, IAssertionBuilderWithInversion
     {
         private readonly IWebElementWrapper _elementWrapper;
 
@@ -21,7 +21,7 @@ namespace Behavioral.Automation.FluentAssertions
             _elementWrapper = elementWrapper;
         }
 
-        public IAssertionBuilder Not
+        public IAssertionBuilderWithInversion Not
         {
             get
             {
@@ -39,7 +39,6 @@ namespace Behavioral.Automation.FluentAssertions
             }
         }
 
-
         public IAssertionBuilder Be<TVal>(Func<IWebElementWrapper, TVal> valueAcessor, Func<TVal, TVal, bool> comparer, TVal value, string message) =>
             Be(new AssertionObject<TVal>(valueAcessor, comparer, value, message));
 
@@ -54,6 +53,18 @@ namespace Behavioral.Automation.FluentAssertions
 
         public IAssertionBuilder Become<T>(AssertionObject<T> assertion)
         {
+            if (_currentContext.Inversion.HasValue && _currentContext.Inversion.Value){
+                assertion.InterruptOnTrue = false;
+            }
+            Validate(assertion, AssertionType.Continuous);
+            return this;
+        }
+
+        public IAssertionBuilder BecomeNot<TVal>(Func<IWebElementWrapper, TVal> valueAcessor, Func<TVal, TVal, bool> comparer, TVal value, string message) =>
+            BecomeNot(new AssertionObject<TVal>(valueAcessor, comparer, value, message));
+
+        public IAssertionBuilder BecomeNot<TVal>(AssertionObject<TVal> assertion){
+            _currentContext.Inversion = true;
             Validate(assertion, AssertionType.Continuous);
             return this;
         }
