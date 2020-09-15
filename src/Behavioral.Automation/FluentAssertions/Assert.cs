@@ -115,7 +115,7 @@ namespace Behavioral.Automation.FluentAssertions
             {
                 aggregatedSteps = _consumer.Get().Aggregate((x, y) => $"{x}\n{y}");
             }
-            return $"{aggregatedSteps}\n\nExpected:\n{_runner.ScenarioContext.StepContext.StepInfo.Text}\nActual:\n{message}";
+            return $"{aggregatedSteps}\n\nExpected:\n{_runner.StepInfoText}\nActual:\n{message}";
         }
 
         private static T TryGetValue<T>(Func<T> getValue, TimeSpan wait, int attempts = 10)

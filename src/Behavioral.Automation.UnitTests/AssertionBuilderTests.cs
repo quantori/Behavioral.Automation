@@ -22,45 +22,23 @@ namespace Behavioral.Automation.UnitTests
         [OneTimeSetUp]
         public void OneTimeSetup()
         {
+            Mock<ITestRunnerWrapper> wrapperMock = new Mock<ITestRunnerWrapper>();
+            wrapperMock.Setup(w => w.StepInfoText).Returns("TEST");
+
+            Mock<IScenarioExecutionConsumer> consumerMock = new Mock<IScenarioExecutionConsumer>();
+            consumerMock.Setup(c => c.Get()).Returns(new[] { "TEST STEP" });
+
+            BAssert.SetRunner(wrapperMock.Object);
+            BAssert.SetConsumer(consumerMock.Object);
         }
 
-        [Test]
-        public void When_BeCalledOnInstantlyGoodElement_NoExceptionIsThrown()
+        [TestCase(0, false)]
+        [TestCase(1, true)]
+        public void When_BeCalled_AssertionActsAsExpected(int attemptsUntilOk, bool throws)
         {
-            bool displayPropChecked = false;
+            AssertionBuilder builder = CreateBuilderWithCounter(attemptsUntilOk);
 
-            AssertionBuilder builder = CreateBuilder(
-                e => e.Displayed,
-                true,
-                () =>
-                {
-                    if (!displayPropChecked)
-                    {
-                        displayPropChecked = true;
-                    }
-                    else
-                    {
-                        NAssert.Fail("Display property checked twice");
-                    }
-                }
-                );
-
-            NAssert.DoesNotThrow(() => builder.Be(Assertions.Visible));
-            NAssert.IsTrue(displayPropChecked, "Display property was not requested by assertion engine");
-        }
-
-        [Test]
-        public void When_BeCalledOnBadElement_ExceptionIsThrown()
-        {
-            AssertionBuilder builder = CreateBuilder(
-                e => e.Displayed,
-                false,
-                null
-                );
-
-            //NAssert.Throws<AssertionException>(() => builder.Be(Assertions.Visible));
-            NAssert.Throws<NullReferenceException>(() => builder.Be(Assertions.Visible));
-
+            AssertDelegateBehavior<AssertionException>(() => builder.Be(Assertions.Visible), throws);
         }
 
         [TestCase(0, false)]
@@ -70,7 +48,7 @@ namespace Behavioral.Automation.UnitTests
         {
             AssertionBuilder builder = CreateBuilderWithCounter(attemptsUntilOk);
 
-            AssertDelegateBehavior<NullReferenceException>(() => builder.Become(Assertions.Visible), throws);
+            AssertDelegateBehavior<AssertionException>(() => builder.Become(Assertions.Visible), throws);
         }
 
         [TestCase(1, false)]
@@ -79,7 +57,7 @@ namespace Behavioral.Automation.UnitTests
         {
             AssertionBuilder builder = CreateBuilderWithCounter(attemptsUntilOk);
             TestDelegate assertDelegate = () => builder.Not.Be(Assertions.Visible);
-            AssertDelegateBehavior<NullReferenceException>(assertDelegate, throws);
+            AssertDelegateBehavior<AssertionException>(assertDelegate, throws);
         }
 
         [TestCase(30, "become", false, 30)]
@@ -108,7 +86,7 @@ namespace Behavioral.Automation.UnitTests
                 }
             };
 
-            AssertDelegateBehavior<NullReferenceException>(assertDelegate, throws);
+            AssertDelegateBehavior<AssertionException>(assertDelegate, throws);
 
             NAssert.AreEqual(expectedRequestsCount, buidlerWithCounter.counter.Counter);
         }
@@ -127,7 +105,7 @@ namespace Behavioral.Automation.UnitTests
             AssertionBehavior behavior = invert ? behaviorSet.Inverted : behaviorSet.Direct;
             TestDelegate assertDelegate = () => builder.With(behavior).Assert(Assertions.Visible);
 
-            AssertDelegateBehavior<NullReferenceException>(assertDelegate, throws);
+            AssertDelegateBehavior<AssertionException>(assertDelegate, throws);
         }
 
         [TestCase(0, true)]
@@ -139,7 +117,7 @@ namespace Behavioral.Automation.UnitTests
 
             TestDelegate assertionDelegate = () => builder.BecomeNot(Assertions.Visible);
 
-            AssertDelegateBehavior<NullReferenceException>(assertionDelegate, throws);
+            AssertDelegateBehavior<AssertionException>(assertionDelegate, throws);
         }
         private void AssertDelegateBehavior<TExpectedException>(TestDelegate testDelegate, bool throws) where TExpectedException : Exception
         {
