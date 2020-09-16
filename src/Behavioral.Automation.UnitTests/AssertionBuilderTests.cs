@@ -8,16 +8,13 @@ using System;
 using System.Linq.Expressions;
 using NAssert = NUnit.Framework.Assert;
 using BAssert = Behavioral.Automation.FluentAssertions.Assert;
-using TechTalk.SpecFlow;
-using TechTalk.SpecFlow.Infrastructure;
 using Behavioral.Automation.Model;
-using Behavioral.Automation.FluentAssertions.Abstractions;
 using Behavioral.Automation.Abstractions;
 
 namespace Behavioral.Automation.UnitTests
 {
 
-    public class AssertionBuilderTests
+    internal sealed class AssertionBuilderTests
     {
         [OneTimeSetUp]
         public void OneTimeSetup()
@@ -119,6 +116,7 @@ namespace Behavioral.Automation.UnitTests
 
             AssertDelegateBehavior<AssertionException>(assertionDelegate, throws);
         }
+
         private void AssertDelegateBehavior<TExpectedException>(TestDelegate testDelegate, bool throws) where TExpectedException : Exception
         {
             if (throws)

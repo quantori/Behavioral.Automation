@@ -1,17 +1,8 @@
 ﻿using Behavioral.Automation.Services;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Net.Http;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
 

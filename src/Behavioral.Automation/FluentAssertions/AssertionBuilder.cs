@@ -4,10 +4,11 @@ using Behavioral.Automation.Model;
 using System;
 using System.Collections.Generic;
 using GlobalAssert = Behavioral.Automation.FluentAssertions.Assert;
+using NAssert = NUnit.Framework.Assert;
 
 namespace Behavioral.Automation.FluentAssertions
 {
-    public class AssertionBuilder : IAssertionBuilder, IAssertionBuilderWithBehaviour, IAssertionBuilderWithInversion
+    public class AssertionBuilder : IAssertionBuilder, IAssertionBuilderWithBehaviour, IAssertionBuilderWithInversion, IAssertionBuilderWithValidatedAssertion
     {
         private readonly IWebElementWrapper _elementWrapper;
 
@@ -15,7 +16,8 @@ namespace Behavioral.Automation.FluentAssertions
 
         private AssertionType? _definedAssertionType = null;
 
-        List<IAssertionAccessor> _assertions = new List<IAssertionAccessor>();
+        private readonly List<IAssertionAccessor> _assertions = new List<IAssertionAccessor>();
+
         public AssertionBuilder(IWebElementWrapper elementWrapper)
         {
             _elementWrapper = elementWrapper;
@@ -39,58 +41,41 @@ namespace Behavioral.Automation.FluentAssertions
             }
         }
 
-        public IAssertionBuilder Be<TVal>(Func<IWebElementWrapper, TVal> valueAcessor, Func<TVal, TVal, bool> comparer, TVal value, string message) =>
-            Be(new AssertionObject<TVal>(valueAcessor, comparer, value, message));
+        public IAssertionBuilderWithValidatedAssertion Be<TValue>(Func<IWebElementWrapper, TValue> valueAcessor, Func<TValue, TValue, bool> comparer, TValue value, string message) =>
+            Be(new AssertionObject<TValue>(valueAcessor, comparer, value, message));
 
-        public IAssertionBuilder Be<T>(AssertionObject<T> assertion)
+        public IAssertionBuilderWithValidatedAssertion Be<T>(AssertionObject<T> assertion)
         {
             Validate(assertion, AssertionType.Immediate);
             return this;
         }
 
-        public IAssertionBuilder Become<TVal>(Func<IWebElementWrapper, TVal> valueAcessor, Func<TVal, TVal, bool> comparer, TVal value, string message) =>
-            Become(new AssertionObject<TVal>(valueAcessor, comparer, value, message));
+        public IAssertionBuilderWithValidatedAssertion Become<TValue>(Func<IWebElementWrapper, TValue> valueAcessor, Func<TValue, TValue, bool> comparer, TValue value, string message) =>
+            Become(new AssertionObject<TValue>(valueAcessor, comparer, value, message));
 
-        public IAssertionBuilder Become<T>(AssertionObject<T> assertion)
+        public IAssertionBuilderWithValidatedAssertion Become<T>(AssertionObject<T> assertion)
         {
             if (_currentContext.Inversion.HasValue && _currentContext.Inversion.Value){
-                assertion.InterruptOnTrue = false;
+                assertion.InterruptValidationOnSuccess = false;
             }
             Validate(assertion, AssertionType.Continuous);
             return this;
         }
 
-        public IAssertionBuilder BecomeNot<TVal>(Func<IWebElementWrapper, TVal> valueAcessor, Func<TVal, TVal, bool> comparer, TVal value, string message) =>
-            BecomeNot(new AssertionObject<TVal>(valueAcessor, comparer, value, message));
+        public IAssertionBuilderWithValidatedAssertion BecomeNot<TValue>(Func<IWebElementWrapper, TValue> valueAcessor, Func<TValue, TValue, bool> comparer, TValue value, string message) =>
+            BecomeNot(new AssertionObject<TValue>(valueAcessor, comparer, value, message));
 
-        public IAssertionBuilder BecomeNot<TVal>(AssertionObject<TVal> assertion){
+        public IAssertionBuilderWithValidatedAssertion BecomeNot<TValue>(AssertionObject<TValue> assertion){
             _currentContext.Inversion = true;
             Validate(assertion, AssertionType.Continuous);
             return this;
-        }
-
-        private void Validate<TVal>(AssertionObject<TVal> assertion, AssertionType assertionType)
-        {
-            _definedAssertionType = assertionType;
-            Validate(assertion);
-        }
-
-        private void Validate<TVal>(AssertionObject<TVal> assertion)
-        {
-            if (!_definedAssertionType.HasValue)
-            {
-                throw new InvalidOperationException("Could not validate assertion because assertion type is not defined");
-            }
-            ConfigureContext(assertion);
-            GlobalAssert.ShouldBe(assertion, _elementWrapper.Caption);
-            ClearContext();
         }
 
         public IAssertionBuilderWithBehaviour With(AssertionBehavior behaviour)
         {
             if (_definedAssertionType.HasValue)
             {
-                throw new InvalidOperationException($"Cannot set behaviour because it is already defined");
+                NAssert.Inconclusive($"Cannot set behaviour because it is already defined");
             }
 
             _currentContext.Inversion = behaviour.Inversion;
@@ -98,13 +83,31 @@ namespace Behavioral.Automation.FluentAssertions
             return this;
         }
 
-        public IAssertionBuilderWithBehaviour Assert<T>(AssertionObject<T> assertion)
+        public IAssertionBuilderWithValidatedAssertion Assert<T>(AssertionObject<T> assertion)
         {
             Validate(assertion);
             return this;
         }
-        public IAssertionBuilderWithBehaviour Assert<TVal>(Func<IWebElementWrapper, TVal> valueAcessor, Func<TVal, TVal, bool> comparer, TVal value, string message) =>
-            Assert(new AssertionObject<TVal>(valueAcessor, comparer, value, message));
+        public IAssertionBuilderWithValidatedAssertion Assert<TValue>(Func<IWebElementWrapper, TValue> valueAcessor, Func<TValue, TValue, bool> comparer, TValue value, string message) =>
+            Assert(new AssertionObject<TValue>(valueAcessor, comparer, value, message));
+
+        private void Validate<TValue>(AssertionObject<TValue> assertion, AssertionType assertionType)
+        {
+            _definedAssertionType = assertionType;
+            Validate(assertion);
+        }
+
+        private void Validate<TValue>(AssertionObject<TValue> assertion)
+        {
+            if (!_definedAssertionType.HasValue)
+            {
+                NAssert.Inconclusive("Could not validate assertion because assertion type is not defined");
+            }
+
+            ConfigureContext(assertion);
+            GlobalAssert.ShouldBe(assertion, _elementWrapper.Caption);
+            ClearContext();
+        }
 
         private void ConfigureContext<T>(AssertionObject<T> assertion)
         {

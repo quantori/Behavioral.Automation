@@ -6,12 +6,13 @@ namespace Behavioral.Automation.FluentAssertions.Abstractions
 {
     public interface IAssertionBuilder
     {
-        IAssertionBuilder And { get; }
         IAssertionBuilderWithInversion Not { get; }
         IAssertionBuilderWithBehaviour With(AssertionBehavior behaviour);
-        IAssertionBuilder Be<TVal>(Func<IWebElementWrapper, TVal> valueAcessor, Func<TVal, TVal, bool> comparer, TVal value, string message);
-        IAssertionBuilder Be<T>(AssertionObject<T> assertion);
-        IAssertionBuilder Become<TVal>(Func<IWebElementWrapper, TVal> valueAcessor, Func<TVal, TVal, bool> comparer, TVal value, string message);
-        IAssertionBuilder Become<T>(AssertionObject<T> assertion);
+        IAssertionBuilderWithValidatedAssertion Be<TValue>(Func<IWebElementWrapper, TValue> valueAcessor, Func<TValue, TValue, bool> comparer, TValue value, string message);
+        IAssertionBuilderWithValidatedAssertion Be<TValue>(AssertionObject<TValue> assertion);
+        IAssertionBuilderWithValidatedAssertion Become<TValue>(Func<IWebElementWrapper, TValue> valueAcessor, Func<TValue, TValue, bool> comparer, TValue value, string message);
+        IAssertionBuilderWithValidatedAssertion Become<TValue>(AssertionObject<TValue> assertion);
+        IAssertionBuilderWithValidatedAssertion BecomeNot<TValue>(Func<IWebElementWrapper, TValue> valueAcessor, Func<TValue, TValue, bool> comparer, TValue value, string message);
+        IAssertionBuilderWithValidatedAssertion BecomeNot<TValue>(AssertionObject<TValue> assertion);
     }
 }

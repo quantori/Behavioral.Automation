@@ -71,13 +71,13 @@ namespace Behavioral.Automation.FluentAssertions
         public static void ShouldBe(IAssertionAccessor assertion, string caption)
         {
             bool isValid = WaitForAssertion(assertion, TimeSpan.FromMilliseconds(500));
-            if (assertion.Type == AssertionType.Continuous && (!isValid || !assertion.InterruptOnTrue))
+            if (assertion.Type == AssertionType.Continuous && (!isValid || !assertion.InterruptValidationOnSuccess))
             {
                 for (int i = 0; i < Attempts - 1; i++)
                 {
                     Thread.Sleep(500);
                     isValid = WaitForAssertion(assertion, TimeSpan.FromMilliseconds(500));
-                    if (isValid && assertion.InterruptOnTrue) break;
+                    if (isValid && assertion.InterruptValidationOnSuccess) break;
                 }
             }
 

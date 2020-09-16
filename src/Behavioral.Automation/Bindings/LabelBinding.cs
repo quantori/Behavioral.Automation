@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using FluentAssertions;
 using Behavioral.Automation.Elements;
 using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Model;

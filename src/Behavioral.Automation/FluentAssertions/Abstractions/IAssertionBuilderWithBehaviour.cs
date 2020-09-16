@@ -5,8 +5,8 @@ namespace Behavioral.Automation.FluentAssertions.Abstractions
 {
     public interface IAssertionBuilderWithBehaviour
     {
-        IAssertionBuilderWithBehaviour Assert<T>(AssertionObject<T> assertion);
-        IAssertionBuilderWithBehaviour Assert<TVal>(Func<IWebElementWrapper, TVal> valueAcessor, Func<TVal, TVal, bool> comparer, TVal value, string message);
+        IAssertionBuilderWithValidatedAssertion Assert<T>(AssertionObject<T> assertion);
+        IAssertionBuilderWithValidatedAssertion Assert<TValue>(Func<IWebElementWrapper, TValue> valueAcessor, Func<TValue, TValue, bool> comparer, TValue value, string message);
         IAssertionBuilder And { get; }
     }
 }

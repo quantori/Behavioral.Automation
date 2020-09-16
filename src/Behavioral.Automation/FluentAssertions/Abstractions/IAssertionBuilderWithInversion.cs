@@ -1,14 +1,13 @@
 using Behavioral.Automation.Elements;
-using Behavioral.Automation.Model;
 using System;
 
 namespace Behavioral.Automation.FluentAssertions.Abstractions
 {
     public interface IAssertionBuilderWithInversion
     {
-        IAssertionBuilder Be<TVal>(Func<IWebElementWrapper, TVal> valueAcessor, Func<TVal, TVal, bool> comparer, TVal value, string message);
-        IAssertionBuilder Be<T>(AssertionObject<T> assertion);
-        IAssertionBuilder Become<TVal>(Func<IWebElementWrapper, TVal> valueAcessor, Func<TVal, TVal, bool> comparer, TVal value, string message);
-        IAssertionBuilder Become<T>(AssertionObject<T> assertion);
+        IAssertionBuilderWithValidatedAssertion Be<TValue>(Func<IWebElementWrapper, TValue> valueAcessor, Func<TValue, TValue, bool> comparer, TValue value, string message);
+        IAssertionBuilderWithValidatedAssertion Be<T>(AssertionObject<T> assertion);
+        IAssertionBuilderWithValidatedAssertion Become<TValue>(Func<IWebElementWrapper, TValue> valueAcessor, Func<TValue, TValue, bool> comparer, TValue value, string message);
+        IAssertionBuilderWithValidatedAssertion Become<T>(AssertionObject<T> assertion);
     }
 }

@@ -2,8 +2,6 @@
 using System.Data;
 using System.Linq;
 using Behavioral.Automation.Elements;
-using Behavioral.Automation.FluentAssertions;
-using OpenQA.Selenium;
 using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Services

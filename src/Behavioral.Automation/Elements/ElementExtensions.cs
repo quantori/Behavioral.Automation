@@ -1,7 +1,5 @@
 ﻿using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.FluentAssertions.Abstractions;
-using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Behavioral.Automation.Elements
