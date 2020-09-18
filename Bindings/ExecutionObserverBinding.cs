@@ -3,6 +3,9 @@ using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings
 {
+    /// <summary>
+    /// This class stores methods which are used for test execution logging
+    /// </summary>
     [Binding]
     public class ExecutionObserverBinding
     {
@@ -15,6 +18,9 @@ namespace Behavioral.Automation.Bindings
             _consumer = consumer;
         }
 
+        /// <summary>
+        /// Log executed step
+        /// </summary>
         [BeforeStep]
         public void Consume()
         {

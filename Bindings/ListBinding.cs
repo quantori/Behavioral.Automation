@@ -7,6 +7,9 @@ using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings
 {
+    /// <summary>
+    /// This class stores bindings used to interact with list elements
+    /// </summary>
     [Binding]
     public class ListBinding
     {
@@ -17,6 +20,18 @@ namespace Behavioral.Automation.Bindings
             _driverService = driverService;
         }
 
+        /// <summary>
+        /// Check that list contains items given in the Specflow table
+        /// </summary>
+        /// <param name="list">List web element wrapper</param>
+        /// <param name="behavior">Assertion type</param>
+        /// <param name="table">Specflow table which contains expected values</param>
+        /// <example>
+        /// Then "Test" list should contain the following items:
+        /// | itemName     |
+        /// | Test value 1 |
+        /// | Test value 2 |
+        /// </example>
         [Given("(.*?) (contain|not contain) the following items:")]
         [Then("(.*?) should (contain|not contain) the following items:")]
         public void CheckListContainsItems(IListWrapper list, string behavior, Table table)

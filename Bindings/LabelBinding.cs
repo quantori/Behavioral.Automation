@@ -10,6 +10,9 @@ using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings
 {
+    /// <summary>
+    /// This class stores bindings which are used to interact with labels and other text elements
+    /// </summary>
     [Binding]
     public sealed class LabelBinding
     {
@@ -20,6 +23,13 @@ namespace Behavioral.Automation.Bindings
             _runner = runner;
         }
 
+        /// <summary>
+        /// Check that element's text is equal to the expected one
+        /// </summary>
+        /// <param name="element">Tested web element wrapper</param>
+        /// <param name="behavior">Assertion behavior (instant or continuous)</param>
+        /// <param name="value">Expected value</param>
+        /// <example>Then "Test" element text should be "expected text"</example>
         [Given("the (.*?) text (is|is not|become|become not) \"(.*)\"")]
         [When("the (.*?) text (is|is not|become|become not) \"(.*)\"")]
         [Then("the (.*?) text should (be|be not|become|become not) \"(.*)\"")]
@@ -32,6 +42,13 @@ namespace Behavioral.Automation.Bindings
                 $"{element.Caption} text is \"{StringExtensions.GetElementTextOrValue(element)}\"");
         }
 
+        /// <summary>
+        /// Check that element's text contains expected string
+        /// </summary>
+        /// <param name="element">Tested web element wrapper</param>
+        /// <param name="behavior">Assertion behavior (instant or continuous)</param>
+        /// <param name="value">Expected value</param>
+        /// <example>Then "Test" element should contains "expected string" text</example>
         [Given("(.*?) (contain|not contain) \"(.*)\" text")]
         [Then("(.*?) should (contain|not contain) \"(.*)\" text")]
         public void CheckSelectedTextContain(
@@ -43,6 +60,13 @@ namespace Behavioral.Automation.Bindings
                 $"{element.Caption} text is \"{element.Text}\"");
         }
 
+        /// <summary>
+        /// Check element's tooltip text
+        /// </summary>
+        /// <param name="element">Tested web element wrapper</param>
+        /// <param name="behavior">Assertion behavior (instant or continuous)</param>
+        /// <param name="value">Expected value</param>
+        /// <example>Then the "Test" element should have tooltip with text "expected string"</example>
         [Then("the (.*?) should (have|not have) tooltip with text \"(.*)\"")]
         public void CheckElementTooltip(
             [NotNull] IWebElementWrapper element,
@@ -53,6 +77,12 @@ namespace Behavioral.Automation.Bindings
                 $"{element.Caption} tooltip is \"{element.Tooltip}\"");
         }
 
+        /// <summary>
+        /// Check that element text is empty
+        /// </summary>
+        /// <param name="element">Tested web element wrapper</param>
+        /// <param name="behavior">Assertion behavior (instant or continuous)</param>
+        /// <example>Then "Test" element text should be empty</example>
         [Given("(.*?) text (is|is not|become|become not) empty")]
         [Then("(.*?) text should (be|be not|become|become not) empty")]
         public void CheckElementIsEmpty([NotNull] IWebElementWrapper element, AssertionBehavior behavior)
@@ -61,6 +91,17 @@ namespace Behavioral.Automation.Bindings
                 $"{element.Caption} text is \"{StringExtensions.GetElementTextOrValue(element)}\"");
         }
 
+        /// <summary>
+        /// Check that multiple elements' texts are empty (binding for "Then" steps)
+        /// </summary>
+        /// <param name="behavior">Assertion behavior (instant or continuous)</param>
+        /// <param name="table">Specflow table which contains element names</param>
+        /// <example>
+        /// Then the following controls should be empty:
+        /// | controlName   |
+        /// | "Test1" label |
+        /// | "Test2" label |
+        /// </example>
         [Then("the following controls should (be|be not|become|become not) empty:")]
         public void CheckThenControlTypeCollectionEmpty([NotNull] string behavior, [NotNull] Table table)
         {
@@ -68,6 +109,17 @@ namespace Behavioral.Automation.Bindings
             CheckControlTypeCollectionEmpty(behavior, table, _runner.Then);
         }
 
+        /// <summary>
+        /// Check that multiple elements' texts are empty (binding for "Given" steps)
+        /// </summary>
+        /// <param name="behavior">Assertion behavior (instant or continuous)</param>
+        /// <param name="table">Specflow table which contains element names</param>
+        /// <example>
+        /// Given the following controls are empty:
+        /// | controlName   |
+        /// | "Test1" label |
+        /// | "Test2" label |
+        /// </example>
         [Given("the following controls (are|are not|become|become not) empty:")]
         public void CheckGivenControlTypeCollectionEmpty([NotNull] string behavior, [NotNull] Table table)
         {
@@ -78,6 +130,12 @@ namespace Behavioral.Automation.Bindings
             CheckControlTypeCollectionEmpty(behavior, table, _runner.Given);
         }
 
+        /// <summary>
+        /// Executes empty check for each element in the table
+        /// </summary>
+        /// <param name="behavior">Assertion behavior (instant or continuous)</param>
+        /// <param name="table">Specflow table which contains element names</param>
+        /// <param name="runnerAction">Action object</param>
         private void CheckControlTypeCollectionEmpty(
             [NotNull] string behavior,
             [NotNull] Table table,

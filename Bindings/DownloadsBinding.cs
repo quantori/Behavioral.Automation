@@ -8,10 +8,17 @@ using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings
 {
+    /// <summary>
+    /// This class stores bindings which are used for testing of the downloaded files
+    /// </summary>
     [Binding]
     public sealed class DownloadsBinding
     {
-
+        /// <summary>
+        /// Check that file was downloaded
+        /// </summary>
+        /// <param name="filename">Name of the tested file</param>
+        /// <example>Then "Test.pdf" file should be downloaded</example>
         [Then("\"(.*?)\" file should be downloaded")]
         public void CheckFileDownloaded(string filename)
         {
@@ -23,6 +30,17 @@ namespace Behavioral.Automation.Bindings
             
         }
 
+        /// <summary>
+        /// Check Excel file data
+        /// </summary>
+        /// <param name="filename">Name of the tested file</param>
+        /// <param name="behavior">Assertion behavior (instant or continuous)</param>
+        /// <param name="table">Specflow table which stores excel table rows</param>
+        /// <example>
+        /// Then "Test.xsls" file should contain the following data:
+        /// | row1  | row2  |
+        /// | data1 | data2 |
+        /// </example>
         [Then("\"(.*?)\" file should (contain|not contain) the following data:")]
         public void CheckExcelFileData(string filename, string behavior, Table table)
         {

@@ -4,6 +4,9 @@ using OpenQA.Selenium;
 
 namespace Behavioral.Automation.Elements
 {
+    /// <summary>
+    /// Interface used for interactions with web-elements collections (For example, when multiple elements have the same locator)
+    /// </summary>
     public interface IElementCollectionWrapper : IWebElementWrapper
     {
         IEnumerable<IWebElementWrapper> Elements { [NotNull, ItemNotNull] get; }
