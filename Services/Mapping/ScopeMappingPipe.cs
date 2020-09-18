@@ -21,6 +21,11 @@ namespace Behavioral.Automation.Services.Mapping
             return new ScopeMappingPipe(_markupStorage.GetOrCreateControlScopeMarkupStorage(controlScopeId, controlScopeOptions));
         }
 
+        public IScopeMappingPipe CreateControlMappingPipe(string controlScopeId, bool isVirtualized = false)
+        {
+            return CreateControlMappingPipe(new ControlScopeId(controlScopeId), new ControlScopeOptions(isVirtualized));
+        }
+
 
         public void Dispose()
         {
