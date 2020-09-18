@@ -16,9 +16,9 @@ namespace Behavioral.Automation.Services.Mapping
             return new HtmlTagMapper(_markupStorage, tag);
         }
 
-        public IScopeMappingPipe CreateControlMappingPipe(ControlScopeId controlScopeId)
+        public IScopeMappingPipe CreateControlMappingPipe(ControlScopeId controlScopeId, ControlScopeOptions controlScopeOptions = null)
         {
-            return new ScopeMappingPipe(_markupStorage.GetOrCreateControlScopeMarkupStorage(controlScopeId));
+            return new ScopeMappingPipe(_markupStorage.GetOrCreateControlScopeMarkupStorage(controlScopeId, controlScopeOptions));
         }
 
 
