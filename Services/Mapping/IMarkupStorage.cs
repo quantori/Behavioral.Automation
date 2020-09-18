@@ -11,5 +11,6 @@ namespace Behavioral.Automation.Services.Mapping
         IMarkupStorage TryGetControlScopeMarkupStorage(ControlScopeId controlScopeId);
 
         IMarkupStorage CreateControlScopeMarkupStorage(ControlScopeId controlScopeId);
+        ControlDescription TryFindInNestedScopes(string type, string name);
     }
 }
