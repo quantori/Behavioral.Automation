@@ -46,8 +46,8 @@ namespace Behavioral.Automation.Services.Mapping
             {
                 var controlDescription = _mapping.Values.Where(composition => composition.Aliases.Contains(alias))
                     .SelectMany(composition => composition.Descriptions)
-                    .SingleOrDefault(desciption =>
-                        string.Equals(desciption.Caption, caption, StringComparison.OrdinalIgnoreCase));
+                    .SingleOrDefault(description =>
+                        string.Equals(description.Caption, caption, StringComparison.OrdinalIgnoreCase));
 
                 return controlDescription;
             }
@@ -93,7 +93,6 @@ namespace Behavioral.Automation.Services.Mapping
                 {
                     return controlDescription;
                 }
-
             }
             return null;
         }
