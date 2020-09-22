@@ -13,9 +13,9 @@ namespace Behavioral.Automation.Services.Mapping
             _controlScopeContext = new ControlScopeContext(contextId, markupStorage);
         }
 
-        public ControlDescription FindControlDescription(string type, string name)
+        public ControlReference FindControlReference(string type, string name)
         {
-            return _controlScopeContext.FindControlDescription(type, name);
+            return _controlScopeContext.FindControlReference(type, name);
         }
 
         public IControlScopeContext GetNestedControlScopeContext(ControlScopeId controlScopeId)

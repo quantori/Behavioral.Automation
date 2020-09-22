@@ -22,17 +22,17 @@ namespace Behavioral.Automation.Bindings
         public void CheckListContainsItems(IListWrapper list, string behavior, Table table)
         {
             bool exactOrder = behavior.Contains("contain in exact order");
-            var testingList = list.ListValues.ToList();
-            var refLit = ListServices.TableToRowsList(table);
+
+            var expectedListValues = ListServices.TableToRowsList(table);
 
             if (exactOrder)
             {
-                bool check = ListServices.CheckListContainValuesFromAnotherListInExactOrder(testingList, refLit);
+                bool check = list.ListValues.ContainsValues(expectedListValues, true);
                 check.Should().Be(true);
             }
             else
             {
-                bool check = ListServices.CheckListContainValuesFromAnotherList(testingList, refLit);
+                bool check = list.ListValues.ContainsValues(expectedListValues, false);
                 check.Should().Be(!behavior.Contains("not contain"));
             }
         }
