@@ -12,6 +12,7 @@ namespace Behavioral.Automation.Services.Mapping
             [NotNull] string caption,
             [CanBeNull] string subpath = null);
 
-        IMarkupStorageInitializer GetOrCreateControlScopeMarkupStorage(ControlScopeId controlScopeId);
+        IMarkupStorageInitializer GetOrCreateControlScopeMarkupStorage(ControlScopeId controlScopeId,
+            ControlScopeOptions controlScopeOptions = null);
     }
 }

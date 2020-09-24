@@ -39,7 +39,12 @@ namespace Behavioral.Automation.Services.Mapping
 
         public ControlDescription FindControlDescription(string type, string name)
         {
-            return CurrentContext.FindControlDescription(type, name);
+            return CurrentContext.FindControlReference(type, name)?.ControlDescription;
+        }
+
+        public ControlReference FindControlReference(string type, string name)
+        {
+            return CurrentContext.FindControlReference(type, name);
         }
 
         public void SwitchToGlobalScope()

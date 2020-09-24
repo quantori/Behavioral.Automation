@@ -41,5 +41,6 @@ namespace Behavioral.Automation.Services
         void SwitchToTheFirstWindow();
         void ResizeWindow(int Height, int Width);
         string MakeScreenShot();
+        void ScrollElementTo(IWebElement element, int offset);
     }
 }
