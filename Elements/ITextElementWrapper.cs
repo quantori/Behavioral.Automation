@@ -3,7 +3,7 @@
 namespace Behavioral.Automation.Elements
 {
     /// <summary>
-    /// Interface used for interaction with inputs or text fields
+    /// Interface for text element wrapper implementation (for example inputs or text fields)
     /// </summary>
     public interface ITextElementWrapper : IWebElementWrapper
     {

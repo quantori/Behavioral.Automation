@@ -5,7 +5,7 @@ using OpenQA.Selenium;
 namespace Behavioral.Automation.Elements
 {
     /// <summary>
-    /// Interface for basic web element interaction
+    /// Interface for basic web element implementation
     /// </summary>
     public interface IWebElementWrapper
     {

@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 namespace Behavioral.Automation.Elements
 {
     /// <summary>
-    /// Interface used for dropdowns and autocompletes interaction
+    /// Interface for dropdowns and autocompletes interaction
     /// </summary>
     public interface IDropdownWrapper : IWebElementWrapper
     {

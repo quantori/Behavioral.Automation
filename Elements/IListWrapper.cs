@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 namespace Behavioral.Automation.Elements
 {
     /// <summary>
-    /// Interface used for interaction with lists
+    /// Interface used for list wrapper implementation
     /// </summary>
     public interface IListWrapper : IWebElementWrapper
     {
