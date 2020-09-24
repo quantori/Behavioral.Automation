@@ -1,6 +1,6 @@
 using System;
 using System.Threading;
- using TechTalk.SpecFlow;
+using TechTalk.SpecFlow;
 using JetBrains.Annotations;
 using Behavioral.Automation.Services;
 
