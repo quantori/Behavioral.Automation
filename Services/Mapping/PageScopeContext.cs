@@ -27,7 +27,9 @@ namespace Behavioral.Automation.Services.Mapping
             var controlDescription = _markupStorage?.TryFind(type,
                                          name) ??
                                      _globalMarkupStorage.TryFind(type,
-                                         name);
+                                         name)
+                                     ?? _markupStorage?.TryFindInNestedScopes(type, name)
+                                     ?? _globalMarkupStorage.TryFindInNestedScopes(type, name);
 
             if (controlDescription == null)
             {
