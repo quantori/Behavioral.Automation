@@ -93,20 +93,20 @@ namespace Behavioral.Automation.Services
                    list2.All(item => list1.Contains(item));
         }
 
-        public static bool ContainsValues(this IEnumerable<string> collection, List<string> values, bool exactOrder)
+        public static bool ContainsValues(this IEnumerable<string> actualCollection, List<string> expectedValues, bool exactOrder)
         {
             int index = 0;
-            int maxIndexForValuesList = values.Count - 1;
+            int maxIndexForValuesList = expectedValues.Count - 1;
 
-            foreach (var value in collection)
+            foreach (var value in actualCollection)
             {
                 if (index > maxIndexForValuesList)
                 {
                     break;
                 }
                 bool collectionContainsValue = exactOrder ?
-                    values[index].Equals(value, StringComparison.Ordinal)
-                    : values.Contains(value, StringComparer.Ordinal);
+                    expectedValues[index].Equals(value, StringComparison.Ordinal)
+                    : expectedValues.Contains(value, StringComparer.Ordinal);
                 if (!collectionContainsValue)
                 {
                     return false;

@@ -21,7 +21,7 @@ namespace Behavioral.Automation.Services
         public void ParseCaption(string caption, out string name,out string type)
         {
             var result = caption.ParseExact("\"{0}\" {1}");
-             name = result[0];
+            name = result[0];
             type = result[1];
         }
     }
