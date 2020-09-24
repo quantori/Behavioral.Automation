@@ -24,7 +24,9 @@ namespace Behavioral.Automation.Bindings.Authorization
         public bool IgnoreAuth { get; set; }
     }
 
-
+    /// <summary>
+    /// Bindings for basic authentication
+    /// </summary>
     [Binding]
     public class BasicAuthBindings : Steps
     {

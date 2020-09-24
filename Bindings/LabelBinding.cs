@@ -11,7 +11,7 @@ using TechTalk.SpecFlow;
 namespace Behavioral.Automation.Bindings
 {
     /// <summary>
-    /// This class stores bindings which are used to interact with labels and other text elements
+    /// Bindings for labels or other text elements testing
     /// </summary>
     [Binding]
     public sealed class LabelBinding

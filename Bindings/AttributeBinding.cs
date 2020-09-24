@@ -8,7 +8,7 @@ using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings
 {   /// <summary>
-    /// This class stores bindings which are used for interactions with element's attributes
+    /// Bindings for element's attributes testing
     /// </summary>
     [Binding]
     public sealed class AttributeBinding

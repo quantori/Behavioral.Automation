@@ -9,7 +9,7 @@ using TechTalk.SpecFlow;
 namespace Behavioral.Automation.Bindings
 {
     /// <summary>
-    /// This class stores bindings which are used for testing of the downloaded files
+    /// Bindings for testing of the downloaded files
     /// </summary>
     [Binding]
     public sealed class DownloadsBinding

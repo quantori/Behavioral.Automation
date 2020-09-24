@@ -5,8 +5,16 @@ using ExcelDataReader;
 
 namespace Behavioral.Automation.Services
 {
+    /// <summary>
+    /// Methods to interact with downloaded files
+    /// </summary>
     public static class FileService
     {
+        /// <summary>
+        /// Convert Excel file into DataSet object
+        /// </summary>
+        /// <param name="filePath">Path to Excel file</param>
+        /// <returns>DataSet object</returns>
         public static DataSet GetExcelFileAsDataSet(string filePath)
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);

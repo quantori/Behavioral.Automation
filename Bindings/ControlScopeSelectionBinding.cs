@@ -7,7 +7,7 @@ using TechTalk.SpecFlow;
 namespace Behavioral.Automation.Bindings
 {
     /// <summary>
-    /// This class stores binding which are used to execute actions inside control scope
+    /// Bindings to execute actions inside control scopes
     /// </summary>
     [Binding]
     public sealed class ControlScopeSelectionBinding
@@ -24,7 +24,7 @@ namespace Behavioral.Automation.Bindings
         /// </summary>
         /// <param name="controlScopeId">Name of the scope</param>
         /// <param name="action">Action definition</param>
-        /// <example>When inside "Test" scope: "Test" element should become visible</example>
+        /// <example>When inside "Login" page: "Email" input should become visible</example>
         [Given("inside (.*?): (.*)")]
         [When("inside (.*?): (.*)")]
         [Then("inside (.*?): (.*)")]
@@ -45,7 +45,7 @@ namespace Behavioral.Automation.Bindings
         /// <param name="action">Action definition</param>
         /// <param name="table">Specflow table with test data</param>
         /// <example>
-        /// Then inside "Test" scope: "Data" table should contain the following rows:
+        /// Then inside "Calculations" panel: "Data" table should contain the following rows:
         /// | rowName |
         /// | row 1   |
         /// | row 2   |
@@ -69,7 +69,7 @@ namespace Behavioral.Automation.Bindings
         /// <param name="controlScopeId">Name of the scope</param>
         /// <param name="actionsTable">Specflow table which contains actions to be executed</param>
         /// <example>
-        /// Then inside "Test" scope the following steps should be executed:
+        /// Then inside "Profile" panel the following steps should be executed:
         /// | "Name" input should become visible |
         /// | "Data" table should be empty       |
         /// </example>
@@ -91,7 +91,7 @@ namespace Behavioral.Automation.Bindings
         }
 
         /// <summary>
-        /// Execute action in the nested scope
+        /// Execute action inside multiple scopes
         /// </summary>
         /// <param name="controlScopeId">Nested scope name</param>
         /// <param name="parentControlSelectionSteps">Parent scope name</param>

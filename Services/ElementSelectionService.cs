@@ -3,6 +3,9 @@ using OpenQA.Selenium;
 
 namespace Behavioral.Automation.Services
 {
+    /// <summary>
+    /// Method for caption to element conversion
+    /// </summary>
     [UsedImplicitly]
     public sealed class ElementSelectionService : IElementSelectionService
     {
@@ -17,6 +20,11 @@ namespace Behavioral.Automation.Services
             _provider = provider;
         }
 
+        /// <summary>
+        /// Find element by caption from the step
+        /// </summary>
+        /// <param name="caption">Element caption</param>
+        /// <returns>IWebElement object</returns>
         public IWebElement Find(string caption)
         {
             var description = _provider.Get(caption);

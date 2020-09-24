@@ -9,7 +9,7 @@ using TechTalk.SpecFlow;
 namespace Behavioral.Automation.Bindings
 {
     /// <summary>
-    /// This class stores bindings which are used for scopes and windows interaction
+    /// Bindings for scopes and windows interaction
     /// </summary>
     [Binding]
     public sealed class RedirectionBinding

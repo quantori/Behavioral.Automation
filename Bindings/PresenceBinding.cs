@@ -9,7 +9,7 @@ using TechTalk.SpecFlow;
 namespace Behavioral.Automation.Bindings
 {
     /// <summary>
-    /// This class stores bindings which are used to check elements' visibility
+    /// Bindings to check elements' visibility
     /// </summary>
     [Binding]
     public sealed class PresenceBinding

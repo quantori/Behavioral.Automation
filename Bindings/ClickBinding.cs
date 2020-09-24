@@ -5,7 +5,7 @@ using TechTalk.SpecFlow;
 namespace Behavioral.Automation.Bindings
 {
     /// <summary>
-    /// This class stores bindings which are used for clicks execution
+    /// Bindings for clicks execution
     /// </summary>
     [Binding]
     public sealed class ClickBinding

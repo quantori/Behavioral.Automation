@@ -9,7 +9,7 @@ using TechTalk.SpecFlow;
 namespace Behavioral.Automation.Bindings
 {
     /// <summary>
-    /// This class stores bindings used to test dropdown elements
+    /// Bindings for dropdowns testing
     /// </summary>
     [Binding]
     public sealed class DropdownBinding

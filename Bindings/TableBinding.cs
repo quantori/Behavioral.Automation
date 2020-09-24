@@ -9,7 +9,7 @@ using TechTalk.SpecFlow;
 namespace Behavioral.Automation.Bindings
 {
     /// <summary>
-    /// This class stores bindings which are used to interact with table elements
+    /// Bindings for tables testing
     /// </summary>
     [Binding]
     public sealed class TableBinding
@@ -76,7 +76,7 @@ namespace Behavioral.Automation.Bindings
         /// <param name="column">Tested web element wrapper</param>
         /// <param name="condition">Lesser or greater parameter</param>
         /// <param name="value">Expected value</param>
-        /// <example> Then "Test" column value should be greater than "2"</example>
+        /// <example> Then "Test" column values should be greater than "2"</example>
         [Then("(.*?) values should be (lesser|greater) than \"(.*)\"")]
         public void CompareTableRowGreaterLesser(IElementCollectionWrapper column,  string condition,
             int value)
@@ -136,7 +136,7 @@ namespace Behavioral.Automation.Bindings
         /// <param name="index">Number of row</param>
         /// <param name="table">Tested web element wrapper</param>
         /// <param name="behavior">Assertion type</param>
-        /// <example>Then "first" element among "Test" table rows should be expanded</example>
+        /// <example>Then first element among "Test" table rows should be expanded</example>
         [Given("(.*?) element among (.*) (is| is not) expanded")]
         [When("(.*?) element among (.*) (is| is not) expanded")]
         [Then("(.*?) element among (.*) should (be|be not) expanded")]

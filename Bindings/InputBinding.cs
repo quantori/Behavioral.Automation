@@ -7,7 +7,7 @@ using TechTalk.SpecFlow;
 namespace Behavioral.Automation.Bindings
 {
     /// <summary>
-    /// This class stores bindings which interact with inputs ant text fields
+    /// Bindings for inputs or text fields testing
     /// </summary>
     [Binding]
     public sealed class InputBinding

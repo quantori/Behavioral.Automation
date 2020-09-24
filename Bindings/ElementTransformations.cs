@@ -7,7 +7,7 @@ using TechTalk.SpecFlow;
 namespace Behavioral.Automation.Bindings
 {
     /// <summary>
-    /// This class stores methods which transform data received from Specflow steps
+    /// Methods to transform steps' arguments
     /// </summary>
     [Binding]
     public class ElementTransformations

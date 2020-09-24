@@ -10,7 +10,7 @@ using TechTalk.SpecFlow;
 namespace Behavioral.Automation.Bindings
 {
     /// <summary>
-    /// This class stores bindings which are used for URL navigation and testing
+    /// Bindings for URL navigation and testing
     /// </summary>
     [Binding]
     public sealed class NavigationBinding
