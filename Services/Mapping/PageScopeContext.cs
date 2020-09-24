@@ -40,7 +40,7 @@ namespace Behavioral.Automation.Services.Mapping
             return controlDescription;
         }
 
-        public ControlScopeContext GetNestedControlScopeContext(ControlScopeId controlScopeId)
+        public IControlScopeContext GetNestedControlScopeContext(ControlScopeId controlScopeId)
         {
             if (_markupStorage == null)
             {
@@ -52,9 +52,16 @@ namespace Behavioral.Automation.Services.Mapping
                                              _globalMarkupStorage.TryGetControlScopeMarkupStorage(controlScopeId)) ??
                                             _markupStorage.CreateControlScopeMarkupStorage(controlScopeId);
 
-            return new ControlScopeContext(controlScopeId, controlScopeMarkupStorage);
+            if (controlScopeMarkupStorage.ScopeOptions.IsVirtualized)
+            {
+                return new VirtualizedControlScopeContext(controlScopeId, controlScopeMarkupStorage);
+            }
+            else
+            {
+                return new ControlScopeContext(controlScopeId, controlScopeMarkupStorage);
+            }
         }
-        
+
         public PageScopeId ScopeId { get; }
     }
 }

@@ -13,10 +13,13 @@ namespace Behavioral.Automation.Services.Mapping
         private readonly Dictionary<ControlScopeId, IMarkupStorage> _nestedScopeToMarkupMap =
             new Dictionary<ControlScopeId, IMarkupStorage>();
 
-        public MarkupStorage()
+        public MarkupStorage([CanBeNull] ControlScopeOptions controlScopeOptions = null)
         {
             _mapping = new Dictionary<string, ControlComposition>();
+            ScopeOptions = controlScopeOptions ?? ControlScopeOptions.Default();
         }
+
+        public ControlScopeOptions ScopeOptions { get; }
 
         public void AddAlias(string htmlTag, params string[] aliases)
         {
@@ -58,12 +61,13 @@ namespace Behavioral.Automation.Services.Mapping
             }
         }
 
-        public IMarkupStorageInitializer GetOrCreateControlScopeMarkupStorage(ControlScopeId controlScopeId)
+        public IMarkupStorageInitializer GetOrCreateControlScopeMarkupStorage(ControlScopeId controlScopeId,
+            ControlScopeOptions controlScopeOptions = null)
         {
             IMarkupStorageInitializer controlMarkupStorage = TryGetControlScopeMarkupStorage(controlScopeId);
             if (controlMarkupStorage == null)
             {
-                controlMarkupStorage = CreateControlScopeMarkupStorage(controlScopeId);
+                controlMarkupStorage = CreateControlScopeMarkupStorage(controlScopeId, controlScopeOptions);
             }
 
             return controlMarkupStorage;
@@ -75,9 +79,9 @@ namespace Behavioral.Automation.Services.Mapping
             return controlMarkupStorage;
         }
 
-        public IMarkupStorage CreateControlScopeMarkupStorage(ControlScopeId controlScopeId)
+        public IMarkupStorage CreateControlScopeMarkupStorage(ControlScopeId controlScopeId, ControlScopeOptions controlScopeOptions = null)
         {
-            IMarkupStorage controlMarkupStorage = new MarkupStorage();
+            IMarkupStorage controlMarkupStorage = new MarkupStorage(controlScopeOptions);
             _nestedScopeToMarkupMap.Add(controlScopeId, controlMarkupStorage);
             return controlMarkupStorage;
         }

@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace Behavioral.Automation.Services.Mapping
 {
-    public sealed class ControlScopeContext : IScopeContext
+    public sealed class ControlScopeContext : IControlScopeContext
     {
         private readonly ControlScopeId _contextId;
 
@@ -31,7 +31,7 @@ namespace Behavioral.Automation.Services.Mapping
             return controlDescription;
         }
 
-        public ControlScopeContext GetNestedControlScopeContext(ControlScopeId controlScopeId)
+        public IControlScopeContext GetNestedControlScopeContext(ControlScopeId controlScopeId)
         {
             if (_markupStorage == null)
             {
@@ -41,6 +41,11 @@ namespace Behavioral.Automation.Services.Mapping
 
             var nestedControlMarkupStorage = _markupStorage.TryGetControlScopeMarkupStorage(controlScopeId) ??
                                              _markupStorage.CreateControlScopeMarkupStorage(controlScopeId);
+
+            if (nestedControlMarkupStorage.ScopeOptions.IsVirtualized)
+            {
+                return new VirtualizedControlScopeContext(controlScopeId, nestedControlMarkupStorage);
+            }
 
             return new ControlScopeContext(controlScopeId, nestedControlMarkupStorage);
         }
