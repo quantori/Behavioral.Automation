@@ -21,23 +21,30 @@ namespace Behavioral.Automation.Services.Mapping
             ScopeId = scopeId;
         }
 
-        public ControlDescription FindControlDescription(string type,
+        public ControlReference FindControlReference(string type,
             string name)
         {
-            var controlDescription = _markupStorage?.TryFind(type,
-                                         name) ??
-                                     _globalMarkupStorage.TryFind(type,
-                                         name)
-                                     ?? _markupStorage?.TryFindInNestedScopes(type, name)
-                                     ?? _globalMarkupStorage.TryFindInNestedScopes(type, name);
+            var whereToSearch = new []{_markupStorage, _globalMarkupStorage};
 
-            if (controlDescription == null)
+            foreach (var storage in whereToSearch)
             {
-                throw new ArgumentException(
-                    $"Control with alias=\"{type}\" and caption=\"{name}\" not found in PageContext with urlWildcard=\"{ScopeId.UrlWildCard}\"");
+                var controlReference = storage?.TryFind(type, name);
+                if (controlReference != null)
+                {
+                    return controlReference;
+                }
+            }
+            foreach (var storage in whereToSearch)
+            {
+                var controlReference = storage?.TryFindInNestedScopes(type, name);
+                if (controlReference != null)
+                {
+                    return controlReference;
+                }
             }
 
-            return controlDescription;
+            throw new ArgumentException(
+                    $"Control with alias=\"{type}\" and caption=\"{name}\" not found in PageContext with urlWildcard=\"{ScopeId.UrlWildCard}\"");
         }
 
         public IControlScopeContext GetNestedControlScopeContext(ControlScopeId controlScopeId)

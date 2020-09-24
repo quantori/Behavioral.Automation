@@ -18,17 +18,17 @@ namespace Behavioral.Automation.Services.Mapping
             _contextId = contextId;
         }
 
-        public ControlDescription FindControlDescription(string type, string name)
+        public ControlReference FindControlReference(string type, string name)
         {
-            var controlDescription = _markupStorage?.TryFind(type, name);
+            var controlReference = _markupStorage?.TryFind(type, name);
 
-            if (controlDescription == null)
+            if (controlReference == null)
             {
                 throw new ArgumentException(
                     $"Control with alias=\"{type}\" and caption=\"{name}\" not found in ControlContext with name=\"{_contextId.Name}\"");
             }
 
-            return controlDescription;
+            return controlReference;
         }
 
         public IControlScopeContext GetNestedControlScopeContext(ControlScopeId controlScopeId)

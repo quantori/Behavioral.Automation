@@ -10,6 +10,7 @@ using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
 using System.Drawing.Imaging;
+using System.Threading;
 
 namespace Behavioral.Automation.Services
 {
@@ -171,6 +172,15 @@ namespace Behavioral.Automation.Services
             var fileName = "screenshot_" + DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss") + ".png";
             Driver.GetScreenshot().SaveAsFile(fileName, ScreenshotImageFormat.Png);
             return fileName;
+        }
+
+        public void ScrollElementTo(IWebElement element, int offset)
+        {
+            Driver.ExecuteScript(@"
+                var element = arguments[0];
+                var offset = arguments[1];
+                element.scrollTo({top: offset, behavior: 'smooth'});", element, offset);
+            Thread.Sleep(1000);
         }
     }
 }
