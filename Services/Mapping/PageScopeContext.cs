@@ -21,26 +21,33 @@ namespace Behavioral.Automation.Services.Mapping
             ScopeId = scopeId;
         }
 
-        public ControlDescription FindControlDescription(string type,
+        public ControlReference FindControlReference(string type,
             string name)
         {
-            var controlDescription = _markupStorage?.TryFind(type,
-                                         name) ??
-                                     _globalMarkupStorage.TryFind(type,
-                                         name)
-                                     ?? _markupStorage?.TryFindInNestedScopes(type, name)
-                                     ?? _globalMarkupStorage.TryFindInNestedScopes(type, name);
+            var whereToSearch = new []{_markupStorage, _globalMarkupStorage};
 
-            if (controlDescription == null)
+            foreach (var storage in whereToSearch)
             {
-                throw new ArgumentException(
-                    $"Control with alias=\"{type}\" and caption=\"{name}\" not found in PageContext with urlWildcard=\"{ScopeId.UrlWildCard}\"");
+                var controlReference = storage?.TryFind(type, name);
+                if (controlReference != null)
+                {
+                    return controlReference;
+                }
+            }
+            foreach (var storage in whereToSearch)
+            {
+                var controlReference = storage?.TryFindInNestedScopes(type, name);
+                if (controlReference != null)
+                {
+                    return controlReference;
+                }
             }
 
-            return controlDescription;
+            throw new ArgumentException(
+                    $"Control with alias=\"{type}\" and caption=\"{name}\" not found in PageContext with urlWildcard=\"{ScopeId.UrlWildCard}\"");
         }
 
-        public ControlScopeContext GetNestedControlScopeContext(ControlScopeId controlScopeId)
+        public IControlScopeContext GetNestedControlScopeContext(ControlScopeId controlScopeId)
         {
             if (_markupStorage == null)
             {
@@ -52,9 +59,16 @@ namespace Behavioral.Automation.Services.Mapping
                                              _globalMarkupStorage.TryGetControlScopeMarkupStorage(controlScopeId)) ??
                                             _markupStorage.CreateControlScopeMarkupStorage(controlScopeId);
 
-            return new ControlScopeContext(controlScopeId, controlScopeMarkupStorage);
+            if (controlScopeMarkupStorage.ScopeOptions.IsVirtualized)
+            {
+                return new VirtualizedControlScopeContext(controlScopeId, controlScopeMarkupStorage);
+            }
+            else
+            {
+                return new ControlScopeContext(controlScopeId, controlScopeMarkupStorage);
+            }
         }
-        
+
         public PageScopeId ScopeId { get; }
     }
 }

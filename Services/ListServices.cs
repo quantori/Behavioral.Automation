@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Behavioral.Automation.Elements;
@@ -92,26 +93,31 @@ namespace Behavioral.Automation.Services
                    list2.All(item => list1.Contains(item));
         }
 
-        public static bool CheckListContainValuesFromAnotherListInExactOrder(List<string> checkingList, List<string> refList)
+        public static bool ContainsValues(this IEnumerable<string> actualCollection, List<string> expectedValues, bool exactOrder)
         {
-            if (refList.Count > checkingList.Count)
+            int index = 0;
+            int maxIndexForValuesList = expectedValues.Count - 1;
+
+            foreach (var value in actualCollection)
             {
-                return false;
-            }
-            for (int i = 0; i < refList.Count; i++)
-            {
-                if (checkingList[i] != refList[i])
+                if (index > maxIndexForValuesList)
+                {
+                    break;
+                }
+                bool collectionContainsValue = exactOrder ?
+                    expectedValues[index].Equals(value, StringComparison.Ordinal)
+                    : expectedValues.Contains(value, StringComparer.Ordinal);
+                if (!collectionContainsValue)
                 {
                     return false;
                 }
+                if (index == maxIndexForValuesList)
+                {
+                    return true;
+                }
+                index++;
             }
-            return true;
-        }
-
-
-        public static bool CheckListContainValuesFromAnotherList(List<string> list1, List<string> list2)
-        {
-            return list1.Intersect(list2).Any();
+            return false;
         }
     }
 }

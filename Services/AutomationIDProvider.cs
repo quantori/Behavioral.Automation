@@ -15,10 +15,14 @@ namespace Behavioral.Automation.Services
 
         public ControlDescription Get(string caption)
         {
-            var result = caption.ParseExact("\"{0}\" {1}");
-            var name = result[0];
-            var type = result[1];
+            ParseCaption(caption, out var name, out var type);
             return _scopeContextRuntime.FindControlDescription(type, name);
+        }
+        public void ParseCaption(string caption, out string name,out string type)
+        {
+            var result = caption.ParseExact("\"{0}\" {1}");
+            name = result[0];
+            type = result[1];
         }
     }
 }

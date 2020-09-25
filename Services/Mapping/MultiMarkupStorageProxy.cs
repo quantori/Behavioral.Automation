@@ -28,10 +28,11 @@ namespace Behavioral.Automation.Services.Mapping
             }
         }
 
-        public IMarkupStorageInitializer GetOrCreateControlScopeMarkupStorage(ControlScopeId controlScopeId)
+        public IMarkupStorageInitializer GetOrCreateControlScopeMarkupStorage(ControlScopeId controlScopeId,
+            ControlScopeOptions controlScopeOptions = null)
         {
             return new MultiMarkupStorageProxy(_storages
-                .Select(v => v.GetOrCreateControlScopeMarkupStorage(controlScopeId)));
+                .Select(v => v.GetOrCreateControlScopeMarkupStorage(controlScopeId, controlScopeOptions)));
         }
     }
 }

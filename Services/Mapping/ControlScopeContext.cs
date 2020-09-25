@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 
 namespace Behavioral.Automation.Services.Mapping
 {
-    public sealed class ControlScopeContext : IScopeContext
+    public sealed class ControlScopeContext : IControlScopeContext
     {
         private readonly ControlScopeId _contextId;
 
@@ -18,20 +18,20 @@ namespace Behavioral.Automation.Services.Mapping
             _contextId = contextId;
         }
 
-        public ControlDescription FindControlDescription(string type, string name)
+        public ControlReference FindControlReference(string type, string name)
         {
-            var controlDescription = _markupStorage?.TryFind(type, name);
+            var controlReference = _markupStorage?.TryFind(type, name);
 
-            if (controlDescription == null)
+            if (controlReference == null)
             {
                 throw new ArgumentException(
                     $"Control with alias=\"{type}\" and caption=\"{name}\" not found in ControlContext with name=\"{_contextId.Name}\"");
             }
 
-            return controlDescription;
+            return controlReference;
         }
 
-        public ControlScopeContext GetNestedControlScopeContext(ControlScopeId controlScopeId)
+        public IControlScopeContext GetNestedControlScopeContext(ControlScopeId controlScopeId)
         {
             if (_markupStorage == null)
             {
@@ -41,6 +41,11 @@ namespace Behavioral.Automation.Services.Mapping
 
             var nestedControlMarkupStorage = _markupStorage.TryGetControlScopeMarkupStorage(controlScopeId) ??
                                              _markupStorage.CreateControlScopeMarkupStorage(controlScopeId);
+
+            if (nestedControlMarkupStorage.ScopeOptions.IsVirtualized)
+            {
+                return new VirtualizedControlScopeContext(controlScopeId, nestedControlMarkupStorage);
+            }
 
             return new ControlScopeContext(controlScopeId, nestedControlMarkupStorage);
         }
