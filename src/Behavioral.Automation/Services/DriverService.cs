@@ -7,9 +7,7 @@ using JetBrains.Annotations;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Remote;
-using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
-using System.Drawing.Imaging;
 using System.Threading;
 
 namespace Behavioral.Automation.Services
