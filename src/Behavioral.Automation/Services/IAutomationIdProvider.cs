@@ -7,5 +7,7 @@ namespace Behavioral.Automation.Services
     {
         [NotNull]
         ControlDescription Get([NotNull] string caption);
+
+        void ParseCaption(string caption, out string name,out string type);
     }
 }

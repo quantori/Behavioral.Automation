@@ -2,7 +2,7 @@
 {
     public interface IScopeContext
     {
-        ControlDescription FindControlDescription(string type, string name);
-        ControlScopeContext GetNestedControlScopeContext(ControlScopeId controlScopeId);
+        ControlReference FindControlReference(string type, string name);
+        IControlScopeContext GetNestedControlScopeContext(ControlScopeId controlScopeId);
     }
 }

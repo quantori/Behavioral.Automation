@@ -21,20 +21,11 @@ namespace Behavioral.Automation.Bindings
         [Then("(.*?) should (contain|contain in exact order|not contain) the following items:")]
         public void CheckListContainsItems(IListWrapper list, string behavior, Table table)
         {
-            bool exactOrder = behavior.Contains("contain in exact order");
-            var testingList = list.ListValues.ToList();
-            var refLit = ListServices.TableToRowsList(table);
+            var expectedListValues = ListServices.TableToRowsList(table);
 
-            if (exactOrder)
-            {
-                bool check = ListServices.CheckListContainValuesFromAnotherListInExactOrder(testingList, refLit);
-                check.Should().Be(true);
-            }
-            else
-            {
-                bool check = ListServices.CheckListContainValuesFromAnotherList(testingList, refLit);
-                check.Should().Be(!behavior.Contains("not contain"));
-            }
+            bool exactOrder = behavior.Contains("contain in exact order");
+            bool check = list.ListValues.ContainsValues(expectedListValues, exactOrder);
+            check.Should().Be(!behavior.Contains("not contain"));
         }
 
     }

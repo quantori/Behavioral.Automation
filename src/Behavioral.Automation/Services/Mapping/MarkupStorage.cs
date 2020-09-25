@@ -8,15 +8,22 @@ namespace Behavioral.Automation.Services.Mapping
     [UsedImplicitly]
     public class MarkupStorage : IMarkupStorage
     {
+        [CanBeNull]
+        private readonly ControlLocation _controlLocation;
         private readonly Dictionary<string, ControlComposition> _mapping;
 
         private readonly Dictionary<ControlScopeId, IMarkupStorage> _nestedScopeToMarkupMap =
             new Dictionary<ControlScopeId, IMarkupStorage>();
 
-        public MarkupStorage()
+        public MarkupStorage([CanBeNull] ControlScopeOptions controlScopeOptions = null,
+            [CanBeNull] ControlLocation controlLocation = null)
         {
+            _controlLocation = controlLocation;
             _mapping = new Dictionary<string, ControlComposition>();
+            ScopeOptions = controlScopeOptions ?? ControlScopeOptions.Default();
         }
+
+        public ControlScopeOptions ScopeOptions { get; }
 
         public void AddAlias(string htmlTag, params string[] aliases)
         {
@@ -40,23 +47,31 @@ namespace Behavioral.Automation.Services.Mapping
             _mapping[htmlTag].Descriptions.Add(new ControlDescription(id, caption, subpath));
         }
 
-        public ControlDescription TryFind(string alias, string caption)
+        public ControlReference TryFind(string alias, string caption)
         {
-            try{
-            return _mapping.Values.Where(composition => composition.Aliases.Contains(alias))
-                .SelectMany(composition => composition.Descriptions)
-                .SingleOrDefault(desciption => string.Equals(desciption.Caption, caption, StringComparison.OrdinalIgnoreCase));
-            } catch (InvalidOperationException ex) {
-                throw new InvalidOperationException($"More than one mapping is found for alias {alias} and caption {caption}", ex);
+            try
+            {
+                var controlDescription = _mapping.Values.Where(composition => composition.Aliases.Contains(alias))
+                    .SelectMany(composition => composition.Descriptions)
+                    .SingleOrDefault(description =>
+                        string.Equals(description.Caption, caption, StringComparison.OrdinalIgnoreCase));
+
+                return controlDescription != null ? new ControlReference(_controlLocation, controlDescription) : null;
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new InvalidOperationException(
+                    $"More than one mapping is found for alias {alias} and caption {caption}", ex);
             }
         }
 
-        public IMarkupStorageInitializer GetOrCreateControlScopeMarkupStorage(ControlScopeId controlScopeId)
+        public IMarkupStorageInitializer GetOrCreateControlScopeMarkupStorage(ControlScopeId controlScopeId,
+            ControlScopeOptions controlScopeOptions = null)
         {
             IMarkupStorageInitializer controlMarkupStorage = TryGetControlScopeMarkupStorage(controlScopeId);
             if (controlMarkupStorage == null)
             {
-                controlMarkupStorage = CreateControlScopeMarkupStorage(controlScopeId);
+                controlMarkupStorage = CreateControlScopeMarkupStorage(controlScopeId, controlScopeOptions);
             }
 
             return controlMarkupStorage;
@@ -68,11 +83,27 @@ namespace Behavioral.Automation.Services.Mapping
             return controlMarkupStorage;
         }
 
-        public IMarkupStorage CreateControlScopeMarkupStorage(ControlScopeId controlScopeId)
+        public IMarkupStorage CreateControlScopeMarkupStorage(ControlScopeId controlScopeId, ControlScopeOptions controlScopeOptions = null)
         {
-            IMarkupStorage controlMarkupStorage = new MarkupStorage();
+            IMarkupStorage controlMarkupStorage = new MarkupStorage(controlScopeOptions,
+                new ControlLocation(controlScopeId, controlScopeOptions, _controlLocation));
             _nestedScopeToMarkupMap.Add(controlScopeId, controlMarkupStorage);
             return controlMarkupStorage;
+        }
+
+        public ControlReference TryFindInNestedScopes(string type, string name)
+        {
+            foreach (var nestedScope in _nestedScopeToMarkupMap.Values)
+            {
+                var controlReference = nestedScope.TryFind(type, name)
+                                       ?? nestedScope.TryFindInNestedScopes(type, name);
+
+                if (controlReference != null)
+                {
+                    return controlReference;
+                }
+            }
+            return null;
         }
 
         private class ControlComposition
