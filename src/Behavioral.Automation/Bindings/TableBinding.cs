@@ -23,12 +23,17 @@ namespace Behavioral.Automation.Bindings
         [Then("(.*?) should (contain|not contain) the following rows:")]
         public void CheckTableContainsRows(ITableWrapper gridRows, string behavior, Table table)
         {
-            var tableList = ListServices.TableToCellsList(table);
-            Assert.ShouldBecome(() => gridRows.Stale, false, $"{gridRows.Caption} is stale");
-            Assert.ShouldBecome(() => gridRows.Text.Contains(tableList.FirstOrDefault()), true, $"{gridRows.Caption} text is \"{gridRows.Text}\"");
-            var gridRowsCellsText = gridRows.CellsText.ToList();
-            Assert.ShouldBecome(() => ListServices.CompareTwoLists(gridRows.CellsText.ToList(), tableList), !behavior.Contains("not"), 
-                $"{gridRows.Caption} is {gridRowsCellsText.Aggregate((x, y) => $"{x}, {y}")}");
+
+            var expectedValues = ListServices.TableToCellsList(table);
+            
+           Assert.ShouldBecome(() => gridRows.Stale, false, $"{gridRows.Caption} is stale");
+           Assert.ShouldBecome(() => gridRows.Text.Contains(expectedValues.FirstOrDefault()), true,
+               $"{gridRows.Caption} text is \"{gridRows.Text}\"");
+           
+
+            Assert.ShouldBecome(() => gridRows.CellsText.ContainsValues(expectedValues, true),
+                !behavior.Contains("not"),
+                $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
         }
 
         [Then("(.*?) should (contain|not contain) \"(.*)\" in (.*)")]
