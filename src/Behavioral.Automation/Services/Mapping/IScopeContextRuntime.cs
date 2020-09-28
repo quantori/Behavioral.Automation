@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Bindings;
 
@@ -13,5 +14,6 @@ namespace Behavioral.Automation.Services.Mapping
         void SwitchToGlobalScope();
         void RunAction(string action, StepDefinitionType stepDefinitionType);
         void RunAction(string action, StepDefinitionType stepDefinitionType, Table table);
+        bool HasVirtualizedScopeContext(ControlScopeId controlScopeId, [CanBeNull] ControlScopeId parenControlScopeId);
     }
 }

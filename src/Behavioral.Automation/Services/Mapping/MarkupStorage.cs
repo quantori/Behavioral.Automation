@@ -86,7 +86,7 @@ namespace Behavioral.Automation.Services.Mapping
         public IMarkupStorage CreateControlScopeMarkupStorage(ControlScopeId controlScopeId, ControlScopeOptions controlScopeOptions = null)
         {
             IMarkupStorage controlMarkupStorage = new MarkupStorage(controlScopeOptions,
-                new ControlLocation(controlScopeId, controlScopeOptions, _controlLocation));
+                new ControlLocation(controlScopeId, controlScopeOptions ?? new ControlScopeOptions(), _controlLocation));
             _nestedScopeToMarkupMap.Add(controlScopeId, controlMarkupStorage);
             return controlMarkupStorage;
         }
