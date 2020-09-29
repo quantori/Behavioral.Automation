@@ -62,7 +62,7 @@ namespace Behavioral.Automation.Bindings
         }
 
         /// <summary>
-        /// Execute doulbe click on the specific element in the collection
+        /// Execute double click on the specific element in the collection
         /// </summary>
         /// <param name="index">Number of the tested element in the collection</param>
         /// <param name="element">Tested web element wrapper</param>
