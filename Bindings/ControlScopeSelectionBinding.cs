@@ -6,6 +6,9 @@ using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings
 {
+    /// <summary>
+    /// Bindings to execute actions inside control scopes
+    /// </summary>
     [Binding]
     public sealed class ControlScopeSelectionBinding
     {
@@ -16,6 +19,12 @@ namespace Behavioral.Automation.Bindings
             _contextManager = contextManager;
         }
 
+        /// <summary>
+        /// Execute action inside scope
+        /// </summary>
+        /// <param name="controlScopeId">Name of the scope</param>
+        /// <param name="action">Action definition</param>
+        /// <example>When inside "Login" page: "Email" input should become visible</example>
         [Given("inside (.*?): (.*)")]
         [When("inside (.*?): (.*)")]
         [Then("inside (.*?): (.*)")]
@@ -29,6 +38,18 @@ namespace Behavioral.Automation.Bindings
             }
         }
 
+        /// <summary>
+        /// Execute action inside scope which contains table
+        /// </summary>
+        /// <param name="controlScopeId">Name of the scope</param>
+        /// <param name="action">Action definition</param>
+        /// <param name="table">Specflow table with test data</param>
+        /// <example>
+        /// Then inside "Calculations" panel: "Data" table should contain the following rows:
+        /// | rowName |
+        /// | row 1   |
+        /// | row 2   |
+        /// </example>
         [Given("inside (.*?): (.*)")]
         [When("inside (.*?): (.*)")]
         [Then("inside (.*?): (.*)")]
@@ -42,6 +63,16 @@ namespace Behavioral.Automation.Bindings
             }
         }
 
+        /// <summary>
+        /// Execute multiple steps inside scope
+        /// </summary>
+        /// <param name="controlScopeId">Name of the scope</param>
+        /// <param name="actionsTable">Specflow table which contains actions to be executed</param>
+        /// <example>
+        /// Then inside "Profile" panel the following steps should be executed:
+        /// | "Name" input should become visible |
+        /// | "Data" table should be empty       |
+        /// </example>
         [Given("inside (.*?) the following steps were executed:")]
         [When("inside (.*?) the following steps are executed:")]
         [Then("inside (.*?) the following steps should be executed:")]
@@ -59,6 +90,13 @@ namespace Behavioral.Automation.Bindings
             }
         }
 
+        /// <summary>
+        /// Execute action inside multiple scopes
+        /// </summary>
+        /// <param name="controlScopeId">Nested scope name</param>
+        /// <param name="parentControlSelectionSteps">Parent scope name</param>
+        /// <param name="action">Action to be executed</param>
+        /// <example>When inside "Filter" panel of "Test" menu: "Data" table become visible</example>
         [Given("inside (.*?) of (.*?): (.*)")]
         [When("inside (.*?) of (.*?): (.*)")]
         [Then("inside (.*?) of (.*?): (.*)")]
@@ -74,6 +112,19 @@ namespace Behavioral.Automation.Bindings
             }
         }
 
+        /// <summary>
+        /// Execute action with a Specflow table in the nested scope
+        /// </summary>
+        /// <param name="controlScopeId">Nested scope name</param>
+        /// <param name="parentControlSelectionSteps">Parent scope name</param>
+        /// <param name="action">Action to be executed</param>
+        /// <param name="table">Specflow table with additional step data</param>
+        /// <example>
+        /// Then inside "Results" panel of "Search" menu: "Data" table should contain the following rows:
+        /// | rowName |
+        /// | row 1   |
+        /// | row 2   |
+        /// </example>
         [Given("inside (.*?) of (.*?): (.*)")]
         [When("inside (.*?) of (.*?): (.*)")]
         [Then("inside (.*?) of (.*?): (.*)")]

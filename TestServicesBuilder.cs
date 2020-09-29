@@ -5,6 +5,9 @@ using Behavioral.Automation.Services.Mapping.Contract;
 
 namespace Behavioral.Automation
 {
+    /// <summary>
+    /// Initialise all necessary objects before test execution
+    /// </summary>
     public sealed class TestServicesBuilder
     {
         private readonly IObjectContainer _objectContainer;

@@ -4,6 +4,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace Behavioral.Automation.Services
 {
+    /// <summary>
+    /// Access config properties
+    /// </summary>
     [UsedImplicitly]
     public static class ConfigServiceBase
     {

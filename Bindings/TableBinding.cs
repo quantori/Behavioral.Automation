@@ -8,9 +8,18 @@ using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings
 {
+    /// <summary>
+    /// Bindings for tables testing
+    /// </summary>
     [Binding]
     public sealed class TableBinding
     {
+        /// <summary>
+        /// Check number of table rows
+        /// </summary>
+        /// <param name="element">Tested web element wrapper</param>
+        /// <param name="count">Expected number of rows</param>
+        /// <example>Then "Test" table should have 5 items</example>
         [Given(@"(.*?) has (\d+) items")]
         [When(@"(.*?) has (\d+) items")]
         [Then(@"(.*?) should have (\d+) items")]
@@ -19,6 +28,18 @@ namespace Behavioral.Automation.Bindings
             Assert.ShouldBecome(() => element.Rows.Count(), count, $"{element.Caption} has {element.Rows.Count()} rows");
         }
 
+        /// <summary>
+        /// Check that table has expected rows
+        /// </summary>
+        /// <param name="gridRows">Tested web element wrapper</param>
+        /// <param name="behavior">Assertion type</param>
+        /// <param name="table">Specflow table which contains expected values</param>
+        /// <example>
+        /// Then "Test" table should contain the following rows:
+        /// | column 1 | column 2 |
+        /// | Test 1   | Test 2   |
+        /// | Test 3   | Test 4   |
+        /// </example>
         [Given("(.*?) (contain|not contain) the following rows:")]
         [Then("(.*?) should (contain|not contain) the following rows:")]
         public void CheckTableContainsRows(ITableWrapper gridRows, string behavior, Table table)
@@ -31,6 +52,14 @@ namespace Behavioral.Automation.Bindings
                 $"{gridRows.Caption} is {gridRowsCellsText.Aggregate((x, y) => $"{x}, {y}")}");
         }
 
+        /// <summary>
+        /// Check that one of the table's columns contains specific value
+        /// </summary>
+        /// <param name="table">Tested table wrapper</param>
+        /// <param name="behavior">Assertion type</param>
+        /// <param name="value">Expected value</param>
+        /// <param name="column">Tested column with the desired value</param>
+        /// <example>Then "Test" table should contain "expected string" in "Data" column</example>
         [Then("(.*?) should (contain|not contain) \"(.*)\" in (.*)")]
         public void CheckTableContainRow(ITableWrapper table, string behavior, string value, IElementCollectionWrapper column)
         {
@@ -41,6 +70,13 @@ namespace Behavioral.Automation.Bindings
             ListServices.GetElementsTextsList(column.Elements).Contains(value).Should().Be(!behavior.Contains("not"));
         }
 
+        /// <summary>
+        /// Check that all numeric values in the column are lesser or greater than expected value
+        /// </summary>
+        /// <param name="column">Tested web element wrapper</param>
+        /// <param name="condition">Lesser or greater parameter</param>
+        /// <param name="value">Expected value</param>
+        /// <example> Then "Test" column values should be greater than "2"</example>
         [Then("(.*?) values should be (lesser|greater) than \"(.*)\"")]
         public void CompareTableRowGreaterLesser(IElementCollectionWrapper column,  string condition,
             int value)
@@ -51,6 +87,14 @@ namespace Behavioral.Automation.Bindings
                 $"values are {elementsText.Aggregate((x, y) => $"{x}, {y}")}");
         }
 
+        /// <summary>
+        /// Check that all numeric values in the column are between given boundaries
+        /// </summary>
+        /// <param name="column">Tested web element wrapper</param>
+        /// <param name="behavior">Assertion type</param>
+        /// <param name="value1">First boundary</param>
+        /// <param name="value2">Second boundary</param>
+        /// <example>Then "Test" column values should be between "5" and "10"</example>
         [Then("(.*?) values should be (between|not between) \"(.*)\" and \"(.*)\"")]
         public void CheckRowValuesAreBetween(IElementCollectionWrapper column, string behavior, int value1, int value2)
         {
@@ -61,6 +105,12 @@ namespace Behavioral.Automation.Bindings
                 $"values are {elementsText.Aggregate((x, y) => $"{x}, {y}")}");
         }
 
+        /// <summary>
+        /// Check that one of the table's columns has no data
+        /// </summary>
+        /// <param name="table">Tested table wrapper</param>
+        /// <param name="column">Tested column wrapper</param>
+        /// <example>Then "Test" table should contain no records in "Data" column</example>
         [Given("(.*?) contain no records in (.*)")]
         [Then("(.*?) should contain no records in (.*)")]
         public void CheckSearchResultEmptyByColumn(ITableWrapper table, IWebElementWrapper column)
@@ -68,6 +118,11 @@ namespace Behavioral.Automation.Bindings
             Assert.ShouldBecome(() => !column.Displayed && !table.Rows.Any(), true, $"{table.Caption} contains records");
         }
 
+        /// <summary>
+        /// Check that table has no data
+        /// </summary>
+        /// <param name="table">Tested web element wrapper</param>
+        /// <example>Then "Test" table should contain no records</example>
         [Given("(.*?) has no records")]
         [Then("(.*?) should contain no records")]
         public void CheckSearchResultIsEmpty(ITableWrapper table)
@@ -75,6 +130,13 @@ namespace Behavioral.Automation.Bindings
             Assert.ShouldBecome(() => table.Displayed && !table.Rows.Any(), true, $"{table.Caption} contains records");
         }
 
+        /// <summary>
+        /// Check that one of the table's rows is expanded
+        /// </summary>
+        /// <param name="index">Number of row</param>
+        /// <param name="table">Tested web element wrapper</param>
+        /// <param name="behavior">Assertion type</param>
+        /// <example>Then first element among "Test" table rows should be expanded</example>
         [Given("(.*?) element among (.*) (is| is not) expanded")]
         [When("(.*?) element among (.*) (is| is not) expanded")]
         [Then("(.*?) element among (.*) should (be|be not) expanded")]
