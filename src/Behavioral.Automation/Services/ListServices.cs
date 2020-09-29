@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Behavioral.Automation.Elements;
 using TechTalk.SpecFlow;
 
@@ -100,7 +101,7 @@ namespace Behavioral.Automation.Services
             {
                 if (index > maxIndexForValuesList)
                 {
-                    break;
+                    return true;
                 }
                 bool collectionContainsValue = exactOrder ?
                     expectedValues[index].Equals(value, StringComparison.Ordinal)
@@ -116,6 +117,12 @@ namespace Behavioral.Automation.Services
                 index++;
             }
             return false;
+        }
+
+        public static bool DoesntContainValues(this IEnumerable<string> actualCollection, List<string> expectedValues)
+        {
+            var noIntersection = !actualCollection.Intersect(expectedValues).Any();
+            return noIntersection;
         }
     }
 }

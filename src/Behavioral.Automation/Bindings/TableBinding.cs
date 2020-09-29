@@ -3,6 +3,7 @@ using System.Linq;
 using FluentAssertions;
 using Behavioral.Automation.Elements;
 using Behavioral.Automation.FluentAssertions;
+using Behavioral.Automation.Model;
 using Behavioral.Automation.Services;
 using TechTalk.SpecFlow;
 
@@ -23,17 +24,23 @@ namespace Behavioral.Automation.Bindings
         [Then("(.*?) should (contain|not contain) the following rows:")]
         public void CheckTableContainsRows(ITableWrapper gridRows, string behavior, Table table)
         {
-
             var expectedValues = ListServices.TableToCellsList(table);
-            
-           Assert.ShouldBecome(() => gridRows.Stale, false, $"{gridRows.Caption} is stale");
-           Assert.ShouldBecome(() => gridRows.Text.Contains(expectedValues.FirstOrDefault()), true,
-               $"{gridRows.Caption} text is \"{gridRows.Text}\"");
-           
 
-            Assert.ShouldBecome(() => gridRows.CellsText.ContainsValues(expectedValues, true),
-                !behavior.Contains("not"),
-                $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
+            Assert.ShouldBecome(() => gridRows.Stale, false, $"{gridRows.Caption} is stale");
+
+            bool inversion = behavior.StartsWith("not");
+            if (inversion)
+            {
+                Assert.ShouldBecome(() => gridRows.CellsText.DoesntContainValues(expectedValues),
+                    true,
+                    $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
+            }
+            else
+            {
+                Assert.ShouldBecome(() => gridRows.CellsText.ContainsValues(expectedValues, true),
+                    true,
+                    $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
+            }
         }
 
         [Then("(.*?) should (contain|not contain) \"(.*)\" in (.*)")]
