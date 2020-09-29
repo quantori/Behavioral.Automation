@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Behavioral.Automation.Services.Mapping.Contract;
 using Behavioral.Automation.Services.Mapping.PageMapping;
+using JetBrains.Annotations;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Bindings;
 
@@ -18,7 +19,10 @@ namespace Behavioral.Automation.Services.Mapping
         {
             _runner = runner;
             _globalContext =
-                new PageScopeContext(new PageScopeId(string.Empty, string.Empty), container.GetGlobal());
+                new PageScopeContext(
+                    new PageScopeId(string.Empty, string.Empty), 
+                    container.GetGlobal(), 
+                    new MarkupStorage());
             _contextStack.Push(_globalContext);
         }
 
@@ -76,6 +80,13 @@ namespace Behavioral.Automation.Services.Mapping
                 default:
                     throw new ArgumentOutOfRangeException(nameof(stepDefinitionType), stepDefinitionType, null);
             }
+        }
+
+        public bool HasVirtualizedScopeContext(ControlScopeId controlScopeId, ControlScopeId parentControlScopeId = null)
+        {
+            var parentControlScope = parentControlScopeId != null ? CurrentContext.GetNestedControlScopeContext(parentControlScopeId): CurrentContext;
+            var nestedScope = parentControlScope.GetNestedControlScopeContext(controlScopeId);
+            return nestedScope is IVirtualizedScopeContext;
         }
 
 

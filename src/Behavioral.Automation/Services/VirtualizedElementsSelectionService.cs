@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Behavioral.Automation.Elements;
 using Behavioral.Automation.Services.Mapping;
+using Behavioral.Automation.Services.Mapping.Contract;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 
@@ -35,7 +36,8 @@ namespace Behavioral.Automation.Services
 
             ResetScrollPosition<T>(frameElementToScroll, scrollingArguments.ScrollHeight);
 
-            foreach (var element in loadElementsCallback())
+            HashSet<string> visitedElements = new HashSet<string>();
+            foreach (var element in GetElements(loadElementsCallback, visitedElements))
             {
                 yield return element;
             }
@@ -45,8 +47,27 @@ namespace Behavioral.Automation.Services
                 var offset = CalculateScrollingOffset(scrollingArguments, i);
                 _driverService.ScrollElementTo(frameElementToScroll, offset);
 
-                foreach (var element in loadElementsCallback())
+                foreach (var element in GetElements(loadElementsCallback, visitedElements))
                 {
+                    yield return element;
+                }
+            }
+        }
+
+        private static IEnumerable<T> GetElements<T>(LoadElementsFromCurrentViewCallback<T> loadElementsCallback, 
+            HashSet<string> visitedElements) where T : IWebElementWrapper
+        {
+            foreach (var element in loadElementsCallback())
+            {
+                var elementId = element.GetAttribute("id");
+
+                if (string.IsNullOrEmpty(elementId))
+                {
+                    yield return element;
+                }
+                else if (!visitedElements.Contains(elementId))
+                {
+                    visitedElements.Add(elementId);
                     yield return element;
                 }
             }
@@ -62,7 +83,7 @@ namespace Behavioral.Automation.Services
             return offset;
         }
 
-        public bool IsVirtualizable(string caption)
+        public bool ControlIsVirtualizable(string caption)
         {
             _provider.ParseCaption(caption, out var name, out var type);
             var contextForControl = _contextRuntime.FindControlReference(type, name);
@@ -72,7 +93,11 @@ namespace Behavioral.Automation.Services
             {
                 return true;
             }
-            return false;
+            else
+            {
+                return _contextRuntime.HasVirtualizedScopeContext(new ControlScopeId(caption),
+                    contextForControl.ControlLocation?.ControlScopeId);
+            }
         }
 
         private static ScrollingArguments GetScrollingArguments(IWebElement frameElementToScroll)
@@ -94,7 +119,18 @@ namespace Behavioral.Automation.Services
         {
             _provider.ParseCaption(caption, out var name, out var type);
             var contextForControl = _contextRuntime.FindControlReference(type, name);
-            var frameElementToScrollCaption = contextForControl.ControlLocation.ControlScopeId.Name;
+            string frameElementToScrollCaption;
+            if (_contextRuntime.HasVirtualizedScopeContext(
+                new ControlScopeId(caption), 
+                contextForControl.ControlLocation.ControlScopeId))
+            {
+                frameElementToScrollCaption = caption;
+            }
+            else
+            {
+                frameElementToScrollCaption = contextForControl.ControlLocation.ControlScopeId.Name;
+            }
+
             var frameElementToScroll = _selectionService.Find(frameElementToScrollCaption);
             return frameElementToScroll;
         }

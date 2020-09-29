@@ -9,6 +9,6 @@ namespace Behavioral.Automation.Services
         IEnumerable<T> FindVirtualized<T>(string caption,
             LoadElementsFromCurrentViewCallback<T> loadElementsCallback) where T : IWebElementWrapper;
 
-        bool IsVirtualizable(string caption);
+        bool ControlIsVirtualizable(string caption);
     }
 }
