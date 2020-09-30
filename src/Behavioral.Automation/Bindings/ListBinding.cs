@@ -24,8 +24,17 @@ namespace Behavioral.Automation.Bindings
             var expectedListValues = ListServices.TableToRowsList(table);
 
             bool exactOrder = behavior.Contains("contain in exact order");
-            bool check = list.ListValues.ContainsValues(expectedListValues, exactOrder);
-            check.Should().Be(!behavior.Contains("not contain"));
+
+            bool checkResult;
+            if (behavior.StartsWith("not"))
+            {
+                checkResult = list.ListValues.DoesntContainValues(expectedListValues);
+            }
+            else
+            {
+                checkResult = list.ListValues.ContainsValues(expectedListValues, exactOrder);
+            }
+            checkResult.Should().Be(true);
         }
 
     }
