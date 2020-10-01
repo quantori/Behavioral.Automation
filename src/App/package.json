@@ -1,0 +1,38 @@
+{
+  "name": "behavioral-automaiton-demo",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "~8.2.14",
+    "hammerjs": "^2.0.8",
+    "@angular/cdk": "~8.2.3",
+    "@angular/common": "~8.2.14",
+    "@angular/compiler": "~8.2.14",
+    "@angular/core": "~8.2.14",
+    "@angular/forms": "~8.2.14",
+    "@angular/material": "^8.2.3",
+    "@angular/platform-browser": "~8.2.14",
+    "@angular/platform-browser-dynamic": "~8.2.14",
+    "@angular/router": "^7.2.0",
+    "core-js": "^2.6.2",
+    "rxjs": "^6.1.0",
+    "tslib": "^1.9.0",
+    "zone.js": "^0.8.27"
+  },
+  "devDependencies": {
+    "@angular/cli": "^7.3.1",
+    "@angular/compiler-cli": "^7.2.0",
+    "@angular/language-service": "^7.2.0",
+    "typescript": "3.2.2",
+    "@angular-devkit/build-angular": "~0.12.0"
+  }
+}
