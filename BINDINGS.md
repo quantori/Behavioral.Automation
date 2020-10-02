@@ -146,6 +146,13 @@ Then "Included components" dropdown selected value should be empty
 [When("user enters \"(.*)\" into (.*)")]
 Example:
 When user enters "prj.test@gmail.com" into "Google login" input
+When user enters "test-__random_string:4" into "Username" input
+
+Where:
+
+__random_string - default 8 symbols
+
+__random_string:N - N symbols
 
 * Clear value stored in element:
 [Given("user clears (.*)")]
