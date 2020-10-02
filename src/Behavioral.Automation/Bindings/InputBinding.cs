@@ -19,11 +19,20 @@ namespace Behavioral.Automation.Bindings
         [When("user enters \"(.*)\" into (.*)")]
         public void EnterInput([NotNull] string input, [NotNull] ITextElementWrapper element)
         {
-            var randomString = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8);
-            
-            if (input.Contains("__random_string"))
+            var stringToReplace = "__random_string";
+            if (input.Contains(stringToReplace))
             {
-                input = input.Replace("__random_string", randomString);
+                var length = 8;
+                
+                if (input.Split(':').Length > 1)
+                {
+                    var strNumber = input.Split(':')[1];
+                    length = Int32.Parse(strNumber);
+                    stringToReplace += ":" + strNumber;
+                };
+                var randomString = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, length);
+
+                input = input.Replace(stringToReplace, randomString);
             }
             element.EnterString(input);
         }
