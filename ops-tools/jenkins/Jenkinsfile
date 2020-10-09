@@ -1,0 +1,49 @@
+pipeline {
+    agent {
+        kubernetes {
+            label 'staffing-worker'
+            defaultContainer 'jnlp'
+            yaml """
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    label: BehavioralAutomation-worker
+spec:
+  nodeSelector:
+    node-role.kubernetes.io/jenkins-workers: jenkins-workers
+  containers:
+  - name: dotnet-sdk-3
+    image: mcr.microsoft.com/dotnet/core/sdk:3.1
+    resources:
+      limits:
+        memory: "1048Mi"
+        cpu: "500m"
+      requests:
+        memory: "512Mi"
+        cpu: "250m"
+    command:
+    - cat
+    tty: true
+"""
+        }
+    }
+
+    stages {
+        stage("BUILD"){
+            steps {
+                container('dotnet-sdk-3') {
+                    sh '''
+                        echo mock build
+                       '''
+                }
+            }
+        }
+       
+        stage('TESTING') {
+            sh '''
+                echo mock test
+               '''
+        }
+    }
+}
