@@ -1,0 +1,12 @@
+﻿{
+  "BASE_URL": "http://localhost:4200/",
+  "TEST_EMAIL": "",
+  "TEST_PASSWORD": "",
+  "BASE_AUTH_URL": "",
+  "BROWSER_PARAMS": "--window-size=1920,1080",
+  "DOWNLOAD_PATH": "",
+  "SEARCH_ATTRIBUTE": "automation-id",
+  "BAUTH_LOGIN": "",
+  "BAUTH_PWD": "",
+  "BAUTH_IGNORE": "true"
+}
