@@ -18,11 +18,20 @@ namespace Behavioral.Automation.Services
             ParseCaption(caption, out var name, out var type);
             return _scopeContextRuntime.FindControlDescription(type, name);
         }
-        public void ParseCaption(string caption, out string name,out string type)
+
+        public void ParseCaption(string caption, out string name, out string type)
         {
-            var result = caption.ParseExact("\"{0}\" {1}");
-            name = result[0];
-            type = result[1];
+            string[] parsedValues;
+            if (caption.TryParseExact("\"{0}\" {1}", out parsedValues, true))
+            {
+                name = parsedValues[0];
+                type = parsedValues[1];
+                return;
+            }
+            
+            parsedValues = caption.ParseExact("\"{0}\"",  true);
+            name = parsedValues[0];
+            type = string.Empty;
         }
     }
 }
