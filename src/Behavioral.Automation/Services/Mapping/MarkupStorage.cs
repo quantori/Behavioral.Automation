@@ -51,7 +51,18 @@ namespace Behavioral.Automation.Services.Mapping
         {
             try
             {
-                var controlDescription = _mapping.Values.Where(composition => composition.Aliases.Contains(alias))
+                IEnumerable<ControlComposition> controlCompositions;
+                if (alias == string.Empty)
+                {
+                    controlCompositions = _mapping.Values.Where(composition =>
+                        !composition.Aliases.Any() || composition.Aliases.Contains(alias));
+                }
+                else
+                {
+                    controlCompositions = _mapping.Values.Where(composition => composition.Aliases.Contains(alias));
+                }
+
+                var controlDescription = controlCompositions
                     .SelectMany(composition => composition.Descriptions)
                     .SingleOrDefault(description =>
                         string.Equals(description.Caption, caption, StringComparison.OrdinalIgnoreCase));
