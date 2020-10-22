@@ -73,6 +73,12 @@ export class RegistrationComponent implements OnInit {
 			startWith(''),
 			map(value => this.filterCountries(value))
 		);
+
+		this.registration.valueChanges.subscribe(() => {
+			if (this.registration.valid) {
+				this.disableSubmit = false
+			}
+		});
 	}
 
 	get controls(): { [key: string]: AbstractControl } {
@@ -90,13 +96,11 @@ export class RegistrationComponent implements OnInit {
 		if (event.checked) {
 			formArray.push(new FormControl(type));
 		} else {
-			let i: number = 0;
-			formArray.controls.forEach((control: FormControl) => {
+			formArray.controls.forEach((control: FormControl, index) => {
 				if(control.value == type) {
-					formArray.removeAt(i);
+					formArray.removeAt(index);
 					return;
 				}
-				i++;
 			});
 		}
 	}
@@ -107,10 +111,7 @@ export class RegistrationComponent implements OnInit {
 			return
 		}
 
-		this.disableSubmit = false;
-		const registration = this.controls;
-
-		this.httpService.postData(registration).subscribe(
+		this.httpService.postData(this.controls).subscribe(
 			(event) => {
 				this.reset();
 				},
