@@ -85,7 +85,7 @@ export class RegistrationComponent implements OnInit {
 	}
 
 	public changeCatalogTypes(event, type: string): void {
-		const formArray: FormArray = this.registration.get('catalog_types') as FormArray;
+		const formArray: FormArray = this.registration.get('catalogs') as FormArray;
 
 		if (event.checked) {
 			formArray.push(new FormControl(type));
@@ -102,7 +102,6 @@ export class RegistrationComponent implements OnInit {
 	}
 
 	public submit(): void {
-		console.log(this.registration.controls);
 		if (this.registration.invalid) {
 			this.disableSubmit = true;
 			return
@@ -113,7 +112,6 @@ export class RegistrationComponent implements OnInit {
 
 		this.httpService.postData(registration).subscribe(
 			(event) => {
-				console.log(event);
 				this.reset();
 				},
 			error => console.log(error)
