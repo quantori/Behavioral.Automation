@@ -1,0 +1,24 @@
+@import '../../../styles/variables';
+
+header {
+	padding: 20px;
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	display: flex;
+	background-color: $light-blue;
+}
+
+.nav-title {
+	margin-right: auto;
+	font-size: 1.5rem;
+	color: $color-black;
+}
+
+.nav-link {
+	font-size: 1.2rem;
+}
+
+.active {
+	text-decoration: underline;
+}

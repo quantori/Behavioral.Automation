@@ -1,0 +1,55 @@
+@import 'variables';
+
+html {
+	font-size: 16px;
+
+	@media only screen and (max-width: 1024px) {
+		font-size: 14px;
+	}
+
+	@media only screen and (max-width: 768px) {
+		font-size: 12px;
+	}
+}
+
+body {
+	min-height: 100vh;
+	background-color: #ffffff;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 400;
+	font-style: normal;
+	line-height: 1.5;
+}
+
+a {
+	cursor: pointer;
+	text-decoration: none;
+
+	&:focus {
+		text-decoration: underline;
+	}
+}
+
+
+span p {
+	display: inline;
+}
+
+ul {
+	padding: 0;
+	margin: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+li {
+	list-style: none;
+	margin: 0;
+}
+
+section {
+	min-height: calc(90vh - 120px);
+	width: 60%;
+	margin: 2rem auto;
+}
