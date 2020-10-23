@@ -7,14 +7,14 @@ namespace Behavioral.Automation.Bindings
     [Binding]
     public sealed class ClickBinding
     {
-        [Given("user clicks on (.*)")]
+        [Given("user clicked on (.*)")]
         [When("user clicks on (.*)")]
         public void Click([NotNull] IWebElementWrapper element)
         {
             element.Click();
         }
 
-        [Given("user clicks twice on (.*)")]
+        [Given("user clicked twice on (.*)")]
         [When("user clicks twice on (.*)")]
         public void ClickTwice([NotNull] IWebElementWrapper element)
         {
@@ -22,7 +22,7 @@ namespace Behavioral.Automation.Bindings
             element.Click();
         }
         
-        [Given("user clicks three times on (.*)")]
+        [Given("user clicked three times on (.*)")]
         [When("user clicks three times on (.*)")]
         public void ClickThreeTimes([NotNull] IWebElementWrapper element)
         {

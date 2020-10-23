@@ -79,7 +79,7 @@ namespace Behavioral.Automation.Bindings
             _driverService.DebugDumpPage();
         }
         
-        [Given("user resize window to (.*) height and (.*) width")]
+        [Given("user resized window to (.*) height and (.*) width")]
         [When("user resize window to (.*) height and (.*) width")]
         public void CheckOpened([NotNull] int pageHeight, [NotNull] int pageWidth)
         {
