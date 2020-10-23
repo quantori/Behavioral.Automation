@@ -37,7 +37,7 @@ namespace Behavioral.Automation.Bindings
             element.EnterString(input);
         }
 
-        [Given("user clears (.*)")]
+        [Given("user cleared (.*)")]
         [When("user clears (.*)")]
         public void ClearInput([NotNull] ITextElementWrapper element)
         {
