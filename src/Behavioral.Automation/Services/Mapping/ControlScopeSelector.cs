@@ -19,6 +19,18 @@ namespace Behavioral.Automation.Services.Mapping
             }
         }
 
+        public ControlScopeSelector(string controlScopeId, ControlLocation controlLocation)
+        {
+            AddSelectionStep(new ControlScopeId(controlScopeId));
+
+            var parentOfControl = controlLocation;
+            while (parentOfControl != null)
+            {
+                AddSelectionStep(parentOfControl.ControlScopeId);
+                parentOfControl = parentOfControl.Parent;
+            }
+        }
+
         public IEnumerable<ControlScopeId> SelectionSteps => _selectionSteps;
 
         private void AddSelectionStep(ControlScopeId controlScopeId)
