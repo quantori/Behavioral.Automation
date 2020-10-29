@@ -18,8 +18,8 @@ namespace Behavioral.Automation.Bindings
             _runner = runner;
         }
 
-        [Given("(.*?) (is|is not|become| become not) (enabled|disabled)")]
-        [When("(.*?) (is|is not|become| become not) (enabled|disabled)")]
+        [Given("the (.*?) (is|is not|become| become not) (enabled|disabled)")]
+        [When("the (.*?) (is|is not|become| become not) (enabled|disabled)")]
         [Then("the (.*?) should (be|be not|become|become not) (enabled|disabled)")]
         public void CheckElementIsDisabled(
             [NotNull] IWebElementWrapper element, 
@@ -62,7 +62,7 @@ namespace Behavioral.Automation.Bindings
         {
             foreach (var row in table.Rows)
             {
-                var control = "\"" + row.Values.First() + "\" " + row.Values.Last();
+                var control = "the \"" + row.Values.First() + "\" " + row.Values.Last();
                 runnerAction($"{control} {behavior} {enabled}");
             }
         }
