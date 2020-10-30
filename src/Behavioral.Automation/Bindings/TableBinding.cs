@@ -21,10 +21,11 @@ namespace Behavioral.Automation.Bindings
         }
 
         [Given("(.*?) (contain|not contain) the following rows:")]
-        [Then("(.*?) should (contain|not contain) the following rows:")]
+        [Then("(.*?) should (contain|contain in exact order|not contain) the following rows:")]
         public void CheckTableContainsRows(ITableWrapper gridRows, string behavior, Table table)
         {
             var expectedValues = ListServices.TableToCellsList(table);
+            bool exactOrder = behavior.Contains("contain in exact order");
 
             Assert.ShouldBecome(() => gridRows.Stale, false, $"{gridRows.Caption} is stale");
 
@@ -37,7 +38,7 @@ namespace Behavioral.Automation.Bindings
             }
             else
             {
-                Assert.ShouldBecome(() => gridRows.CellsText.ContainsValues(expectedValues, true),
+                Assert.ShouldBecome(() => gridRows.CellsText.ContainsValues(expectedValues, exactOrder),
                     true,
                     $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
             }
