@@ -67,7 +67,7 @@ When inside "Search" paginator: user selects "5" in "Items per page" dropdown
 * Execute multiple actions inside control scope:
 [Given("inside (.*?) the following steps were executed:")]
 [When("inside (.*?) the following steps are executed:")]
-[Then("inside (.*?) the following steps should be executed:")]
+[Then("inside (.*?) the following conditions should be true:")]
 Example:
 Then inside "Search" paginator the following steps should be executed:
 
