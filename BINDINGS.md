@@ -58,23 +58,23 @@ When user hovers mouse over <buttonName> <controlType>
 ## Control Scope Selection Binding
 
 * Execute action inside control scope:
-[Given("inside (.*?): (.*)")]
-[When("inside (.*?): (.*)")]
-[Then("inside (.*?): (.*)")]
+[Given("inside (.+?): (.+?)")]
+[When("inside (.+?): (.+?)")]
+[Then("inside (.+?): (.+?)")]
 Example:
 When inside "Search" paginator: user selects "5" in "Items per page" dropdown
 
 * Execute multiple actions inside control scope:
-[Given("inside (.*?) the following steps were executed:")]
-[When("inside (.*?) the following steps are executed:")]
-[Then("inside (.*?) the following conditions should be true:")]
+[Given("inside (.+?) the following steps were executed:")]
+[When("inside (.+?) the following steps are executed:")]
+[Then("inside (.+?) the following conditions should be true:")]
 Example:
 Then inside "Search" paginator the following steps should be executed:
 
 * Execute action inside parent control:
-[Given("inside (.*?) of (.*?): (.*)")]
-[When("inside (.*?) of (.*?): (.*)")]
-[Then("inside (.*?) of (.*?): (.*)")]
+[Given("inside (.+?) of (.+?): (.+?)")]
+[When("inside (.+?) of (.+?): (.+?)")]
+[Then("inside (.+?) of (.+?): (.+?)")]
 Example:
 When inside "Search" paginator: user selects "5" in "Items per page" dropdown
 
