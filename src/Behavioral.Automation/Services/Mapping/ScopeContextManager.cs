@@ -26,11 +26,6 @@ namespace Behavioral.Automation.Services.Mapping
                 _scopeContextRuntime.SwitchToPageScope(pageScopeContext);
             }
         }
-        public IScopeContextRuntime UseControlScopeContextRuntime(ControlScopeId controlScopeId)
-        {
-            _scopeContextRuntime.EnterControlScope(controlScopeId);
-            return _scopeContextRuntime;
-        }
 
         public IScopeContextRuntime UseControlScopeContextRuntime(ControlScopeSelector controlScopeSelector)
         {
