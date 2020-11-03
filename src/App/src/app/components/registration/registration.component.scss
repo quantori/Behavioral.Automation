@@ -1,0 +1,102 @@
+@import '../../../styles/variables';
+
+form {
+	margin: 1.5rem 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.form-section {
+	margin: 1rem 0;
+}
+
+.form-section:last-child {
+	display: flex;
+	justify-content: center;
+}
+
+.agreement {
+	display: flex;
+
+	a {
+		color: #002f6c;
+	}
+}
+
+.agreement-toggle {
+	margin-right: 2rem;
+}
+
+fieldset {
+	border-radius: 20px;
+	border-width: 0.5px;
+	border-style: dashed;
+	border-color: lightgrey;
+}
+
+legend {
+	padding: 0 0.5rem;
+	background-color: $light-blue;
+}
+
+.fields {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: space-between;
+	padding: 0.5rem 0;
+}
+
+.field {
+	width: 44%;
+	margin: 1rem;
+	display: flex;
+	flex-direction: column;
+
+	ul, mat-radio-group {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	li, mat-radio-button  {
+		width: 30%;
+		margin: 0.5rem 0;
+		font-size: 1rem;
+	}
+}
+
+@media (min-width: 1024px) {
+	.field.small {
+		width: 150px;
+	}
+}
+
+.hint {
+	font-size: 75%;
+	margin-top: 0.4rem;
+}
+
+button {
+	margin-right: 1rem;
+	padding: 0.5rem 1rem;
+	font-size: 1rem;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+button[type="submit"] {
+	position: relative
+}
+
+button[type="submit"]:disabled:hover:after {
+	content: attr(data-tooltip);
+	position: absolute;
+	left: 80px;
+	bottom: 45px;
+	width: 160px;
+	font-weight: 500;
+	color: $color-white;
+	text-transform: lowercase;
+	background: $grey-background;
+	border-radius: 3px;
+}

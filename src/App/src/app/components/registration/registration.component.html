@@ -1,0 +1,226 @@
+<section data-automation-id="registration">
+	<h1>Stay tuned</h1>
+	<h3>Subscribe to our monthly catalogs and never miss good deals!</h3>
+
+	<form [formGroup]="registration" (ngSubmit)="submit()" data-automation-id="registration-form">
+		<fieldset class="form-section">
+			<legend>About you</legend>
+
+			<div class="fields">
+
+				<!-- First Name -->
+
+				<mat-form-field class="field">
+					<mat-label>First Name</mat-label>
+					<input matInput type="text" placeholder="First Name" formControlName="firstName"
+					       data-automation-id="firstName">
+					<mat-error *ngIf="controls.firstName.hasError('pattern')">
+						First name should start with min 2 alpha characters
+					</mat-error>
+					<mat-error *ngIf="controls.firstName.hasError('required')">
+						First name is required
+					</mat-error>
+				</mat-form-field>
+
+				<!-- Last Name -->
+
+				<mat-form-field class="field">
+					<mat-label>Last Name</mat-label>
+					<input matInput type="text" placeholder="Last Name" formControlName="lastName"
+					       data-automation-id="lastName">
+					<mat-error *ngIf="controls.lastName.hasError('pattern')">
+						Last name should start with min 2 alpha characters
+					</mat-error>
+					<mat-error *ngIf="controls.lastName.hasError('required')">
+						Last name is required
+					</mat-error>
+				</mat-form-field>
+
+				<!-- Country -->
+
+				<mat-form-field class="field">
+					<input type="text" placeholder="Select your country" formControlName="country"
+					       aria-label="Country" matInput [matAutocomplete]="auto"
+					       data-automation-id="country">
+					<mat-autocomplete #auto="matAutocomplete">
+						<mat-option *ngFor="let country of filteredCountries | async" [value]="country.text">
+							{{country.text}}
+						</mat-option>
+					</mat-autocomplete>
+					<mat-error *ngIf="controls.country.hasError('required')">
+						Country is required
+					</mat-error>
+					<mat-error *ngIf="controls.country.hasError('invalidCountryName')">
+						Select the country from the list
+					</mat-error>
+				</mat-form-field>
+
+				<!-- Phone -->
+
+				<mat-form-field class="field">
+					<mat-label>Cell phone</mat-label>
+					<input matInput type="tel" placeholder="Phone" formControlName="tel" data-automation-id="tel">
+					<mat-hint>xxx-xxx-xxxx</mat-hint>
+					<mat-error *ngIf="controls.tel.hasError('pattern')">
+						Phone number format: xxx-xxx-xxxx
+					</mat-error>
+					<mat-error *ngIf="controls.tel.hasError('required')">
+						Phone number name is required
+					</mat-error>
+				</mat-form-field>
+
+				<!-- Date of Birth -->
+
+				<mat-form-field class="field small">
+					<mat-label>Date of birth</mat-label>
+					<input matInput [matDatepicker]="picker" formControlName="date" data-automation-id="date">
+					<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+					<mat-datepicker #picker startView="multi-year"></mat-datepicker>
+					<mat-hint>18+ age to order</mat-hint>
+					<mat-error *ngIf="controls.date.hasError('invalidDateOfBirth')">
+						Age should be 18+
+					</mat-error>
+					<mat-error *ngIf="controls.date.hasError('required')">
+						Date of birth is required
+					</mat-error>
+				</mat-form-field>
+
+				<!-- Gender -->
+
+				<span class="field">
+					<span>Gender</span>
+					<mat-radio-group aria-label="Choose your gender" formControlName="gender" data-automation-id="gender">
+						<mat-radio-button value="male">Male</mat-radio-button>
+						<mat-radio-button value="female">Female</mat-radio-button>
+					</mat-radio-group>
+				</span>
+			</div>
+		</fieldset>
+
+		<fieldset class="form-section">
+			<legend>Order catalog</legend>
+
+			<div class="fields">
+
+				<!-- Address -->
+
+				<mat-form-field class="field">
+					<mat-label>Shipping address</mat-label>
+					<textarea matInput placeholder="Ship to" formControlName="address"
+					          data-automation-id="address"></textarea>
+					<mat-error *ngIf="controls.address.hasError('required')">
+						Shipping address is required
+					</mat-error>
+				</mat-form-field>
+
+				<!-- Catalogs -->
+
+				<div class="field">
+					<span>What are you interested in?</span>
+				    <ul>
+					    <li *ngFor="let item of catalogs">
+						    <mat-checkbox formArrayName="catalogs" (change)="changeCatalogTypes($event, item)"
+						                  data-automation-id="catalog-item" [checked]="item.checked">
+							    {{item.name}}
+						    </mat-checkbox>
+					    </li>
+				    </ul>
+				</div>
+
+				<!-- Samples -->
+
+				<mat-form-field class="field">
+					<mat-label>Include samples</mat-label>
+					<mat-select formControlName="samples" data-automation-id="samples">
+						<mat-option *ngFor="let sample of samples" [value]="sample">
+							{{sample}}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+		</fieldset>
+
+		<fieldset class="form-section">
+			<legend>Register and get exclusive offers</legend>
+
+			<div class="fields">
+
+				<!-- Email -->
+
+				<mat-form-field class="field">
+					<mat-label>Email</mat-label>
+					<input matInput type="email" placeholder="Email" formControlName="email"
+					       data-automation-id="email">
+					<mat-error *ngIf="controls.email.hasError('email') && !controls.email.hasError('required')">
+						Please enter a valid email address
+					</mat-error>
+					<mat-error *ngIf="controls.email.hasError('required')">
+						Email is required
+					</mat-error>
+				</mat-form-field>
+
+				<!-- Password -->
+
+				<mat-form-field class="field">
+					<mat-label>Password</mat-label>
+					<input matInput type="password" placeholder="Password" formControlName="password"
+					       data-automation-id="password">
+					<mat-error *ngIf="controls.password.hasError('required')">
+						Password is required
+					</mat-error>
+					<mat-error *ngIf="controls.password.hasError('pattern')">
+						Min 8 characters, 1 number, 1 lower case letter, 1 upper case letter
+					</mat-error>
+				</mat-form-field>
+
+				<!-- Avatar -->
+
+				<span class="field">
+					<label>
+						Upload your avatar
+						<input type="file" placeholder="Avatar" formControlName="avatar" accept=".jpg, .jpeg, .png"
+						       data-automation-id="avatar">
+					</label>
+					<span class="hint">accepted formats: .jpg, .jpeg, .png</span>
+				</span>
+
+				<!-- Confirm Password -->
+
+				<mat-form-field class="field">
+					<mat-label>Re-enter password</mat-label>
+					<input matInput type="password" placeholder="Re-enter password" formControlName="confirmPassword"
+					       data-automation-id="confirmPassword">
+					<mat-error *ngIf="controls.confirmPassword.hasError('required')">
+						Password is required
+					</mat-error>
+					<mat-error *ngIf="controls.confirmPassword.hasError('passwordMismatch')">
+						Password mismatch
+					</mat-error>
+				</mat-form-field>
+
+			</div>
+		</fieldset>
+
+		<span class="form-section agreement">
+			<mat-slide-toggle formControlName="agreement" class="agreement-toggle" data-automation-id="agreement-toggle">
+				I agree to <a routerLink="/about-us/terms-and-conditions" routerLinkActive="active">the terms and conditions</a>
+			</mat-slide-toggle>
+			<mat-error *ngIf="controls.agreement.hasError('required')" class="hint">
+				agreement is required
+			</mat-error>
+		</span>
+
+		<span class="form-section">
+			<button mat-flat-button type="submit" color="accent"
+			        [attr.data-tooltip]="disabledSubmitTooltip"
+			        [disabled]="disableSubmit"
+			        data-automation-id="submit">
+				Submit
+			</button>
+			<button mat-button type="reset" (click)="this.clearCatalogs()"
+			        data-automation-id="reset">Clear</button>
+		</span>
+	</form>
+</section>
+
+

@@ -1,0 +1,40 @@
+@import '../styles/variables';
+
+ol li,
+ul li,
+p {
+	font-size: 1.25rem;
+	line-height: 1.5;
+	color: $color-black;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: $color-black;
+}
+
+h1 {
+	font-size: 2.25rem;
+	margin-bottom: 1rem;
+}
+
+h2 {
+	font-size: 1.95rem;
+}
+
+h3 {
+	font-size: 1.5rem;
+}
+
+h4 {
+	font-size: 1.35rem;
+}
+
+h5 {
+	font-size: 1.2rem;
+}
+
+h6 {
+	font-size: 1.05rem;
+}
+
+$app-typography: mat-typography-config();
