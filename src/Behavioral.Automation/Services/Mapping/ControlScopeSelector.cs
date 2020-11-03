@@ -7,11 +7,9 @@ namespace Behavioral.Automation.Services.Mapping
     {
         private readonly Stack<ControlScopeId> _selectionSteps = new Stack<ControlScopeId>();
 
-        public ControlScopeSelector(string controlScopeId, string parentControlSelectionSteps)
+        internal ControlScopeSelector(string selectionSteps)
         {
-            AddSelectionStep(new ControlScopeId(controlScopeId));
-
-            var controlScopeIds = ParseParentControlSelectionSteps(parentControlSelectionSteps);
+            var controlScopeIds = ParseParentControlSelectionSteps(selectionSteps);
           
             foreach (var scope in controlScopeIds)
             {
@@ -38,9 +36,9 @@ namespace Behavioral.Automation.Services.Mapping
             _selectionSteps.Push(controlScopeId);
         }
 
-        private static ControlScopeId[] ParseParentControlSelectionSteps(string parentControlSelectionSteps)
+        private static ControlScopeId[] ParseParentControlSelectionSteps(string selectionSteps)
         {
-            var controlScopeIds = parentControlSelectionSteps.Split("of")
+            var controlScopeIds = selectionSteps.Split("of")
                 .Select(s => s.Trim()).Where(s => !string.IsNullOrEmpty(s)).Select(s => new ControlScopeId(s));
             return controlScopeIds.ToArray();
         }

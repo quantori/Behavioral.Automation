@@ -1,6 +1,7 @@
 ﻿using System;
 using Behavioral.Automation.Model;
 using Behavioral.Automation.Services;
+using Behavioral.Automation.Services.Mapping;
 using JetBrains.Annotations;
 using TechTalk.SpecFlow;
 
@@ -59,6 +60,12 @@ namespace Behavioral.Automation.Bindings
                 ("tenth") => 10,
                 _ => StringExtensions.ParseNumberFromString(number)
             };
+        }
+
+        [StepArgumentTransformation]
+        public ControlScopeSelector ParseControlScopeSelector(string selectionSteps)
+        {
+            return new ControlScopeSelector(selectionSteps);
         }
     }
 }

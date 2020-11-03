@@ -5,7 +5,6 @@ namespace Behavioral.Automation.Services.Mapping.Contract
     public interface IScopeContextManager
     {
         void SwitchPage(Uri uri);
-        IScopeContextRuntime UseControlScopeContextRuntime(ControlScopeId controlScopeId);
         IScopeContextRuntime UseControlScopeContextRuntime(ControlScopeSelector controlScopeSelector);
         void SwitchPage(string pageName);
     }

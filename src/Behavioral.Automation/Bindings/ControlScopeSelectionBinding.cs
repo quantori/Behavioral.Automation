@@ -16,74 +16,44 @@ namespace Behavioral.Automation.Bindings
             _contextManager = contextManager;
         }
 
-        [Given("inside (.*?): (.*)")]
-        [When("inside (.*?): (.*)")]
-        [Then("inside (.*?): (.*)")]
-        public void ExecuteActionInsideControlScope(string controlScopeId, string action)
-        {
-            var stepDefinitionType = ScenarioStepContext.Current.StepInfo.StepDefinitionType;
-            var scopeId = new ControlScopeId(controlScopeId);
-            using (var controlScopeRuntime = _contextManager.UseControlScopeContextRuntime(scopeId))
-            {
-                controlScopeRuntime.RunAction(action, stepDefinitionType);
-            }
-        }
 
-        [Given("inside (.*?): (.*)")]
-        [When("inside (.*?): (.*)")]
-        [Then("inside (.*?): (.*)")]
-        public void ExecuteActionInsideControlScope(string controlScopeId, string action, Table table)
+        [Given("inside (.+?) the following steps were executed:")]
+        [When("inside (.+?) the following steps are executed:")]
+        [Then("inside (.+?) the following conditions should be true:")]
+        public void ExecuteMultipleActionsInsideControlScope(ControlScopeSelector controlScopeSelector,
+            [NotNull] Table actionsTable)
         {
             var stepDefinitionType = ScenarioStepContext.Current.StepInfo.StepDefinitionType;
-            var scopeId = new ControlScopeId(controlScopeId);
-            using (var controlScopeRuntime = _contextManager.UseControlScopeContextRuntime(scopeId))
-            {
-                controlScopeRuntime.RunAction(action, stepDefinitionType, table);
-            }
-        }
-
-        [Given("inside (.*?) the following steps were executed:")]
-        [When("inside (.*?) the following steps are executed:")]
-        [Then("inside (.*?) the following steps should be executed:")]
-        public void ExecuteMultipleActionsInsideControlScope(string controlScopeId, [NotNull] Table actionsTable)
-        {
-            var stepDefinitionType = ScenarioStepContext.Current.StepInfo.StepDefinitionType;
-            var scopeId = new ControlScopeId(controlScopeId);
-            using (var controlScopeRuntime = _contextManager.UseControlScopeContextRuntime(scopeId))
+            using (var controlScopeRuntime = _contextManager.UseControlScopeContextRuntime(controlScopeSelector))
             {
                 foreach (var action in actionsTable.Rows)
                 {
                     controlScopeRuntime.RunAction(action.Values.First(), stepDefinitionType);
                 }
-                
             }
         }
 
-        [Given("inside (.*?) of (.*?): (.*)")]
-        [When("inside (.*?) of (.*?): (.*)")]
-        [Then("inside (.*?) of (.*?): (.*)")]
-        public void ExecuteActionInsideControlScope(string controlScopeId,
-            string parentControlSelectionSteps,
-            string action)
+        [Given("inside (.+?): (.+?)")]
+        [When("inside (.+?): (.+?)")]
+        [Then("inside (.+?): (.+?)")]
+        public void ExecuteActionInsideControlScope(ControlScopeSelector controlScopeSelector, string action)
         {
             var stepDefinitionType = ScenarioStepContext.Current.StepInfo.StepDefinitionType;
-            var controlScopeSelector = new ControlScopeSelector(controlScopeId, parentControlSelectionSteps);
+           
             using (var controlScopeRuntime = _contextManager.UseControlScopeContextRuntime(controlScopeSelector))
             {
                 controlScopeRuntime.RunAction(action, stepDefinitionType);
             }
         }
 
-        [Given("inside (.*?) of (.*?): (.*)")]
-        [When("inside (.*?) of (.*?): (.*)")]
-        [Then("inside (.*?) of (.*?): (.*)")]
-        public void ExecuteActionInsideControlScope(string controlScopeId,
-            string parentControlSelectionSteps,
+        [Given("inside (.+?): (.+?)")]
+        [When("inside (.+?): (.+?)")]
+        [Then("inside (.+?): (.+?)")]
+        public void ExecuteActionInsideControlScope(ControlScopeSelector controlScopeSelector,
             string action,
             Table table)
         {
             var stepDefinitionType = ScenarioStepContext.Current.StepInfo.StepDefinitionType;
-            var controlScopeSelector = new ControlScopeSelector(controlScopeId, parentControlSelectionSteps);
             using (var controlScopeRuntime = _contextManager.UseControlScopeContextRuntime(controlScopeSelector))
             {
                 controlScopeRuntime.RunAction(action, stepDefinitionType, table);
