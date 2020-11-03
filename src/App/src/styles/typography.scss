@@ -1,4 +1,3 @@
-@import '../app-theme';
 @import '../styles/variables';
 
 ol li,
@@ -37,3 +36,5 @@ h5 {
 h6 {
 	font-size: 1.05rem;
 }
+
+$app-typography: mat-typography-config();
