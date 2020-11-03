@@ -120,8 +120,8 @@
 				    <ul>
 					    <li *ngFor="let item of catalogs">
 						    <mat-checkbox formArrayName="catalogs" (change)="changeCatalogTypes($event, item)"
-						                  data-automation-id="catalog-item">
-							    {{item}}
+						                  data-automation-id="catalog-item" [checked]="item.checked">
+							    {{item.name}}
 						    </mat-checkbox>
 					    </li>
 				    </ul>
@@ -217,7 +217,7 @@
 			        data-automation-id="submit">
 				Submit
 			</button>
-			<button mat-button type="reset"
+			<button mat-button type="reset" (click)="this.clearCatalogs()"
 			        data-automation-id="reset">Clear</button>
 		</span>
 	</form>

@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { countries } from '../../../constants/countries'
 import { catalogs } from '../../../constants/catalogs'
 import { samples } from '../../../constants/samples'
@@ -19,7 +19,7 @@ export class RegistrationComponent implements OnInit {
 	registration: FormGroup;
 	countries: { text: string, value: string}[] = countries;
 	filteredCountries: Observable<{ "text": string, "value": string }[]>;
-	catalogs: string[] = catalogs;
+	catalogs = catalogs;
 	samples: string[] = samples;
 	disabledSubmitTooltip = 'Fill the form to submit';
 	disableSubmit = false;
@@ -90,14 +90,16 @@ export class RegistrationComponent implements OnInit {
 		return this.countries.filter(country => country.text.toLowerCase().includes(filterValue));
 	}
 
-	public changeCatalogTypes(event, type: string): void {
-		const formArray: FormArray = this.registration.get('catalogs') as FormArray;
+	public changeCatalogTypes(event, item): void {
+		const formArray: FormArray = this.controls.catalogs as FormArray;
 
 		if (event.checked) {
-			formArray.push(new FormControl(type));
+			item.checked = true;
+			formArray.push(new FormControl(item));
 		} else {
+			item.checked = false;
 			formArray.controls.forEach((control: FormControl, index) => {
-				if(control.value == type) {
+				if (control.value.name == item.name) {
 					formArray.removeAt(index);
 					return;
 				}
@@ -112,9 +114,7 @@ export class RegistrationComponent implements OnInit {
 		}
 
 		this.httpService.postData(this.controls).subscribe(
-			(event) => {
-				this.reset();
-				},
+			(event) => this.reset(),
 			error => console.log(error)
 		);
 	}
@@ -126,6 +126,11 @@ export class RegistrationComponent implements OnInit {
 		}
 		this.controls.gender.setValue('male');
 		this.controls.samples.setValue('Herbs');
-		this.controls.agreement.setValue(true);
+		this.controls.catalogs.value.length = 0;
+		this.clearCatalogs();
+	}
+
+	public clearCatalogs() {
+		catalogs.forEach(x => x.checked = false)
 	}
 }
