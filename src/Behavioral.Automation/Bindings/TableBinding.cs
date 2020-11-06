@@ -20,9 +20,9 @@ namespace Behavioral.Automation.Bindings
             Assert.ShouldBecome(() => element.Rows.Count(), count, $"{element.Caption} has {element.Rows.Count()} rows");
         }
 
-        [Given("(.*?) (contain|not contain) the following rows:")]
-        [Then("(.*?) should (contain|contain in exact order|not contain) the following rows:")]
-        public void CheckTableContainsRows(ITableWrapper gridRows, string behavior, Table table)
+        [Given("(.*?) (contain|not contain) the (following|only following) rows:")]
+        [Then("(.*?) should (contain|contain in exact order|not contain) the (following|only following) rows:")]
+        public void CheckTableContainsRows(ITableWrapper gridRows, string behavior, string strictCondition, Table table)
         {
             var expectedValues = ListServices.TableToCellsList(table);
             bool exactOrder = behavior.Contains("contain in exact order");
@@ -40,6 +40,12 @@ namespace Behavioral.Automation.Bindings
             {
                 Assert.ShouldBecome(() => gridRows.CellsText.ContainsValues(expectedValues, exactOrder),
                     true,
+                    $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
+            }
+            
+            if(strictCondition == "only following")
+            {
+                Assert.ShouldBecome(() => gridRows.CellsText.Count() == expectedValues.Count, true,
                     $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
             }
         }

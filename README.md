@@ -9,7 +9,7 @@ Quantori Behavioral Automation is an open-source tool for UI testing automation 
 * Test execution logging including making screenshots when needed
 * Set of interfaces which allows to adjust interactions with web-elements according to the project
 * Multiple services to perform operations on test data
-* Fluent assertions providing either instant or continous checks
+* Fluent assertions providing either instant or continuous checks
 * Once the tool is set up specialists without code writing knowledge can crate automated tests
 * Languages: C# with third-party libraries
 
