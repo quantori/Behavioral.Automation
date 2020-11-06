@@ -20,8 +20,8 @@ namespace Behavioral.Automation.Bindings
             Assert.ShouldBecome(() => element.Rows.Count(), count, $"{element.Caption} has {element.Rows.Count()} rows");
         }
 
-        [Given("(.*?) (contain|not contain) the (following|only following) rows:")]
-        [Then("(.*?) should (contain|contain in exact order|not contain) the (following|only following) rows:")]
+        [Given("(.*?) (contain|not contain) the following (rows|rows only):")]
+        [Then("(.*?) should (contain|contain in exact order|not contain) the following (rows|rows only):")]
         public void CheckTableContainsRows(ITableWrapper gridRows, string behavior, string strictCondition, Table table)
         {
             var expectedValues = ListServices.TableToCellsList(table);
