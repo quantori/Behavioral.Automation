@@ -38,15 +38,14 @@ namespace Behavioral.Automation.Bindings
             }
             else
             {
+                if (strictCondition == "rows only")
+                {
+                    Assert.ShouldBecome(() => gridRows.CellsText.Count() == expectedValues.Count, true,
+                        $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
+                }
                 Assert.ShouldBecome(() => gridRows.CellsText.ContainsValues(expectedValues, exactOrder),
-                    true,
-                    $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
-            }
-            
-            if(strictCondition == "only following")
-            {
-                Assert.ShouldBecome(() => gridRows.CellsText.Count() == expectedValues.Count, true,
-                    $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
+                true,
+                $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
             }
         }
 
