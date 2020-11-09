@@ -20,9 +20,9 @@ namespace Behavioral.Automation.Bindings
             Assert.ShouldBecome(() => element.Rows.Count(), count, $"{element.Caption} has {element.Rows.Count()} rows");
         }
 
-        [Given("(.*?) (contain|not contain) the following rows:")]
-        [Then("(.*?) should (contain|contain in exact order|not contain) the following rows:")]
-        public void CheckTableContainsRows(ITableWrapper gridRows, string behavior, Table table)
+        [Given("(.*?) (contain|not contain) the following (rows|rows only):")]
+        [Then("(.*?) should (contain|contain in exact order|not contain) the following (rows|rows only):")]
+        public void CheckTableContainsRows(ITableWrapper gridRows, string behavior, string strictCondition, Table table)
         {
             var expectedValues = ListServices.TableToCellsList(table);
             bool exactOrder = behavior.Contains("contain in exact order");
@@ -38,9 +38,14 @@ namespace Behavioral.Automation.Bindings
             }
             else
             {
+                if (strictCondition == "rows only")
+                {
+                    Assert.ShouldBecome(() => gridRows.CellsText.Count() == expectedValues.Count, true,
+                        $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
+                }
                 Assert.ShouldBecome(() => gridRows.CellsText.ContainsValues(expectedValues, exactOrder),
-                    true,
-                    $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
+                true,
+                $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
             }
         }
 

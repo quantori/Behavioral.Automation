@@ -282,8 +282,8 @@ Example:
 When "Search results" grid has 5 items
 
 * Check that grid or table has given rows:
-[Given("(.*?) (contain|not contain) the following rows:")]
-[Then("(.*?) should (contain|not contain) the following rows:")]
+[Given("(.*?) (contain|not contain) the following (rows|rows only):")]
+[Then("(.*?) should (contain|contain in exact order|not contain) the following (rows|rows only):")]
 [Then("(.*?) should (contain|not contain) \"(.*)\" in (.*)")]
 Example:
 Then "Search results" grid should contain the following rows:
