@@ -65,12 +65,14 @@ namespace Behavioral.Automation.Bindings
                 !behavior.Contains("not"), $"{wrapper.Caption} items are {items.Aggregate((x, y) => $"{x}, {y}")}");
         }
 
+        [Given("the \"(.*) was selected in (.*)")]
         [When("user selects \"(.*)\" in (.*)")]
         public void ClickOnEntry([NotNull] string entry, [NotNull] IDropdownWrapper wrapper)
         {
             wrapper.Select(entry);
         }
 
+        [Given("multiple entries were selected in (.*)")]
         [When("user selects multiple entries in (.*):")]
         public void ClickOnMultipleEntries([NotNull] IDropdownWrapper wrapper, [NotNull] Table entries)
         {
