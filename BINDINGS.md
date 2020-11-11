@@ -125,12 +125,14 @@ Example:
 When "Properties" autocomplete contains <string> in all elements
 
 * Select value inside dropdown:
-[When("user selects \"(.*)\" in (.*)")]
+[Given("user selected \"(.*?)\" in (.*?)")]
+[When("user selects \"(.*?)\" in (.*?)")]
 Example:
 When user selects <propertyValue> in "Properties" autocomplete
 
 * Select multiple entries in dropdown with multiple choice:
-[When("user selects multiple entries in (.*):")]
+[Given("user selected multiple entries in (.*?):")]
+[When("user selects multiple entries in (.*?):")]
 Example:
 When user selects multiple entries in "Included components" dropdown:
 
