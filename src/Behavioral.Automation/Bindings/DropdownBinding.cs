@@ -22,20 +22,12 @@ namespace Behavioral.Automation.Bindings
         [Then("the (.*?) should have the following values:")]
         public void CheckAllItems([NotNull] IDropdownWrapper wrapper, [NotNull] Table items)
         {
-            if (!wrapper.Autocomplete)
-            {
-                wrapper.Click();
-            }
             wrapper.Items.Should().BeEquivalentTo(items.Rows.Select(x => x.Values.Single()));
         }
 
         [Then("(.*?) should have the following groups:")]
-        public void CheckDropdownHeaders([NotNull] IDropdownWrapper wrapper, [NotNull] Table items)
+        public void CheckDropdownHeaders([NotNull] IGroupedDropdownWrapper wrapper, [NotNull] Table items)
         {
-            if (!wrapper.Autocomplete)
-            {
-                wrapper.Click();
-            }
             wrapper.GroupTexts.Should().BeEquivalentTo(items.Rows.Select(x => x.Values.Single()));
         }
 

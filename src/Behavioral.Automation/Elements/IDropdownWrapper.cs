@@ -11,10 +11,6 @@ namespace Behavioral.Automation.Elements
 
         IEnumerable<string> Items { [NotNull, ItemNotNull] get; }
 
-        IEnumerable<string> GroupTexts { [NotNull, ItemNotNull] get; }
-
         bool Empty { get; }
-
-        bool Autocomplete { get; }
     }
 }
