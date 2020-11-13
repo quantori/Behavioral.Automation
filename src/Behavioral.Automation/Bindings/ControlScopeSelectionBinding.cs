@@ -36,6 +36,20 @@ namespace Behavioral.Automation.Bindings
         [Given("inside (.+?): (.+?)")]
         [When("inside (.+?): (.+?)")]
         [Then("inside (.+?): (.+?)")]
+        public void ExecuteActionWithTableArgsInsideControlScope(ControlScopeSelector controlScopeSelector,
+            string action,
+            Table table)
+        {
+            var stepDefinitionType = ScenarioStepContext.Current.StepInfo.StepDefinitionType;
+            using (var controlScopeRuntime = _contextManager.UseControlScopeContextRuntime(controlScopeSelector))
+            {
+                controlScopeRuntime.RunAction(action, stepDefinitionType, table);
+            }
+        }
+
+        [Given("inside (.+?): (.+?)")]
+        [When("inside (.+?): (.+?)")]
+        [Then("inside (.+?): (.+?)")]
         public void ExecuteActionInsideControlScope(ControlScopeSelector controlScopeSelector, string action)
         {
             var stepDefinitionType = ScenarioStepContext.Current.StepInfo.StepDefinitionType;
@@ -46,18 +60,6 @@ namespace Behavioral.Automation.Bindings
             }
         }
 
-        [Given("inside (.+?): (.+?)")]
-        [When("inside (.+?): (.+?)")]
-        [Then("inside (.+?): (.+?)")]
-        public void ExecuteActionInsideControlScope(ControlScopeSelector controlScopeSelector,
-            string action,
-            Table table)
-        {
-            var stepDefinitionType = ScenarioStepContext.Current.StepInfo.StepDefinitionType;
-            using (var controlScopeRuntime = _contextManager.UseControlScopeContextRuntime(controlScopeSelector))
-            {
-                controlScopeRuntime.RunAction(action, stepDefinitionType, table);
-            }
-        }
+      
     }
 }
