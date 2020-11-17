@@ -38,7 +38,7 @@ namespace Behavioral.Automation.Services.Mapping
 
         private static ControlScopeId[] ParseParentControlSelectionSteps(string selectionSteps)
         {
-            var controlScopeIds = selectionSteps.Split("of")
+            var controlScopeIds = selectionSteps.Split(" of ")
                 .Select(s => s.Trim()).Where(s => !string.IsNullOrEmpty(s)).Select(s => new ControlScopeId(s));
             return controlScopeIds.ToArray();
         }
