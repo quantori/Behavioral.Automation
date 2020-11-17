@@ -10,16 +10,17 @@ namespace Behavioral.Automation.Services.Mapping
     {
         [CanBeNull]
         private readonly ControlLocation _controlLocation;
-        private readonly Dictionary<string, ControlComposition> _mapping;
+        private readonly Dictionary<string, List<ControlComposition>> _mapping;
 
         private readonly Dictionary<ControlScopeId, IMarkupStorage> _nestedScopeToMarkupMap =
             new Dictionary<ControlScopeId, IMarkupStorage>();
 
+        private bool _newCompositionShouldBeCreated = true;
         public MarkupStorage([CanBeNull] ControlScopeOptions controlScopeOptions = null,
             [CanBeNull] ControlLocation controlLocation = null)
         {
             _controlLocation = controlLocation;
-            _mapping = new Dictionary<string, ControlComposition>();
+            _mapping = new Dictionary<string, List<ControlComposition>>();
             ScopeOptions = controlScopeOptions ?? ControlScopeOptions.Default();
         }
 
@@ -27,11 +28,8 @@ namespace Behavioral.Automation.Services.Mapping
 
         public void AddAlias(string htmlTag, params string[] aliases)
         {
-            if (!_mapping.ContainsKey(htmlTag))
-            {
-                _mapping[htmlTag] = new ControlComposition();
-            }
-            _mapping[htmlTag].Aliases.AddRange(aliases);
+            var composition = GetOrCreateCompositionFor(htmlTag);
+            composition.Aliases.AddRange(aliases);
         }
 
         public void AddComposition(
@@ -40,13 +38,14 @@ namespace Behavioral.Automation.Services.Mapping
             string caption, 
             string subpath = null)
         {
-            if (!_mapping.ContainsKey(htmlTag))
-            {
-                _mapping[htmlTag] = new ControlComposition();
-            }
-            _mapping[htmlTag].Descriptions.Add(new ControlDescription(id, caption, subpath));
+            var composition = GetOrCreateCompositionFor(htmlTag);
+            composition.Descriptions.Add(new ControlDescription(id, caption, subpath));
         }
 
+        public void StartCreationOfNewComposition()
+        {
+            _newCompositionShouldBeCreated = true;
+        }
         public ControlReference TryFind(string alias, string caption)
         {
             try
@@ -54,12 +53,14 @@ namespace Behavioral.Automation.Services.Mapping
                 IEnumerable<ControlComposition> controlCompositions;
                 if (alias == string.Empty)
                 {
-                    controlCompositions = _mapping.Values.Where(composition =>
+                    controlCompositions = _mapping.Values.SelectMany(compositions => compositions)
+                        .Where(composition =>
                         !composition.Aliases.Any() || composition.Aliases.Contains(alias));
                 }
                 else
                 {
-                    controlCompositions = _mapping.Values.Where(composition => composition.Aliases.Contains(alias));
+                    controlCompositions = _mapping.Values.SelectMany(compositions => compositions)
+                    .Where(composition => composition.Aliases.Contains(alias));
                 }
 
                 var controlDescription = controlCompositions
@@ -115,6 +116,23 @@ namespace Behavioral.Automation.Services.Mapping
                 }
             }
             return null;
+        }
+        private ControlComposition GetOrCreateCompositionFor(string htmlTag)
+        {
+            if (!_mapping.ContainsKey(htmlTag))
+            {
+                _mapping[htmlTag] = new List<ControlComposition>();
+            }
+
+            List<ControlComposition> compositions = _mapping[htmlTag];
+
+            if (_newCompositionShouldBeCreated)
+            {
+                compositions.Add(new ControlComposition());
+                _newCompositionShouldBeCreated = false;
+            }
+
+            return compositions.Last();
         }
 
         private class ControlComposition

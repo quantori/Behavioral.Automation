@@ -11,6 +11,7 @@ namespace Behavioral.Automation.Services.Mapping
         {
             _storage = storage;
             _htmlTag = htmlTag;
+            _storage.StartCreationOfNewComposition();
         }
 
         public IHtmlTagMapper Alias(string alias)
