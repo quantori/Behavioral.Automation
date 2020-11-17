@@ -20,7 +20,7 @@ namespace Behavioral.Automation.Bindings
 
         [Given("(.+?) (has|does not have) the following items:")]
         [Then("(.+?) should (have|not have) the following items:")]
-        public void CheckListHaveItems(IListWrapper list, string behavior,  Table table)
+        public void CheckListHaveItems(IListWrapper list, string behavior, Table table)
         {
             var expectedListValues = ListServices.TableToRowsList(table);
             bool checkResult;
