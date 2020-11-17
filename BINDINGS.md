@@ -213,8 +213,8 @@ Example:
 Then "Categories" should have in exact order the following items:
 
 * Check that list contains given values
-[Given("(.+?) (has|does not have) the following items:")]
-[Then("(.+?) should (have|not have) the following items:")]
+[Given("(.+?) (contains|does not contain) the following items:")]
+[Then("(.+?) should (contain|not contain) the following items:")]
 Example:
 Then "Categories" list should contain the following items:
 
@@ -311,6 +311,11 @@ Then "Search results" grid should have in exact order the following rows:
 [Then("(.+?) should (contain|not contain) the following rows:")]
 Example:
 Then "Search results" grid should contain the following rows:
+
+* Check that grid have specific value in column
+[Then("(.*?) should (have|not have) \"(.*)\" in (.*)")]
+Example:
+Then "Search results" grid should contain "Bob" in "Author" column
 
 * Check that numerical values in the table column are lesser or greater than the given value: 
 [Then("(.*?) values should be (lesser|greater) than \"(.*)\"")]

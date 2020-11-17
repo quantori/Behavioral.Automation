@@ -82,15 +82,15 @@ namespace Behavioral.Automation.Bindings
         }
 
         [Then("(.*?) should (have|not have) \"(.*)\" in (.*)")]
-        public void CheckTableContainRow(ITableWrapper table, string behavior, string value, IElementCollectionWrapper column)
+        public void CheckTableHaveValueInColumn(ITableWrapper table, string behavior, string value, IElementCollectionWrapper column)
         {
             Assert.ShouldBecome(() => column.Stale, false, $"{column.Caption} is stale");
             Assert.ShouldBecome(() => table.Text.Contains(value), true, $"{table.Caption} text is {table.Text}");
             Assert.ShouldBecome(() => column.Elements.Any(x => x.Stale), false, 
                 $"{table.Caption} elements are stale");
             ListServices.GetElementsTextsList(column.Elements).Contains(value).Should().Be(!behavior.Contains("not"));
-        }
-
+        } 
+         
         [Then("(.*?) values should be (lesser|greater) than \"(.*)\"")]
         public void CompareTableRowGreaterLesser(IElementCollectionWrapper column,  string condition,
             int value)

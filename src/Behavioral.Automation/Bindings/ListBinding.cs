@@ -58,7 +58,7 @@ namespace Behavioral.Automation.Bindings
         }
 
         [Then("(.+?) should have in exact order the following items:")]
-        public void CheckListContainsItemsInExactOrder(IListWrapper list,  Table table)
+        public void CheckListContainsItemsInExactOrder(IListWrapper list, Table table)
         {
             var expectedListValues = ListServices.TableToRowsList(table);
             var checkResult = list.ListValues.HaveValues(expectedListValues, true);
