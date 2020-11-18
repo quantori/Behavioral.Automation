@@ -1,9 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using FluentAssertions;
 using Behavioral.Automation.Elements;
 using Behavioral.Automation.FluentAssertions;
-using Behavioral.Automation.Model;
 using Behavioral.Automation.Services;
 using TechTalk.SpecFlow;
 
@@ -20,16 +19,15 @@ namespace Behavioral.Automation.Bindings
             Assert.ShouldBecome(() => element.Rows.Count(), count, $"{element.Caption} has {element.Rows.Count()} rows");
         }
 
-        [Given("(.*?) (contain|not contain) the following (rows|rows only):")]
-        [Then("(.*?) should (contain|contain in exact order|not contain) the following (rows|rows only):")]
-        public void CheckTableContainsRows(ITableWrapper gridRows, string behavior, string strictCondition, Table table)
+        [Given("(.+?) (has|does not have) the following rows:")]
+        [Then("(.+?) should (have|not have) the following rows:")]
+        public void CheckTableHaveRows(ITableWrapper gridRows, string behavior, Table table)
         {
             var expectedValues = ListServices.TableToCellsList(table);
-            bool exactOrder = behavior.Contains("contain in exact order");
 
             Assert.ShouldBecome(() => gridRows.Stale, false, $"{gridRows.Caption} is stale");
 
-            bool inversion = behavior.StartsWith("not");
+            bool inversion = behavior.Contains("not");
             if (inversion)
             {
                 Assert.ShouldBecome(() => gridRows.CellsText.DoesntContainValues(expectedValues),
@@ -38,27 +36,61 @@ namespace Behavioral.Automation.Bindings
             }
             else
             {
-                if (strictCondition == "rows only")
-                {
-                    Assert.ShouldBecome(() => gridRows.CellsText.Count() == expectedValues.Count, true,
-                        $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
-                }
-                Assert.ShouldBecome(() => gridRows.CellsText.ContainsValues(expectedValues, exactOrder),
-                true,
-                $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
+                Assert.ShouldBecome(() => gridRows.CellsText.Count() == expectedValues.Count, true,
+                    $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
+
+                Assert.ShouldBecome(() => gridRows.CellsText.HaveValues(expectedValues, false),
+                    true,
+                    $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
             }
         }
 
-        [Then("(.*?) should (contain|not contain) \"(.*)\" in (.*)")]
-        public void CheckTableContainRow(ITableWrapper table, string behavior, string value, IElementCollectionWrapper column)
+        [Then("(.+?) should have in exact order the following rows:")]
+        public void CheckTableHaveRowsInExactOrder(ITableWrapper gridRows, Table table)
+        {
+            var expectedValues = ListServices.TableToCellsList(table);
+
+            Assert.ShouldBecome(() => gridRows.Stale, false, $"{gridRows.Caption} is stale");
+
+            Assert.ShouldBecome(() => gridRows.CellsText.HaveValues(expectedValues, true),
+                true,
+                $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
+        }
+
+        [Given("(.+?) (contains|does not contain) the following rows:")]
+        [Then("(.+?) should (contain|not contain) the following rows:")]
+        public void CheckTableContainsRows(ITableWrapper gridRows, string behavior,  Table table)
+        {
+            var expectedValues = ListServices.TableToCellsList(table);
+
+            Assert.ShouldBecome(() => gridRows.Stale, false, $"{gridRows.Caption} is stale");
+
+            bool inversion = behavior.Contains("not");
+            if (inversion)
+            {
+                Assert.ShouldBecome(() => gridRows.CellsText.DoesntContainValues(expectedValues),
+                    true,
+                    $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
+            }
+            else
+            {
+
+                Assert.ShouldBecome(() => gridRows.CellsText.ContainsValues(expectedValues),
+                    true,
+                    $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
+            }
+        }
+
+        [Then("(.*?) should (have|not have) \"(.*)\" in (.*)")]
+        public void CheckTableHaveValueInColumn(ITableWrapper table, string behavior, string value, IElementCollectionWrapper column)
         {
             Assert.ShouldBecome(() => column.Stale, false, $"{column.Caption} is stale");
             Assert.ShouldBecome(() => table.Text.Contains(value), true, $"{table.Caption} text is {table.Text}");
             Assert.ShouldBecome(() => column.Elements.Any(x => x.Stale), false, 
                 $"{table.Caption} elements are stale");
             ListServices.GetElementsTextsList(column.Elements).Contains(value).Should().Be(!behavior.Contains("not"));
-        }
-
+        } 
+         
         [Then("(.*?) values should be (lesser|greater) than \"(.*)\"")]
         public void CompareTableRowGreaterLesser(IElementCollectionWrapper column,  string condition,
             int value)

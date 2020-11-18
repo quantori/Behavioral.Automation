@@ -201,9 +201,22 @@ Then the following controls should be empty:
 
 ## List Binding
 
-* Check that list contains given values: 
-[Given("(.*?) (contain|not contain) the following items:")]
-[Then("(.*?) should (contain|contain in exact order|not contain) the following items:")]
+* Check that list has given values
+[Given("(.+?) (has|does not have) the following items:")]
+[Then("(.+?) should (have|not have) the following items:")]
+Example:
+Then "Categories" should have the following items:
+
+* Check that list has given values in exact order
+[Then("(.+?) should have in exact order the following items:")]
+Example:
+Then "Categories" should have in exact order the following items:
+
+* Check that list contains given values
+[Given("(.+?) (contains|does not contain) the following items:")]
+[Then("(.+?) should (contain|not contain) the following items:")]
+Example:
+Then "Categories" list should contain the following items:
 
 
 ## Navigation Binding
@@ -284,11 +297,25 @@ Example:
 When "Search results" grid has 5 items
 
 * Check that grid or table has given rows:
-[Given("(.*?) (contain|not contain) the following (rows|rows only):")]
-[Then("(.*?) should (contain|contain in exact order|not contain) the following (rows|rows only):")]
-[Then("(.*?) should (contain|not contain) \"(.*)\" in (.*)")]
+[Given("(.+?) (has|does not have) the following rows:")]
+[Then("(.+?) should (have|not have) the following rows:")]
+Example:
+Then "Search results" grid should have the following rows:
+
+[Then("(.+?) should have in exact order the following rows:")]
+Example:
+Then "Search results" grid should have in exact order the following rows:
+
+* Check that grid or table contains given rows:
+[Given("(.+?) (contains|does not contain) the following rows:")]
+[Then("(.+?) should (contain|not contain) the following rows:")]
 Example:
 Then "Search results" grid should contain the following rows:
+
+* Check that grid have specific value in column
+[Then("(.*?) should (have|not have) \"(.*)\" in (.*)")]
+Example:
+Then "Search results" grid should contain "Bob" in "Author" column
 
 * Check that numerical values in the table column are lesser or greater than the given value: 
 [Then("(.*?) values should be (lesser|greater) than \"(.*)\"")]
