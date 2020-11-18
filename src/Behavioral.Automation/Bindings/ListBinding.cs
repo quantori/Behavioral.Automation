@@ -1,6 +1,7 @@
 using System.Linq;
 using FluentAssertions;
 using Behavioral.Automation.Elements;
+using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Services;
 using JetBrains.Annotations;
 using TechTalk.SpecFlow;
@@ -17,25 +18,51 @@ namespace Behavioral.Automation.Bindings
             _driverService = driverService;
         }
 
-        [Given("(.*?) (contain|not contain) the following items:")]
-        [Then("(.*?) should (contain|contain in exact order|not contain) the following items:")]
-        public void CheckListContainsItems(IListWrapper list, string behavior, Table table)
+        [Given("(.+?) (has|does not have) the following items:")]
+        [Then("(.+?) should (have|not have) the following items:")]
+        public void CheckListHaveItems(IListWrapper list, string behavior, Table table)
         {
             var expectedListValues = ListServices.TableToRowsList(table);
-
-            bool exactOrder = behavior.Contains("contain in exact order");
-
             bool checkResult;
-            if (behavior.StartsWith("not"))
+            if (behavior.Contains("not"))
             {
                 checkResult = list.ListValues.DoesntContainValues(expectedListValues);
             }
             else
             {
-                checkResult = list.ListValues.ContainsValues(expectedListValues, exactOrder);
+                Assert.ShouldBecome(() => list.ListValues.Count() == expectedListValues.Count, true,
+                    $"{list.Caption} has {list.ListValues.Count()} elements");
+
+                checkResult = list.ListValues.HaveValues(expectedListValues, false);
             }
+
             checkResult.Should().Be(true);
         }
 
+        [Given("(.+?) (contains|does not contain) the following items:")]
+        [Then("(.+?) should (contain|not contain) the following items:")]
+        public void CheckListContainsItems(IListWrapper list, string behavior, Table table)
+        {
+            var expectedListValues = ListServices.TableToRowsList(table);
+            bool checkResult;
+            if (behavior.Contains("not"))
+            {
+                checkResult = list.ListValues.DoesntContainValues(expectedListValues);
+            }
+            else
+            {
+                checkResult = list.ListValues.ContainsValues(expectedListValues);
+            }
+
+            checkResult.Should().Be(true);
+        }
+
+        [Then("(.+?) should have in exact order the following items:")]
+        public void CheckListContainsItemsInExactOrder(IListWrapper list, Table table)
+        {
+            var expectedListValues = ListServices.TableToRowsList(table);
+            var checkResult = list.ListValues.HaveValues(expectedListValues, true);
+            checkResult.Should().Be(true);
+        }
     }
 }
