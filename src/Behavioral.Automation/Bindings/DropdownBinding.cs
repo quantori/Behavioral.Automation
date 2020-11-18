@@ -82,7 +82,7 @@ namespace Behavioral.Automation.Bindings
         [Then("no values should be selected in (.*?):")]
         public void CheckMultiSelectDropdownHasNoValuesSelected([NotNull] IMultiSelectDropdownWrapper wrapper)
         {
-            Assert.ShouldBecome(() => !wrapper.SelectedValuesTexts.Any(), true, $"${wrapper.Caption} has selected values");
+            Assert.ShouldBecome(() => !wrapper.SelectedValuesTexts.Any(), true, $"{wrapper.Caption} has the following values : {wrapper.SelectedValuesTexts.Aggregate((x, y) => $"{x}, {y}")}");
         }
 
         [Given("(.*?) selected value (is|is not|become|become not) empty")]
