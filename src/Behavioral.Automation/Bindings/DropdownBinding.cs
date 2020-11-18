@@ -39,8 +39,8 @@ namespace Behavioral.Automation.Bindings
             [NotNull] string value)
         {
             Assert.ShouldBecome(
-                () => wrapper.Items.Contains(value), 
-                !behavior.Contains("not"), 
+                () => wrapper.Items.Contains(value),
+                !behavior.Contains("not"),
                 $"{wrapper.Caption} items are {wrapper.Items.Aggregate((x, y) => $"{x}, {y}")}");
         }
 
@@ -53,7 +53,7 @@ namespace Behavioral.Automation.Bindings
         {
             Assert.ShouldBecome(() => wrapper.Stale, false, $"{wrapper.Caption} is stale");
             var items = wrapper.Items;
-            Assert.ShouldBecome(() => wrapper.Items.All(x => x.ToLower().Contains(value.ToLower().Trim())), 
+            Assert.ShouldBecome(() => wrapper.Items.All(x => x.ToLower().Contains(value.ToLower().Trim())),
                 !behavior.Contains("not"), $"{wrapper.Caption} items are {items.Aggregate((x, y) => $"{x}, {y}")}");
         }
 
@@ -66,16 +66,30 @@ namespace Behavioral.Automation.Bindings
 
         [Given("user selected multiple entries in (.*?):")]
         [When("user selects multiple entries in (.*?):")]
-        public void ClickOnMultipleEntries([NotNull] IDropdownWrapper wrapper, [NotNull] Table entries)
+        public void ClickOnMultipleEntries([NotNull] IMultiSelectDropdownWrapper wrapper, [NotNull] Table entries)
         {
             wrapper.Select(entries.Rows.Select(x => x.Values.First()).ToArray());
+        }
+
+        [Given("the following values are selected in (.*?):")]
+        [Then("the following values should be selected in (.*?):")]
+        public void CheckMultipleSelectedValues([NotNull] IMultiSelectDropdownWrapper wrapper, [NotNull] Table values)
+        {
+            wrapper.SelectedValuesTexts.Should().BeEquivalentTo(values.Rows.Select(x => x.Values.Single()));
+        }
+
+        [Given("no values are selected in (.*?)")]
+        [Then("no values should be selected in (.*?):")]
+        public void CheckMultiSelectDropdownHasNoValuesSelected([NotNull] IMultiSelectDropdownWrapper wrapper)
+        {
+            Assert.ShouldBecome(() => !wrapper.SelectedValuesTexts.Any(), true, $"{wrapper.Caption} has the following values : {wrapper.SelectedValuesTexts.Aggregate((x, y) => $"{x}, {y}")}");
         }
 
         [Given("(.*?) selected value (is|is not|become|become not) empty")]
         [Then("(.*?) selected value should (be|be not|become|become not) empty")]
         public void CheckDropdownIsEmpty([NotNull] IDropdownWrapper wrapper, [NotNull] AssertionBehavior behavior)
         {
-            Assert.ShouldBecome(() => wrapper.Empty , true, behavior,
+            Assert.ShouldBecome(() => wrapper.Empty, true, behavior,
                 $"{wrapper.Caption} selected value is{behavior.BehaviorAppendix()} empty");
         }
     }
