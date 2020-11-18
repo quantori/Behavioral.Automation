@@ -12,6 +12,14 @@ namespace Behavioral.Automation.Services.Mapping
             _storages = storages;
         }
 
+        public void StartCreationOfNewComposition()
+        {
+            foreach (var storage in _storages)
+            {
+                storage.StartCreationOfNewComposition();
+            }
+        }
+
         public void AddAlias(string htmlTag, params string[] aliases)
         {
             foreach (var storage in _storages)
