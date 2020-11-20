@@ -81,7 +81,7 @@ namespace Behavioral.Automation.Bindings
             }
         }
 
-        [Then("(.*?) should (have|not have) \"(.*)\" in (.*)")]
+        [Then("the (.+?) should (have|not have) \"(.+?)\" in (.+?)")]
         public void CheckTableHaveValueInColumn(ITableWrapper table, string behavior, string value, IElementCollectionWrapper column)
         {
             Assert.ShouldBecome(() => column.Stale, false, $"{column.Caption} is stale");
