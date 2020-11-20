@@ -44,8 +44,7 @@ namespace Behavioral.Automation.Bindings
                 $"{wrapper.Caption} items are {wrapper.Items.Aggregate((x, y) => $"{x}, {y}")}");
         }
 
-        [When("(.*?) (contains|not contains) \"(.*)\" in all elements")]
-        [Then("(.*?) should (have|not have) \"(.*)\" in all elements")]
+        [Then("all items in the (.+?) should (have|not have) \"(.+?)\"")]
         public void CheckAllItemsContainString(
             [NotNull] IDropdownWrapper wrapper,
             [NotNull] string behavior,
