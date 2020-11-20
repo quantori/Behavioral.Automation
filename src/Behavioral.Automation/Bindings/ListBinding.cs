@@ -22,18 +22,16 @@ namespace Behavioral.Automation.Bindings
         [Then("(.+?) should (have|not have) the following items:")]
         public void CheckListHaveItems(IListWrapper list, string behavior, Table table)
         {
-            var expectedListValues = ListServices.TableToRowsList(table);
             bool checkResult;
+            var expectedValues = table.Rows.Select(r => r.Values.First()).ToArray();
             if (behavior.Contains("not"))
             {
-                checkResult = list.ListValues.DoesntContainValues(expectedListValues);
+                
+                checkResult = list.ListValues.DoesntContainValues(expectedValues);
             }
             else
             {
-                Assert.ShouldBecome(() => list.ListValues.Count() == expectedListValues.Count, true,
-                    $"{list.Caption} has {list.ListValues.Count()} elements");
-
-                checkResult = list.ListValues.HaveValues(expectedListValues, false);
+                checkResult = list.ListValues.HaveValues(expectedValues, false);
             }
 
             checkResult.Should().Be(true);
@@ -43,15 +41,15 @@ namespace Behavioral.Automation.Bindings
         [Then("(.+?) should (contain|not contain) the following items:")]
         public void CheckListContainsItems(IListWrapper list, string behavior, Table table)
         {
-            var expectedListValues = ListServices.TableToRowsList(table);
             bool checkResult;
+            var expectedValues = table.Rows.Select(r => r.Values.First()).ToArray();
             if (behavior.Contains("not"))
             {
-                checkResult = list.ListValues.DoesntContainValues(expectedListValues);
+                checkResult = list.ListValues.DoesntContainValues(expectedValues);
             }
             else
             {
-                checkResult = list.ListValues.ContainsValues(expectedListValues);
+                checkResult = list.ListValues.ContainsValues(expectedValues);
             }
 
             checkResult.Should().Be(true);
@@ -60,8 +58,8 @@ namespace Behavioral.Automation.Bindings
         [Then("(.+?) should have in exact order the following items:")]
         public void CheckListContainsItemsInExactOrder(IListWrapper list, Table table)
         {
-            var expectedListValues = ListServices.TableToRowsList(table);
-            var checkResult = list.ListValues.HaveValues(expectedListValues, true);
+            var expectedValues = table.Rows.Select(r => r.Values.First()).ToArray();
+            var checkResult = list.ListValues.HaveValues(expectedValues, true);
             checkResult.Should().Be(true);
         }
     }
