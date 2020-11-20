@@ -4,8 +4,7 @@ namespace Behavioral.Automation.Elements
 {
     public interface ITableWrapper : IWebElementWrapper
     {
-        IEnumerable<IWebElementWrapper> Rows { get; }
+        IEnumerable<ITableRowWrapper> Rows { get; }
 
-        IEnumerable<string> CellsText { get; }
     }
 }
