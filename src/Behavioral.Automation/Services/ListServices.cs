@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Behavioral.Automation.Elements;
@@ -9,7 +8,6 @@ namespace Behavioral.Automation.Services
 {
     public static class ListServices
     {
-
         public static List<string> GetElementsTextsList(IEnumerable<IWebElementWrapper> elements)
         {
             return elements.Select(item => item.Text.Replace("\r\n", " ")).ToList();
@@ -41,29 +39,6 @@ namespace Behavioral.Automation.Services
             return result;
         }
 
-        public static List<string> TableToRowsList(Table table)
-        {
-            List<string> result = new List<string>();
-            foreach (var row in table.Rows)
-            {
-                string rowText = string.Empty;
-                for (int i = 0; i < row.Count; i++)
-                {
-                    if (row[i] != string.Empty)
-                    {
-                        rowText += row[i] + " ";
-                    }
-                }
-                result.Add(rowText.Remove(rowText.Length - 1, 1));
-            }
-            return result;
-        }
-
-        public static bool CheckListContainValue(List<string> list, string value)
-        {
-           return list.Any(s => s == value);
-        }
-
         public static List<int> StringListToInt(List<string> stringList)
         {
             return stringList.ConvertAll(int.Parse);
@@ -85,54 +60,51 @@ namespace Behavioral.Automation.Services
             return intList.All(x => x >= value1 && x <= value2);
         }
 
-        public static bool CompareTwoLists(List<string> list1, List<string> list2)
+        public static IEnumerable<StringRow> ToStringRows(this IEnumerable<ITableRowWrapper> actualCollection)
         {
-            return list1.All(item => list2.Contains(item)) &&
-                   list2.All(item => list1.Contains(item));
+            return actualCollection.Select(x => new StringRow(x.CellsText.ToArray()));
         }
 
-        public static bool HaveValues(this IEnumerable<string> actualCollection, List<string> expectedValues, bool exactOrder)
+        public static StringRow[] ToStringRows(this TableRows expectedValues)
         {
-            int index = 0;
-            int maxIndexForValuesList = expectedValues.Count - 1;
+            return expectedValues.Select(x => new StringRow(x.Values.ToArray())).ToArray();
+        }
 
-            foreach (var value in actualCollection)
+        public static bool HaveValues<T>(this IEnumerable<T> actualCollection, T[] expectedValues, bool exactOrder)
+        {
+            if (exactOrder)
             {
-                if (index > maxIndexForValuesList)
-                {
-                    return true;
-                }
+                return actualCollection.SequenceEqual(expectedValues);
+            }
 
-                bool collectionContainsValue = exactOrder
-                    ? expectedValues[index].Equals(value, StringComparison.Ordinal)
-                    : expectedValues.Contains(value, StringComparer.Ordinal);
-                if (!collectionContainsValue)
+            List<T> expectedRowsToCheck = new List<T>(expectedValues);
+            foreach (var actualRow in actualCollection)
+            {
+                var equivalentRow = expectedRowsToCheck.FirstOrDefault(x => x.Equals(actualRow));
+                if (equivalentRow == null)
                 {
                     return false;
                 }
-
-                if (index == maxIndexForValuesList)
-                {
-                    return true;
-                }
-
-                index++;
+                expectedRowsToCheck.Remove(equivalentRow);
             }
 
+            return !expectedRowsToCheck.Any();
+        }
+
+        public static bool ContainsValues<T>(this IEnumerable<T> actualCollection, T[] expectedValues)
+        {
+            var expectedRows = new HashSet<T>(expectedValues);
+            if (expectedRows.IsSubsetOf(actualCollection))
+            {
+                return true;
+            }
             return false;
         }
 
-        public static bool ContainsValues(this IEnumerable<string> actualCollection, List<string> expectedValues)
+        public static bool DoesntContainValues<T>(this IEnumerable<T> actualCollection,
+            T[] expectedValues)
         {
-            var intersection = expectedValues.Intersect(actualCollection).ToList();
-            var containsValues = intersection.SequenceEqual(expectedValues);
-            return containsValues;
-        }
-
-        public static bool DoesntContainValues(this IEnumerable<string> actualCollection, List<string> expectedValues)
-        {
-            var noIntersection = !actualCollection.Intersect(expectedValues).Any();
-            return noIntersection;
+            return !actualCollection.Intersect(expectedValues).ToList().Any();
         }
     }
 }

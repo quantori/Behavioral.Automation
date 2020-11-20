@@ -1,8 +1,10 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using FluentAssertions;
 using Behavioral.Automation.Elements;
 using Behavioral.Automation.FluentAssertions;
+using Behavioral.Automation.Model;
 using Behavioral.Automation.Services;
 using TechTalk.SpecFlow;
 
@@ -23,61 +25,58 @@ namespace Behavioral.Automation.Bindings
         [Then("(.+?) should (have|not have) the following rows:")]
         public void CheckTableHaveRows(ITableWrapper gridRows, string behavior, Table table)
         {
-            var expectedValues = ListServices.TableToCellsList(table);
-
             Assert.ShouldBecome(() => gridRows.Stale, false, $"{gridRows.Caption} is stale");
 
             bool inversion = behavior.Contains("not");
             if (inversion)
             {
-                Assert.ShouldBecome(() => gridRows.CellsText.DoesntContainValues(expectedValues),
+                Assert.ShouldBecome(() => gridRows.Rows.ToStringRows().DoesntContainValues(table.Rows.ToStringRows()),
                     true,
-                    $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
+                    new AssertionBehavior(AssertionType.Immediate, true),
+                    $"{gridRows.Caption} is {gridRows.Rows.GetPrintableValues()}");
             }
             else
             {
-                Assert.ShouldBecome(() => gridRows.CellsText.Count() == expectedValues.Count, true,
-                    $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
 
-                Assert.ShouldBecome(() => gridRows.CellsText.HaveValues(expectedValues, false),
+                Assert.ShouldBecome(() => gridRows.Rows.ToStringRows().HaveValues(table.Rows.ToStringRows(), false),
                     true,
-                    $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
+                    new AssertionBehavior(AssertionType.Immediate, false),
+                    $"{gridRows.Caption} is {gridRows.Rows.GetPrintableValues()}");
             }
         }
 
         [Then("(.+?) should have in exact order the following rows:")]
         public void CheckTableHaveRowsInExactOrder(ITableWrapper gridRows, Table table)
         {
-            var expectedValues = ListServices.TableToCellsList(table);
-
             Assert.ShouldBecome(() => gridRows.Stale, false, $"{gridRows.Caption} is stale");
 
-            Assert.ShouldBecome(() => gridRows.CellsText.HaveValues(expectedValues, true),
+            Assert.ShouldBecome(() => gridRows.Rows.ToStringRows().HaveValues(table.Rows.ToStringRows(), true),
                 true,
-                $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
+                new AssertionBehavior(AssertionType.Immediate, false),
+                $"{gridRows.Caption} is {gridRows.Rows.GetPrintableValues()}");
         }
 
         [Given("(.+?) (contains|does not contain) the following rows:")]
         [Then("(.+?) should (contain|not contain) the following rows:")]
         public void CheckTableContainsRows(ITableWrapper gridRows, string behavior,  Table table)
         {
-            var expectedValues = ListServices.TableToCellsList(table);
-
             Assert.ShouldBecome(() => gridRows.Stale, false, $"{gridRows.Caption} is stale");
 
             bool inversion = behavior.Contains("not");
             if (inversion)
             {
-                Assert.ShouldBecome(() => gridRows.CellsText.DoesntContainValues(expectedValues),
+                Assert.ShouldBecome(() => gridRows.Rows.ToStringRows().DoesntContainValues(table.Rows.ToStringRows()),
                     true,
-                    $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
+                    new AssertionBehavior(AssertionType.Immediate, false),
+                    $"{gridRows.Caption} is {gridRows.Rows.GetPrintableValues()}");
             }
             else
             {
 
-                Assert.ShouldBecome(() => gridRows.CellsText.ContainsValues(expectedValues),
+                Assert.ShouldBecome(() => gridRows.Rows.ToStringRows().ContainsValues(table.Rows.ToStringRows()),
                     true,
-                    $"{gridRows.Caption} is {gridRows.CellsText.Aggregate((x, y) => $"{x}, {y}")}");
+                    new AssertionBehavior(AssertionType.Immediate, false),
+                    $"{gridRows.Caption} is {gridRows.Rows.GetPrintableValues()}");
             }
         }
 

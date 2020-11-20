@@ -30,7 +30,7 @@ namespace Behavioral.Automation.Bindings
             var dataList = ListServices.ExcelToCellsList(FileService.GetExcelFileAsDataSet(filePath), 
                     table.RowCount, table.Rows.First().Count);
 
-            var check = ListServices.CompareTwoLists(dataList, ListServices.TableToCellsList(table));
+            var check =  dataList.SequenceEqual(ListServices.TableToCellsList(table));
             
             File.Delete(filePath);
             check.Should().Be(!behavior.Contains("Not"));
