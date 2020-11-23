@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Behavioral.Automation.Elements;
+using Behavioral.Automation.Model;
 using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings
@@ -7,6 +8,14 @@ namespace Behavioral.Automation.Bindings
     [Binding]
     public sealed class ClickBinding
     {
+        private readonly DebugBinding _debugBinding;
+        private readonly PresenceBinding _presenceBinding;
+
+        public ClickBinding(DebugBinding debugBinding, PresenceBinding presenceBinding)
+        {
+            _debugBinding = debugBinding;
+            _presenceBinding = presenceBinding;
+        }
         [Given("user clicked on (.*)")]
         [When("user clicks on (.*)")]
         public void Click([NotNull] IWebElementWrapper element)
@@ -19,6 +28,8 @@ namespace Behavioral.Automation.Bindings
         public void ClickTwice([NotNull] IWebElementWrapper element)
         {
             element.Click();
+            _debugBinding.Wait(1);
+            _presenceBinding.CheckElementShown(element, new AssertionBehavior(AssertionType.Continuous, false));
             element.Click();
         }
         
@@ -27,10 +38,18 @@ namespace Behavioral.Automation.Bindings
         public void ClickThreeTimes([NotNull] IWebElementWrapper element)
         {
             element.Click();
+            _debugBinding.Wait(1);
+            _presenceBinding.CheckElementShown(element, new AssertionBehavior(AssertionType.Continuous, false));
+
             element.Click();
+            _debugBinding.Wait(1);
+            _presenceBinding.CheckElementShown(element, new AssertionBehavior(AssertionType.Continuous, false));
+
             element.Click();
+            _debugBinding.Wait(1);
+            _presenceBinding.CheckElementShown(element, new AssertionBehavior(AssertionType.Continuous, false));
         }
-        
+
         [When("user clicks at (.*) element among (.*)")]
         public void ClickByIndex(int index, IElementCollectionWrapper elements)
         {
