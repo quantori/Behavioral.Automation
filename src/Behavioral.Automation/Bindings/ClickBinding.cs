@@ -29,21 +29,21 @@ namespace Behavioral.Automation.Bindings
         {
             element.Click();
             _debugBinding.Wait(1);
-            _presenceBinding.CheckElementShown(element, new AssertionBehavior(AssertionType.Continuous, false));
+
             element.Click();
+            _debugBinding.Wait(1);
+            _presenceBinding.CheckElementShown(element, new AssertionBehavior(AssertionType.Continuous, false));
         }
-        
+
         [Given("user clicked three times on (.*)")]
         [When("user clicks three times on (.*)")]
         public void ClickThreeTimes([NotNull] IWebElementWrapper element)
         {
             element.Click();
             _debugBinding.Wait(1);
-            _presenceBinding.CheckElementShown(element, new AssertionBehavior(AssertionType.Continuous, false));
-
+            
             element.Click();
             _debugBinding.Wait(1);
-            _presenceBinding.CheckElementShown(element, new AssertionBehavior(AssertionType.Continuous, false));
 
             element.Click();
             _debugBinding.Wait(1);
