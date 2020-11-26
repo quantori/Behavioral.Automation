@@ -11,6 +11,5 @@ namespace Behavioral.Automation.Services
 
         [CanBeNull]
         IEnumerable<IWebElement> FindMultipleElements([NotNull] string caption);
-
     }
 }

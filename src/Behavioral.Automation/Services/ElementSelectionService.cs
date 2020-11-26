@@ -44,6 +44,5 @@ namespace Behavioral.Automation.Services
             }
             return _driverService.FindElements(description.Id);
         }
-
     }
 }
