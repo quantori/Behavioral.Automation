@@ -71,6 +71,30 @@ namespace Behavioral.Automation.Services
             }
         }
 
+        public ReadOnlyCollection<IWebElement> FindElements(string id)
+        {
+            try
+            {
+                return Driver.FindElements(By.XPath($"//*[@{SearchAttribute}='{id}']"));
+            }
+            catch (NoSuchElementException)
+            {
+                return null;
+            }
+        }
+
+        public ReadOnlyCollection<IWebElement> FindElementsByXpath(string path)
+        {
+            try
+            {
+                return Driver.FindElements(By.XPath(path));
+            }
+            catch (NoSuchElementException)
+            {
+                return null;
+            }
+        }
+
         public void ScrollTo(IWebElement element)
         {
             var scrollElementIntoMiddle = "var viewPortHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);"
@@ -118,18 +142,6 @@ namespace Behavioral.Automation.Services
         private Uri GetUriFromRelativePath(string url)
         {
             return new Uri(new Uri(CurrentUrl), url);
-        }
-
-        public ReadOnlyCollection<IWebElement> FindElements(string id)
-        {
-            try
-            {
-                return Driver.FindElements(By.XPath($"//*[@{SearchAttribute}='{id}']"));
-            }
-            catch (NoSuchElementException)
-            {
-                return null;
-            }
         }
 
         public void RemoveFocusFromActiveElement()

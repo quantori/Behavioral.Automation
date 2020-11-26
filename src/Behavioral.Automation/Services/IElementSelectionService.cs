@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using OpenQA.Selenium;
 
 namespace Behavioral.Automation.Services
@@ -7,5 +8,9 @@ namespace Behavioral.Automation.Services
     {
         [CanBeNull]
         IWebElement Find([NotNull] string caption);
+
+        [CanBeNull]
+        IEnumerable<IWebElement> FindMultipleElements([NotNull] string caption);
+
     }
 }

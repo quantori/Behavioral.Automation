@@ -21,6 +21,8 @@ namespace Behavioral.Automation.Services
 
         ReadOnlyCollection<IWebElement> FindElements([NotNull] string id);
 
+        ReadOnlyCollection<IWebElement> FindElementsByXpath([NotNull] string path);
+
         public void Refresh();
 
         void Navigate([NotNull] string url);

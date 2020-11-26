@@ -1,4 +1,5 @@
-﻿using Behavioral.Automation.Services.Mapping;
+﻿using System.Collections.Generic;
+using Behavioral.Automation.Services.Mapping;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 
@@ -32,6 +33,16 @@ namespace Behavioral.Automation.Services
                 return _driverService.FindElement(description.Id, description.Subpath);
             }
             return _driverService.FindElement(description.Id);
+        }
+
+        public IEnumerable<IWebElement> FindMultipleElements(string caption)
+        {
+            var description = _provider.Get(caption);
+            if (description.Id == null)
+            {
+                return _driverService.FindElementsByXpath(description.Subpath);
+            }
+            return _driverService.FindElements(description.Id);
         }
 
     }
