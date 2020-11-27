@@ -41,7 +41,7 @@ namespace Behavioral.Automation.Services
             {
                 return Driver.FindElement(By.XPath($"//*[@{SearchAttribute}='{id}']"));
             }
-            catch (NoSuchElementException) 
+            catch (NoSuchElementException)
             {
                 return null;
             }
@@ -71,12 +71,22 @@ namespace Behavioral.Automation.Services
             }
         }
 
+        public ReadOnlyCollection<IWebElement> FindElements(string id)
+        {
+            return Driver.FindElements(By.XPath($"//*[@{SearchAttribute}='{id}']"));
+        }
+
+        public ReadOnlyCollection<IWebElement> FindElementsByXpath(string path)
+        {
+            return Driver.FindElements(By.XPath(path));
+        }
+
         public void ScrollTo(IWebElement element)
         {
             var scrollElementIntoMiddle = "var viewPortHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);"
                                              + "var elementTop = arguments[0].getBoundingClientRect().top;"
                                              + "window.scrollBy(0, elementTop-(viewPortHeight/2));";
-            
+
             Driver.ExecuteScript(scrollElementIntoMiddle, element);
             Actions actions = new Actions(Driver);
             actions.MoveToElement(element);
@@ -114,22 +124,10 @@ namespace Behavioral.Automation.Services
             var handle = Driver.WindowHandles.First();
             Driver.SwitchTo().Window(handle);
         }
-        
+
         private Uri GetUriFromRelativePath(string url)
         {
             return new Uri(new Uri(CurrentUrl), url);
-        }
-
-        public ReadOnlyCollection<IWebElement> FindElements(string id)
-        {
-            try
-            {
-                return Driver.FindElements(By.XPath($"//*[@{SearchAttribute}='{id}']"));
-            }
-            catch (NoSuchElementException)
-            {
-                return null;
-            }
         }
 
         public void RemoveFocusFromActiveElement()
@@ -142,7 +140,7 @@ namespace Behavioral.Automation.Services
             var page = Driver.PageSource;
             Console.WriteLine(page);
         }
-        
+
         public void Refresh()
         {
             Driver.Navigate().Refresh();
@@ -159,12 +157,12 @@ namespace Behavioral.Automation.Services
         {
             Driver.SwitchTo().Window(Driver.WindowHandles.Last());
         }
-        
+
         public void ResizeWindow(int Height, int Width)
         {
             Driver.Manage().Window.Size = new Size(Width, Height);
         }
-        
+
         public string MakeScreenShot()
         {
             var fileName = "screenshot_" + DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss") + ".png";
