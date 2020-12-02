@@ -130,6 +130,21 @@ When "Properties" autocomplete contains <string> in all elements
 Example:
 When user selects <propertyValue> in "Properties" autocomplete
 
+* Check that a single value inside dropdown is enabled/disabled
+[Given("the \"(.+?)\" value (is|become) (enabled|disabled) in (.+?)")]
+[Then("the \"(.+?)\" value should (be|become) (enabled|disabled) in (.+?)")]
+Example:
+Given the "August" value is enabled in "Month" dropdown
+
+* Check that multiple values inside dropdown are enabled/disabled
+[Given("the following values (are|become) (enabled|disabled) in (.+?):")]
+[Then("the following values should (be|become) (enabled|disabled) in (.+?):")]
+Example:
+Given the following values are disabled in "Actions" dropdown:
+| value  |
+| Create |
+| Delete |
+
 * Select multiple entries in dropdown with multiple choice:
 [Given("user selected multiple entries in (.*?):")]
 [When("user selects multiple entries in (.*?):")]

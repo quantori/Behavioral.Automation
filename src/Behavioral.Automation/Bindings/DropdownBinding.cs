@@ -87,16 +87,16 @@ namespace Behavioral.Automation.Bindings
             wrapper.SelectedValuesTexts.Should().BeEquivalentTo(values.Rows.Select(x => x.Values.Single()));
         }
 
-        [Given("the \"(.*?)\" value (is|become) (enabled|disabled) in (.*?)")]
-        [Then("the \"(.*?)\" value should (be|become) (enabled|disabled) in (.*?)")]
+        [Given("the \"(.+?)\" value (is|become) (enabled|disabled) in (.+?)")]
+        [Then("the \"(.+?)\" value should (be|become) (enabled|disabled) in (.+?)")]
         public void CheckValueInDropdownIsEnabled([NotNull] string value, [NotNull] AssertionBehavior behavior,
             bool enabled, IDropdownWrapper wrapper)
         {
             _attributeBinding.CheckElementIsDisabled(wrapper.Elements.Single(x => x.Text == value), behavior, enabled);
         }
 
-        [Given("the following values (are|become) (enabled|disabled) in (.*?):")]
-        [Then("the following values should (be|become) (enabled|disabled) in (.*?):")]
+        [Given("the following values (are|become) (enabled|disabled) in (.+?):")]
+        [Then("the following values should (be|become) (enabled|disabled) in (.+?):")]
         public void CheckMultipleValuesInDropdownAreEnabled([NotNull] string behavior, string enabled,
             IDropdownWrapper wrapper, Table table)
         {
