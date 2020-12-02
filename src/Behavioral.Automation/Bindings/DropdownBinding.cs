@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FluentAssertions;
 using Behavioral.Automation.Elements;
 using Behavioral.Automation.FluentAssertions;
@@ -11,6 +12,15 @@ namespace Behavioral.Automation.Bindings
     [Binding]
     public sealed class DropdownBinding
     {
+        private readonly AttributeBinding _attributeBinding;
+        private readonly ITestRunner _runner;
+
+        public DropdownBinding(AttributeBinding attributeBinding, [NotNull] ITestRunner runner)
+        {
+            _attributeBinding = attributeBinding;
+            _runner = runner;
+        }
+
         [Given("(.*?) selected value (is|become) \"(.*)\"")]
         [Then("the (.*?) selected value should (be|become) \"(.*)\"")]
         public void CheckSelectedValue([NotNull] IDropdownWrapper wrapper, AssertionBehavior behavior, [NotNull] string value)
@@ -75,6 +85,39 @@ namespace Behavioral.Automation.Bindings
         public void CheckMultipleSelectedValues([NotNull] IMultiSelectDropdownWrapper wrapper, [NotNull] Table values)
         {
             wrapper.SelectedValuesTexts.Should().BeEquivalentTo(values.Rows.Select(x => x.Values.Single()));
+        }
+
+        [Given("the \"(.+?)\" value (is|become) (enabled|disabled) in (.+?)")]
+        [Then("the \"(.+?)\" value should (be|become) (enabled|disabled) in (.+?)")]
+        public void CheckValueInDropdownIsEnabled([NotNull] string value, [NotNull] AssertionBehavior behavior,
+            bool enabled, IDropdownWrapper wrapper)
+        {
+            _attributeBinding.CheckElementIsDisabled(wrapper.Elements.Single(x => x.Text == value), behavior, enabled);
+        }
+
+        [Given("the following values (are|become) (enabled|disabled) in (.+?):")]
+        [Then("the following values should (be|become) (enabled|disabled) in (.+?):")]
+        public void CheckMultipleValuesInDropdownAreEnabled([NotNull] string behavior, string enabled,
+            IDropdownWrapper wrapper, Table table)
+        {
+            if (behavior.Contains("are"))
+            {
+                behavior = behavior.Replace("are", "is");
+            }
+
+            CheckDropdownValueCollectionEnabled(behavior, enabled, table, wrapper, _runner.Given);
+        }
+
+        private void CheckDropdownValueCollectionEnabled([NotNull] string behavior,
+            string enabled,
+            [NotNull] Table table,
+            [NotNull] IDropdownWrapper wrapper,
+            [NotNull] Action<string> runnerAction)
+        {
+            foreach (var row in table.Rows)
+            {
+                runnerAction($"the \"{row.Values.First()} \" value {behavior} {enabled} in {wrapper.Caption}:");
+            }
         }
 
         [Given("no values are selected in (.*?)")]

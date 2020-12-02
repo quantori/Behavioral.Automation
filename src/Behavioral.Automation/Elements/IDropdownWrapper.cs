@@ -11,6 +11,8 @@ namespace Behavioral.Automation.Elements
 
         IEnumerable<string> Items { [NotNull, ItemNotNull] get; }
 
+        IEnumerable<IWebElementWrapper> Elements { [NotNull, ItemNotNull] get; }
+
         bool Empty { get; }
     }
 }

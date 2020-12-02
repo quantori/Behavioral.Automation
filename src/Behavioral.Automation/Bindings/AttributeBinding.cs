@@ -40,21 +40,21 @@ namespace Behavioral.Automation.Bindings
         public void CheckThenControlTypeCollectionShown([NotNull] string behavior, string enabled, [NotNull] Table table)
         {
             behavior = $"should {behavior}";
-            CheckControlTypeCollectionShown(behavior, enabled, table, _runner.Then);
+            CheckControlTypeCollectionEnabled(behavior, enabled, table, _runner.Then);
         }
 
         [Given("the following controls (are|are not|become| become not) (enabled|disabled):")]
         [When("the following controls (are|are not|become| become not) (enabled|disabled):")]
-        public void CheckGivenControlTypeCollectionShown([NotNull] string behavior, string enabled, [NotNull] Table table)
+        public void CheckGivenControlTypeCollectionEnabled([NotNull] string behavior, string enabled, [NotNull] Table table)
         {
             if (behavior.Contains("are"))
             {
                 behavior = behavior.Replace("are", "is");
             }
-            CheckControlTypeCollectionShown(behavior, enabled, table, _runner.Given);
+            CheckControlTypeCollectionEnabled(behavior, enabled, table, _runner.Given);
         }
 
-        private void CheckControlTypeCollectionShown(
+        private void CheckControlTypeCollectionEnabled(
             [NotNull] string behavior, 
             string enabled,
             [NotNull] Table table,
