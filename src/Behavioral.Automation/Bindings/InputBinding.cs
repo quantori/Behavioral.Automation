@@ -16,7 +16,8 @@ namespace Behavioral.Automation.Bindings
             _runner = runner;
         }
 
-        [When("user enters \"(.*)\" into (.*)")]
+        [Given("user entered \"(.+?)\" into (.+?)")]
+        [When("user enters \"(.+?)\" into (.+?)")]
         public void EnterInput([NotNull] string input, [NotNull] ITextElementWrapper element)
         {
             var stringToReplace = "__random_string";

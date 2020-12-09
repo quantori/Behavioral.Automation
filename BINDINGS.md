@@ -160,6 +160,7 @@ Then "Included components" dropdown selected value should be empty
 ## Input Binding
 
 * Input string value into element:
+[Given("user entered \"(.+?)\" into (.+?)")]
 [When("user enters \"(.*)\" into (.*)")]
 Example:
 When user enters "prj.test@gmail.com" into "Google login" input
