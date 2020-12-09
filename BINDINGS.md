@@ -161,7 +161,7 @@ Then "Included components" dropdown selected value should be empty
 
 * Input string value into element:
 [Given("user entered \"(.+?)\" into (.+?)")]
-[When("user enters \"(.*)\" into (.*)")]
+[When("user enters \"(.+?)\" into (.+?)")]
 Example:
 When user enters "prj.test@gmail.com" into "Google login" input
 When user enters "test-__random_string:4" into "Username" input
