@@ -1,5 +1,5 @@
 # Quantori Behavioral Automation tool
-Copyright (c) 2020 Quantori.
+Copyright (c) 2021 Quantori.
 
 Quantori Behavioral Automation is an open-source tool for UI testing automation based on Selenium and Specflow which incorporates good portability and ability to be integrated into a custom web-application. Quantori Behavioral Automation is designed to be used by both manual and automation QA engineers in projects which are built based on Behaviour Driven Development approach.
 
