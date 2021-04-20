@@ -9,6 +9,7 @@ using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using System.Threading;
+using NUnit.Framework;
 
 namespace Behavioral.Automation.Services
 {
@@ -165,7 +166,7 @@ namespace Behavioral.Automation.Services
 
         public string MakeScreenShot()
         {
-            var fileName = "screenshot_" + DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss") + ".png";
+            var fileName = TestContext.CurrentContext.Test.Name + ".png";
             Driver.GetScreenshot().SaveAsFile(fileName, ScreenshotImageFormat.Png);
             return fileName;
         }
