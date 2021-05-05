@@ -166,7 +166,7 @@ namespace Behavioral.Automation.Services
 
         public string MakeScreenShot()
         {
-            var fileName = TestContext.CurrentContext.Test.Name + ".png";
+            var fileName = TestContext.CurrentContext.Test.Name.Replace("\"", string.Empty) + ".png";
             Driver.GetScreenshot().SaveAsFile(fileName, ScreenshotImageFormat.Png);
             return fileName;
         }
