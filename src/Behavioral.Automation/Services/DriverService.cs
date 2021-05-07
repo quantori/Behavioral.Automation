@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Drawing;
+using System.Text.RegularExpressions;
 using Behavioral.Automation.Services.Mapping.Contract;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
@@ -166,7 +167,7 @@ namespace Behavioral.Automation.Services
 
         public string MakeScreenShot()
         {
-            var fileName = TestContext.CurrentContext.Test.Name.Replace("\"", string.Empty) + ".png";
+            var fileName = Regex.Replace(TestContext.CurrentContext.Test.Name, @"(\\|\"")", string.Empty) + ".png";
             Driver.GetScreenshot().SaveAsFile(fileName, ScreenshotImageFormat.Png);
             return fileName;
         }
