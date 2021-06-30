@@ -72,7 +72,6 @@ namespace Behavioral.Automation.Bindings
             }
             else
             {
-
                 Assert.ShouldBecome(() => gridRows.Rows.ToStringRows().ContainsValues(table.Rows.ToStringRows()),
                     true,
                     new AssertionBehavior(AssertionType.Immediate, false),
