@@ -59,7 +59,7 @@ namespace Behavioral.Automation.Services
 
         private void ConfigureClipboardAccess(ChromeOptions options)
         {
-            var clipboardException = new Dictionary<string, object> {
+            var clipboardExceptionSettings = new Dictionary<string, object> {
                 {ConfigServiceBase.BaseUrl,
                     new Dictionary<string, long> {
                         {"last_modified", DateTimeOffset.Now.ToUnixTimeMilliseconds()},
@@ -67,7 +67,7 @@ namespace Behavioral.Automation.Services
                     }
                 }
             };
-            options.AddUserProfilePreference("profile.content_settings.exceptions.clipboard", clipboardException);
+            options.AddUserProfilePreference("profile.content_settings.exceptions.clipboard", clipboardExceptionSettings);
         }
     }
 }
