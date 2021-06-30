@@ -61,7 +61,7 @@ namespace Behavioral.Automation.Services
         {
             var clipboardException = new Dictionary<string, object> {
                 {ConfigServiceBase.BaseUrl,
-                    new Dictionary<string, object> {
+                    new Dictionary<string, long> {
                         {"last_modified", DateTimeOffset.Now.ToUnixTimeMilliseconds()},
                         {"setting", 1}
                     }
