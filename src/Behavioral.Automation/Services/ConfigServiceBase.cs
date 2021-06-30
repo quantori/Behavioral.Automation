@@ -20,13 +20,18 @@ namespace Behavioral.Automation.Services
 
         private const string SearchAttributeString = "SEARCH_ATTRIBUTE";
 
+        private const string AccessClipboardString = "ACCESS_CLIPBOARD";
+
         public static string BaseUrl => ConfigRoot[BaseUrlString];
 
         public static string BrowserParameters => ConfigRoot[BrowserParametersString];
 
-        public static string SearchAttribute => ConfigRoot[SearchAttributeString]; 
+        public static string SearchAttribute => ConfigRoot[SearchAttributeString];
 
         public static bool AcceptInsecureCertificates => ConfigRoot.GetValue<bool>(AcceptInsecureCertificatesString);
+
+        public static bool AccessClipboard => ConfigRoot.GetValue<bool>(AccessClipboardString);
+
         public static string DownloadPath
         {
             get
@@ -37,7 +42,7 @@ namespace Behavioral.Automation.Services
                 }
 
                 return AppContext.BaseDirectory;
-}
+            }
         }
     }
 }

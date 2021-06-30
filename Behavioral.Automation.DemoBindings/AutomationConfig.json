@@ -4,6 +4,7 @@
   "TEST_PASSWORD": "",
   "BASE_AUTH_URL": "",
   "BROWSER_PARAMS": "--window-size=1920,1080",
+  "ACCESS_CLIPBOARD": false, 
   "DOWNLOAD_PATH": "",
   "SEARCH_ATTRIBUTE": "automation-id",
   "BAUTH_LOGIN": "",
