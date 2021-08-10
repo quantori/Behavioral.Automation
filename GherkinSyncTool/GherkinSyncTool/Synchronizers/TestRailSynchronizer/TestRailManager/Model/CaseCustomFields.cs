@@ -18,10 +18,4 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Mod
         [JsonProperty("custom_steps")] 
         public string CustomSteps { get; init; }
     }
-    
-    public class CustomStepsSeparated
-    {
-        [JsonProperty("content")] 
-        public string Content { get; init; }
-    }
 }
