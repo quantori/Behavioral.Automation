@@ -23,14 +23,10 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager
 
         public Case AddCase(CreateCaseRequest createCaseRequest)
         {
-            //TODO: required filed logic
-            JObject customParam = new JObject(new JProperty("custom_automation_coverage", 1));
-
-            //TODO: handle customParam
             var addCaseResponse =
                 _testRailClient.AddCase(createCaseRequest.SectionId, createCaseRequest.Title, createCaseRequest.TypeId,
                     createCaseRequest.PriorityId, createCaseRequest.Estimate, createCaseRequest.MilestoneId,
-                    createCaseRequest.Refs, customParam, createCaseRequest.TemplateId);
+                    createCaseRequest.Refs, JObject.FromObject(createCaseRequest.CustomFields), createCaseRequest.TemplateId);
 
             ValidateRequestResult(addCaseResponse);
 

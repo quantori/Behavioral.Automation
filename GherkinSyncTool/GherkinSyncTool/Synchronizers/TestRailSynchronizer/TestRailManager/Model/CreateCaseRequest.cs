@@ -9,7 +9,7 @@
         public string Estimate { get; } = null;
         public ulong? MilestoneId { get; } = null;
         public string Refs { get; } = null;
-        public CaseCustomFields CustomFields { get; set; } = null;
-        public ulong? TemplateId { get; } = null;
+        public CaseCustomFields CustomFields { get; init; }
+        public ulong? TemplateId { get; init; }
     }
 }

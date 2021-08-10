@@ -40,14 +40,30 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                     {
                         //TODO: section selection logic
                         ulong sectionId = 2197;
+                        //TODO: template selection logic
+                        ulong templateId = 2;
                         
-                        //TODO: creator for CreateCaseRequest
+                        //TODO: refactoring: creator for CreateCaseRequest
+                        var scenarioSteps = scenario.Steps.Select(step => step.Keyword + step.Text).ToList();
+                        var customStepsSeparated = scenarioSteps.Select(step => new CustomStepsSeparated {Content = step}).ToList();
+                        //TODO: fix TestRail client to be able to send template_id parameter with the addCase request
+                        var customSteps = String.Join(Environment.NewLine, scenarioSteps); 
+
                         var createCaseRequest = new CreateCaseRequest()
                         {
                             Title = scenario.Name,
                             SectionId = sectionId,
-                            
+                            CustomFields = new CaseCustomFields
+                            {
+                                CustomPreconditions = featureFile.Document.Feature.Description
+                                                  + Environment.NewLine
+                                                  + scenario.Description,
+                                CustomStepsSeparated = customStepsSeparated,
+                                CustomSteps = customSteps
+                            },
+                            TemplateId = templateId,
                         };
+                        
                         var addCaseResponse = _testRailClientWrapper.AddCase(createCaseRequest);
                         
                         InsertLineToTheFile(featureFile.Path, scenario.Location.Line - 1 + insertedTagIds, Config.TagId + addCaseResponse.Id);
@@ -55,11 +71,12 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                     }
                     
                     //Update scenarios that have tag id
+                    //TODO: update test case body, not only a title
                     if (tagId is not null)
                     {
                         var id = UInt64.Parse(Regex.Match(tagId.Name, @"\d+").Value);
                         
-                        //TODO: creator for CreateCaseRequest
+                        //TODO: refactoring: creator for UpdateCaseRequest
                         var createCaseRequest = new UpdateCaseRequest
                         {
                             CaseId = id,
