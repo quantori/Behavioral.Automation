@@ -21,9 +21,9 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Mod
                 SectionId = sectionId,
                 CustomFields = new CaseCustomFields
                 {
-                    CustomPreconditions = FormatPreconditions(scenario, featureFile),
-                    CustomStepsSeparated = FormatCustomStepsSeparated(steps),
-                    CustomSteps = FormatCustomSteps(steps)
+                    CustomPreconditions = ConvertToStringPreconditions(scenario, featureFile),
+                    CustomStepsSeparated = ConvertToCustomStepsSeparated(steps),
+                    CustomSteps = ConvertToStringWithSteps(steps)
                 },
                 //TODO: fix TestRail client to be able to send template_id parameter with the addCase request
                 TemplateId = templateId,
@@ -59,7 +59,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Mod
             return scenarioSteps;
         }
 
-        private static List<string> ExtractSteps(List<Step> steps)
+        private List<string> ExtractSteps(List<Step> steps)
         {
             List<string> resultSteps = new List<string>();
             foreach (var step in steps)
@@ -76,17 +76,17 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Mod
             return resultSteps;
         }
 
-        private List<CustomStepsSeparated> FormatCustomStepsSeparated(List<string> steps)
+        private List<CustomStepsSeparated> ConvertToCustomStepsSeparated(List<string> steps)
         {
             return steps.Select(step => new CustomStepsSeparated {Content = step}).ToList();
         }
 
-        private static string FormatCustomSteps(List<string> steps)
+        private string ConvertToStringWithSteps(List<string> steps)
         {
             return string.Join(Environment.NewLine, steps.Select(s => "- " + s));
         }
 
-        private static string FormatPreconditions(Scenario scenario, IFeatureFile featureFile)
+        private string ConvertToStringPreconditions(Scenario scenario, IFeatureFile featureFile)
         {
             var preconditions = new StringBuilder();
             preconditions.Append($"### Feature: {featureFile.Document.Feature.Name}");
