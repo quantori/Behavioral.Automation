@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -12,15 +13,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Mod
         public CreateCaseRequest BuildCreateCaseRequest(Scenario scenario, ulong sectionId, IFeatureFile featureFile,
             ulong templateId)
         {
-            var background = featureFile.Document.Feature.Children.OfType<Background>().FirstOrDefault();
-            var backgroundSteps = background?.Steps.Select(step => step.Keyword + step.Text).ToList();
-            var scenarioSteps = scenario.Steps.Select(step => step.Keyword + step.Text).ToList();
-
-            var steps = background is not null ? backgroundSteps.Concat(scenarioSteps).ToList() : scenarioSteps;
-
-            var customStepsSeparated = steps.Select(step => new CustomStepsSeparated {Content = step}).ToList();
-            //TODO: fix TestRail client to be able to send template_id parameter with the addCase request
-            var customSteps = string.Join(Environment.NewLine, steps);
+            var steps = GetSteps(scenario, featureFile);
 
             var createCaseRequest = new CreateCaseRequest
             {
@@ -28,23 +21,14 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Mod
                 SectionId = sectionId,
                 CustomFields = new CaseCustomFields
                 {
-                    CustomPreconditions = ProducePreconditions(scenario, featureFile),
-                    CustomStepsSeparated = customStepsSeparated,
-                    CustomSteps = customSteps
+                    CustomPreconditions = FormatPreconditions(scenario, featureFile),
+                    CustomStepsSeparated = FormatCustomStepsSeparated(steps),
+                    CustomSteps = FormatCustomSteps(steps)
                 },
+                //TODO: fix TestRail client to be able to send template_id parameter with the addCase request
                 TemplateId = templateId,
             };
             return createCaseRequest;
-        }
-
-        private static string ProducePreconditions(Scenario scenario, IFeatureFile featureFile)
-        {
-            var preconditions = new StringBuilder();
-            preconditions.Append($"### Feature: {featureFile.Document.Feature.Name}");
-            preconditions.AppendLine(featureFile.Document.Feature.Description);
-            preconditions.AppendLine($"### Scenario: {scenario.Name}");
-            preconditions.AppendLine(scenario.Description);
-            return preconditions.ToString();
         }
 
         public UpdateCaseRequest BuildUpdateCaseRequest(Tag tagId, Scenario scenario, ulong sectionId,
@@ -52,13 +36,64 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Mod
             ulong templateId)
         {
             var id = UInt64.Parse(Regex.Match(tagId.Name, @"\d+").Value);
-            
+
             var updateCaseRequest = new UpdateCaseRequest
             {
                 CaseId = id,
                 Title = scenario.Name
             };
             return updateCaseRequest;
+        }
+
+        private List<string> GetSteps(Scenario scenario, IFeatureFile featureFile)
+        {
+            var scenarioSteps = ExtractSteps(scenario.Steps.ToList());
+
+            var background = featureFile.Document.Feature.Children.OfType<Background>().FirstOrDefault();
+            if (background is not null)
+            {
+                var backgroundSteps = ExtractSteps(background.Steps.ToList());
+                return backgroundSteps.Concat(scenarioSteps).ToList();
+            }
+
+            return scenarioSteps;
+        }
+
+        private static List<string> ExtractSteps(List<Step> steps)
+        {
+            List<string> resultSteps = new List<string>();
+            foreach (var step in steps)
+            {
+                var fullStep = step.Keyword + step.Text;
+                if (step.Argument is DocString argument)
+                {
+                    fullStep += Environment.NewLine + argument.Content;
+                }
+
+                resultSteps.Add(fullStep);
+            }
+
+            return resultSteps;
+        }
+
+        private List<CustomStepsSeparated> FormatCustomStepsSeparated(List<string> steps)
+        {
+            return steps.Select(step => new CustomStepsSeparated {Content = step}).ToList();
+        }
+
+        private static string FormatCustomSteps(List<string> steps)
+        {
+            return string.Join(Environment.NewLine, steps.Select(s => "- " + s));
+        }
+
+        private static string FormatPreconditions(Scenario scenario, IFeatureFile featureFile)
+        {
+            var preconditions = new StringBuilder();
+            preconditions.Append($"### Feature: {featureFile.Document.Feature.Name}");
+            preconditions.AppendLine(featureFile.Document.Feature.Description);
+            preconditions.AppendLine($"### Scenario: {scenario.Name}");
+            preconditions.AppendLine(scenario.Description);
+            return preconditions.ToString();
         }
     }
 }
