@@ -65,9 +65,15 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Mod
             foreach (var step in steps)
             {
                 var fullStep = step.Keyword + step.Text;
-                if (step.Argument is DocString argument)
+                
+                if (step.Argument is DocString docString)
                 {
-                    fullStep += Environment.NewLine + argument.Content;
+                    fullStep += Environment.NewLine + docString.Content;
+                }
+                
+                if (step.Argument is DataTable table)
+                {
+                    fullStep += Environment.NewLine + ConvertToStringTable(table.Rows.ToList());
                 }
 
                 resultSteps.Add(fullStep);
@@ -89,11 +95,53 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Mod
         private string ConvertToStringPreconditions(Scenario scenario, IFeatureFile featureFile)
         {
             var preconditions = new StringBuilder();
-            preconditions.Append($"### Feature: {featureFile.Document.Feature.Name}");
+            preconditions.Append($"## {featureFile.Document.Feature.Keyword}: {featureFile.Document.Feature.Name}");
             preconditions.AppendLine(featureFile.Document.Feature.Description);
-            preconditions.AppendLine($"### Scenario: {scenario.Name}");
+            preconditions.AppendLine($"## {scenario.Keyword}: {scenario.Name}");
             preconditions.AppendLine(scenario.Description);
+            
+            var examples = scenario.Examples;
+            if (examples != null && examples.Any())
+            {
+                foreach (var example in examples)
+                {
+                    preconditions.AppendLine($"## {example.Name}");
+
+                    var tableRows = new List<TableRow> {example.TableHeader};
+                    tableRows.AddRange(example.TableBody);
+                    preconditions.AppendLine(ConvertToStringTable(tableRows));
+                }
+            }
             return preconditions.ToString();
+        }
+
+        private string ConvertToStringTable(List<TableRow> tableRows)
+        {
+            var table = new StringBuilder();
+            table.Append("||");
+            
+            //Header
+            foreach (var cell in tableRows.First().Cells)
+            {
+                table.Append($"|:{cell.Value}");
+            }
+            table.AppendLine();
+            
+            //Table body
+            for (int i = 1; i < tableRows.Count; i++)
+            {
+                table.Append("|");
+                
+                var row = tableRows[i];
+                foreach (var cell in row.Cells)
+                {
+                    table.Append($"|{cell.Value}");
+                }
+
+                table.AppendLine();
+            }
+
+            return table.ToString();
         }
     }
 }
