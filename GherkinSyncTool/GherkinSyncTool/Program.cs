@@ -29,10 +29,6 @@ namespace GherkinSyncTool
 
             try
             {
-                //Get testrail cases tree
-                var testrailParser = new SectionSynchronizer(container.Resolve<TestRailClientWrapper>());
-                //var sections = testrailParser.GetSectionsTree(2);
-                
                 //Parse files
                 var parseFilesStopwatch = Stopwatch.StartNew();
                 List<IFeatureFile> featureFiles = ParseFeatureFiles(container, sourceDirectoryPath.Name);

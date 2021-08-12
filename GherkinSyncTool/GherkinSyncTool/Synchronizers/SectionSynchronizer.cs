@@ -47,30 +47,49 @@ namespace GherkinSyncTool.Synchronizers.SectionsSynchronizer
             return result;
         }
 
-        public ulong GetOrCreateSection(string path, ulong suiteId, ulong projectId)
+        /// <summary>
+        /// Gets or creates TestRail section Id for selected .feature file
+        /// </summary>
+        /// <param name="path">Path to .feature file</param>
+        /// <param name="suiteId">TestRail suite Id</param>
+        /// <param name="projectId">TestRail project Id</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public ulong GetOrCreateSectionId(string path, ulong suiteId, ulong projectId)
         {
-            var sections = GetSectionsTree(projectId, suiteId);
+            var targetSections = GetSectionsTree(projectId, suiteId);
             //Path includes name of the feature file and files catalog - hence SkipLast(1) and Skip(1)
             var sourceSections = new Queue<string>(path.Split('\\').SkipLast(1).Skip(1));
-            var id = TraverseSections(sections, sourceSections, suiteId, projectId);
-
-            return id.Value;
+            var sectionId = GetOrCreateSectionIdRecursively(targetSections, sourceSections, suiteId, projectId);
+            if (sectionId is null)
+                throw new ArgumentNullException(nameof(sectionId), 
+                    "Section id cannot be null. You cannot put feature files in root folder");
+            return sectionId.Value;
         }
 
-        private ulong? TraverseSections(IEnumerable<TestRailSection> sections, Queue<string> sourceSections, 
+        /// <summary>
+        /// Compares section structures in TestRail and local storage
+        /// and returns or creates (if not existed) section Id for the selected .feature file 
+        /// </summary>
+        /// <param name="targetSections">Collection that represents section structure in TestRail</param>
+        /// <param name="sourceSections">Queue of local folder names from test files root to target file folder</param>
+        /// <param name="suiteId">TestRail suite Id</param>
+        /// <param name="projectId">TestRail project Id</param>
+        /// <param name="sectionId">TestRail section Id, null for the tests root</param>
+        /// <returns>Section Id for the selected .feature file</returns>
+        private ulong? GetOrCreateSectionIdRecursively(IEnumerable<TestRailSection> targetSections, Queue<string> sourceSections, 
             ulong suiteId, ulong projectId, ulong? sectionId = null)
         {
-            bool targetSectionsChecked = false;
+            var targetSectionsChecked = false;
             while (sourceSections.Count != 0)
             {
                 var folderName = sourceSections.Dequeue();
                 if(!targetSectionsChecked)
                 {
-                    foreach (var section in sections)
+                    foreach (var section in targetSections)
                     {
                         if (section.Name != folderName) continue;
-                        sectionId = TraverseSections(section.ChildSections, sourceSections, suiteId, projectId, section.Id);
-                        return sectionId;
+                        return GetOrCreateSectionIdRecursively(section.ChildSections, sourceSections, suiteId, projectId, section.Id);
                     }
                     targetSectionsChecked = true;
                 }

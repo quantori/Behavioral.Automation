@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -41,7 +42,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                     //section selection logic
                     ulong suiteId = 77;
                     ulong projectId = 2;
-                    ulong sectionId = _sectionSynchronizer.GetOrCreateSection(featureFile.Path, suiteId, projectId);
+                    ulong sectionId = _sectionSynchronizer.GetOrCreateSectionId(featureFile.Path, suiteId, projectId);
                         //TODO: template selection logic
                     ulong templateId = 2;
                     //Feature file that first time sync with TestRail, no tag id present.  
