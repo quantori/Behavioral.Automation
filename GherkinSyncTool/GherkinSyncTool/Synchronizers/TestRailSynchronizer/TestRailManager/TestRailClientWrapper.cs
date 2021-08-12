@@ -34,22 +34,22 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager
             return addCaseResponse.Payload;
         }
 
-        public void UpdateCase(UpdateCaseRequest createCaseRequest)
+        public void UpdateCase(UpdateCaseRequest updateCaseRequest)
         {
-            var testRailCase = GetCase(createCaseRequest.CaseId);
+            var testRailCase = GetCase(updateCaseRequest.CaseId);
 
             //TODO: handle with test case content (not only title) 
-            if (!testRailCase.Title.Equals(createCaseRequest.Title))
+            if (!testRailCase.Title.Equals(updateCaseRequest.Title))
             {
-                var updateCaseResult = _testRailClient.UpdateCase(createCaseRequest.CaseId, createCaseRequest.Title);
+                var updateCaseResult = _testRailClient.UpdateCase(updateCaseRequest.CaseId, updateCaseRequest.Title);
 
                 ValidateRequestResult(updateCaseResult);
 
-                Log.Info($"Updated: [{createCaseRequest.CaseId}] {createCaseRequest.Title}");
+                Log.Info($"Updated: [{updateCaseRequest.CaseId}] {updateCaseRequest.Title}");
             }
             else
             {
-                Log.Info($"Up-to-date: [{createCaseRequest.CaseId}] {createCaseRequest.Title}");
+                Log.Info($"Up-to-date: [{updateCaseRequest.CaseId}] {updateCaseRequest.Title}");
             }
         }
 

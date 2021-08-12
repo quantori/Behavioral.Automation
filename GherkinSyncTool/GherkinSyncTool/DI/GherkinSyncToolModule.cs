@@ -4,6 +4,7 @@ using GherkinSyncTool.FeatureParser;
 using GherkinSyncTool.Interfaces;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager;
+using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model;
 using TestRail;
 
 namespace GherkinSyncTool.DI
@@ -18,6 +19,7 @@ namespace GherkinSyncTool.DI
             builder.Register(c => new TestRailClient(Config.TestRailBaseUrl, Config.TestRailUserName, Config.TestRailPassword)).SingleInstance();
             builder.RegisterType<FeatureParser.FeatureParser>().SingleInstance();
             builder.RegisterType<TestRailClientWrapper>().SingleInstance();
+            builder.RegisterType<CaseContentBuilder>().SingleInstance();
         }
     }
 }
