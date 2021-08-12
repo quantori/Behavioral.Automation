@@ -21,15 +21,23 @@ namespace GherkinSyncTool.Synchronizers.SectionsSynchronizer
         {
             _testRailClientWrapper = testRailClientWrapper;
         }
-
+        
+        /// <summary>
+        /// Builds a tree structure for TestRail sections
+        /// </summary>
+        /// <param name="projectId">TestRail project Id</param>
+        /// <param name="suiteId">TestRail suite Id</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
         public IEnumerable<TestRailSection> GetSectionsTree(ulong projectId, ulong? suiteId)
         {
+            if (suiteId is null) 
+                throw new ArgumentException($"SuiteId must be specified. Check the TestRail project #{projectId}");
+            
             var testRailSections = _testRailClientWrapper.GetSections(projectId)
                 .Select(s=>new TestRailSection(s))
                 .ToDictionary(k => k.Id);
             
-            if (suiteId is null) 
-                throw new ArgumentException($"SuiteId must be specified. Check the TestRail project #{projectId}");
             var testRailCases = _testRailClientWrapper
                 .GetCases(projectId, suiteId.Value)
                 .GroupBy(k=>k.SectionId)
