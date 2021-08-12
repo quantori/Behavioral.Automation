@@ -5,6 +5,7 @@ using GherkinSyncTool.Interfaces;
 using GherkinSyncTool.Synchronizers.SectionsSynchronizer;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager;
+using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model;
 using TestRail;
 
 namespace GherkinSyncTool.DI
@@ -20,6 +21,7 @@ namespace GherkinSyncTool.DI
             builder.RegisterType<FeatureParser.FeatureParser>().SingleInstance();
             builder.RegisterType<TestRailClientWrapper>().SingleInstance();
             builder.RegisterType<SectionSynchronizer>().SingleInstance();
+            builder.RegisterType<CaseContentBuilder>().SingleInstance();
         }
     }
 }

@@ -1,4 +1,3 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -20,11 +19,13 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
         private static readonly Logger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType?.Name);
         private readonly TestRailClientWrapper _testRailClientWrapper;
         private readonly SectionSynchronizer _sectionSynchronizer;
+        private readonly CaseContentBuilder _caseContentBuilder;
 
-        public TestRailSynchronizer(TestRailClientWrapper testRailClientWrapper, SectionSynchronizer sectionSynchronizer)
+        public TestRailSynchronizer(TestRailClientWrapper testRailClientWrapper, SectionSynchronizer sectionSynchronizer, CaseContentBuilder caseContentBuilder)
         {
             _testRailClientWrapper = testRailClientWrapper;
             _sectionSynchronizer = sectionSynchronizer;
+            _caseContentBuilder = caseContentBuilder;
         }
 
         public void Sync(List<IFeatureFile> featureFiles)
@@ -68,6 +69,15 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                             },
                             TemplateId = templateId,
                         };
+                    //TODO: section selection logic
+                    ulong sectionId = 2197;
+                    //TODO: template selection logic
+                    ulong templateId = 2;
+                    
+                    //Feature file that first time sync with TestRail, no tag id present.  
+                    if (tagId is null)
+                    {
+                        var createCaseRequest = _caseContentBuilder.BuildCreateCaseRequest(scenario, sectionId, featureFile, templateId);
                         
                         var addCaseResponse = _testRailClientWrapper.AddCase(createCaseRequest);
                         
@@ -79,15 +89,10 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                     //TODO: update test case body, not only a title
                     if (tagId is not null)
                     {
-                        var id = UInt64.Parse(Regex.Match(tagId.Name, @"\d+").Value);
-                        
-                        //TODO: refactoring: creator for UpdateCaseRequest
-                        var createCaseRequest = new UpdateCaseRequest
-                        {
-                            CaseId = id,
-                            Title = scenario.Name
-                        };
-                        _testRailClientWrapper.UpdateCase(createCaseRequest);
+                        var updateCaseRequest =
+                            _caseContentBuilder.BuildUpdateCaseRequest(tagId, scenario, sectionId, featureFile,
+                                templateId);
+                        _testRailClientWrapper.UpdateCase(updateCaseRequest);
                     }
                 }
             }
