@@ -42,38 +42,8 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                     ulong suiteId = 77;
                     ulong projectId = 2;
                     ulong sectionId = _sectionSynchronizer.GetOrCreateSection(featureFile.Path, suiteId, projectId);
-                    
-                    //Feature file that first time sync with TestRail, no tag id present.  
-                    if (tagId is null)
-                    {
                         //TODO: template selection logic
-                        ulong templateId = 2;
-                        
-                        //TODO: refactoring: creator for CreateCaseRequest
-                        var scenarioSteps = scenario.Steps.Select(step => step.Keyword + step.Text).ToList();
-                        var customStepsSeparated = scenarioSteps.Select(step => new CustomStepsSeparated {Content = step}).ToList();
-                        //TODO: fix TestRail client to be able to send template_id parameter with the addCase request
-                        var customSteps = String.Join(Environment.NewLine, scenarioSteps); 
-
-                        var createCaseRequest = new CreateCaseRequest()
-                        {
-                            Title = scenario.Name,
-                            SectionId = sectionId,
-                            CustomFields = new CaseCustomFields
-                            {
-                                CustomPreconditions = featureFile.Document.Feature.Description
-                                                  + Environment.NewLine
-                                                  + scenario.Description,
-                                CustomStepsSeparated = customStepsSeparated,
-                                CustomSteps = customSteps
-                            },
-                            TemplateId = templateId,
-                        };
-                    //TODO: section selection logic
-                    ulong sectionId = 2197;
-                    //TODO: template selection logic
                     ulong templateId = 2;
-                    
                     //Feature file that first time sync with TestRail, no tag id present.  
                     if (tagId is null)
                     {
