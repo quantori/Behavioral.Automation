@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
 using GherkinSyncTool.Exceptions;
+using GherkinSyncTool.Models;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model;
 using Newtonsoft.Json.Linq;
 using NLog;
@@ -69,6 +72,51 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager
                 throw new TestRailException(
                     $"There is an issue with requesting TestRail: {requestResult.StatusCode.ToString()} {Environment.NewLine}{requestResult.RawJson}",
                     requestResult.ThrownException);
+            }
+        }
+
+        public ulong? CreateSection(CreateSectionRequest request)
+        {
+            var response = _testRailClient.AddSection(
+                request.ProjectId,
+                request.SuiteId,
+                request.Name, 
+                request.ParentId, 
+                request.Description);
+            
+            ValidateRequestResult(response);
+            Log.Info($"Created: [{response.Payload.Id}] {response.Payload.Name}");
+
+            return response.Payload.Id;
+        }
+
+        public IEnumerable<Section> GetSections(ulong projectId)
+        {
+            try
+            {
+                var result = _testRailClient.GetSections(projectId);
+                ValidateRequestResult(result);
+                return result.Payload;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+                throw;
+            }
+        }
+
+        public IEnumerable<Case> GetCases(ulong projectId, ulong suiteId)
+        {
+            try
+            {
+                var result = _testRailClient.GetCases(projectId, suiteId);
+                ValidateRequestResult(result);
+                return result.Payload;
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+                throw;
             }
         }
     }

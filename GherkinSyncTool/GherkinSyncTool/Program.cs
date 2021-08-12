@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using Autofac;
 using GherkinSyncTool.DI;
 using GherkinSyncTool.Interfaces;
+using GherkinSyncTool.Synchronizers.SectionsSynchronizer;
+using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager;
 using NLog;
 
 namespace GherkinSyncTool
@@ -22,12 +25,17 @@ namespace GherkinSyncTool
             var builder = new ContainerBuilder();
             builder.RegisterModule<GherkinSyncToolModule>();
             var container = builder.Build();
+            var sourceDirectoryPath = new DirectoryInfo($"{Directory.GetCurrentDirectory()}\\FeatureFiles");
 
             try
             {
+                //Get testrail cases tree
+                var testrailParser = new SectionSynchronizer(container.Resolve<TestRailClientWrapper>());
+                //var sections = testrailParser.GetSectionsTree(2);
+                
                 //Parse files
                 var parseFilesStopwatch = Stopwatch.StartNew();
-                List<IFeatureFile> featureFiles = ParseFeatureFiles(container);
+                List<IFeatureFile> featureFiles = ParseFeatureFiles(container, sourceDirectoryPath.Name);
                 if (featureFiles.Count == 0)
                 {
                     Log.Info("No files were found for synchronization");
@@ -52,10 +60,10 @@ namespace GherkinSyncTool
             return 0;
         }
         
-        private static List<IFeatureFile> ParseFeatureFiles(IContainer container)
+        private static List<IFeatureFile> ParseFeatureFiles(IContainer container, string sourceDirectoryPath)
         {
             var featureFilesGrabber = container.Resolve<IFeatureFilesGrabber>();
-            var featureFiles = featureFilesGrabber.TakeFiles();
+            var featureFiles = featureFilesGrabber.TakeFiles(sourceDirectoryPath);
 
             return featureFiles;
         }

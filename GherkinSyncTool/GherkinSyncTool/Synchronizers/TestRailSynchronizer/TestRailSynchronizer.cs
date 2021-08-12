@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using Gherkin.Ast;
 using GherkinSyncTool.Configuration;
 using GherkinSyncTool.Interfaces;
+using GherkinSyncTool.Synchronizers.SectionsSynchronizer;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model;
 using NLog;
@@ -18,10 +19,12 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
     {
         private static readonly Logger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType?.Name);
         private readonly TestRailClientWrapper _testRailClientWrapper;
+        private readonly SectionSynchronizer _sectionSynchronizer;
 
-        public TestRailSynchronizer(TestRailClientWrapper testRailClientWrapper)
+        public TestRailSynchronizer(TestRailClientWrapper testRailClientWrapper, SectionSynchronizer sectionSynchronizer)
         {
             _testRailClientWrapper = testRailClientWrapper;
+            _sectionSynchronizer = sectionSynchronizer;
         }
 
         public void Sync(List<IFeatureFile> featureFiles)
@@ -34,12 +37,14 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                 foreach (var scenario in featureFile.Document.Feature.Children.OfType<Scenario>())
                 {
                     var tagId = scenario.Tags.FirstOrDefault(tag => Regex.Match(tag.Name, Config.TagIdPattern, RegexOptions.IgnoreCase).Success);
+                    //section selection logic
+                    ulong suiteId = 77;
+                    ulong projectId = 2;
+                    ulong sectionId = _sectionSynchronizer.GetOrCreateSection(featureFile.Path, suiteId, projectId);
                     
                     //Feature file that first time sync with TestRail, no tag id present.  
                     if (tagId is null)
                     {
-                        //TODO: section selection logic
-                        ulong sectionId = 2197;
                         //TODO: template selection logic
                         ulong templateId = 2;
                         

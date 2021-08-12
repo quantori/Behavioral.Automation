@@ -4,6 +4,6 @@ namespace GherkinSyncTool.Interfaces
 {
     public interface IFeatureFilesGrabber
     {
-        List<IFeatureFile> TakeFiles();
+        List<IFeatureFile> TakeFiles(string sourceDirectoryPath);
     }
 }

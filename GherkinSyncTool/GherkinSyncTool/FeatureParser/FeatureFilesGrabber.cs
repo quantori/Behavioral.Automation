@@ -16,9 +16,8 @@ namespace GherkinSyncTool.FeatureParser
             _featureParser = parser;
         }
 
-        public List<IFeatureFile> TakeFiles()
+        public List<IFeatureFile> TakeFiles(string sourceDirectoryPath)
         {
-            var sourceDirectoryPath = Directory.GetCurrentDirectory();
             var gherkinFilePaths = Directory.EnumerateFiles(sourceDirectoryPath, "*.feature",
                 SearchOption.AllDirectories);
             Log.Info($"# Scanning for feature files in {sourceDirectoryPath}");
