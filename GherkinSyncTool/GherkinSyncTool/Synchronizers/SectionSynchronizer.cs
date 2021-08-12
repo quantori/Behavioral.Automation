@@ -54,10 +54,6 @@ namespace GherkinSyncTool.Synchronizers.SectionsSynchronizer
             var sourceSections = new Queue<string>(path.Split('\\').SkipLast(1).Skip(1));
             var id = TraverseSections(sections, sourceSections, suiteId, projectId);
 
-
-            //var relativePath = Path.GetRelativePath($"{Directory.GetCurrentDirectory()}\\FeatureFiles", path);
-            //var subfolders = GetSubfolders(path, $"{Directory.GetCurrentDirectory()}\\FeatureFiles");
-            
             return id.Value;
         }
 
@@ -76,8 +72,8 @@ namespace GherkinSyncTool.Synchronizers.SectionsSynchronizer
                         sectionId = TraverseSections(section.ChildSections, sourceSections, suiteId, projectId, section.Id);
                         return sectionId;
                     }
+                    targetSectionsChecked = true;
                 }
-                targetSectionsChecked = true;
                 sectionId = _testRailClientWrapper.CreateSection(new CreateSectionRequest
                 {
                     SuiteId = suiteId,
@@ -87,18 +83,6 @@ namespace GherkinSyncTool.Synchronizers.SectionsSynchronizer
                 });
             }
             return sectionId;
-        }
-
-        private List<HierarchyItem> GetSubfolders(string path, string absolutePath)
-        {
-            var result = new List<HierarchyItem>();
-            var currentFolder = Directory.GetParent(path);
-            while (path != absolutePath)
-            {
-                result.AddRange(GetSubfolders(currentFolder.FullName, absolutePath));
-            }
-            result.Add(new HierarchyItem(){Name = currentFolder.Name});
-            return result;
         }
     }
 }
