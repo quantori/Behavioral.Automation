@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -8,7 +7,6 @@ using System.Text.RegularExpressions;
 using Gherkin.Ast;
 using GherkinSyncTool.Configuration;
 using GherkinSyncTool.Interfaces;
-using GherkinSyncTool.Synchronizers.SectionsSynchronizer;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model;
 using NLog;
@@ -19,32 +17,31 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
     {
         private static readonly Logger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType?.Name);
         private readonly TestRailClientWrapper _testRailClientWrapper;
-        private readonly SectionSynchronizer _sectionSynchronizer;
+        private readonly TestRailSectionSynchronizer _testRailSectionSynchronizer;
         private readonly CaseContentBuilder _caseContentBuilder;
 
-        public TestRailSynchronizer(TestRailClientWrapper testRailClientWrapper, SectionSynchronizer sectionSynchronizer, CaseContentBuilder caseContentBuilder)
+        public TestRailSynchronizer(TestRailClientWrapper testRailClientWrapper, TestRailSectionSynchronizer testRailSectionSynchronizer, CaseContentBuilder caseContentBuilder)
         {
             _testRailClientWrapper = testRailClientWrapper;
-            _sectionSynchronizer = sectionSynchronizer;
+            _testRailSectionSynchronizer = testRailSectionSynchronizer;
             _caseContentBuilder = caseContentBuilder;
         }
 
         public void Sync(List<IFeatureFile> featureFiles)
         {
             Log.Info($"# Start synchronization whith TestRail");
+            var config = ConfigurationManager.GetConfiguration();
             var stopwatch = Stopwatch.StartNew();
             foreach (var featureFile in featureFiles)
             {
                 int insertedTagIds = 0;
                 foreach (var scenario in featureFile.Document.Feature.Children.OfType<Scenario>())
                 {
-                    var tagId = scenario.Tags.FirstOrDefault(tag => Regex.Match(tag.Name, Config.TagIdPattern, RegexOptions.IgnoreCase).Success);
-                    //section selection logic
-                    ulong suiteId = 77;
-                    ulong projectId = 2;
-                    ulong sectionId = _sectionSynchronizer.GetOrCreateSectionId(featureFile.Path, suiteId, projectId);
-                        //TODO: template selection logic
-                    ulong templateId = 2;
+                    var tagId = scenario.Tags.FirstOrDefault(tag => Regex.Match(tag.Name, config.TagIdPattern, RegexOptions.IgnoreCase).Success);
+                    var suiteId = config.SuiteId;
+                    var projectId = config.ProjectId;
+                    var templateId = config.TemplateId;
+                    var sectionId = _testRailSectionSynchronizer.GetOrCreateSectionId(featureFile.Path, suiteId, projectId);
                     //Feature file that first time sync with TestRail, no tag id present.  
                     if (tagId is null)
                     {
@@ -52,10 +49,9 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                         
                         var addCaseResponse = _testRailClientWrapper.AddCase(createCaseRequest);
                         
-                        InsertLineToTheFile(featureFile.Path, scenario.Location.Line - 1 + insertedTagIds, Config.TagId + addCaseResponse.Id);
+                        InsertLineToTheFile(featureFile.Path, scenario.Location.Line - 1 + insertedTagIds, config.TagId + addCaseResponse.Id);
                         insertedTagIds++;
                     }
-                    
                     //Update scenarios that have tag id
                     //TODO: update test case body, not only a title
                     if (tagId is not null)

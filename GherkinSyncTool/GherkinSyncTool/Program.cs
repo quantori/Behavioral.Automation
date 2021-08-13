@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Reflection;
 using Autofac;
 using GherkinSyncTool.DI;
 using GherkinSyncTool.Interfaces;
-using GherkinSyncTool.Synchronizers.SectionsSynchronizer;
-using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager;
 using NLog;
 
 namespace GherkinSyncTool
@@ -15,7 +12,7 @@ namespace GherkinSyncTool
     class Program
     {
         private static readonly Logger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType?.Name);
-
+          
         private static int Main(string[] args)
         {
             Log.Info("GherkinSyncTool v.{0}{1}",
@@ -25,13 +22,11 @@ namespace GherkinSyncTool
             var builder = new ContainerBuilder();
             builder.RegisterModule<GherkinSyncToolModule>();
             var container = builder.Build();
-            var sourceDirectoryPath = new DirectoryInfo($"{Directory.GetCurrentDirectory()}\\FeatureFiles");
-
             try
             {
                 //Parse files
                 var parseFilesStopwatch = Stopwatch.StartNew();
-                List<IFeatureFile> featureFiles = ParseFeatureFiles(container, sourceDirectoryPath.Name);
+                List<IFeatureFile> featureFiles = ParseFeatureFiles(container);
                 if (featureFiles.Count == 0)
                 {
                     Log.Info("No files were found for synchronization");
@@ -56,10 +51,10 @@ namespace GherkinSyncTool
             return 0;
         }
         
-        private static List<IFeatureFile> ParseFeatureFiles(IContainer container, string sourceDirectoryPath)
+        private static List<IFeatureFile> ParseFeatureFiles(IContainer container)
         {
             var featureFilesGrabber = container.Resolve<IFeatureFilesGrabber>();
-            var featureFiles = featureFilesGrabber.TakeFiles(sourceDirectoryPath);
+            var featureFiles = featureFilesGrabber.TakeFiles();
 
             return featureFiles;
         }

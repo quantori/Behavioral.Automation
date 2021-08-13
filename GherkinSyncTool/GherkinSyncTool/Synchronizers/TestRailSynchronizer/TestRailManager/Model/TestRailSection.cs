@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Gherkin.CucumberMessages.Types;
+﻿using System.Collections.Generic;
 using TestRail.Types;
 
-namespace GherkinSyncTool.Models
+namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model
 {
     public class TestRailSection : Section
     {

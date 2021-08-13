@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using GherkinSyncTool.Configuration;
 using GherkinSyncTool.Interfaces;
 using NLog;
 
@@ -16,11 +17,13 @@ namespace GherkinSyncTool.FeatureParser
             _featureParser = parser;
         }
 
-        public List<IFeatureFile> TakeFiles(string sourceDirectoryPath)
+        public List<IFeatureFile> TakeFiles()
         {
-            var gherkinFilePaths = Directory.EnumerateFiles(sourceDirectoryPath, "*.feature",
+            var config = ConfigurationManager.GetConfiguration();
+            var baseDirectory = config.BaseDirectory;
+            var gherkinFilePaths = Directory.EnumerateFiles(baseDirectory, "*.feature",
                 SearchOption.AllDirectories);
-            Log.Info($"# Scanning for feature files in {sourceDirectoryPath}");
+            Log.Info($"# Scanning for feature files in {baseDirectory}");
             return _featureParser.Parse(gherkinFilePaths);
         }
     }

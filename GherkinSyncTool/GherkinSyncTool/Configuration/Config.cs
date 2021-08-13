@@ -1,13 +1,17 @@
-﻿namespace GherkinSyncTool.Configuration
-{
-    //TODO: replace hardcode with configuration manager
-    public static class Config
-    {
-        public const string TagIdPattern = "tc:";
-        public const string TagId = "    @tc:";
+﻿using System.IO;
 
-        public const string TestRailBaseUrl = ""; 
-        public const string TestRailUserName = "";
-        public const string TestRailPassword = "";
+namespace GherkinSyncTool.Configuration
+{
+    public class Config
+    {
+        public string TagIdPattern { get; set; } = "tc:";
+        public string TagId { get; set; } = "   @tc:";
+        public ulong ProjectId { get; set; }
+        public ulong SuiteId { get; set; }
+        public ulong TemplateId { get; set; }
+        public string TestRailBaseUrl { get; set; } 
+        public string TestRailUserName { get; set; }
+        public string TestRailPassword { get; set; }
+        public string BaseDirectory { get; set; } = Directory.GetCurrentDirectory();
     }
 }

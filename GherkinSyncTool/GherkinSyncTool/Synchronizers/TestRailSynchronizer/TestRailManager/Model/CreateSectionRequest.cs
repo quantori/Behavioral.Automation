@@ -2,10 +2,10 @@
 {
     public class CreateSectionRequest
     {
-        public ulong ProjectId { get; set; }
-        public string Description { get; set; }
-        public ulong? ParentId { get; set; }
-        public ulong SuiteId { get; set; }
-        public string Name { get; set; }  
+        public ulong ProjectId { get; init; }
+        public string Description { get; init; }
+        public ulong? ParentId { get; init; }
+        public ulong SuiteId { get; init; }
+        public string Name { get; init; }  
     }
 }

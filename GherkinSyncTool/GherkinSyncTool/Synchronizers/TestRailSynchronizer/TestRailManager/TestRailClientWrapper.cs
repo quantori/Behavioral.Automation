@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
 using GherkinSyncTool.Exceptions;
-using GherkinSyncTool.Models;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model;
 using Newtonsoft.Json.Linq;
 using NLog;
@@ -92,32 +90,17 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager
 
         public IEnumerable<Section> GetSections(ulong projectId)
         {
-            try
-            {
-                var result = _testRailClient.GetSections(projectId);
-                ValidateRequestResult(result);
-                return result.Payload;
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-                throw;
-            }
+            var result = _testRailClient.GetSections(projectId);
+            ValidateRequestResult(result);
+            return result.Payload;
+            
         }
 
         public IEnumerable<Case> GetCases(ulong projectId, ulong suiteId)
         {
-            try
-            {
-                var result = _testRailClient.GetCases(projectId, suiteId);
-                ValidateRequestResult(result);
-                return result.Payload;
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-                throw;
-            }
+            var result = _testRailClient.GetCases(projectId, suiteId);
+            ValidateRequestResult(result);
+            return result.Payload;
         }
     }
 }

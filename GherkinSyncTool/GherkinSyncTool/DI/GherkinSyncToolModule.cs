@@ -2,7 +2,6 @@
 using GherkinSyncTool.Configuration;
 using GherkinSyncTool.FeatureParser;
 using GherkinSyncTool.Interfaces;
-using GherkinSyncTool.Synchronizers.SectionsSynchronizer;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model;
@@ -15,12 +14,13 @@ namespace GherkinSyncTool.DI
         
         protected override void Load(ContainerBuilder builder)
         {
+            var config = ConfigurationManager.GetConfiguration();
             builder.RegisterType<FeatureFilesGrabber>().As<IFeatureFilesGrabber>().SingleInstance();
             builder.RegisterType<TestRailSynchronizer>().As<ISynchronizer>().SingleInstance();
-            builder.Register(c => new TestRailClient(Config.TestRailBaseUrl, Config.TestRailUserName, Config.TestRailPassword)).SingleInstance();
+            builder.Register(c => new TestRailClient(config.TestRailBaseUrl, config.TestRailUserName, config.TestRailPassword)).SingleInstance();
             builder.RegisterType<FeatureParser.FeatureParser>().SingleInstance();
             builder.RegisterType<TestRailClientWrapper>().SingleInstance();
-            builder.RegisterType<SectionSynchronizer>().SingleInstance();
+            builder.RegisterType<TestRailSectionSynchronizer>().SingleInstance();
             builder.RegisterType<CaseContentBuilder>().SingleInstance();
         }
     }

@@ -1,23 +1,20 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using GherkinSyncTool.Models;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model;
 using NLog;
 using TestRail.Types;
 
-namespace GherkinSyncTool.Synchronizers.SectionsSynchronizer
+namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
 {
-    public class SectionSynchronizer
+    public class TestRailSectionSynchronizer
     {
         private static readonly Logger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType?.Name);
         private readonly TestRailClientWrapper _testRailClientWrapper;
         
-        public SectionSynchronizer(TestRailClientWrapper testRailClientWrapper)
+        public TestRailSectionSynchronizer(TestRailClientWrapper testRailClientWrapper)
         {
             _testRailClientWrapper = testRailClientWrapper;
         }
@@ -28,8 +25,7 @@ namespace GherkinSyncTool.Synchronizers.SectionsSynchronizer
         /// <param name="projectId">TestRail project Id</param>
         /// <param name="suiteId">TestRail suite Id</param>
         /// <returns></returns>
-        /// <exception cref="ArgumentException"></exception>
-        public IEnumerable<TestRailSection> GetSectionsTree(ulong projectId, ulong? suiteId)
+        private IEnumerable<TestRailSection> GetSectionsTree(ulong projectId, ulong? suiteId)
         {
             if (suiteId is null) 
                 throw new ArgumentException($"SuiteId must be specified. Check the TestRail project #{projectId}");
@@ -66,13 +62,9 @@ namespace GherkinSyncTool.Synchronizers.SectionsSynchronizer
         public ulong GetOrCreateSectionId(string path, ulong suiteId, ulong projectId)
         {
             var targetSections = GetSectionsTree(projectId, suiteId);
-            //Path includes name of the feature file and files catalog - hence SkipLast(1) and Skip(1)
-            var sourceSections = new Queue<string>(path.Split('\\').SkipLast(1).Skip(1));
-            var sectionId = GetOrCreateSectionIdRecursively(targetSections, sourceSections, suiteId, projectId);
-            if (sectionId is null)
-                throw new ArgumentNullException(nameof(sectionId), 
-                    "Section id cannot be null. You cannot put feature files in root folder");
-            return sectionId.Value;
+            //Path includes name of the feature file - hence SkipLast(1)
+            var sourceSections = new Queue<string>(path.Split('\\').SkipLast(1));
+            return GetOrCreateSectionIdRecursively(targetSections, sourceSections, suiteId, projectId);
         }
 
         /// <summary>
@@ -85,7 +77,7 @@ namespace GherkinSyncTool.Synchronizers.SectionsSynchronizer
         /// <param name="projectId">TestRail project Id</param>
         /// <param name="sectionId">TestRail section Id, null for the tests root</param>
         /// <returns>Section Id for the selected .feature file</returns>
-        private ulong? GetOrCreateSectionIdRecursively(IEnumerable<TestRailSection> targetSections, Queue<string> sourceSections, 
+        private ulong GetOrCreateSectionIdRecursively(IEnumerable<TestRailSection> targetSections, Queue<string> sourceSections, 
             ulong suiteId, ulong projectId, ulong? sectionId = null)
         {
             var targetSectionsChecked = false;
@@ -108,8 +100,9 @@ namespace GherkinSyncTool.Synchronizers.SectionsSynchronizer
                     Name = folderName,
                     ParentId = sectionId
                 });
+                Log.Info($"Section {folderName} with id {sectionId} was sucessfully created!");
             }
-            return sectionId;
+            return sectionId.Value;
         }
     }
 }
