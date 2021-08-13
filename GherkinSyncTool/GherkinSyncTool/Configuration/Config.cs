@@ -6,9 +6,9 @@ namespace GherkinSyncTool.Configuration
     {
         public string TagIdPattern { get; set; } = "tc:";
         public string TagId { get; set; } = "   @tc:";
-        public ulong ProjectId { get; set; }
-        public ulong SuiteId { get; set; }
-        public ulong TemplateId { get; set; }
+        public ulong TestRailProjectId { get; set; }
+        public ulong TestRailSuiteId { get; set; }
+        public ulong TestRailTemplateId { get; set; }
         public string TestRailBaseUrl { get; set; } 
         public string TestRailUserName { get; set; }
         public string TestRailPassword { get; set; }
@@ -16,7 +16,10 @@ namespace GherkinSyncTool.Configuration
         public string BaseDirectory
         {
             get => _directory ?? Directory.GetCurrentDirectory();
-            set => _directory = Path.GetRelativePath(Directory.GetCurrentDirectory(), value);
-        } 
+            set
+            {
+                _directory = Path.GetRelativePath(Directory.GetCurrentDirectory(), value);
+            }
+        }
     }
 }

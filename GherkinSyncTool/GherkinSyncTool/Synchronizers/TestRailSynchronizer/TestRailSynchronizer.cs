@@ -38,9 +38,9 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                 foreach (var scenario in featureFile.Document.Feature.Children.OfType<Scenario>())
                 {
                     var tagId = scenario.Tags.FirstOrDefault(tag => Regex.Match(tag.Name, config.TagIdPattern, RegexOptions.IgnoreCase).Success);
-                    var suiteId = config.SuiteId;
-                    var projectId = config.ProjectId;
-                    var templateId = config.TemplateId;
+                    var suiteId = config.TestRailSuiteId;
+                    var projectId = config.TestRailProjectId;
+                    var templateId = config.TestRailTemplateId;
                     var sectionId = _testRailSectionSynchronizer.GetOrCreateSectionId(featureFile.RelativePath, suiteId, projectId);
                     //Feature file that first time sync with TestRail, no tag id present.  
                     if (tagId is null)
