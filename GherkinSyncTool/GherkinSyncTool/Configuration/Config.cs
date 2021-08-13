@@ -15,7 +15,7 @@ namespace GherkinSyncTool.Configuration
         private string _directory;
         public string BaseDirectory
         {
-            get => _directory;
+            get => _directory ?? Directory.GetCurrentDirectory();
             set => _directory = Path.GetRelativePath(Directory.GetCurrentDirectory(), value);
         } 
     }

@@ -41,7 +41,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                     var suiteId = config.SuiteId;
                     var projectId = config.ProjectId;
                     var templateId = config.TemplateId;
-                    var sectionId = _testRailSectionSynchronizer.GetOrCreateSectionId(featureFile.Path, suiteId, projectId);
+                    var sectionId = _testRailSectionSynchronizer.GetOrCreateSectionId(featureFile.RelativePath, suiteId, projectId);
                     //Feature file that first time sync with TestRail, no tag id present.  
                     if (tagId is null)
                     {
@@ -49,7 +49,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                         
                         var addCaseResponse = _testRailClientWrapper.AddCase(createCaseRequest);
                         
-                        InsertLineToTheFile(featureFile.Path, scenario.Location.Line - 1 + insertedTagIds, config.TagId + addCaseResponse.Id);
+                        InsertLineToTheFile(featureFile.RelativePath, scenario.Location.Line - 1 + insertedTagIds, config.TagId + addCaseResponse.Id);
                         insertedTagIds++;
                     }
                     //Update scenarios that have tag id

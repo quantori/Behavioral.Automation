@@ -21,7 +21,7 @@ namespace GherkinSyncTool.FeatureParser
                 FeatureFile file = new FeatureFile
                 {
                     Document = ParseFeatureFile(gherkinFilePath),
-                    Path = gherkinFilePath
+                    RelativePath = gherkinFilePath
                 };
 
                 featureFiles.Add(file);
