@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model;
-using NLog;
 using TestRail.Types;
 
 namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
 {
     public class TestRailSectionSynchronizer
     {
-        private static readonly Logger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType?.Name);
         private readonly TestRailClientWrapper _testRailClientWrapper;
         
         public TestRailSectionSynchronizer(TestRailClientWrapper testRailClientWrapper)
@@ -100,7 +97,6 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                     Name = folderName,
                     ParentId = sectionId
                 });
-                Log.Info($"Section {folderName} with id {sectionId} was sucessfully created!");
             }
             return sectionId.Value;
         }

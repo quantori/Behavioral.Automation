@@ -12,6 +12,11 @@ namespace GherkinSyncTool.Configuration
         public string TestRailBaseUrl { get; set; } 
         public string TestRailUserName { get; set; }
         public string TestRailPassword { get; set; }
-        public string BaseDirectory { get; set; } = Directory.GetCurrentDirectory();
+        private string _directory;
+        public string BaseDirectory
+        {
+            get => _directory;
+            set => _directory = Path.GetRelativePath(Directory.GetCurrentDirectory(), value);
+        } 
     }
 }
