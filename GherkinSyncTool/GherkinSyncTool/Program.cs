@@ -12,7 +12,7 @@ namespace GherkinSyncTool
     class Program
     {
         private static readonly Logger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType?.Name);
-
+          
         private static int Main(string[] args)
         {
             Log.Info("GherkinSyncTool v.{0}{1}",
@@ -22,7 +22,6 @@ namespace GherkinSyncTool
             var builder = new ContainerBuilder();
             builder.RegisterModule<GherkinSyncToolModule>();
             var container = builder.Build();
-
             try
             {
                 //Parse files

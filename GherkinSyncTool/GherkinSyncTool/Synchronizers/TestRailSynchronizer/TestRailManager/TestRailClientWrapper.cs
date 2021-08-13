@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
 using GherkinSyncTool.Exceptions;
@@ -70,6 +71,36 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager
                     $"There is an issue with requesting TestRail: {requestResult.StatusCode.ToString()} {Environment.NewLine}{requestResult.RawJson}",
                     requestResult.ThrownException);
             }
+        }
+
+        public ulong? CreateSection(CreateSectionRequest request)
+        {
+            var response = _testRailClient.AddSection(
+                request.ProjectId,
+                request.SuiteId,
+                request.Name, 
+                request.ParentId, 
+                request.Description);
+            
+            ValidateRequestResult(response);
+            Log.Info($"Section created: [{response.Payload.Id}] {response.Payload.Name}");
+
+            return response.Payload.Id;
+        }
+
+        public IEnumerable<Section> GetSections(ulong projectId)
+        {
+            var result = _testRailClient.GetSections(projectId);
+            ValidateRequestResult(result);
+            return result.Payload;
+            
+        }
+
+        public IEnumerable<Case> GetCases(ulong projectId, ulong suiteId)
+        {
+            var result = _testRailClient.GetCases(projectId, suiteId);
+            ValidateRequestResult(result);
+            return result.Payload;
         }
     }
 }
