@@ -83,7 +83,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager
                 request.Description);
             
             ValidateRequestResult(response);
-            Log.Info($"Created: [{response.Payload.Id}] {response.Payload.Name}");
+            Log.Info($"Section created: [{response.Payload.Id}] {response.Payload.Name}");
 
             return response.Payload.Id;
         }
