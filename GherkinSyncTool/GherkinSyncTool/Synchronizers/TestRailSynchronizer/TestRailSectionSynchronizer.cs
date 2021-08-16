@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using GherkinSyncTool.Configuration;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model;
+using NLog;
 using TestRail.Types;
 using Config = GherkinSyncTool.Configuration.Config;
 
@@ -11,6 +13,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
 {
     public class TestRailSectionSynchronizer
     {
+        private static readonly Logger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType?.Name);
         private readonly TestRailClientWrapper _testRailClientWrapper;
         private List<TestRailSection> _testRailSections;
         
@@ -81,6 +84,8 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
             ulong suiteId, ulong projectId, ulong? sectionId = null)
         {
             var targetSectionsChecked = false;
+            if (sourceSections.Count == 0 && sectionId is null)
+                throw new InvalidOperationException("Attempt to create test case without setting the correct folder. Please check configuration file");
             while (sourceSections.Count != 0)
             {
                 var folderName = sourceSections.Dequeue();
@@ -89,6 +94,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                     foreach (var section in targetSections)
                     {
                         if (section.Name != folderName) continue;
+                        Log.Info($"Opening {folderName} section");
                         return GetOrCreateSectionIdRecursively(section.ChildSections, sourceSections, suiteId, projectId, section.Id);
                     }
                     targetSectionsChecked = true;
