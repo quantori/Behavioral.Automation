@@ -23,8 +23,8 @@ namespace GherkinSyncTool.Configuration
             set
             {
                 var info = new DirectoryInfo(value);
-                if (!info.Exists) throw new DirectoryNotFoundException($"Directory {value} not found, please, check the path"); 
-                _directory = Path.GetRelativePath(Directory.GetParent(value).FullName,value);
+                if (!info.Exists) throw new DirectoryNotFoundException($"Directory {value} not found, please, check the path");
+                _directory = value;
                 Log.Info($"Directory set to: {value}");
             }
         }

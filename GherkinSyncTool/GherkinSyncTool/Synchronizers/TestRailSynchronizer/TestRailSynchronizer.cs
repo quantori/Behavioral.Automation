@@ -49,7 +49,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                         
                         var addCaseResponse = _testRailClientWrapper.AddCase(createCaseRequest);
                         
-                        InsertLineToTheFile(featureFile.RelativePath, scenario.Location.Line - 1 + insertedTagIds, config.TagId + addCaseResponse.Id);
+                        InsertLineToTheFile(featureFile.AbsolutePath, scenario.Location.Line - 1 + insertedTagIds, config.TagId + addCaseResponse.Id);
                         insertedTagIds++;
                     }
                     //Update scenarios that have tag id
