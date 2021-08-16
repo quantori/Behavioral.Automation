@@ -18,6 +18,8 @@ namespace GherkinSyncTool.Configuration
             get => _directory ?? Directory.GetCurrentDirectory();
             set
             {
+                var info = new DirectoryInfo(value);
+                if (!info.Exists) throw new DirectoryNotFoundException($"Directory {value} not found, please, check the path"); 
                 _directory = Path.GetRelativePath(Directory.GetCurrentDirectory(), value);
             }
         }

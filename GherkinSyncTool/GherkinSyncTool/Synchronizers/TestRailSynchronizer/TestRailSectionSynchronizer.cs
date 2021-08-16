@@ -1,19 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GherkinSyncTool.Configuration;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model;
 using TestRail.Types;
+using Config = GherkinSyncTool.Configuration.Config;
 
 namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
 {
     public class TestRailSectionSynchronizer
     {
         private readonly TestRailClientWrapper _testRailClientWrapper;
+        private List<TestRailSection> _testRailSections;
         
         public TestRailSectionSynchronizer(TestRailClientWrapper testRailClientWrapper)
         {
             _testRailClientWrapper = testRailClientWrapper;
+            var config = ConfigurationManager.GetConfiguration();
+            _testRailSections = GetSectionsTree(config.TestRailProjectId, config.TestRailSuiteId).ToList();
         }
         
         /// <summary>
@@ -27,7 +32,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
             if (suiteId is null) 
                 throw new ArgumentException($"SuiteId must be specified. Check the TestRail project #{projectId}");
             
-            var testRailSections = _testRailClientWrapper.GetSections(projectId)
+            var testRailSectionsDictionary = _testRailClientWrapper.GetSections(projectId)
                 .Select(s=>new TestRailSection(s))
                 .ToDictionary(k => k.Id);
             
@@ -37,12 +42,12 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                 .ToDictionary(k=>k.Key, k=>k.ToArray());
 
             var result = new List<TestRailSection>();
-            foreach (var section in testRailSections.Values)
+            foreach (var section in testRailSectionsDictionary.Values)
             {
                 if (testRailCases.TryGetValue(section.Id, out Case[] value))
-                    testRailSections[section.Id].FeatureFiles.AddRange(value);
+                    testRailSectionsDictionary[section.Id].FeatureFiles.AddRange(value);
                 if (section.ParentId != null)
-                    testRailSections[section.ParentId].ChildSections.Add(section);
+                    testRailSectionsDictionary[section.ParentId].ChildSections.Add(section);
                 else result.Add(section);
             }
             return result;
@@ -58,23 +63,21 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
         /// <exception cref="ArgumentNullException"></exception>
         public ulong GetOrCreateSectionId(string path, ulong suiteId, ulong projectId)
         {
-            var targetSections = GetSectionsTree(projectId, suiteId);
             //Path includes name of the feature file - hence SkipLast(1)
             var sourceSections = new Queue<string>(path.Split('\\').SkipLast(1));
-            return GetOrCreateSectionIdRecursively(targetSections, sourceSections, suiteId, projectId);
+            return GetOrCreateSectionIdRecursively(_testRailSections, sourceSections, suiteId, projectId);
         }
 
         /// <summary>
         /// Compares section structures in TestRail and local storage
         /// and returns or creates (if not existed) section Id for the selected .feature file 
         /// </summary>
-        /// <param name="targetSections">Collection that represents section structure in TestRail</param>
         /// <param name="sourceSections">Queue of local folder names from test files root to target file folder</param>
         /// <param name="suiteId">TestRail suite Id</param>
         /// <param name="projectId">TestRail project Id</param>
         /// <param name="sectionId">TestRail section Id, null for the tests root</param>
         /// <returns>Section Id for the selected .feature file</returns>
-        private ulong GetOrCreateSectionIdRecursively(IEnumerable<TestRailSection> targetSections, Queue<string> sourceSections, 
+        private ulong GetOrCreateSectionIdRecursively(List<TestRailSection> targetSections, Queue<string> sourceSections, 
             ulong suiteId, ulong projectId, ulong? sectionId = null)
         {
             var targetSectionsChecked = false;
@@ -90,6 +93,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                     }
                     targetSectionsChecked = true;
                 }
+                var parentId = sectionId;
                 sectionId = _testRailClientWrapper.CreateSection(new CreateSectionRequest
                 {
                     SuiteId = suiteId,
@@ -97,6 +101,16 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                     Name = folderName,
                     ParentId = sectionId
                 });
+                var newSection = 
+                new TestRailSection
+                {
+                    Id = sectionId, 
+                    SuiteId = suiteId, 
+                    ParentId = parentId, 
+                    Name = folderName
+                };
+                targetSections.Add(newSection);
+                targetSections = newSection.ChildSections;
             }
             return sectionId.Value;
         }
