@@ -15,15 +15,16 @@ namespace GherkinSyncTool.Configuration
         public string TestRailBaseUrl { get; set; } 
         public string TestRailUserName { get; set; }
         public string TestRailPassword { get; set; }
+        public string TestCasesDirectoryName { get; set; }
         private string _directory;
         public string BaseDirectory
         {
-            get => _directory ?? Directory.GetCurrentDirectory();
+            get => _directory;
             set
             {
                 var info = new DirectoryInfo(value);
                 if (!info.Exists) throw new DirectoryNotFoundException($"Directory {value} not found, please, check the path"); 
-                _directory = Path.GetRelativePath(Directory.GetCurrentDirectory(), value);
+                _directory = Path.GetRelativePath(Directory.GetParent(value).FullName,value);
                 Log.Info($"Directory set to: {value}");
             }
         }
