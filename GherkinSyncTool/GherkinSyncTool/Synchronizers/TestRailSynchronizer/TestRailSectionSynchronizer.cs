@@ -67,6 +67,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
         public ulong GetOrCreateSectionId(string path, ulong suiteId, ulong projectId)
         {
             //Path includes name of the feature file - hence SkipLast(1)
+            Log.Info($"Input file: {path}");
             var sourceSections = new Queue<string>(path.Split('\\').SkipLast(1));
             return GetOrCreateSectionIdRecursively(_testRailSections, sourceSections, suiteId, projectId);
         }
