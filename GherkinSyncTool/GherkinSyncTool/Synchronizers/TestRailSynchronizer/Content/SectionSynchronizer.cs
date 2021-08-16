@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager;
-using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model;
+using GherkinSyncTool.Configuration;
+using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client;
+using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Model;
 using TestRail.Types;
+using Config = GherkinSyncTool.Configuration.Config;
 
-namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
+namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
 {
-    public class TestRailSectionSynchronizer
+    public class SectionSynchronizer
     {
         private readonly TestRailClientWrapper _testRailClientWrapper;
+        private readonly Config _config = ConfigurationManager.GetConfiguration();
         
-        public TestRailSectionSynchronizer(TestRailClientWrapper testRailClientWrapper)
+        public SectionSynchronizer(TestRailClientWrapper testRailClientWrapper)
         {
             _testRailClientWrapper = testRailClientWrapper;
         }
@@ -52,12 +55,13 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
         /// Gets or creates TestRail section Id for selected .feature file
         /// </summary>
         /// <param name="path">Path to .feature file</param>
-        /// <param name="suiteId">TestRail suite Id</param>
-        /// <param name="projectId">TestRail project Id</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public ulong GetOrCreateSectionId(string path, ulong suiteId, ulong projectId)
+        public ulong GetOrCreateSectionId(string path)
         {
+            var suiteId = _config.TestRailSuiteId;
+            var projectId = _config.TestRailProjectId;
+            
             var targetSections = GetSectionsTree(projectId, suiteId);
             //Path includes name of the feature file - hence SkipLast(1)
             var sourceSections = new Queue<string>(path.Split('\\').SkipLast(1));

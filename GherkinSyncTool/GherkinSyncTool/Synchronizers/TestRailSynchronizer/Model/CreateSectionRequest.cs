@@ -1,4 +1,4 @@
-﻿namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model
+﻿namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Model
 {
     public class CreateSectionRequest
     {

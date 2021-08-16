@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model
+namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Model
 {
     public class CustomStepsSeparated
     {
