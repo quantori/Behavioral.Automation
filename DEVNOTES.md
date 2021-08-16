@@ -1,6 +1,7 @@
 ## Build instructions
 * Download the repository
 * If your IDE supports automatic dependencies import, check that all dependencies have been imported
+* Add to the PATH variable path to the chromedriver.exe folder.
 * Else run the following command:
 
 
