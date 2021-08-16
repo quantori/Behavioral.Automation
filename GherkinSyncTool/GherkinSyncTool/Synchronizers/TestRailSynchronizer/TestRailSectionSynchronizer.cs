@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using GherkinSyncTool.Configuration;
@@ -68,7 +69,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
         {
             //Path includes name of the feature file - hence SkipLast(1)
             Log.Info($"Input file: {path}");
-            var sourceSections = new Queue<string>(path.Split('\\').SkipLast(1));
+            var sourceSections = new Queue<string>(path.Split(Path.DirectorySeparatorChar).SkipLast(1));
             return GetOrCreateSectionIdRecursively(_testRailSections, sourceSections, suiteId, projectId);
         }
 
@@ -76,6 +77,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
         /// Compares section structures in TestRail and local storage
         /// and returns or creates (if not existed) section Id for the selected .feature file 
         /// </summary>
+        /// <param name="targetSections">Collection of sections in TestRail</param>
         /// <param name="sourceSections">Queue of local folder names from test files root to target file folder</param>
         /// <param name="suiteId">TestRail suite Id</param>
         /// <param name="projectId">TestRail project Id</param>
@@ -85,7 +87,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
             ulong suiteId, ulong projectId, ulong? sectionId = null)
         {
             var targetSectionsChecked = false;
-            if (sourceSections.Count == 0 && sectionId is null)
+            if (!sourceSections.Any() && sectionId is null)
                 throw new InvalidOperationException("Attempt to create test case without setting the correct folder. Please check configuration file");
             while (sourceSections.Count != 0)
             {
@@ -95,7 +97,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                     foreach (var section in targetSections)
                     {
                         if (section.Name != folderName) continue;
-                        Log.Info($"Opening {folderName} section");
+                        Log.Info($"Opening {folderName} section in TestRail");
                         return GetOrCreateSectionIdRecursively(section.ChildSections, sourceSections, suiteId, projectId, section.Id);
                     }
                     targetSectionsChecked = true;
