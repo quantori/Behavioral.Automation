@@ -4,16 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Gherkin.Ast;
+using GherkinSyncTool.Configuration;
 using GherkinSyncTool.Interfaces;
+using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Model;
 
-namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model
+namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
 {
     public class CaseContentBuilder
     {
-        public CreateCaseRequest BuildCreateCaseRequest(Scenario scenario, ulong sectionId, IFeatureFile featureFile,
-            ulong templateId)
+        private readonly SectionSynchronizer _sectionSynchronizer;
+        private readonly Config _config = ConfigurationManager.GetConfiguration();
+
+        public CaseContentBuilder(SectionSynchronizer sectionSynchronizer)
+        {
+            _sectionSynchronizer = sectionSynchronizer;
+        }
+
+        public CreateCaseRequest BuildCreateCaseRequest(Scenario scenario, IFeatureFile featureFile)
         {
             var steps = GetSteps(scenario, featureFile);
+            
+            var sectionId = _sectionSynchronizer.GetOrCreateSectionId(featureFile.RelativePath);
+            var templateId = _config.TestRailTemplateId;
 
             var createCaseRequest = new CreateCaseRequest
             {
@@ -23,7 +35,8 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Mod
                 {
                     CustomPreconditions = ConvertToStringPreconditions(scenario, featureFile),
                     CustomStepsSeparated = ConvertToCustomStepsSeparated(steps),
-                    CustomSteps = ConvertToStringWithSteps(steps)
+                    CustomSteps = ConvertToStringSteps(steps),
+                    CustomTags = ConvertToStringTags(scenario, featureFile)
                 },
                 //TODO: fix TestRail client to be able to send template_id parameter with the addCase request
                 TemplateId = templateId,
@@ -31,9 +44,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Mod
             return createCaseRequest;
         }
 
-        public UpdateCaseRequest BuildUpdateCaseRequest(Tag tagId, Scenario scenario, ulong sectionId,
-            IFeatureFile featureFile,
-            ulong templateId)
+        public UpdateCaseRequest BuildUpdateCaseRequest(Tag tagId, Scenario scenario, IFeatureFile featureFile)
         {
             var id = UInt64.Parse(Regex.Match(tagId.Name, @"\d+").Value);
 
@@ -64,7 +75,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Mod
             List<string> resultSteps = new List<string>();
             foreach (var step in steps)
             {
-                var fullStep = step.Keyword + step.Text;
+                var fullStep = $"**{step.Keyword.Trim()}** " + step.Text.Replace("<","***").Replace(">","***");
                 
                 if (step.Argument is DocString docString)
                 {
@@ -87,9 +98,39 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Mod
             return steps.Select(step => new CustomStepsSeparated {Content = step}).ToList();
         }
 
-        private string ConvertToStringWithSteps(List<string> steps)
+        private string ConvertToStringSteps(List<string> steps)
         {
             return string.Join(Environment.NewLine, steps.Select(s => "- " + s));
+        }
+
+        private string ConvertToStringTags(Scenario scenario, IFeatureFile featureFile)
+        {
+            List<Tag> allTags = new List<Tag>();
+
+            var featureTags = featureFile.Document.Feature.Tags.ToList();
+            if (featureTags.Any())
+            {
+                allTags.AddRange(featureTags);
+            }
+
+            var scenarioTags = scenario.Tags.ToList();
+            if (scenarioTags.Any())
+            {
+                allTags.AddRange(scenarioTags);
+            }
+
+            if (scenario.Examples != null && scenario.Examples.Any())
+            {
+                foreach (var example in scenario.Examples)
+                {
+                    if (example.Tags != null && example.Tags.Any())
+                    {
+                        allTags.AddRange(example.Tags);
+                    }
+                }
+            }
+
+            return allTags.Any() ? string.Join(", ", allTags.Select(tag => tag.Name.Substring(1))) : null;
         }
 
         private string ConvertToStringPreconditions(Scenario scenario, IFeatureFile featureFile)

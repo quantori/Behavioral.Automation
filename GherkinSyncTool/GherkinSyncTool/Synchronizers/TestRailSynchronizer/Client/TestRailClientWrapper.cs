@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
 using GherkinSyncTool.Exceptions;
-using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model;
+using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Model;
 using Newtonsoft.Json.Linq;
 using NLog;
 using TestRail;
 using TestRail.Types;
 using TestRail.Utils;
 
-namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager
+namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
 {
     public class TestRailClientWrapper
     {

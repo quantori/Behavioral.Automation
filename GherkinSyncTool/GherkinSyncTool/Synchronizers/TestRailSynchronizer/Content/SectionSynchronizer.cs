@@ -2,23 +2,24 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using GherkinSyncTool.Configuration;
+using System.Reflection;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model;
 using NLog;
 using TestRail.Types;
 using Config = GherkinSyncTool.Configuration.Config;
 
-namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
+namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
 {
-    public class TestRailSectionSynchronizer
+    public class SectionSynchronizer
     {
         private static readonly Logger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType?.Name);
         private readonly TestRailClientWrapper _testRailClientWrapper;
+        private readonly Config _config = ConfigurationManager.GetConfiguration();
         private List<TestRailSection> _testRailSections;
         
-        public TestRailSectionSynchronizer(TestRailClientWrapper testRailClientWrapper)
+        public SectionSynchronizer(TestRailClientWrapper testRailClientWrapper)
         {
             _testRailClientWrapper = testRailClientWrapper;
             var config = ConfigurationManager.GetConfiguration();
@@ -61,12 +62,14 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
         /// Gets or creates TestRail section Id for selected .feature file
         /// </summary>
         /// <param name="path">Path to .feature file</param>
-        /// <param name="suiteId">TestRail suite Id</param>
-        /// <param name="projectId">TestRail project Id</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public ulong GetOrCreateSectionId(string path, ulong suiteId, ulong projectId)
+        public ulong GetOrCreateSectionId(string path)
         {
+            var suiteId = _config.TestRailSuiteId;
+            var projectId = _config.TestRailProjectId;
+            
+            var targetSections = GetSectionsTree(projectId, suiteId);
             //Path includes name of the feature file - hence SkipLast(1)
             Log.Info($"Input file: {path}");
             var sourceSections = new Queue<string>(path.Split(Path.DirectorySeparatorChar).SkipLast(1));
@@ -77,7 +80,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
         /// Compares section structures in TestRail and local storage
         /// and returns or creates (if not existed) section Id for the selected .feature file 
         /// </summary>
-        /// <param name="targetSections">Collection of sections in TestRail</param>
+        /// <param name="targetSections">Collection that represents section structure in TestRail</param>
         /// <param name="sourceSections">Queue of local folder names from test files root to target file folder</param>
         /// <param name="suiteId">TestRail suite Id</param>
         /// <param name="projectId">TestRail project Id</param>

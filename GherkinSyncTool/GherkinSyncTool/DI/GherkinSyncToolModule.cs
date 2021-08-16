@@ -3,8 +3,8 @@ using GherkinSyncTool.Configuration;
 using GherkinSyncTool.FeatureParser;
 using GherkinSyncTool.Interfaces;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer;
-using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager;
-using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model;
+using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client;
+using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content;
 using TestRail;
 
 namespace GherkinSyncTool.DI
@@ -20,7 +20,7 @@ namespace GherkinSyncTool.DI
             builder.Register(c => new TestRailClient(config.TestRailBaseUrl, config.TestRailUserName, config.TestRailPassword)).SingleInstance();
             builder.RegisterType<FeatureParser.FeatureParser>().SingleInstance();
             builder.RegisterType<TestRailClientWrapper>().SingleInstance();
-            builder.RegisterType<TestRailSectionSynchronizer>().SingleInstance();
+            builder.RegisterType<SectionSynchronizer>().SingleInstance();
             builder.RegisterType<CaseContentBuilder>().SingleInstance();
         }
     }

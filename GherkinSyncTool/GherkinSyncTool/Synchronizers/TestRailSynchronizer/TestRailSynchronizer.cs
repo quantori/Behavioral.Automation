@@ -7,8 +7,8 @@ using System.Text.RegularExpressions;
 using Gherkin.Ast;
 using GherkinSyncTool.Configuration;
 using GherkinSyncTool.Interfaces;
-using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager;
-using GherkinSyncTool.Synchronizers.TestRailSynchronizer.TestRailManager.Model;
+using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client;
+using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content;
 using NLog;
 
 namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
@@ -17,13 +17,11 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
     {
         private static readonly Logger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType?.Name);
         private readonly TestRailClientWrapper _testRailClientWrapper;
-        private readonly TestRailSectionSynchronizer _testRailSectionSynchronizer;
         private readonly CaseContentBuilder _caseContentBuilder;
 
-        public TestRailSynchronizer(TestRailClientWrapper testRailClientWrapper, TestRailSectionSynchronizer testRailSectionSynchronizer, CaseContentBuilder caseContentBuilder)
+        public TestRailSynchronizer(TestRailClientWrapper testRailClientWrapper, CaseContentBuilder caseContentBuilder)
         {
             _testRailClientWrapper = testRailClientWrapper;
-            _testRailSectionSynchronizer = testRailSectionSynchronizer;
             _caseContentBuilder = caseContentBuilder;
         }
 
@@ -38,14 +36,11 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                 foreach (var scenario in featureFile.Document.Feature.Children.OfType<Scenario>())
                 {
                     var tagId = scenario.Tags.FirstOrDefault(tag => Regex.Match(tag.Name, config.TagIdPattern, RegexOptions.IgnoreCase).Success);
-                    var suiteId = config.TestRailSuiteId;
-                    var projectId = config.TestRailProjectId;
-                    var templateId = config.TestRailTemplateId;
-                    var sectionId = _testRailSectionSynchronizer.GetOrCreateSectionId(featureFile.RelativePath, suiteId, projectId);
+                    
                     //Feature file that first time sync with TestRail, no tag id present.  
                     if (tagId is null)
                     {
-                        var createCaseRequest = _caseContentBuilder.BuildCreateCaseRequest(scenario, sectionId, featureFile, templateId);
+                        var createCaseRequest = _caseContentBuilder.BuildCreateCaseRequest(scenario, featureFile);
                         
                         var addCaseResponse = _testRailClientWrapper.AddCase(createCaseRequest);
                         
@@ -57,8 +52,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                     if (tagId is not null)
                     {
                         var updateCaseRequest =
-                            _caseContentBuilder.BuildUpdateCaseRequest(tagId, scenario, sectionId, featureFile,
-                                templateId);
+                            _caseContentBuilder.BuildUpdateCaseRequest(tagId, scenario, featureFile);
                         _testRailClientWrapper.UpdateCase(updateCaseRequest);
                     }
                 }
