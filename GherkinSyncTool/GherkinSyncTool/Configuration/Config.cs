@@ -1,9 +1,12 @@
 ﻿using System.IO;
+using System.Reflection;
+using NLog;
 
 namespace GherkinSyncTool.Configuration
 {
     public class Config
     {
+        private static readonly Logger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType?.Name);
         public string TagIdPattern { get; set; } = "tc:";
         public string TagId { get; set; } = "   @tc:";
         public ulong TestRailProjectId { get; set; }
@@ -21,6 +24,7 @@ namespace GherkinSyncTool.Configuration
                 var info = new DirectoryInfo(value);
                 if (!info.Exists) throw new DirectoryNotFoundException($"Directory {value} not found, please, check the path"); 
                 _directory = Path.GetRelativePath(Directory.GetCurrentDirectory(), value);
+                Log.Info($"Directory set to: {value}");
             }
         }
     }
