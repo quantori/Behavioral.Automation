@@ -35,10 +35,10 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             return addCaseResponse.Payload;
         }
 
-        public void UpdateCase(UpdateCaseRequest updateCaseRequest)
+        public void UpdateCase(UpdateCaseRequest updateCaseRequest, ulong? sectionId = null)
         {
             var testRailCase = GetCase(updateCaseRequest.CaseId);
-
+            
             //TODO: handle with test case content (not only title) 
             if (!testRailCase.Title.Equals(updateCaseRequest.Title))
             {

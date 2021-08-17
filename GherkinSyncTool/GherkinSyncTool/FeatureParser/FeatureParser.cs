@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using Gherkin;
 using Gherkin.Ast;
@@ -18,10 +17,10 @@ namespace GherkinSyncTool.FeatureParser
             List<IFeatureFile> featureFiles = new List<IFeatureFile>();
             foreach (var gherkinFilePath in gherkinFilePaths)
             {
-                FeatureFile file = new FeatureFile
+                var file = new FeatureFile
                 {
                     Document = ParseFeatureFile(gherkinFilePath),
-                    RelativePath = gherkinFilePath
+                    AbsolutePath = gherkinFilePath
                 };
 
                 featureFiles.Add(file);

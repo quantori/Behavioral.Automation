@@ -8,6 +8,9 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Model
         public List<Case> FeatureFiles { get; set; } = new();
         public List<TestRailSection> ChildSections { get; set; } = new();
 
+        public TestRailSection()
+        { }
+        
         public TestRailSection(Section section)
         {
             Id = section.Id;

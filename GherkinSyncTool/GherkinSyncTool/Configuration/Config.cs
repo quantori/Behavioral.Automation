@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace GherkinSyncTool.Configuration
 {
@@ -15,10 +16,15 @@ namespace GherkinSyncTool.Configuration
         private string _directory;
         public string BaseDirectory
         {
-            get => _directory ?? Directory.GetCurrentDirectory();
+            get => _directory;
             set
             {
-                _directory = Path.GetRelativePath(Directory.GetCurrentDirectory(), value);
+                if (string.IsNullOrEmpty(value)) 
+                    throw new ArgumentException("Parameter BaseDirectory must not be empty! Please check your settings");
+                var info = new DirectoryInfo(value);
+                if (!info.Exists) 
+                    throw new DirectoryNotFoundException($"Directory {value} not found, please, check the path");
+                _directory = value;
             }
         }
     }

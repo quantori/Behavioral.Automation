@@ -17,7 +17,7 @@ namespace GherkinSyncTool.DI
             var config = ConfigurationManager.GetConfiguration();
             builder.RegisterType<FeatureFilesGrabber>().As<IFeatureFilesGrabber>().SingleInstance();
             builder.RegisterType<TestRailSynchronizer>().As<ISynchronizer>().SingleInstance();
-            builder.Register(c => new TestRailClient(config.TestRailBaseUrl, config.TestRailUserName, config.TestRailPassword)).SingleInstance();
+            builder.Register(_ => new TestRailClient(config.TestRailBaseUrl, config.TestRailUserName, config.TestRailPassword)).SingleInstance();
             builder.RegisterType<FeatureParser.FeatureParser>().SingleInstance();
             builder.RegisterType<TestRailClientWrapper>().SingleInstance();
             builder.RegisterType<SectionSynchronizer>().SingleInstance();

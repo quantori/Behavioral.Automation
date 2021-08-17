@@ -36,7 +36,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                 foreach (var scenario in featureFile.Document.Feature.Children.OfType<Scenario>())
                 {
                     var tagId = scenario.Tags.FirstOrDefault(tag => Regex.Match(tag.Name, config.TagIdPattern, RegexOptions.IgnoreCase).Success);
-                    
+
                     //Feature file that first time sync with TestRail, no tag id present.  
                     if (tagId is null)
                     {
@@ -44,7 +44,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                         
                         var addCaseResponse = _testRailClientWrapper.AddCase(createCaseRequest);
                         
-                        InsertLineToTheFile(featureFile.RelativePath, scenario.Location.Line - 1 + insertedTagIds, config.TagId + addCaseResponse.Id);
+                        InsertLineToTheFile(featureFile.AbsolutePath, scenario.Location.Line - 1 + insertedTagIds, config.TagId + addCaseResponse.Id);
                         insertedTagIds++;
                     }
                     //Update scenarios that have tag id
