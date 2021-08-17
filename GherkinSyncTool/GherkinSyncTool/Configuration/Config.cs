@@ -1,13 +1,10 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
-using NLog;
 
 namespace GherkinSyncTool.Configuration
 {
     public class Config
     {
-        private static readonly Logger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType?.Name);
         public string TagIdPattern { get; set; } = "tc:";
         public string TagId { get; set; } = "   @tc:";
         public ulong TestRailProjectId { get; set; }
