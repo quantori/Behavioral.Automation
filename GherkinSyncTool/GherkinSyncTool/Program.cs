@@ -22,6 +22,7 @@ namespace GherkinSyncTool
             var builder = new ContainerBuilder();
             builder.RegisterModule<GherkinSyncToolModule>();
             var container = builder.Build();
+            
             try
             {
                 //Parse files

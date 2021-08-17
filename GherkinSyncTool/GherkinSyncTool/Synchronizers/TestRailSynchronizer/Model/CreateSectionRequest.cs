@@ -7,8 +7,6 @@
         public ulong? ParentId { get; init; }
         public ulong SuiteId { get; init; }
         public string Name { get; init; }
-
-        public CreateSectionRequest() { }
         public CreateSectionRequest(ulong projectId, ulong? parentId, ulong suiteId, string name, string description)
         {
             ProjectId = projectId;
