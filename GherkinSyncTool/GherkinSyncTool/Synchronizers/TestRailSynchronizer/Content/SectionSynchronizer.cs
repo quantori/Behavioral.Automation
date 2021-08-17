@@ -37,7 +37,8 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
             if (suiteId is null)
                 throw new ArgumentException($"SuiteId must be specified. Check the TestRail project #{projectId}");
 
-            var testRailSectionsDictionary = _testRailClientWrapper.GetSections(projectId)
+            var testRailSectionsDictionary = _testRailClientWrapper
+                .GetSections(projectId)
                 .Select(s => new TestRailSection(s))
                 .ToDictionary(k => k.Id);
 
@@ -69,8 +70,6 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
         {
             var suiteId = _config.TestRailSuiteId;
             var projectId = _config.TestRailProjectId;
-
-            var targetSections = GetSectionsTree(projectId, suiteId);
             //Path includes name of the feature file - hence SkipLast(1)
             Log.Info($"Input file: {path}");
             var sourceSections = new Queue<string>(path.Split(Path.DirectorySeparatorChar).SkipLast(1));
