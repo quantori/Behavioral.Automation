@@ -10,14 +10,15 @@ namespace GherkinSyncTool.Models
         public GherkinDocument Document { get; init; }
 
         private string _absolutePath;
+
         public string AbsolutePath
         {
             get => _absolutePath;
-            set
-            {
-                _absolutePath = Path.GetFullPath(value);
-            }
+            set => _absolutePath = Path.GetFullPath(value);
         }
-        public string RelativePath => Path.GetRelativePath(Directory.GetParent(ConfigurationManager.GetConfiguration().BaseDirectory).FullName, AbsolutePath);
+
+        public string RelativePath =>
+            Path.GetRelativePath(Directory.GetParent(ConfigurationManager.GetConfiguration().BaseDirectory).FullName,
+                AbsolutePath);
     }
 }

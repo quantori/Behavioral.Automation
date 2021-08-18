@@ -13,6 +13,7 @@ namespace GherkinSyncTool.Configuration
         public string TestRailBaseUrl { get; set; } 
         public string TestRailUserName { get; set; }
         public string TestRailPassword { get; set; }
+        public int? MaximumRequestsPerMinute { get; set; }
         private string _directory;
         public string BaseDirectory
         {

@@ -17,9 +17,22 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
         private static readonly Logger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType?.Name);
         private readonly TestRailClient _testRailClient;
 
+        private int? _requestsCount;
+        public int? RequestsCount
+        {
+            get => _requestsCount;
+            set
+            {
+                if (value < 0) 
+                    throw new ArgumentException("Number of requests per minute must be 0 or positive");
+                _requestsCount = value;
+            }
+        }
+
         public TestRailClientWrapper(TestRailClient testRailClient)
         {
             _testRailClient = testRailClient;
+            RequestsCount = 0;
         }
 
         public Case AddCase(CreateCaseRequest createCaseRequest)
@@ -35,7 +48,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             return addCaseResponse.Payload;
         }
 
-        public void UpdateCase(UpdateCaseRequest updateCaseRequest, ulong? sectionId = null)
+        public void UpdateCase(UpdateCaseRequest updateCaseRequest)
         {
             var testRailCase = GetCase(updateCaseRequest.CaseId);
             
@@ -43,7 +56,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             if (!testRailCase.Title.Equals(updateCaseRequest.Title))
             {
                 var updateCaseResult = _testRailClient.UpdateCase(updateCaseRequest.CaseId, updateCaseRequest.Title);
-
+                
                 ValidateRequestResult(updateCaseResult);
 
                 Log.Info($"Updated: [{updateCaseRequest.CaseId}] {updateCaseRequest.Title}");
@@ -63,7 +76,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             return testRailCase.Payload;
         }
 
-        private static void ValidateRequestResult<T>(RequestResult<T> requestResult)
+        private void ValidateRequestResult<T>(RequestResult<T> requestResult)
         {
             if (requestResult.StatusCode != HttpStatusCode.OK)
             {
@@ -71,6 +84,8 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
                     $"There is an issue with requesting TestRail: {requestResult.StatusCode.ToString()} {Environment.NewLine}{requestResult.RawJson}",
                     requestResult.ThrownException);
             }
+
+            Log.Info($"Requests sent: {++RequestsCount}");
         }
 
         public ulong? CreateSection(CreateSectionRequest request)
@@ -93,7 +108,6 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             var result = _testRailClient.GetSections(projectId);
             ValidateRequestResult(result);
             return result.Payload;
-            
         }
 
         public IEnumerable<Case> GetCases(ulong projectId, ulong suiteId)
