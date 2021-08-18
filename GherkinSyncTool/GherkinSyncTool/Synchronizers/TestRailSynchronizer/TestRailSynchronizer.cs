@@ -36,13 +36,13 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
             var stopwatch = Stopwatch.StartNew();
             foreach (var featureFile in featureFiles)
             {
-                
                 int insertedTagIds = 0;
                 foreach (var scenario in featureFile.Document.Feature.Children.OfType<Scenario>())
                 {
                     var tagId = scenario.Tags.FirstOrDefault(tag => Regex.Match(tag.Name, config.TagIdPattern, RegexOptions.IgnoreCase).Success);
-                    if(_config.MaximumRequestsPerMinute is not null)
-                        RequestsLimitCheck(stopwatch.Elapsed.Seconds);
+                    if(_config.TestRailMaxRequestsPerMinute is not null)
+                        _testRailClientWrapper.RequestsLimitCheck(stopwatch.Elapsed.TotalMilliseconds);
+                    
                     //Feature file that first time sync with TestRail, no tag id present.  
                     if (tagId is null)
                     {
@@ -66,23 +66,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
             Log.Info(@$"Synchronization with TestRail finished in: {stopwatch.Elapsed:mm\:ss\.fff}");
         }
 
-        /// <summary>
-        /// Pauses sending of requests when requests per minutes limit is reached 
-        /// </summary>
-        /// <param name="elapsedSeconds">Seconds elapsed from start</param>
-        private void RequestsLimitCheck(int elapsedSeconds)
-        {
-            if (_testRailClientWrapper.RequestsCount + 1 >= _config.MaximumRequestsPerMinute &&
-               elapsedSeconds % 60 <= 59)
-            {
-                var sleepTime = 60 - elapsedSeconds;
-                Log.Info($"Limit of {_config.MaximumRequestsPerMinute} requests per minute is reached. Waiting for {sleepTime} seconds to continue...");
-                Thread.Sleep(sleepTime);
-                _testRailClientWrapper.RequestsCount = 0;
-            }
-        }
-
-        private static void InsertLineToTheFile(string path, int lineNumber, string text)
+        public static void InsertLineToTheFile(string path, int lineNumber, string text)
         {
             var featureFIleLines = File.ReadAllLines(path).ToList();
             featureFIleLines.Insert(lineNumber, text);

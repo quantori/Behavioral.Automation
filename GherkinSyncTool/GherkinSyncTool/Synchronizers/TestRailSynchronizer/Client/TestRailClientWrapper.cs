@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Threading;
+using GherkinSyncTool.Configuration;
 using GherkinSyncTool.Exceptions;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Model;
 using Newtonsoft.Json.Linq;
@@ -9,6 +12,7 @@ using NLog;
 using TestRail;
 using TestRail.Types;
 using TestRail.Utils;
+using Config = GherkinSyncTool.Configuration.Config;
 
 namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
 {
@@ -18,13 +22,15 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
         private readonly TestRailClient _testRailClient;
 
         private int? _requestsCount;
+        private readonly Config _config;
+
         public int? RequestsCount
         {
             get => _requestsCount;
             set
             {
                 if (value < 0) 
-                    throw new ArgumentException("Number of requests per minute must be 0 or positive");
+                    throw new ArgumentException("Number of requests per minute must be positive");
                 _requestsCount = value;
             }
         }
@@ -32,7 +38,8 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
         public TestRailClientWrapper(TestRailClient testRailClient)
         {
             _testRailClient = testRailClient;
-            RequestsCount = 0;
+            _config = ConfigurationManager.GetConfiguration();
+            RequestsCount ??= 0;
         }
 
         public Case AddCase(CreateCaseRequest createCaseRequest)
@@ -85,7 +92,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
                     requestResult.ThrownException);
             }
 
-            Log.Info($"Requests sent: {++RequestsCount}");
+            Log.Debug($"Requests sent: {++RequestsCount}");
         }
 
         public ulong? CreateSection(CreateSectionRequest request)
@@ -115,6 +122,28 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             var result = _testRailClient.GetCases(projectId, suiteId);
             ValidateRequestResult(result);
             return result.Payload;
+        }
+
+        /// <summary>
+        /// Pauses sending of requests when requests per minutes limit is reached 
+        /// </summary>
+        /// <param name="elapsedMilliSeconds">Milliseconds elapsed from start</param>
+        public void RequestsLimitCheck(double elapsedMilliSeconds)
+        {
+            //To ensure that limiter works even when one or more minute has passed
+            elapsedMilliSeconds %= 60_000;
+            if (RequestsCount + 1 >= _config.TestRailMaxRequestsPerMinute &&
+                elapsedMilliSeconds <= 59_000)
+            {
+                //additional 3000 milliseconds of sleep - just in case
+                var sleepTime = (int) Math.Round(63_000 - elapsedMilliSeconds);
+                Log.Debug($"Limit of {_config.TestRailMaxRequestsPerMinute} requests per minute is reached. Waiting for {sleepTime} seconds to continue...");
+                Thread.Sleep(sleepTime);
+                RequestsCount = 0;
+                Log.Debug($"Waiting completed. Requests count set to 0");
+            }
+            else if (RequestsCount>=180) 
+                RequestsCount = 0;
         }
     }
 }
