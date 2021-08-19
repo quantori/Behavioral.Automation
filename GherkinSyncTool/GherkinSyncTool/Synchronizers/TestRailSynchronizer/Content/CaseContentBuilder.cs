@@ -38,22 +38,9 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
                     CustomSteps = ConvertToStringSteps(steps),
                     CustomTags = ConvertToStringTags(scenario, featureFile)
                 },
-                //TODO: fix TestRail client to be able to send template_id parameter with the addCase request
-                TemplateId = templateId,
+                TemplateId = templateId
             };
             return createCaseRequest;
-        }
-
-        public UpdateCaseRequest BuildUpdateCaseRequest(Tag tagId, Scenario scenario, IFeatureFile featureFile)
-        {
-            var id = UInt64.Parse(Regex.Match(tagId.Name, @"\d+").Value);
-
-            var updateCaseRequest = new UpdateCaseRequest
-            {
-                CaseId = id,
-                Title = scenario.Name
-            };
-            return updateCaseRequest;
         }
 
         private List<string> GetSteps(Scenario scenario, IFeatureFile featureFile)

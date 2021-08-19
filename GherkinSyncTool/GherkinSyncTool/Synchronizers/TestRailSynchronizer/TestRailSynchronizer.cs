@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -48,12 +49,13 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                         insertedTagIds++;
                     }
                     //Update scenarios that have tag id
-                    //TODO: update test case body, not only a title
                     if (tagId is not null)
                     {
-                        var updateCaseRequest =
-                            _caseContentBuilder.BuildUpdateCaseRequest(tagId, scenario, featureFile);
-                        _testRailClientWrapper.UpdateCase(updateCaseRequest);
+                        var id = UInt64.Parse(Regex.Match(tagId.Name, @"\d+").Value);
+                        
+                        var createCaseRequest = _caseContentBuilder.BuildCreateCaseRequest(scenario, featureFile);
+                        
+                        _testRailClientWrapper.UpdateCase(id, createCaseRequest);
                     }
                 }
             }
