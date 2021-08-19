@@ -16,7 +16,6 @@
         <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
         <PackageReference Include="NLog" Version="4.7.10" />
-        <PackageReference Include="TestRail" Version="3.1.2" />
     </ItemGroup>
 
     <ItemGroup>
@@ -29,6 +28,10 @@
         <Content Include="appsettings.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\testrail-client\TestRail\TestRail.csproj" />
     </ItemGroup>
     
 </Project>
