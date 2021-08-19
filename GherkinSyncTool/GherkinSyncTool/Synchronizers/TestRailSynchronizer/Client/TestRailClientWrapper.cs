@@ -8,6 +8,8 @@ using GherkinSyncTool.Exceptions;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Model;
 using Newtonsoft.Json.Linq;
 using NLog;
+using Polly;
+using Polly.Retry;
 using TestRail;
 using TestRail.Types;
 using TestRail.Utils;
@@ -22,6 +24,8 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
 
         private int? _requestsCount;
         private readonly Config _config;
+        private readonly int _attemptsCount;
+        private readonly int _sleepDuration;
 
         public int? RequestsCount
         {
@@ -39,14 +43,18 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             _testRailClient = testRailClient;
             _config = ConfigurationManager.GetConfiguration();
             RequestsCount ??= 0;
+            _attemptsCount = _config.TestRailRequestAttemptsCount ?? 3;
+            _sleepDuration = _config.TestRailPauseBetweenAttemptsSeconds ?? 5;
         }
 
         public Case AddCase(CreateCaseRequest createCaseRequest)
         {
-            var addCaseResponse =
+            var policy = CreatePolicy<Case>();
+            
+            var addCaseResponse = policy.Execute(()=>
                 _testRailClient.AddCase(createCaseRequest.SectionId, createCaseRequest.Title, createCaseRequest.TypeId,
                     createCaseRequest.PriorityId, createCaseRequest.Estimate, createCaseRequest.MilestoneId,
-                    createCaseRequest.Refs, JObject.FromObject(createCaseRequest.CustomFields), createCaseRequest.TemplateId);
+                    createCaseRequest.Refs, JObject.FromObject(createCaseRequest.CustomFields), createCaseRequest.TemplateId));
 
             ValidateRequestResult(addCaseResponse);
 
@@ -56,12 +64,15 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
 
         public void UpdateCase(UpdateCaseRequest updateCaseRequest)
         {
+            var policy = CreatePolicy<Case>();
+            
             var testRailCase = GetCase(updateCaseRequest.CaseId);
             
             //TODO: handle with test case content (not only title) 
             if (!testRailCase.Title.Equals(updateCaseRequest.Title))
             {
-                var updateCaseResult = _testRailClient.UpdateCase(updateCaseRequest.CaseId, updateCaseRequest.Title);
+                var updateCaseResult = policy.Execute(()=>
+                    _testRailClient.UpdateCase(updateCaseRequest.CaseId, updateCaseRequest.Title));
                 
                 ValidateRequestResult(updateCaseResult);
 
@@ -75,7 +86,9 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
 
         public Case GetCase(ulong id)
         {
-            var testRailCase = _testRailClient.GetCase(id);
+            var policy = CreatePolicy<Case>();
+            var testRailCase = policy.Execute(()=>
+                _testRailClient.GetCase(id));
 
             ValidateRequestResult(testRailCase);
 
@@ -96,12 +109,15 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
 
         public ulong? CreateSection(CreateSectionRequest request)
         {
-            var response = _testRailClient.AddSection(
+            var policy = CreatePolicy<Section>();
+            
+            var response = policy.Execute(()=>
+                _testRailClient.AddSection(
                 request.ProjectId,
                 request.SuiteId,
                 request.Name, 
                 request.ParentId, 
-                request.Description);
+                request.Description));
             
             ValidateRequestResult(response);
             Log.Info($"Section created: [{response.Payload.Id}] {response.Payload.Name}");
@@ -111,14 +127,16 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
 
         public IEnumerable<Section> GetSections(ulong projectId)
         {
-            var result = _testRailClient.GetSections(projectId);
+            var policy = CreatePolicy<IList<Section>>();
+            var result = policy.Execute(()=>_testRailClient.GetSections(projectId));
             ValidateRequestResult(result);
             return result.Payload;
         }
 
         public IEnumerable<Case> GetCases(ulong projectId, ulong suiteId)
         {
-            var result = _testRailClient.GetCases(projectId, suiteId);
+            var policy = CreatePolicy<IList<Case>>();
+            var result = policy.Execute(()=> _testRailClient.GetCases(projectId, suiteId));
             ValidateRequestResult(result);
             return result.Payload;
         }
@@ -129,9 +147,10 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
         /// <param name="elapsedMilliSeconds">Milliseconds elapsed from start</param>
         public void RequestsLimitCheck(double elapsedMilliSeconds)
         {
+            var maxRequests = _config.TestRailMaxRequestsPerMinute;
             //To ensure that limiter works even when one or more minute has passed
             elapsedMilliSeconds %= 60_000;
-            if (RequestsCount + 1 >= _config.TestRailMaxRequestsPerMinute &&
+            if (RequestsCount + 1 >= maxRequests &&
                 elapsedMilliSeconds <= 59_000)
             {
                 //additional 3000 milliseconds of sleep - just in case
@@ -141,8 +160,23 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
                 RequestsCount = 0;
                 Log.Debug($"Waiting completed. Requests count set to 0");
             }
-            else if (RequestsCount>=180) 
+            else if (RequestsCount >=_config.TestRailMaxRequestsPerMinute) 
                 RequestsCount = 0;
+        }
+
+        /// <summary>
+        /// RetryPolicy for request result of given type 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        private RetryPolicy<RequestResult<T>> CreatePolicy<T>()
+        {
+            return Policy.HandleResult<RequestResult<T>>(r=>(int)r.StatusCode < 200 && (int)r.StatusCode > 299)
+                .WaitAndRetry(_attemptsCount, retryAttempt =>
+                {
+                    Log.Debug($"Attempt {retryAttempt} of {_attemptsCount}, waiting for {_sleepDuration}");
+                    return TimeSpan.FromSeconds(_sleepDuration);
+                });
         }
     }
 }

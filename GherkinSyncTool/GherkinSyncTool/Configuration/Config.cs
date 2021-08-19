@@ -13,6 +13,32 @@ namespace GherkinSyncTool.Configuration
         public string TestRailBaseUrl { get; set; } 
         public string TestRailUserName { get; set; }
         public string TestRailPassword { get; set; }
+        
+        private int? _testRailRequestAttemptsCount;
+
+        public int? TestRailRequestAttemptsCount
+        {
+            get => _testRailRequestAttemptsCount;
+            set
+            {
+                if (value < 0) 
+                    throw new ArgumentException("Attempts count must be a positive number");
+                _testRailRequestAttemptsCount = value;
+            }
+        }
+
+        private int? _testRailPauseBetweenAttemptsSeconds;
+
+        public int? TestRailPauseBetweenAttemptsSeconds
+        {
+            get =>_testRailPauseBetweenAttemptsSeconds; 
+            set
+            {
+                if (value < 0) 
+                    throw new ArgumentException("Pause between requests must be a positive number");
+                _testRailPauseBetweenAttemptsSeconds = value;
+            }
+        }
         public int? TestRailMaxRequestsPerMinute { get; set; }
         private string _directory;
         public string BaseDirectory

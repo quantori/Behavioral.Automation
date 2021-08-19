@@ -18,13 +18,11 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
         private static readonly Logger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType?.Name);
         private readonly TestRailClientWrapper _testRailClientWrapper;
         private readonly CaseContentBuilder _caseContentBuilder;
-        private readonly Config _config;
 
         public TestRailSynchronizer(TestRailClientWrapper testRailClientWrapper, CaseContentBuilder caseContentBuilder)
         {
             _testRailClientWrapper = testRailClientWrapper;
             _caseContentBuilder = caseContentBuilder;
-            _config = ConfigurationManager.GetConfiguration();
         }
 
         public void Sync(List<IFeatureFile> featureFiles)
@@ -38,8 +36,6 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                 foreach (var scenario in featureFile.Document.Feature.Children.OfType<Scenario>())
                 {
                     var tagId = scenario.Tags.FirstOrDefault(tag => Regex.Match(tag.Name, config.TagIdPattern, RegexOptions.IgnoreCase).Success);
-                    if(_config.TestRailMaxRequestsPerMinute is not null)
-                        _testRailClientWrapper.RequestsLimitCheck(stopwatch.Elapsed.TotalMilliseconds);
                     
                     //Feature file that first time sync with TestRail, no tag id present.  
                     if (tagId is null)
@@ -64,7 +60,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
             Log.Info(@$"Synchronization with TestRail finished in: {stopwatch.Elapsed:mm\:ss\.fff}");
         }
 
-        public static void InsertLineToTheFile(string path, int lineNumber, string text)
+        private static void InsertLineToTheFile(string path, int lineNumber, string text)
         {
             var featureFIleLines = File.ReadAllLines(path).ToList();
             featureFIleLines.Insert(lineNumber, text);

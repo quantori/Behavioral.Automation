@@ -15,10 +15,6 @@ namespace GherkinSyncTool
           
         private static int Main(string[] args)
         {
-            Log.Info("GherkinSyncTool v.{0}{1}",
-                Assembly.GetExecutingAssembly().GetName().Version,
-                Environment.NewLine);
-
             var builder = new ContainerBuilder();
             builder.RegisterModule<GherkinSyncToolModule>();
             var container = builder.Build();
