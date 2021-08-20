@@ -17,12 +17,7 @@ namespace GherkinSyncTool.FeatureParser
             List<IFeatureFile> featureFiles = new List<IFeatureFile>();
             foreach (var gherkinFilePath in gherkinFilePaths)
             {
-                var file = new FeatureFile
-                {
-                    Document = ParseFeatureFile(gherkinFilePath),
-                    AbsolutePath = gherkinFilePath
-                };
-
+                var file = new FeatureFile(ParseFeatureFile(gherkinFilePath), gherkinFilePath);
                 featureFiles.Add(file);
             }
 

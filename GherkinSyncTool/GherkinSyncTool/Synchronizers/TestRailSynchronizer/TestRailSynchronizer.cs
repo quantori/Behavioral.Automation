@@ -28,7 +28,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
 
         public void Sync(List<IFeatureFile> featureFiles)
         {
-            Log.Info($"# Start synchronization whith TestRail");
+            Log.Info($"# Start synchronization with TestRail");
             var config = ConfigurationManager.GetConfiguration();
             var stopwatch = Stopwatch.StartNew();
             foreach (var featureFile in featureFiles)
