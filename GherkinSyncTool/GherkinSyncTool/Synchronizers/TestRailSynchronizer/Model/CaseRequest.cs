@@ -2,7 +2,7 @@
 
 namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Model
 {
-    public class CreateCaseRequest
+    public class CaseRequest
     {
         public ulong SectionId { get; init; }
         public string Title { get; init; }

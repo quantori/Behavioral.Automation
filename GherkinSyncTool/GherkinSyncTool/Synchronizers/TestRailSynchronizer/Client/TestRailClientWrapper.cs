@@ -22,11 +22,11 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             _testRailClient = testRailClient;
         }
 
-        public Case AddCase(CreateCaseRequest createCaseRequest)
+        public Case AddCase(CaseRequest caseRequest)
         {
             var addCaseResponse =
-                _testRailClient.AddCase(createCaseRequest.SectionId, createCaseRequest.Title, null, null, null, null,null,
-                    createCaseRequest.JObjectCustomFields, createCaseRequest.TemplateId);
+                _testRailClient.AddCase(caseRequest.SectionId, caseRequest.Title, null, null, null, null,null,
+                    caseRequest.JObjectCustomFields, caseRequest.TemplateId);
 
             ValidateRequestResult(addCaseResponse);
 
@@ -34,22 +34,22 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             return addCaseResponse.Payload;
         }
 
-        public void UpdateCase(ulong caseId, CreateCaseRequest createCaseRequest)
+        public void UpdateCase(ulong caseId, CaseRequest caseRequest)
         {
             var testRailCase = GetCase(caseId);
 
-            if (CompareTestCaseContent(createCaseRequest, testRailCase))
+            if (!IsTestCaseContentEqual(caseRequest, testRailCase))
             {
-                var updateCaseResult = _testRailClient.UpdateCase(caseId, createCaseRequest.Title, null, null, null, null, null, 
-                    createCaseRequest.JObjectCustomFields, createCaseRequest.TemplateId);
+                var updateCaseResult = _testRailClient.UpdateCase(caseId, caseRequest.Title, null, null, null, null, null, 
+                    caseRequest.JObjectCustomFields, caseRequest.TemplateId);
 
                 ValidateRequestResult(updateCaseResult);
 
-                Log.Info($"Updated: [{caseId}] {createCaseRequest.Title}");
+                Log.Info($"Updated: [{caseId}] {caseRequest.Title}");
             }
             else
             {
-                Log.Info($"Up-to-date: [{caseId}] {createCaseRequest.Title}");
+                Log.Info($"Up-to-date: [{caseId}] {caseRequest.Title}");
             }
         }
 
@@ -92,15 +92,15 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             return result.Payload;
         }
 
-        private static bool CompareTestCaseContent(CreateCaseRequest createCaseRequest, Case testRailCase)
+        private static bool IsTestCaseContentEqual(CaseRequest caseRequest, Case testRailCase)
         {
-            if(!testRailCase.Title.Equals(createCaseRequest.Title)) return true;
-            if(!testRailCase.TemplateId.Equals(createCaseRequest.TemplateId)) return true;
+            if(!testRailCase.Title.Equals(caseRequest.Title)) return false;
+            if(!testRailCase.TemplateId.Equals(caseRequest.TemplateId)) return false;
 
             var testRailCaseCustomFields = testRailCase.JsonFromResponse.ToObject<CaseCustomFields>();
-            if (!JToken.DeepEquals(createCaseRequest.JObjectCustomFields, JObject.FromObject(testRailCaseCustomFields))) return true;
+            if (!JToken.DeepEquals(caseRequest.JObjectCustomFields, JObject.FromObject(testRailCaseCustomFields))) return false;
             
-            return false;
+            return true;
         }
 
         private static void ValidateRequestResult<T>(RequestResult<T> requestResult)

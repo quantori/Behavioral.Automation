@@ -19,14 +19,14 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
             _sectionSynchronizer = sectionSynchronizer;
         }
 
-        public CreateCaseRequest BuildCreateCaseRequest(Scenario scenario, IFeatureFile featureFile)
+        public CaseRequest BuildCaseRequest(Scenario scenario, IFeatureFile featureFile)
         {
             var steps = GetSteps(scenario, featureFile);
             
             var sectionId = _sectionSynchronizer.GetOrCreateSectionId(featureFile.RelativePath);
             var templateId = _config.TestRailTemplateId;
 
-            var createCaseRequest = new CreateCaseRequest
+            var createCaseRequest = new CaseRequest
             {
                 Title = scenario.Name,
                 SectionId = sectionId,
