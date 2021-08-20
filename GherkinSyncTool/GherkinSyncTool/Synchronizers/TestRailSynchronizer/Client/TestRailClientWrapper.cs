@@ -20,28 +20,17 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
     {
         private static readonly Logger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType?.Name);
         private readonly TestRailClient _testRailClient;
-
-        private int? _requestsCount;
         private readonly Config _config;
         private readonly int _attemptsCount;
         private readonly int _sleepDuration;
 
-        public int? RequestsCount
-        {
-            get => _requestsCount;
-            set
-            {
-                if (value < 0) 
-                    throw new ArgumentException("Number of requests per minute must be positive");
-                _requestsCount = value;
-            }
-        }
+        private int? _requestsCount;
 
         public TestRailClientWrapper(TestRailClient testRailClient)
         {
             _testRailClient = testRailClient;
             _config = ConfigurationManager.GetConfiguration();
-            RequestsCount ??= 0;
+            _requestsCount ??= 0;
             _attemptsCount = _config.TestRailRetriesCount ?? 3;
             _sleepDuration = _config.TestRailPauseBetweenRetriesSeconds ?? 5;
         }
@@ -53,7 +42,8 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             var addCaseResponse = policy.Execute(()=>
                 _testRailClient.AddCase(createCaseRequest.SectionId, createCaseRequest.Title, createCaseRequest.TypeId,
                     createCaseRequest.PriorityId, createCaseRequest.Estimate, createCaseRequest.MilestoneId,
-                    createCaseRequest.Refs, JObject.FromObject(createCaseRequest.CustomFields), createCaseRequest.TemplateId));
+                    createCaseRequest.Refs, JObject.FromObject(createCaseRequest.CustomFields), 
+                    createCaseRequest.TemplateId));
 
             ValidateRequestResult(addCaseResponse);
 
@@ -99,11 +89,12 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             if (requestResult.StatusCode != HttpStatusCode.OK)
             {
                 throw new TestRailException(
-                    $"There is an issue with requesting TestRail: {requestResult.StatusCode.ToString()} {Environment.NewLine}{requestResult.RawJson}",
+                    $"There is an issue with requesting TestRail: {requestResult.StatusCode.ToString()} " +
+                    $"{Environment.NewLine}{requestResult.RawJson}",
                     requestResult.ThrownException);
             }
 
-            Log.Debug($"Requests sent: {++RequestsCount}");
+            Log.Debug($"Requests sent: {++_requestsCount}");
         }
 
         public ulong? CreateSection(CreateSectionRequest request)

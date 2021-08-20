@@ -5,42 +5,6 @@ namespace GherkinSyncTool.Configuration
 {
     public class Config
     {
-        public string TagIdPattern { get; set; } = "tc:";
-        public string TagId { get; set; } = "   @tc:";
-        public ulong TestRailProjectId { get; set; }
-        public ulong TestRailSuiteId { get; set; }
-        public ulong TestRailTemplateId { get; set; }
-        public string TestRailBaseUrl { get; set; } 
-        public string TestRailUserName { get; set; }
-        public string TestRailPassword { get; set; }
-        
-        private int? _testRailRetriesCount;
-
-        public int? TestRailRetriesCount
-        {
-            get => _testRailRetriesCount;
-            set
-            {
-                if (value < 0)
-                    throw new ArgumentException("Attempts count must be a positive number");
-                _testRailRetriesCount = value ?? 3;
-            }
-        } 
-
-        private int? _testRailPauseBetweenRetriesSeconds;
-
-        public int? TestRailPauseBetweenRetriesSeconds
-        {
-            get =>_testRailPauseBetweenRetriesSeconds; 
-            set
-            {
-                if (value < 0) 
-                    throw new ArgumentException("Pause between requests must be a positive number");
-                _testRailPauseBetweenRetriesSeconds = value ?? 5;
-            }
-        }
-        public int? TestRailMaxRequestsPerMinute { get; set; }
-        private string _directory;
         public string BaseDirectory
         {
             get => _directory;
@@ -54,5 +18,37 @@ namespace GherkinSyncTool.Configuration
                 _directory = value;
             }
         }
+        public string TagIdPattern { get; set; } = "tc:";
+        public string TagId { get; set; } = "   @tc:";
+        public ulong TestRailProjectId { get; set; }
+        public ulong TestRailSuiteId { get; set; }
+        public ulong TestRailTemplateId { get; set; }
+        public string TestRailBaseUrl { get; set; } 
+        public string TestRailUserName { get; set; }
+        public string TestRailPassword { get; set; }
+        public int? TestRailRetriesCount
+        {
+            get => _testRailRetriesCount;
+            set
+            {
+                if (value < 0)
+                    throw new ArgumentException("Attempts count must be a positive number");
+                _testRailRetriesCount = value ?? 3;
+            }
+        }
+        public int? TestRailPauseBetweenRetriesSeconds
+        {
+            get =>_testRailPauseBetweenRetriesSeconds; 
+            set
+            {
+                if (value < 0) 
+                    throw new ArgumentException("Pause between requests must be a positive number");
+                _testRailPauseBetweenRetriesSeconds = value ?? 5;
+            }
+        }
+        public int? TestRailMaxRequestsPerMinute { get; set; }
+        private int? _testRailPauseBetweenRetriesSeconds;
+        private int? _testRailRetriesCount;
+        private string _directory;
     }
 }
