@@ -38,11 +38,10 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                 {
                     var tagId = scenario.Tags.FirstOrDefault(tag => Regex.Match(tag.Name, config.TagIdPattern, RegexOptions.IgnoreCase).Success);
 
+                    var createCaseRequest = _caseContentBuilder.BuildCreateCaseRequest(scenario, featureFile);
                     //Feature file that first time sync with TestRail, no tag id present.  
                     if (tagId is null)
                     {
-                        var createCaseRequest = _caseContentBuilder.BuildCreateCaseRequest(scenario, featureFile);
-                        
                         var addCaseResponse = _testRailClientWrapper.AddCase(createCaseRequest);
                         
                         InsertLineToTheFile(featureFile.AbsolutePath, scenario.Location.Line - 1 + insertedTagIds, config.TagId + addCaseResponse.Id);
@@ -52,9 +51,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                     if (tagId is not null)
                     {
                         var id = UInt64.Parse(Regex.Match(tagId.Name, @"\d+").Value);
-                        
-                        var createCaseRequest = _caseContentBuilder.BuildCreateCaseRequest(scenario, featureFile);
-                        
+ 
                         _testRailClientWrapper.UpdateCase(id, createCaseRequest);
                     }
                 }

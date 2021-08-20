@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using Gherkin.Ast;
 using GherkinSyncTool.Configuration;
 using GherkinSyncTool.Interfaces;
@@ -35,7 +34,6 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
                 {
                     CustomPreconditions = ConvertToStringPreconditions(scenario, featureFile),
                     CustomStepsSeparated = ConvertToCustomStepsSeparated(steps),
-                    CustomSteps = ConvertToStringSteps(steps),
                     CustomTags = ConvertToStringTags(scenario, featureFile)
                 },
                 TemplateId = templateId
@@ -83,11 +81,6 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
         private List<CustomStepsSeparated> ConvertToCustomStepsSeparated(List<string> steps)
         {
             return steps.Select(step => new CustomStepsSeparated {Content = step}).ToList();
-        }
-
-        private string ConvertToStringSteps(List<string> steps)
-        {
-            return string.Join(Environment.NewLine, steps.Select(s => "- " + s));
         }
 
         private string ConvertToStringTags(Scenario scenario, IFeatureFile featureFile)

@@ -1,4 +1,6 @@
-﻿namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Model
+﻿using Newtonsoft.Json.Linq;
+
+namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Model
 {
     public class CreateCaseRequest
     {
@@ -11,5 +13,7 @@
         public string Refs { get; } = null;
         public CaseCustomFields CustomFields { get; init; }
         public ulong? TemplateId { get; init; }
+
+        public JObject JObjectCustomFields => CustomFields is not null ? JObject.FromObject(CustomFields) : null;
     }
 }

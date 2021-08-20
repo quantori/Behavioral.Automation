@@ -27,7 +27,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             var addCaseResponse =
                 _testRailClient.AddCase(createCaseRequest.SectionId, createCaseRequest.Title, createCaseRequest.TypeId,
                     createCaseRequest.PriorityId, createCaseRequest.Estimate, createCaseRequest.MilestoneId,
-                    createCaseRequest.Refs, JObject.FromObject(createCaseRequest.CustomFields), createCaseRequest.TemplateId);
+                    createCaseRequest.Refs, createCaseRequest.JObjectCustomFields, createCaseRequest.TemplateId);
 
             ValidateRequestResult(addCaseResponse);
 
@@ -38,10 +38,11 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
         public void UpdateCase(ulong caseId, CreateCaseRequest createCaseRequest)
         {
             var testRailCase = GetCase(caseId);
-            
-            if (!testRailCase.Title.Equals(createCaseRequest.Title))
+
+            if (CompareTestCaseContent(createCaseRequest, testRailCase))
             {
-                var updateCaseResult = _testRailClient.UpdateCase(caseId, createCaseRequest.Title);
+                var updateCaseResult = _testRailClient.UpdateCase(caseId, createCaseRequest.Title, createCaseRequest.TypeId, createCaseRequest.PriorityId, createCaseRequest.Estimate,
+                    createCaseRequest.MilestoneId, createCaseRequest.Refs, createCaseRequest.JObjectCustomFields, createCaseRequest.TemplateId);
 
                 ValidateRequestResult(updateCaseResult);
 
@@ -60,16 +61,6 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             ValidateRequestResult(testRailCase);
 
             return testRailCase.Payload;
-        }
-
-        private static void ValidateRequestResult<T>(RequestResult<T> requestResult)
-        {
-            if (requestResult.StatusCode != HttpStatusCode.OK)
-            {
-                throw new TestRailException(
-                    $"There is an issue with requesting TestRail: {requestResult.StatusCode.ToString()} {Environment.NewLine}{requestResult.RawJson}",
-                    requestResult.ThrownException);
-            }
         }
 
         public ulong? CreateSection(CreateSectionRequest request)
@@ -100,6 +91,32 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             var result = _testRailClient.GetCases(projectId, suiteId);
             ValidateRequestResult(result);
             return result.Payload;
+        }
+
+        private static bool CompareTestCaseContent(CreateCaseRequest createCaseRequest, Case testRailCase)
+        {
+            if(!testRailCase.Title.Equals(createCaseRequest.Title)) return true;
+            if(!testRailCase.TypeId.Equals(createCaseRequest.TypeId)) return true;
+            if(!testRailCase.PriorityId.Equals(createCaseRequest.PriorityId)) return true;
+            if(!testRailCase.Estimate.Equals(createCaseRequest.Estimate)) return true;
+            if(!testRailCase.MilestoneId.Equals(createCaseRequest.MilestoneId)) return true;
+            if(!testRailCase.References.Equals(createCaseRequest.Refs)) return true;
+            if(!testRailCase.TemplateId.Equals(createCaseRequest.TemplateId)) return true;
+
+            var testRailCaseCustomFields = testRailCase.JsonFromResponse.ToObject<CaseCustomFields>();
+            if (!JToken.DeepEquals(createCaseRequest.JObjectCustomFields, JObject.FromObject(testRailCaseCustomFields))) return true;
+            
+            return false;
+        }
+
+        private static void ValidateRequestResult<T>(RequestResult<T> requestResult)
+        {
+            if (requestResult.StatusCode != HttpStatusCode.OK)
+            {
+                throw new TestRailException(
+                    $"There is an issue with requesting TestRail: {requestResult.StatusCode.ToString()} {Environment.NewLine}{requestResult.RawJson}",
+                    requestResult.ThrownException);
+            }
         }
     }
 }

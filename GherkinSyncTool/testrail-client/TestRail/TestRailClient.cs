@@ -411,9 +411,10 @@ namespace TestRail
         /// <param name="milestoneId">The ID of the milestone that is linked to the test case.</param>
         /// <param name="refs">A comma-separated list of references/requirements.</param>
         /// <param name="customs">Custom fields are also included in the response and use their system name prefixed with 'custom_' as their field identifier.</param>
+        /// <param name="templateId">The ID of the template (field layout) (requires <b>TestRail 5.2</b> or later).</param>
         /// <returns>If successful, this method returns the updated test case.</returns>
         public RequestResult<Case> UpdateCase(ulong caseId, string title, ulong? typeId = null, ulong? priorityId = null, string estimate = null,
-            ulong? milestoneId = null, string refs = null, JObject customs = null)
+            ulong? milestoneId = null, string refs = null, JObject customs = null, ulong? templateId = null)
         {
             if (string.IsNullOrWhiteSpace(title))
             {
@@ -429,7 +430,8 @@ namespace TestRail
                 PriorityId = priorityId,
                 Estimate = estimate,
                 MilestoneId = milestoneId,
-                References = refs
+                References = refs,
+                TemplateId = templateId
             };
 
             var jsonParams = JsonUtility.Merge(tmpCase.GetJson(), customs);
