@@ -18,13 +18,12 @@ namespace GherkinSyncTool
             Log.Info("GherkinSyncTool v.{0}{1}",
                 Assembly.GetExecutingAssembly().GetName().Version,
                 Environment.NewLine);
-
-            var builder = new ContainerBuilder();
-            builder.RegisterModule<GherkinSyncToolModule>();
-            var container = builder.Build();
             
             try
             {
+                var builder = new ContainerBuilder();
+                builder.RegisterModule<GherkinSyncToolModule>();
+                var container = builder.Build();
                 //Parse files
                 var parseFilesStopwatch = Stopwatch.StartNew();
                 List<IFeatureFile> featureFiles = ParseFeatureFiles(container);

@@ -40,10 +40,9 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             var policy = CreateResultHandlerPolicy<Case>();
             
             var addCaseResponse = policy.Execute(()=>
-                _testRailClient.AddCase(createCaseRequest.SectionId, createCaseRequest.Title, createCaseRequest.TypeId,
-                    createCaseRequest.PriorityId, createCaseRequest.Estimate, createCaseRequest.MilestoneId,
-                    createCaseRequest.Refs, JObject.FromObject(createCaseRequest.CustomFields), 
-                    createCaseRequest.TemplateId));
+                _testRailClient.AddCase(caseRequest.SectionId, caseRequest.Title, null,
+                    null, null, null, null, 
+                    caseRequest.JObjectCustomFields, caseRequest.TemplateId));
 
             ValidateRequestResult(addCaseResponse);
 
@@ -55,16 +54,13 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
         {
             var policy = CreateResultHandlerPolicy<Case>();
             
-            var testRailCase = GetCase(updateCaseRequest.CaseId);
-            
-            //TODO: handle with test case content (not only title) 
-            if (!testRailCase.Title.Equals(updateCaseRequest.Title))
             var testRailCase = GetCase(caseId);
 
             if (!IsTestCaseContentEqual(caseRequest, testRailCase))
             {
                 var updateCaseResult = policy.Execute(()=>
-                    _testRailClient.UpdateCase(updateCaseRequest.CaseId, updateCaseRequest.Title));
+                    _testRailClient.UpdateCase(caseId, caseRequest.Title, null, null, null, null, null, 
+                        caseRequest.JObjectCustomFields, caseRequest.TemplateId));
                 
                 ValidateRequestResult(updateCaseResult);
 
@@ -106,11 +102,11 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             
             var response = policy.Execute(()=>
                 _testRailClient.AddSection(
-                request.ProjectId,
-                request.SuiteId,
-                request.Name, 
-                request.ParentId, 
-                request.Description));
+                    request.ProjectId,
+                    request.SuiteId,
+                    request.Name, 
+                    request.ParentId, 
+                    request.Description));
             
             ValidateRequestResult(response);
             Log.Info($"Section created: [{response.Payload.Id}] {response.Payload.Name}");
@@ -158,16 +154,6 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             if (!JToken.DeepEquals(caseRequest.JObjectCustomFields, JObject.FromObject(testRailCaseCustomFields))) return false;
             
             return true;
-        }
-
-        private static void ValidateRequestResult<T>(RequestResult<T> requestResult)
-        {
-            if (requestResult.StatusCode != HttpStatusCode.OK)
-            {
-                throw new TestRailException(
-                    $"There is an issue with requesting TestRail: {requestResult.StatusCode.ToString()} {Environment.NewLine}{requestResult.RawJson}",
-                    requestResult.ThrownException);
-            }
         }
     }
 }
