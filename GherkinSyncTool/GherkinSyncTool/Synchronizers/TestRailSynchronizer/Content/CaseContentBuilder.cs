@@ -116,7 +116,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
         private string ConvertToStringPreconditions(Scenario scenario, IFeatureFile featureFile)
         {
             var preconditions = new StringBuilder();
-            preconditions.Append($"## {featureFile.Document.Feature.Keyword}: {featureFile.Document.Feature.Name}");
+            preconditions.AppendLine($"## {featureFile.Document.Feature.Keyword}: {featureFile.Document.Feature.Name}");
             preconditions.AppendLine(featureFile.Document.Feature.Description);
             preconditions.AppendLine($"## {scenario.Keyword}: {scenario.Name}");
             preconditions.AppendLine(scenario.Description);

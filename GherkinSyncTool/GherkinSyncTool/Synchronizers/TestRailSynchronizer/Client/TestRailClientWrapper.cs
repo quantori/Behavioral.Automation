@@ -25,9 +25,8 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
         public Case AddCase(CreateCaseRequest createCaseRequest)
         {
             var addCaseResponse =
-                _testRailClient.AddCase(createCaseRequest.SectionId, createCaseRequest.Title, createCaseRequest.TypeId,
-                    createCaseRequest.PriorityId, createCaseRequest.Estimate, createCaseRequest.MilestoneId,
-                    createCaseRequest.Refs, createCaseRequest.JObjectCustomFields, createCaseRequest.TemplateId);
+                _testRailClient.AddCase(createCaseRequest.SectionId, createCaseRequest.Title, null,null, null, null,null,
+                    createCaseRequest.JObjectCustomFields, createCaseRequest.TemplateId);
 
             ValidateRequestResult(addCaseResponse);
 
@@ -41,8 +40,8 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
 
             if (CompareTestCaseContent(createCaseRequest, testRailCase))
             {
-                var updateCaseResult = _testRailClient.UpdateCase(caseId, createCaseRequest.Title, createCaseRequest.TypeId, createCaseRequest.PriorityId, createCaseRequest.Estimate,
-                    createCaseRequest.MilestoneId, createCaseRequest.Refs, createCaseRequest.JObjectCustomFields, createCaseRequest.TemplateId);
+                var updateCaseResult = _testRailClient.UpdateCase(caseId, createCaseRequest.Title, null, null, null, null, null, 
+                    createCaseRequest.JObjectCustomFields, createCaseRequest.TemplateId);
 
                 ValidateRequestResult(updateCaseResult);
 
@@ -96,11 +95,6 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
         private static bool CompareTestCaseContent(CreateCaseRequest createCaseRequest, Case testRailCase)
         {
             if(!testRailCase.Title.Equals(createCaseRequest.Title)) return true;
-            if(!testRailCase.TypeId.Equals(createCaseRequest.TypeId)) return true;
-            if(!testRailCase.PriorityId.Equals(createCaseRequest.PriorityId)) return true;
-            if(!testRailCase.Estimate.Equals(createCaseRequest.Estimate)) return true;
-            if(!testRailCase.MilestoneId.Equals(createCaseRequest.MilestoneId)) return true;
-            if(!testRailCase.References.Equals(createCaseRequest.Refs)) return true;
             if(!testRailCase.TemplateId.Equals(createCaseRequest.TemplateId)) return true;
 
             var testRailCaseCustomFields = testRailCase.JsonFromResponse.ToObject<CaseCustomFields>();
