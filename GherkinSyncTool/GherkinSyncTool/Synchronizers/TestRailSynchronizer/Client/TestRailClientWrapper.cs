@@ -25,7 +25,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
         public Case AddCase(CreateCaseRequest createCaseRequest)
         {
             var addCaseResponse =
-                _testRailClient.AddCase(createCaseRequest.SectionId, createCaseRequest.Title, null,null, null, null,null,
+                _testRailClient.AddCase(createCaseRequest.SectionId, createCaseRequest.Title, null, null, null, null,null,
                     createCaseRequest.JObjectCustomFields, createCaseRequest.TemplateId);
 
             ValidateRequestResult(addCaseResponse);
