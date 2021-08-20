@@ -35,15 +35,14 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             _sleepDuration = _config.TestRailPauseBetweenRetriesSeconds ?? 5;
         }
 
-        public Case AddCase(CreateCaseRequest createCaseRequest)
+        public Case AddCase(CaseRequest caseRequest)
         {
             var policy = CreateResultHandlerPolicy<Case>();
             
             var addCaseResponse = policy.Execute(()=>
-                _testRailClient.AddCase(createCaseRequest.SectionId, createCaseRequest.Title, createCaseRequest.TypeId,
-                    createCaseRequest.PriorityId, createCaseRequest.Estimate, createCaseRequest.MilestoneId,
-                    createCaseRequest.Refs, JObject.FromObject(createCaseRequest.CustomFields), 
-                    createCaseRequest.TemplateId));
+                _testRailClient.AddCase(caseRequest.SectionId, caseRequest.Title, null,
+                    null, null, null, null, 
+                    caseRequest.JObjectCustomFields, caseRequest.TemplateId));
 
             ValidateRequestResult(addCaseResponse);
 
@@ -51,25 +50,25 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             return addCaseResponse.Payload;
         }
 
-        public void UpdateCase(UpdateCaseRequest updateCaseRequest)
+        public void UpdateCase(ulong caseId, CaseRequest caseRequest)
         {
             var policy = CreateResultHandlerPolicy<Case>();
             
-            var testRailCase = GetCase(updateCaseRequest.CaseId);
-            
-            //TODO: handle with test case content (not only title) 
-            if (!testRailCase.Title.Equals(updateCaseRequest.Title))
+            var testRailCase = GetCase(caseId);
+
+            if (!IsTestCaseContentEqual(caseRequest, testRailCase))
             {
                 var updateCaseResult = policy.Execute(()=>
-                    _testRailClient.UpdateCase(updateCaseRequest.CaseId, updateCaseRequest.Title));
+                    _testRailClient.UpdateCase(caseId, caseRequest.Title, null, null, null, null, null, 
+                        caseRequest.JObjectCustomFields, caseRequest.TemplateId));
                 
                 ValidateRequestResult(updateCaseResult);
 
-                Log.Info($"Updated: [{updateCaseRequest.CaseId}] {updateCaseRequest.Title}");
+                Log.Info($"Updated: [{caseId}] {caseRequest.Title}");
             }
             else
             {
-                Log.Info($"Up-to-date: [{updateCaseRequest.CaseId}] {updateCaseRequest.Title}");
+                Log.Info($"Up-to-date: [{caseId}] {caseRequest.Title}");
             }
         }
 
@@ -103,11 +102,11 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             
             var response = policy.Execute(()=>
                 _testRailClient.AddSection(
-                request.ProjectId,
-                request.SuiteId,
-                request.Name, 
-                request.ParentId, 
-                request.Description));
+                    request.ProjectId,
+                    request.SuiteId,
+                    request.Name, 
+                    request.ParentId, 
+                    request.Description));
             
             ValidateRequestResult(response);
             Log.Info($"Section created: [{response.Payload.Id}] {response.Payload.Name}");
@@ -144,6 +143,17 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
                     Log.Debug($"Attempt {retryAttempt} of {_attemptsCount}, waiting for {_sleepDuration}");
                     return TimeSpan.FromSeconds(_sleepDuration);
                 });
+        }
+
+        private static bool IsTestCaseContentEqual(CaseRequest caseRequest, Case testRailCase)
+        {
+            if(!testRailCase.Title.Equals(caseRequest.Title)) return false;
+            if(!testRailCase.TemplateId.Equals(caseRequest.TemplateId)) return false;
+
+            var testRailCaseCustomFields = testRailCase.JsonFromResponse.ToObject<CaseCustomFields>();
+            if (!JToken.DeepEquals(caseRequest.JObjectCustomFields, JObject.FromObject(testRailCaseCustomFields))) return false;
+            
+            return true;
         }
     }
 }

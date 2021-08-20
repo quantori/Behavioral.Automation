@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using Gherkin.Ast;
 using GherkinSyncTool.Configuration;
 using GherkinSyncTool.Interfaces;
@@ -20,14 +19,14 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
             _sectionSynchronizer = sectionSynchronizer;
         }
 
-        public CreateCaseRequest BuildCreateCaseRequest(Scenario scenario, IFeatureFile featureFile)
+        public CaseRequest BuildCaseRequest(Scenario scenario, IFeatureFile featureFile)
         {
             var steps = GetSteps(scenario, featureFile);
             
             var sectionId = _sectionSynchronizer.GetOrCreateSectionId(featureFile.RelativePath);
             var templateId = _config.TestRailTemplateId;
 
-            var createCaseRequest = new CreateCaseRequest
+            var createCaseRequest = new CaseRequest
             {
                 Title = scenario.Name,
                 SectionId = sectionId,
@@ -35,25 +34,11 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
                 {
                     CustomPreconditions = ConvertToStringPreconditions(scenario, featureFile),
                     CustomStepsSeparated = ConvertToCustomStepsSeparated(steps),
-                    CustomSteps = ConvertToStringSteps(steps),
                     CustomTags = ConvertToStringTags(scenario, featureFile)
                 },
-                //TODO: fix TestRail client to be able to send template_id parameter with the addCase request
-                TemplateId = templateId,
+                TemplateId = templateId
             };
             return createCaseRequest;
-        }
-
-        public UpdateCaseRequest BuildUpdateCaseRequest(Tag tagId, Scenario scenario, IFeatureFile featureFile)
-        {
-            var id = UInt64.Parse(Regex.Match(tagId.Name, @"\d+").Value);
-
-            var updateCaseRequest = new UpdateCaseRequest
-            {
-                CaseId = id,
-                Title = scenario.Name
-            };
-            return updateCaseRequest;
         }
 
         private List<string> GetSteps(Scenario scenario, IFeatureFile featureFile)
@@ -98,11 +83,6 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
             return steps.Select(step => new CustomStepsSeparated {Content = step}).ToList();
         }
 
-        private string ConvertToStringSteps(List<string> steps)
-        {
-            return string.Join(Environment.NewLine, steps.Select(s => "- " + s));
-        }
-
         private string ConvertToStringTags(Scenario scenario, IFeatureFile featureFile)
         {
             List<Tag> allTags = new List<Tag>();
@@ -136,7 +116,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
         private string ConvertToStringPreconditions(Scenario scenario, IFeatureFile featureFile)
         {
             var preconditions = new StringBuilder();
-            preconditions.Append($"## {featureFile.Document.Feature.Keyword}: {featureFile.Document.Feature.Name}");
+            preconditions.AppendLine($"## {featureFile.Document.Feature.Keyword}: {featureFile.Document.Feature.Name}");
             preconditions.AppendLine(featureFile.Document.Feature.Description);
             preconditions.AppendLine($"## {scenario.Keyword}: {scenario.Name}");
             preconditions.AppendLine(scenario.Description);

@@ -46,7 +46,7 @@ namespace GherkinSyncTool.Configuration
                 _testRailPauseBetweenRetriesSeconds = value ?? 5;
             }
         }
-        public int? TestRailMaxRequestsPerMinute { get; set; }
+
         private int? _testRailPauseBetweenRetriesSeconds;
         private int? _testRailRetriesCount;
         private string _directory;

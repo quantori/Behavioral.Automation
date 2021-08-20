@@ -10,10 +10,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Model
 
         [JsonProperty("custom_steps_separated")]
         public List<CustomStepsSeparated> CustomStepsSeparated { get; init; }
-        
-        [JsonProperty("custom_steps")] 
-        public string CustomSteps { get; init; }
-        
+
         [JsonProperty("custom_tags")] 
         public string CustomTags { get; init; }
     }

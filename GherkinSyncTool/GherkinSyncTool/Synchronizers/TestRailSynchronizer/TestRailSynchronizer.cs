@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -36,24 +37,22 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                 foreach (var scenario in featureFile.Document.Feature.Children.OfType<Scenario>())
                 {
                     var tagId = scenario.Tags.FirstOrDefault(tag => Regex.Match(tag.Name, config.TagIdPattern, RegexOptions.IgnoreCase).Success);
-                    
+
+                    var caseRequest = _caseContentBuilder.BuildCaseRequest(scenario, featureFile);
                     //Feature file that first time sync with TestRail, no tag id present.  
                     if (tagId is null)
                     {
-                        var createCaseRequest = _caseContentBuilder.BuildCreateCaseRequest(scenario, featureFile);
-                        
-                        var addCaseResponse = _testRailClientWrapper.AddCase(createCaseRequest);
+                        var addCaseResponse = _testRailClientWrapper.AddCase(caseRequest);
                         
                         InsertLineToTheFile(featureFile.AbsolutePath, scenario.Location.Line - 1 + insertedTagIds, config.TagId + addCaseResponse.Id);
                         insertedTagIds++;
                     }
                     //Update scenarios that have tag id
-                    //TODO: update test case body, not only a title
                     if (tagId is not null)
                     {
-                        var updateCaseRequest =
-                            _caseContentBuilder.BuildUpdateCaseRequest(tagId, scenario, featureFile);
-                        _testRailClientWrapper.UpdateCase(updateCaseRequest);
+                        var id = UInt64.Parse(Regex.Match(tagId.Name, @"\d+").Value);
+ 
+                        _testRailClientWrapper.UpdateCase(id, caseRequest);
                     }
                 }
             }
