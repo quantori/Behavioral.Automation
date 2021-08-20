@@ -9,20 +9,19 @@ namespace GherkinSyncTool.Models
     {
         public GherkinDocument Document { get; init; }
 
-        private string _absolutePath;
-        private string _relativePath;
-
-        public string AbsolutePath
+        public FeatureFile(GherkinDocument document, string path)
         {
-            get => _absolutePath;
-            set => _absolutePath = Path.GetFullPath(value);
+            if (!new FileInfo(path).Exists)
+                throw new DirectoryNotFoundException($"File {path} not found");
+            
+            Document = document;
+            AbsolutePath = Path.GetFullPath(path);
+            RelativePath = Path.GetRelativePath(
+                Directory.GetParent(ConfigurationManager.GetConfiguration().BaseDirectory).FullName, 
+                AbsolutePath);
         }
 
-        public string RelativePath
-        {
-            get => Path.GetRelativePath(
-                    Directory.GetParent(ConfigurationManager.GetConfiguration().BaseDirectory).FullName,
-                    AbsolutePath);
-        }
+        public string AbsolutePath { get; }
+        public string RelativePath { get; }
     }
 }

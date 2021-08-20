@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
-using System.Threading;
 using GherkinSyncTool.Configuration;
 using GherkinSyncTool.Exceptions;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Model;
@@ -43,13 +42,13 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             _testRailClient = testRailClient;
             _config = ConfigurationManager.GetConfiguration();
             RequestsCount ??= 0;
-            _attemptsCount = _config.TestRailRequestAttemptsCount ?? 3;
-            _sleepDuration = _config.TestRailPauseBetweenAttemptsSeconds ?? 5;
+            _attemptsCount = _config.TestRailRetriesCount ?? 3;
+            _sleepDuration = _config.TestRailPauseBetweenRetriesSeconds ?? 5;
         }
 
         public Case AddCase(CreateCaseRequest createCaseRequest)
         {
-            var policy = CreatePolicy<Case>();
+            var policy = CreateResultHandlerPolicy<Case>();
             
             var addCaseResponse = policy.Execute(()=>
                 _testRailClient.AddCase(createCaseRequest.SectionId, createCaseRequest.Title, createCaseRequest.TypeId,
@@ -64,7 +63,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
 
         public void UpdateCase(UpdateCaseRequest updateCaseRequest)
         {
-            var policy = CreatePolicy<Case>();
+            var policy = CreateResultHandlerPolicy<Case>();
             
             var testRailCase = GetCase(updateCaseRequest.CaseId);
             
@@ -86,7 +85,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
 
         public Case GetCase(ulong id)
         {
-            var policy = CreatePolicy<Case>();
+            var policy = CreateResultHandlerPolicy<Case>();
             var testRailCase = policy.Execute(()=>
                 _testRailClient.GetCase(id));
 
@@ -109,7 +108,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
 
         public ulong? CreateSection(CreateSectionRequest request)
         {
-            var policy = CreatePolicy<Section>();
+            var policy = CreateResultHandlerPolicy<Section>();
             
             var response = policy.Execute(()=>
                 _testRailClient.AddSection(
@@ -127,7 +126,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
 
         public IEnumerable<Section> GetSections(ulong projectId)
         {
-            var policy = CreatePolicy<IList<Section>>();
+            var policy = CreateResultHandlerPolicy<IList<Section>>();
             var result = policy.Execute(()=>_testRailClient.GetSections(projectId));
             ValidateRequestResult(result);
             return result.Payload;
@@ -135,33 +134,10 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
 
         public IEnumerable<Case> GetCases(ulong projectId, ulong suiteId)
         {
-            var policy = CreatePolicy<IList<Case>>();
+            var policy = CreateResultHandlerPolicy<IList<Case>>();
             var result = policy.Execute(()=> _testRailClient.GetCases(projectId, suiteId));
             ValidateRequestResult(result);
             return result.Payload;
-        }
-
-        /// <summary>
-        /// Pauses sending of requests when requests per minutes limit is reached 
-        /// </summary>
-        /// <param name="elapsedMilliSeconds">Milliseconds elapsed from start</param>
-        public void RequestsLimitCheck(double elapsedMilliSeconds)
-        {
-            var maxRequests = _config.TestRailMaxRequestsPerMinute;
-            //To ensure that limiter works even when one or more minute has passed
-            elapsedMilliSeconds %= 60_000;
-            if (RequestsCount + 1 >= maxRequests &&
-                elapsedMilliSeconds <= 59_000)
-            {
-                //additional 3000 milliseconds of sleep - just in case
-                var sleepTime = (int) Math.Round(63_000 - elapsedMilliSeconds);
-                Log.Debug($"Limit of {_config.TestRailMaxRequestsPerMinute} requests per minute is reached. Waiting for {sleepTime} seconds to continue...");
-                Thread.Sleep(sleepTime);
-                RequestsCount = 0;
-                Log.Debug($"Waiting completed. Requests count set to 0");
-            }
-            else if (RequestsCount >=_config.TestRailMaxRequestsPerMinute) 
-                RequestsCount = 0;
         }
 
         /// <summary>
@@ -169,7 +145,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        private RetryPolicy<RequestResult<T>> CreatePolicy<T>()
+        private RetryPolicy<RequestResult<T>> CreateResultHandlerPolicy<T>()
         {
             return Policy.HandleResult<RequestResult<T>>(r=>(int)r.StatusCode < 200 && (int)r.StatusCode > 299)
                 .WaitAndRetry(_attemptsCount, retryAttempt =>

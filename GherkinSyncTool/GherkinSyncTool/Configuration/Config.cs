@@ -14,29 +14,29 @@ namespace GherkinSyncTool.Configuration
         public string TestRailUserName { get; set; }
         public string TestRailPassword { get; set; }
         
-        private int? _testRailRequestAttemptsCount;
+        private int? _testRailRetriesCount;
 
-        public int? TestRailRequestAttemptsCount
+        public int? TestRailRetriesCount
         {
-            get => _testRailRequestAttemptsCount;
+            get => _testRailRetriesCount;
             set
             {
-                if (value < 0) 
+                if (value < 0)
                     throw new ArgumentException("Attempts count must be a positive number");
-                _testRailRequestAttemptsCount = value;
+                _testRailRetriesCount = value ?? 3;
             }
-        }
+        } 
 
-        private int? _testRailPauseBetweenAttemptsSeconds;
+        private int? _testRailPauseBetweenRetriesSeconds;
 
-        public int? TestRailPauseBetweenAttemptsSeconds
+        public int? TestRailPauseBetweenRetriesSeconds
         {
-            get =>_testRailPauseBetweenAttemptsSeconds; 
+            get =>_testRailPauseBetweenRetriesSeconds; 
             set
             {
                 if (value < 0) 
                     throw new ArgumentException("Pause between requests must be a positive number");
-                _testRailPauseBetweenAttemptsSeconds = value;
+                _testRailPauseBetweenRetriesSeconds = value ?? 5;
             }
         }
         public int? TestRailMaxRequestsPerMinute { get; set; }
