@@ -36,7 +36,7 @@ namespace GherkinSyncTool
                 Log.Info(@$"{featureFiles.Count} file(s) found in {parseFilesStopwatch.Elapsed:mm\:ss\.fff}");
 
                 //Push to sync target system
-                var synchronizer= container.Resolve<ISynchronizer>();
+                var synchronizer = container.Resolve<ISynchronizer>();
                 synchronizer.Sync(featureFiles);
             }
             catch (Exception ex)
