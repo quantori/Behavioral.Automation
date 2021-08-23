@@ -23,6 +23,10 @@ namespace TestRail.Enums
 
         /// <summary>For close commands.</summary>
         [Description("close")]
-        Close
+        Close,
+        
+        /// <summary>For move commands.</summary>
+        [Description("move")]
+        Move
     }
 }

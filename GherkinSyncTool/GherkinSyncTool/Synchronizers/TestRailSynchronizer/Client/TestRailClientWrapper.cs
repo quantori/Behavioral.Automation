@@ -131,6 +131,20 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
         }
 
         /// <summary>
+        /// Moves feature file to new section
+        /// </summary>
+        /// <param name="newSectionId">Id of destination section</param>
+        /// <param name="caseIds">array of feature file id's</param>
+        public void MoveCases(ulong newSectionId, IEnumerable<ulong> caseIds)
+        {
+            var policy = CreateResultHandlerPolicy<Result>();
+            var result = policy.Execute(()=>
+                _testRailClient.MoveCases(newSectionId, caseIds));
+            ValidateRequestResult(result);
+            Log.Info($"Cases {string.Join(", ", caseIds)} moved to section {newSectionId}");
+        }
+
+        /// <summary>
         /// RetryPolicy for request result of given type 
         /// </summary>
         /// <typeparam name="T"></typeparam>

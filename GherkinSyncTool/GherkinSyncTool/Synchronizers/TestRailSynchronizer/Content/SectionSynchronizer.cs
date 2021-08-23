@@ -32,7 +32,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
         /// <param name="relativePath">Relative path to .feature file</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public ulong GetOrCreateSectionId(string relativePath)
+        public ulong GetOrCreateSectionIdFromPath(string relativePath)
         {
             var suiteId = _config.TestRailSuiteId;
             var projectId = _config.TestRailProjectId;

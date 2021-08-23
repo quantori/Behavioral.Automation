@@ -10,6 +10,7 @@ using GherkinSyncTool.Configuration;
 using GherkinSyncTool.Interfaces;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content;
+using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Model;
 using NLog;
 
 namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
@@ -31,6 +32,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
             Log.Info($"# Start synchronization with TestRail");
             var config = ConfigurationManager.GetConfiguration();
             var stopwatch = Stopwatch.StartNew();
+            var casesToMove = new Dictionary<ulong, List<ulong>>(); 
             foreach (var featureFile in featureFiles)
             {
                 int insertedTagIds = 0;
@@ -50,13 +52,30 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                     //Update scenarios that have tag id
                     if (tagId is not null)
                     {
-                        var id = UInt64.Parse(Regex.Match(tagId.Name, @"\d+").Value);
- 
-                        _testRailClientWrapper.UpdateCase(id, caseRequest);
+                        var caseId = UInt64.Parse(Regex.Match(tagId.Name, @"\d+").Value);
+                        AddCasesToMove(caseRequest, caseId, casesToMove);
+                        _testRailClientWrapper.UpdateCase(caseId, caseRequest);
                     }
                 }
             }
+            //Moving cases to new sections
+            foreach (var (key, value) in casesToMove)
+            {
+                _testRailClientWrapper.MoveCases(key, value);
+            }
             Log.Info(@$"Synchronization with TestRail finished in: {stopwatch.Elapsed:mm\:ss\.fff}");
+        }
+
+        private void AddCasesToMove(CaseRequest caseRequest, ulong caseId, IDictionary<ulong, List<ulong>> casesToMove)
+        {
+            var currentSectionId = caseRequest.SectionId;
+            var oldSectionId = _testRailClientWrapper.GetCase(caseId)?.SectionId;
+            if (oldSectionId.HasValue && !oldSectionId.Equals(currentSectionId))
+            {
+                if (!casesToMove.ContainsKey(currentSectionId))
+                    casesToMove.Add(currentSectionId, new List<ulong>() { caseId });
+                else casesToMove[currentSectionId].Add(caseId);
+            }
         }
 
         private static void InsertLineToTheFile(string path, int lineNumber, string text)
