@@ -10,7 +10,6 @@ using GherkinSyncTool.Configuration;
 using GherkinSyncTool.Interfaces;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content;
-using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Model;
 using NLog;
 
 namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
@@ -20,11 +19,14 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
         private static readonly Logger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType?.Name);
         private readonly TestRailClientWrapper _testRailClientWrapper;
         private readonly CaseContentBuilder _caseContentBuilder;
+        private readonly SectionSynchronizer _sectionSynchronizer;
 
-        public TestRailSynchronizer(TestRailClientWrapper testRailClientWrapper, CaseContentBuilder caseContentBuilder)
+        public TestRailSynchronizer(TestRailClientWrapper testRailClientWrapper, CaseContentBuilder caseContentBuilder,
+            SectionSynchronizer sectionSynchronizer)
         {
             _testRailClientWrapper = testRailClientWrapper;
             _caseContentBuilder = caseContentBuilder;
+            _sectionSynchronizer = sectionSynchronizer;
         }
 
         public void Sync(List<IFeatureFile> featureFiles)
@@ -35,12 +37,13 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
             var casesToMove = new Dictionary<ulong, List<ulong>>(); 
             foreach (var featureFile in featureFiles)
             {
-                int insertedTagIds = 0;
+                var insertedTagIds = 0;
+                var sectionId = _sectionSynchronizer.GetOrCreateSectionIdFromPath(featureFile.RelativePath);
                 foreach (var scenario in featureFile.Document.Feature.Children.OfType<Scenario>())
                 {
                     var tagId = scenario.Tags.FirstOrDefault(tag => Regex.Match(tag.Name, config.TagIdPattern, RegexOptions.IgnoreCase).Success);
 
-                    var caseRequest = _caseContentBuilder.BuildCaseRequest(scenario, featureFile);
+                    var caseRequest = _caseContentBuilder.BuildCaseRequest(scenario, featureFile, sectionId);
                     //Feature file that first time sync with TestRail, no tag id present.  
                     if (tagId is null)
                     {
@@ -53,28 +56,35 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                     if (tagId is not null)
                     {
                         var caseId = UInt64.Parse(Regex.Match(tagId.Name, @"\d+").Value);
-                        AddCasesToMove(caseRequest, caseId, casesToMove);
-                        _testRailClientWrapper.UpdateCase(caseId, caseRequest);
+                        var updatedCase = _testRailClientWrapper.UpdateCase(caseId, caseRequest);
+                        AddCasesToMove(updatedCase?.SectionId, caseRequest.SectionId, caseId, casesToMove);
                     }
                 }
             }
             //Moving cases to new sections
             foreach (var (key, value) in casesToMove)
-            {
+            {   
                 _testRailClientWrapper.MoveCases(key, value);
             }
             Log.Info(@$"Synchronization with TestRail finished in: {stopwatch.Elapsed:mm\:ss\.fff}");
         }
 
-        private void AddCasesToMove(CaseRequest caseRequest, ulong caseId, IDictionary<ulong, List<ulong>> casesToMove)
+        /// <summary>
+        /// Adds cases to move to new section, if changed
+        /// </summary>
+        /// <param name="oldSectionId">id of current section</param>
+        /// <param name="currentSectionId">id of old section</param>
+        /// <param name="caseId">case id</param>
+        /// <param name="casesToMove">IDictionary where key is section id and the value is case ids collection</param>
+        private void AddCasesToMove(ulong? oldSectionId, ulong? currentSectionId, ulong caseId, IDictionary<ulong, List<ulong>> casesToMove)
         {
-            var currentSectionId = caseRequest.SectionId;
-            var oldSectionId = _testRailClientWrapper.GetCase(caseId)?.SectionId;
-            if (oldSectionId.HasValue && !oldSectionId.Equals(currentSectionId))
+            if (oldSectionId.HasValue && currentSectionId.HasValue &&
+                !oldSectionId.Equals(currentSectionId))
             {
-                if (!casesToMove.ContainsKey(currentSectionId))
-                    casesToMove.Add(currentSectionId, new List<ulong>() { caseId });
-                else casesToMove[currentSectionId].Add(caseId);
+                var key = currentSectionId.Value;
+                if (!casesToMove.ContainsKey(key))
+                    casesToMove.Add(key, new List<ulong>() { caseId });
+                else casesToMove[key].Add(caseId);
             }
         }
 

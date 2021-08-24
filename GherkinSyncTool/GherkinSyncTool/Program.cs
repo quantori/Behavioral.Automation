@@ -15,8 +15,6 @@ namespace GherkinSyncTool
           
         private static int Main(string[] args)
         {
-            var domain = AppDomain.CurrentDomain;
-            domain.UnhandledException += GlobalExceptionHandler;
             Log.Info("GherkinSyncTool v.{0}{1}",
                 Assembly.GetExecutingAssembly().GetName().Version,
                 Environment.NewLine);
@@ -52,13 +50,6 @@ namespace GherkinSyncTool
             }
 
             return 0;
-        }
-
-        private static void GlobalExceptionHandler(object sender, UnhandledExceptionEventArgs e)
-        {
-            var exception = (Exception)e.ExceptionObject;
-            Log.Error(exception, $"GherkinSyncTool encountered unhadled exception");
-            Log.Error("Runtime terminating: {0}", e.IsTerminating);
         }
 
         private static List<IFeatureFile> ParseFeatureFiles(IContainer container)

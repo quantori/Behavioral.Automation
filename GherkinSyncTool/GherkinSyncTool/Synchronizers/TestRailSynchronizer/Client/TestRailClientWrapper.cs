@@ -50,15 +50,15 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             return addCaseResponse.Payload;
         }
 
-        public void UpdateCase(ulong caseId, CaseRequest caseRequest)
+        public Case UpdateCase(ulong caseId, CaseRequest caseRequest)
         {
             var policy = CreateResultHandlerPolicy<Case>();
             
             var testRailCase = GetCase(caseId);
-
+            RequestResult<Case> updateCaseResult = null;
             if (!IsTestCaseContentEqual(caseRequest, testRailCase))
             {
-                var updateCaseResult = policy.Execute(()=>
+                updateCaseResult = policy.Execute(()=>
                     _testRailClient.UpdateCase(caseId, caseRequest.Title, null, null, null, null, null, 
                         caseRequest.JObjectCustomFields, caseRequest.TemplateId));
                 
@@ -70,6 +70,8 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             {
                 Log.Info($"Up-to-date: [{caseId}] {caseRequest.Title}");
             }
+
+            return updateCaseResult?.Payload ?? testRailCase;
         }
 
         public Case GetCase(ulong id)
