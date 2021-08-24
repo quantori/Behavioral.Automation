@@ -18,9 +18,6 @@ namespace GherkinSyncTool.FeatureParser
             foreach (var gherkinFilePath in gherkinFilePaths)
             {
                 var file = new FeatureFile(ParseFeatureFile(gherkinFilePath), gherkinFilePath);
-                Log.Debug($"{gherkinFilePath} info: " +
-                          $"{Environment.NewLine} Absolute path: {file.AbsolutePath}" +
-                          $"{Environment.NewLine} Relative path: {file.RelativePath}");
                 featureFiles.Add(file);
             }
 
