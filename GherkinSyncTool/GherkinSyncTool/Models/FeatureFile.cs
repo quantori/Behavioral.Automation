@@ -19,18 +19,17 @@ namespace GherkinSyncTool.Models
             if (!new FileInfo(path).Exists)
                 throw new DirectoryNotFoundException($"File {path} not found");
 
-            var env = Environment.OSVersion.Platform;
-            
             Document = document;
             AbsolutePath = Path.GetFullPath(path);
             
             var baseDirectory = new DirectoryInfo(ConfigurationManager.GetConfiguration().BaseDirectory);
-            var relativeTo = baseDirectory.Parent.FullName;
-            Log.Debug($"Document: {Document.Feature.Name} " +
+            var relativeToDirectory = baseDirectory?.Parent?.FullName ?? 
+                                      throw new FileNotFoundException($"Base directory {baseDirectory} does not have a parent. Feature file creation is not possible");
+            RelativePath = Path.GetRelativePath(relativeToDirectory, AbsolutePath);
+            Log.Debug($"{Environment.NewLine}Parsing document \"{Document.Feature.Name}\"..." +
                       $"{Environment.NewLine} - Base directory: {baseDirectory}" +
-                      $"{Environment.NewLine} - Relative to directory: {relativeTo}");
-            RelativePath = Path.GetRelativePath(relativeTo, 
-                AbsolutePath);
+                      $"{Environment.NewLine} - Relative to directory: {relativeToDirectory} " +
+                      $"{Environment.NewLine} - Relative path result: {RelativePath}");
         }
 
         public string AbsolutePath { get; }
