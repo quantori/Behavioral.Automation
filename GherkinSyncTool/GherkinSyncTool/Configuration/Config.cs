@@ -18,8 +18,7 @@ namespace GherkinSyncTool.Configuration
                 _directory = value;
             }
         }
-        public string TagIdPattern { get; set; } = "tc:";
-        public string TagId { get; set; } = "   @tc:";
+        public string TagIdPrefix { get; set; } = "   @tc:";
         public ulong TestRailProjectId { get; set; }
         public ulong TestRailSuiteId { get; set; }
         public ulong TestRailTemplateId { get; set; }
