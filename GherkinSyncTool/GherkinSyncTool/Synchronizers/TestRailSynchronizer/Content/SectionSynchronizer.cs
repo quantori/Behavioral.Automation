@@ -93,7 +93,8 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
             var targetSectionsChecked = false;
             if (!sourceSections.Any() && sectionId is null)
                 throw new InvalidOperationException(
-                    "Attempt to create test case without setting the correct folder. Please check configuration file");
+                    "Attempt to create test case in base directory. " +
+                    "Please check configuration file - base directory should not contain .feature files.");
             while (sourceSections.Count != 0)
             {
                 var folderName = sourceSections.Dequeue();
