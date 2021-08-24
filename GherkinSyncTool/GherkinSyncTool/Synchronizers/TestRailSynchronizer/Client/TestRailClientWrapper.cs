@@ -131,10 +131,10 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
         }
 
         /// <summary>
-        /// Moves feature file to new section
+        /// Moves feature files to new section
         /// </summary>
         /// <param name="newSectionId">Id of destination section</param>
-        /// <param name="caseIds">array of feature file id's</param>
+        /// <param name="caseIds">collection of feature file id's</param>
         public void MoveCases(ulong newSectionId, IEnumerable<ulong> caseIds)
         {
             var policy = CreateResultHandlerPolicy<Result>();
