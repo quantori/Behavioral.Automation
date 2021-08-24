@@ -50,7 +50,7 @@ namespace GherkinSyncTool
 
             return 0;
         }
-        
+
         private static List<IFeatureFile> ParseFeatureFiles(IContainer container)
         {
             var featureFilesGrabber = container.Resolve<IFeatureFilesGrabber>();

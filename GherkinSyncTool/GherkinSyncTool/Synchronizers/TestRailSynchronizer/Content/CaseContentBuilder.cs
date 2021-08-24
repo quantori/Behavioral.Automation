@@ -11,19 +11,12 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
 {
     public class CaseContentBuilder
     {
-        private readonly SectionSynchronizer _sectionSynchronizer;
         private readonly Config _config = ConfigurationManager.GetConfiguration();
 
-        public CaseContentBuilder(SectionSynchronizer sectionSynchronizer)
-        {
-            _sectionSynchronizer = sectionSynchronizer;
-        }
-
-        public CaseRequest BuildCaseRequest(Scenario scenario, IFeatureFile featureFile)
+        public CaseRequest BuildCaseRequest(Scenario scenario, IFeatureFile featureFile, ulong sectionId)
         {
             var steps = GetSteps(scenario, featureFile);
-            
-            var sectionId = _sectionSynchronizer.GetOrCreateSectionId(featureFile.RelativePath);
+
             var templateId = _config.TestRailTemplateId;
 
             var createCaseRequest = new CaseRequest

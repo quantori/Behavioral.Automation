@@ -50,15 +50,15 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             return addCaseResponse.Payload;
         }
 
-        public void UpdateCase(ulong caseId, CaseRequest caseRequest)
+        public Case UpdateCase(ulong caseId, CaseRequest caseRequest)
         {
             var policy = CreateResultHandlerPolicy<Case>();
             
             var testRailCase = GetCase(caseId);
-
+            RequestResult<Case> updateCaseResult = null;
             if (!IsTestCaseContentEqual(caseRequest, testRailCase))
             {
-                var updateCaseResult = policy.Execute(()=>
+                updateCaseResult = policy.Execute(()=>
                     _testRailClient.UpdateCase(caseId, caseRequest.Title, null, null, null, null, null, 
                         caseRequest.JObjectCustomFields, caseRequest.TemplateId));
                 
@@ -70,6 +70,8 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             {
                 Log.Info($"Up-to-date: [{caseId}] {caseRequest.Title}");
             }
+
+            return updateCaseResult?.Payload ?? testRailCase;
         }
 
         public Case GetCase(ulong id)
@@ -128,6 +130,20 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             var result = policy.Execute(()=> _testRailClient.GetCases(projectId, suiteId));
             ValidateRequestResult(result);
             return result.Payload;
+        }
+
+        /// <summary>
+        /// Moves feature files to new section
+        /// </summary>
+        /// <param name="newSectionId">Id of destination section</param>
+        /// <param name="caseIds">collection of feature file id's</param>
+        public void MoveCases(ulong newSectionId, IEnumerable<ulong> caseIds)
+        {
+            var policy = CreateResultHandlerPolicy<Result>();
+            var result = policy.Execute(()=>
+                _testRailClient.MoveCases(newSectionId, caseIds));
+            ValidateRequestResult(result);
+            Log.Info($"Moved cases: {string.Join(", ", caseIds)} to section {newSectionId}");
         }
 
         /// <summary>

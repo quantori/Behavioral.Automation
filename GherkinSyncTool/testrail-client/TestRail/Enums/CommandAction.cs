@@ -24,7 +24,11 @@ namespace TestRail.Enums
         /// <summary>Used to access configurations.</summary>
         [Description("configs")]
         Configs,
-
+        
+        /// <summary>Used to move test case from one section to another.</summary>
+        [Description("cases_to_section")]
+        CasesToSection,
+        
         /// <summary>Used to access an individual milestone.</summary>
         [Description("milestone")]
         Milestone,
