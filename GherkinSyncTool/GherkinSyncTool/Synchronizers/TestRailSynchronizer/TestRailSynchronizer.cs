@@ -72,8 +72,8 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
         /// <summary>
         /// Adds cases to move to new section, if changed
         /// </summary>
-        /// <param name="oldSectionId">id of current section</param>
-        /// <param name="currentSectionId">id of old section</param>
+        /// <param name="oldSectionId">id of old section</param>
+        /// <param name="currentSectionId">id of current section</param>
         /// <param name="caseId">case id</param>
         /// <param name="casesToMove">IDictionary where key is section id and the value is case ids collection</param>
         private void AddCasesToMove(ulong? oldSectionId, ulong? currentSectionId, ulong caseId, IDictionary<ulong, List<ulong>> casesToMove)

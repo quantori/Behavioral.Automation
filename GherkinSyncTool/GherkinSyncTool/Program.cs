@@ -43,7 +43,6 @@ namespace GherkinSyncTool
                 if (Log.IsFatalEnabled)
                 {
                     Log.Fatal(ex, $"GherkinSyncTool did not complete successfully {Environment.NewLine}");
-                    Log.Error(ex,$"Application encountered following error:");
                 }
 
                 return 1;
