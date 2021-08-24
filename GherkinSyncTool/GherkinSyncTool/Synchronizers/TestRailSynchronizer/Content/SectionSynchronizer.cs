@@ -32,7 +32,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
         /// <param name="relativePath">Relative path to .feature file</param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public ulong GetOrCreateSectionId(string relativePath)
+        public ulong GetOrCreateSectionIdFromPath(string relativePath)
         {
             var suiteId = _config.TestRailSuiteId;
             var projectId = _config.TestRailProjectId;
@@ -84,16 +84,16 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
         /// <param name="sourceSections">Queue of local folder names from test files root to target file folder</param>
         /// <param name="suiteId">TestRail suite Id</param>
         /// <param name="projectId">TestRail project Id</param>
-        /// <param name="sectionId">TestRail section Id, null for the tests root</param>
+        /// <param name="parentSectionId">TestRail section Id, null for the tests root</param>
         /// <returns>Section Id for the selected .feature file</returns>
         private ulong GetOrCreateSectionIdRecursively(List<TestRailSection> targetSections,
             Queue<string> sourceSections,
-            ulong suiteId, ulong projectId, ulong? sectionId = null)
+            ulong suiteId, ulong projectId, ulong? parentSectionId = null)
         {
             var targetSectionsChecked = false;
-            if (!sourceSections.Any() && sectionId is null)
+            if (!sourceSections.Any() && parentSectionId is null)
                 throw new InvalidOperationException(
-                    "Attempt to create test case without setting the correct folder. Please check configuration file");
+                    "Attempt to create file without setting parent folder. Please check configuration file.");
             while (sourceSections.Count != 0)
             {
                 var folderName = sourceSections.Dequeue();
@@ -106,11 +106,11 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
                     }
                     targetSectionsChecked = true;
                 }
-                var parentId = sectionId;
-                sectionId = _testRailClientWrapper.CreateSection(new CreateSectionRequest(projectId, sectionId, suiteId, folderName, null));
-                targetSections = CreateChildSection(sectionId, suiteId, parentId, folderName, targetSections);
+                var parentId = parentSectionId;
+                parentSectionId = _testRailClientWrapper.CreateSection(new CreateSectionRequest(projectId, parentSectionId, suiteId, folderName, null));
+                targetSections = CreateChildSection(parentSectionId, suiteId, parentId, folderName, targetSections);
             }
-            return sectionId.Value;
+            return parentSectionId.Value;
         }
 
         /// <summary>

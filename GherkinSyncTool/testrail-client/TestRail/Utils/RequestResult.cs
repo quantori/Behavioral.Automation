@@ -33,7 +33,7 @@ namespace TestRail.Utils
         /// <param name="thrownException">The exception that was throw when the response was received.</param>
         public RequestResult(HttpStatusCode status, string rawJson = null, Exception thrownException = null)
         {
-            if (rawJson != null)
+            if (!string.IsNullOrEmpty(rawJson?.Trim()))
             {
                 RawJson = rawJson;
                 // Welcome to the nightmare zone

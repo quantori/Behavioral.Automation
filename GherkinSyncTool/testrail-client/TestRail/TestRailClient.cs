@@ -736,6 +736,25 @@ namespace TestRail
         }
         #endregion Delete Commands
 
+        #region CustomCommands
+
+        /// <summary>
+        /// Moves caseIds to another section
+        /// </summary>
+        /// <param name="newSectionId">Id of the new section</param>
+        /// <param name="caseIds">Array of caseIds to be moved</param>
+        /// <returns></returns>
+        public RequestResult<Result> MoveCases(ulong newSectionId, IEnumerable<ulong> caseIds)
+        {
+            var uri = _CreateUri_(CommandType.Move, CommandAction.CasesToSection, newSectionId);
+
+            var cases = new JObject(new JProperty("case_ids", new JArray(caseIds.Select(i=>i.ToString()))));
+
+            return _SendPostCommand<Result>(uri, cases);
+        }
+
+        #endregion
+
         #region Get Commands
         /// <summary>gets a test</summary>
         /// <param name="testId">id of the test</param>
