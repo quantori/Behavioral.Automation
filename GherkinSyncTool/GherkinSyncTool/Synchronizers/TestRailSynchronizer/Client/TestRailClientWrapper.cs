@@ -143,7 +143,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             var result = policy.Execute(()=>
                 _testRailClient.MoveCases(newSectionId, caseIds));
             ValidateRequestResult(result);
-            Log.Info($"Cases {string.Join(", ", caseIds)} moved to section {newSectionId}");
+            Log.Info($"Moved cases: {string.Join(", ", caseIds)} to section {newSectionId}");
         }
 
         /// <summary>

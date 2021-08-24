@@ -6,10 +6,6 @@
         <TargetFramework>net5.0</TargetFramework>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <DebugSymbols>true</DebugSymbols>
-    </PropertyGroup>
-
     <ItemGroup>
         <PackageReference Include="Autofac" Version="6.2.0" />
         <PackageReference Include="Gherkin" Version="20.0.1" />

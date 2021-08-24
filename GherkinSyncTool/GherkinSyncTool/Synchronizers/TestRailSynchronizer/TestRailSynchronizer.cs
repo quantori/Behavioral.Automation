@@ -57,7 +57,8 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                     {
                         var caseId = UInt64.Parse(Regex.Match(tagId.Name, @"\d+").Value);
                         var updatedCase = _testRailClientWrapper.UpdateCase(caseId, caseRequest);
-                        AddCasesToMove(updatedCase?.SectionId, caseRequest.SectionId, caseId, casesToMove);
+                        var oldSectionId = updatedCase.SectionId;
+                        AddCasesToMove(oldSectionId, sectionId, caseId, casesToMove);
                     }
                 }
             }
