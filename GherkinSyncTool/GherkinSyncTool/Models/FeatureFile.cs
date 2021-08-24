@@ -29,8 +29,8 @@ namespace GherkinSyncTool.Models
             Log.Debug($"");
             var relativeTo = baseDirectory.Parent.FullName;
             Log.Debug($"Document: {Document.Feature.Name} " +
-                      $" - Base directory: {baseDirectory}" +
-                      $" - Relative to directory: {relativeTo}");
+                      $"{Environment.NewLine} - Base directory: {baseDirectory}" +
+                      $"{Environment.NewLine} - Relative to directory: {relativeTo}");
             RelativePath = Path.GetRelativePath(relativeTo, 
                 AbsolutePath);
         }
