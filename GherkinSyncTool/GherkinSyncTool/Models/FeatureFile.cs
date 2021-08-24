@@ -25,8 +25,6 @@ namespace GherkinSyncTool.Models
             AbsolutePath = Path.GetFullPath(path);
             
             var baseDirectory = new DirectoryInfo(ConfigurationManager.GetConfiguration().BaseDirectory);
-            Log.Debug($"");
-            Log.Debug($"");
             var relativeTo = baseDirectory.Parent.FullName;
             Log.Debug($"Document: {Document.Feature.Name} " +
                       $"{Environment.NewLine} - Base directory: {baseDirectory}" +
