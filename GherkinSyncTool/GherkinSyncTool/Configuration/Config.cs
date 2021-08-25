@@ -10,21 +10,37 @@ namespace GherkinSyncTool.Configuration
             get => _directory;
             set
             {
-                if (string.IsNullOrEmpty(value)) 
-                    throw new ArgumentException("Parameter BaseDirectory must not be empty! Please check your settings");
+                if (string.IsNullOrEmpty(value))
+                    throw new ArgumentException(
+                        "Parameter BaseDirectory must not be empty! Please check your settings");
                 var info = new DirectoryInfo(value);
-                if (!info.Exists) 
+                if (!info.Exists)
                     throw new DirectoryNotFoundException($"Directory {value} not found, please, check the path");
                 _directory = value;
             }
         }
-        public string TagIdPrefix { get; set; } = "   @tc:";
+
+        public string TagIdPrefix { get; set; } = "@tc:";
+
+
+        public FormattingSettings FormattingSettings { get; set; }
+        public TestRailSettings TestRailSettings { get; set; }
+
+        private string _directory;
+    }
+
+    public class TestRailSettings
+    {
+        private int? _testRailPauseBetweenRetriesSeconds;
+        private int? _testRailRetriesCount;
+
         public ulong TestRailProjectId { get; set; }
         public ulong TestRailSuiteId { get; set; }
         public ulong TestRailTemplateId { get; set; }
-        public string TestRailBaseUrl { get; set; } 
+        public string TestRailBaseUrl { get; set; }
         public string TestRailUserName { get; set; }
         public string TestRailPassword { get; set; }
+
         public int? TestRailRetriesCount
         {
             get => _testRailRetriesCount;
@@ -35,19 +51,21 @@ namespace GherkinSyncTool.Configuration
                 _testRailRetriesCount = value ?? 3;
             }
         }
+
         public int? TestRailPauseBetweenRetriesSeconds
         {
-            get =>_testRailPauseBetweenRetriesSeconds; 
+            get => _testRailPauseBetweenRetriesSeconds;
             set
             {
-                if (value < 0) 
+                if (value < 0)
                     throw new ArgumentException("Pause between requests must be a positive number");
                 _testRailPauseBetweenRetriesSeconds = value ?? 5;
             }
         }
+    }
 
-        private int? _testRailPauseBetweenRetriesSeconds;
-        private int? _testRailRetriesCount;
-        private string _directory;
+    public class FormattingSettings
+    {
+        public string TagIndentation { get; set; } = "  ";
     }
 }

@@ -17,7 +17,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
         {
             var steps = GetSteps(scenario, featureFile);
 
-            var templateId = _config.TestRailTemplateId;
+            var templateId = _config.TestRailSettings.TestRailTemplateId;
 
             var createCaseRequest = new CaseRequest
             {

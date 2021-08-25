@@ -23,7 +23,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
         {
             _config = ConfigurationManager.GetConfiguration();
             _testRailClientWrapper = testRailClientWrapper;
-           _testRailSections = GetSectionsTree(_config.TestRailProjectId, _config.TestRailSuiteId).ToList();
+           _testRailSections = GetSectionsTree(_config.TestRailSettings.TestRailProjectId, _config.TestRailSettings.TestRailSuiteId).ToList();
         }
         
         /// <summary>
@@ -34,8 +34,8 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
         /// <exception cref="ArgumentNullException"></exception>
         public ulong GetOrCreateSectionIdFromPath(string relativePath)
         {
-            var suiteId = _config.TestRailSuiteId;
-            var projectId = _config.TestRailProjectId;
+            var suiteId = _config.TestRailSettings.TestRailSuiteId;
+            var projectId = _config.TestRailSettings.TestRailProjectId;
             Log.Info($"Input file: {relativePath}");
             //Path includes name of the feature file - hence SkipLast(1)
             var sourceSections = new Queue<string>(relativePath.Split(Path.DirectorySeparatorChar).SkipLast(1));
