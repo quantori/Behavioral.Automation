@@ -19,7 +19,7 @@ namespace GherkinSyncTool.Models
             AbsolutePath = Path.GetFullPath(path);
             var baseDirectory = new DirectoryInfo(ConfigurationManager.GetConfiguration().BaseDirectory);
             var relativeToDirectory = baseDirectory?.Parent?.FullName ?? 
-                                      throw new FileNotFoundException($"Base directory {baseDirectory} does not have a parent. Feature file creation is not possible");
+                                      throw new DirectoryNotFoundException($"Base directory {baseDirectory} does not have a parent");
             RelativePath = Path.GetRelativePath(relativeToDirectory, AbsolutePath);
         }
     }
