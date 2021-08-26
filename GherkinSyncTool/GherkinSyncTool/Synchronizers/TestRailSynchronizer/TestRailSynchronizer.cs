@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -11,6 +10,7 @@ using GherkinSyncTool.Exceptions;
 using GherkinSyncTool.Interfaces;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content;
+using GherkinSyncTool.Utils;
 using NLog;
 using TestRail.Types;
 
@@ -55,7 +55,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
 
                         var lineNumberToInsert = scenario.Location.Line - 1 + insertedTagIds;
                         var formattedTagId = _tagIndentation + _config.TagIdPrefix + addCaseResponse.Id;
-                        InsertLineToTheFile(featureFile.AbsolutePath, lineNumberToInsert, formattedTagId);
+                        HelperMethods.InsertLineToTheFile(featureFile.AbsolutePath, lineNumberToInsert, formattedTagId);
                         insertedTagIds++;
                     }
                     //Update scenarios that have tag id
@@ -74,7 +74,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                             Log.Info($"Case with id {caseId} not found. Reason: {message}" +
                                      $"{Environment.NewLine}Recreating missing case");
                             testRailCase = _testRailClientWrapper.AddCase(caseRequest);
-                            ReplaceLineInTheFile(featureFile.AbsolutePath, caseId.ToString(),testRailCase.Id.ToString());
+                            HelperMethods.ReplaceLineInTheFile(featureFile.AbsolutePath, caseId.ToString(),testRailCase.Id.ToString());
                         }
                         var testRailSectionId = testRailCase.SectionId;
                         AddCasesToMove(testRailSectionId, featureFileSectionId, caseId, casesToMove);
@@ -105,25 +105,6 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                 if (!casesToMove.ContainsKey(key))
                     casesToMove.Add(key, new List<ulong>() { caseId });
                 else casesToMove[key].Add(caseId);
-            }
-        }
-
-        private static void InsertLineToTheFile(string path, int lineNumber, string text)
-        {
-            var featureFIleLines = File.ReadAllLines(path).ToList();
-            featureFIleLines.Insert(lineNumber, text);
-            File.WriteAllLines(path, featureFIleLines);
-        }
-
-        private static void ReplaceLineInTheFile(string path, string oldLine, string newLine)
-        {
-            var featureFileLines = File.ReadAllLines(path).ToList();
-            var index = featureFileLines.FindIndex(s=>s.Contains(oldLine));
-            if(index >= 0)
-            {
-                featureFileLines[index] = featureFileLines[index].Replace(oldLine, newLine);
-                File.WriteAllLines(path, featureFileLines);
-                Log.Info($"TagId in {path} changed from {oldLine} to {newLine}");
             }
         }
     }
