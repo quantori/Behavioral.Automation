@@ -55,7 +55,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
 
                         var lineNumberToInsert = scenario.Location.Line - 1 + insertedTagIds;
                         var formattedTagId = _tagIndentation + _config.TagIdPrefix + addCaseResponse.Id;
-                        HelperMethods.InsertLineToTheFile(featureFile.AbsolutePath, lineNumberToInsert, formattedTagId);
+                        FeatureFilesEditMethods.InsertLineToTheFile(featureFile.AbsolutePath, lineNumberToInsert, formattedTagId);
                         insertedTagIds++;
                     }
                     //Update scenarios that have tag id
@@ -71,10 +71,9 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                         catch (TestRailNoCaseException e)
                         {
                             var message = string.IsNullOrEmpty(e.Message) ? "unknown" : e.Message;
-                            Log.Info($"Case with id {caseId} not found. Reason: {message}" +
-                                     $"{Environment.NewLine}Recreating missing case");
+                            Log.Warn($"Case with id {caseId} not found. Reason: {message} Recreating missing case");
                             testRailCase = _testRailClientWrapper.AddCase(caseRequest);
-                            HelperMethods.ReplaceLineInTheFile(featureFile.AbsolutePath, caseId.ToString(),testRailCase.Id.ToString());
+                            FeatureFilesEditMethods.ReplaceLineInTheFile(featureFile.AbsolutePath, caseId.ToString(),testRailCase.Id.ToString());
                         }
                         var testRailSectionId = testRailCase.SectionId;
                         AddCasesToMove(testRailSectionId, featureFileSectionId, caseId, casesToMove);

@@ -3,13 +3,13 @@ using System.Linq;
 
 namespace GherkinSyncTool.Utils
 {
-    internal static class HelperMethods
+    internal static class FeatureFilesEditMethods
     {
         internal static void InsertLineToTheFile(string path, int lineNumber, string text)
         {
-            var featureFIleLines = File.ReadAllLines(path).ToList();
-            featureFIleLines.Insert(lineNumber, text);
-            File.WriteAllLines(path, featureFIleLines);
+            var featureFileLines = File.ReadAllLines(path).ToList();
+            featureFileLines.Insert(lineNumber, text);
+            File.WriteAllLines(path, featureFileLines);
         }
 
         internal static void ReplaceLineInTheFile(string path, string oldLine, string newLine)

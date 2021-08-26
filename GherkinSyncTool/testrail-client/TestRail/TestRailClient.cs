@@ -1153,8 +1153,7 @@ namespace TestRail
             catch (WebException ex)
             {
                 var response = (HttpWebResponse) ex.Response;
-                using (var reader = new StreamReader(response.GetResponseStream() ??
-                                                     throw new InvalidOperationException("Server have not provided any response data")))
+                using (var reader = new StreamReader(response.GetResponseStream() ?? throw new InvalidOperationException("Response from server was null")))
                 {
                     var json = reader.ReadToEnd();
                     return new RequestResult<T>(response.StatusCode, json, ex);
