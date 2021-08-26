@@ -7,10 +7,12 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Gherkin.Ast;
 using GherkinSyncTool.Configuration;
+using GherkinSyncTool.Exceptions;
 using GherkinSyncTool.Interfaces;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content;
 using NLog;
+using TestRail.Types;
 
 namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
 {
@@ -20,7 +22,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
         private readonly TestRailClientWrapper _testRailClientWrapper;
         private readonly CaseContentBuilder _caseContentBuilder;
         private readonly SectionSynchronizer _sectionSynchronizer;
-        private readonly Config _config = ConfigurationManager.GetConfiguration();
+        private readonly GherkynSyncToolConfig _config = ConfigurationManager.GetConfiguration();
         private readonly string _tagIndentation;
 
         public TestRailSynchronizer(TestRailClientWrapper testRailClientWrapper, CaseContentBuilder caseContentBuilder,
@@ -40,12 +42,12 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
             foreach (var featureFile in featureFiles)
             {
                 var insertedTagIds = 0;
-                var sectionId = _sectionSynchronizer.GetOrCreateSectionIdFromPath(featureFile.RelativePath);
+                var featureFileSectionId = _sectionSynchronizer.GetOrCreateSectionIdFromPath(featureFile.RelativePath);
                 foreach (var scenario in featureFile.Document.Feature.Children.OfType<Scenario>())
                 {
                     var tagId = scenario.Tags.FirstOrDefault(tag => tag.Name.Contains(_config.TagIdPrefix));
 
-                    var caseRequest = _caseContentBuilder.BuildCaseRequest(scenario, featureFile, sectionId);
+                    var caseRequest = _caseContentBuilder.BuildCaseRequest(scenario, featureFile, featureFileSectionId);
                     //Feature file that first time sync with TestRail, no tag id present.  
                     if (tagId is null)
                     {
@@ -60,9 +62,22 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                     if (tagId is not null)
                     {
                         var caseId = UInt64.Parse(Regex.Match(tagId.Name, @"\d+").Value);
-                        var updatedCase = _testRailClientWrapper.UpdateCase(caseId, caseRequest);
-                        var oldSectionId = updatedCase.SectionId;
-                        AddCasesToMove(oldSectionId, sectionId, caseId, casesToMove);
+                        Case testRailCase;
+                        try
+                        {
+                            testRailCase = _testRailClientWrapper.GetCase(caseId);
+                        }
+                        catch (TestRailNoCaseException e)
+                        {
+                            var message = string.IsNullOrEmpty(e.Message) ? "unknown" : e.Message;
+                            Log.Info($"Case with id {caseId} not found. Reason: {message}" +
+                                     $"{Environment.NewLine}Recreating missing case");
+                            testRailCase = _testRailClientWrapper.AddCase(caseRequest);
+                            ReplaceLineInFile(featureFile.AbsolutePath, caseId.ToString(),testRailCase.Id.ToString());
+                        }
+                        _testRailClientWrapper.UpdateCase(testRailCase, caseRequest);
+                        var testRailSectionId = testRailCase.SectionId;
+                        AddCasesToMove(testRailSectionId, featureFileSectionId, caseId, casesToMove);
                     }
                 }
             }
@@ -98,6 +113,18 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
             var featureFIleLines = File.ReadAllLines(path).ToList();
             featureFIleLines.Insert(lineNumber, text);
             File.WriteAllLines(path, featureFIleLines);
+        }
+
+        private static void ReplaceLineInFile(string path, string oldLine, string newLine)
+        {
+            var featureFileLines = File.ReadAllLines(path).ToList();
+            var index = featureFileLines.FindIndex(s=>s.Contains(oldLine));
+            if(index >= 0)
+            {
+                featureFileLines[index] = featureFileLines[index].Replace(oldLine, newLine);
+                File.WriteAllLines(path, featureFileLines);
+                Log.Info($"TagId in {path} changed from {oldLine} to {newLine}");
+            }
         }
     }
 }

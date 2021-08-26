@@ -33,9 +33,12 @@ namespace TestRail.Utils
         /// <param name="thrownException">The exception that was throw when the response was received.</param>
         public RequestResult(HttpStatusCode status, string rawJson = null, Exception thrownException = null)
         {
-            if (!string.IsNullOrEmpty(rawJson?.Trim()))
+            RawJson = rawJson;
+            StatusCode = status;
+            ThrownException = thrownException;
+            
+            if (!string.IsNullOrEmpty(rawJson?.Trim()) && thrownException == null)
             {
-                RawJson = rawJson;
                 // Welcome to the nightmare zone
                 var parseType = typeof(T);
                 var isList = typeof(System.Collections.IEnumerable).IsAssignableFrom(typeof(T));
@@ -68,9 +71,6 @@ namespace TestRail.Utils
                     }
                 }
             }
-
-            StatusCode = status;
-            ThrownException = thrownException;
         }
     }
 }

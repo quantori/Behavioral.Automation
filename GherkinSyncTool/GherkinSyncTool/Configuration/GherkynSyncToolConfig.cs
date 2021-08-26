@@ -3,7 +3,7 @@ using System.IO;
 
 namespace GherkinSyncTool.Configuration
 {
-    public class Config
+    public class GherkynSyncToolConfig
     {
         public string BaseDirectory
         {

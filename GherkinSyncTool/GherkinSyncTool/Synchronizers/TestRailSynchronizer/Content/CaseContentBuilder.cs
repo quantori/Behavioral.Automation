@@ -11,7 +11,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
 {
     public class CaseContentBuilder
     {
-        private readonly Config _config = ConfigurationManager.GetConfiguration();
+        private readonly GherkynSyncToolConfig _config = ConfigurationManager.GetConfiguration();
 
         public CaseRequest BuildCaseRequest(Scenario scenario, IFeatureFile featureFile, ulong sectionId)
         {
