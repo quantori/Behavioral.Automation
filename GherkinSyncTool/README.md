@@ -5,6 +5,7 @@ a [gherkin syntax](https://cucumber.io/docs/gherkin/) also known as feature file
 other destinations.
 
 ## Supported test management systems
+
 - TestRail
 
 ## Installation
@@ -26,7 +27,7 @@ dotnet .\.\GherkinSyncTool\bin\Debug\net5.0\GherkinSyncTool.dll
 
 GherkinSyncTool could be configured in three ways. The priority corresponds to the list order.
 
-1. appsettings.json
+1. appsettings.json. [Example](GherkinSyncTool\appsettings.json).
 2. Environment variables
 3. Command-line arguments
 
@@ -35,53 +36,37 @@ GherkinSyncTool could be configured in three ways. The priority corresponds to t
 For the correct work of the tool, the TestRail template should have custom fields, which are presented in the table
 below. The template should not contain the required fields.
 
-|System Name|Type|
-|----|----|
-|`preconds`| Text type|
-|`steps_separated`| Step type|
-|`custom_tags`| String type|
+| System Name       | Type        |
+| ----------------- | ----------- |
+| `preconds`        | Text type   |
+| `steps_separated` | Step type   |
+| `custom_tags`     | String type |
 
 ### Common settings
 
-|Parameter|Description|Required|
-|----|----|----|
-|BaseDirectory|Absolute or relative to application folder path that contains *.feature files|Yes|
-|TagIdPrefix|A tag prefix that will be used for mark test scenarios as synchronized with a test management system|No|
+| Parameter     | Description                                                                                          | Required |
+| ------------- | ---------------------------------------------------------------------------------------------------- | :------: |
+| BaseDirectory | Absolute or relative to application folder path that contains *.feature files                        | Yes      |
+| TagIdPrefix   | A tag prefix that will be used for mark test scenarios as synchronized with a test management system | No       |
 
 ### Formatting settings
-|Parameter|Description|Required|
-|----|----|----|
-|TagIndentation|The space left between the margin and the start of an tag id|No|
+
+| Parameter      | Description                                                  | Required |
+| -------------- | ------------------------------------------------------------ | :------: |
+| TagIndentation | The space left between the margin and the start of an tag id | No       |
 
 ### TestRail settings
 
-|Parameter|Description|Required|
-|----|----|----|
-|TestRailProjectId|Id of a project that will be used for synchronization|Yes|
-|TestRailSuiteId|Id of a suite that will be used as a parent for creating sections|Yes|
-|TestRailTemplateId|Id of a template that will be used for creating or updating test cases|Yes|
-|TestRailRetriesCount|Count of retries in case of TestRail server returns a not success status code|No|
-|TestRailPauseBetweenRetriesSeconds|Pause between retries in seconds in case of TestRail server returns a not success status code|No|
-|TestRailBaseUrl|TestRail URL address|Yes|
-|TestRailUserName|TestRail user name|Yes|
-|TestRailPassword|TestRail password|Yes|
-
-### Example of appsettings.json
-
-``` json
-{
-  "BaseDirectory": "TestCases",
-  "TagIdPrefix": "  @tc:",
-  "TestRailProjectId": 1,
-  "TestRailSuiteId": 1,
-  "TestRailTemplateId": 2,
-  "TestRailRetriesCount": 3,
-  "TestRailPauseBetweenRetriesSeconds": 5,
-  "TestRailBaseUrl": "https://example.testrail.io/",
-  "TestRailUserName": "GherkinSyncTool@quantori.com",
-  "TestRailPassword": "password"
-}
-```
+| Parameter                  | Description                                                                                   | Required |
+| -------------------------- | --------------------------------------------------------------------------------------------- | :------: |
+| ProjectId                  | Id of a project that will be used for synchronization                                         | Yes      |
+| SuiteId                    | Id of a suite that will be used as a parent for creating sections                             | Yes      |
+| TemplateId                 | Id of a template that will be used for creating or updating test cases                        | Yes      |
+| RetriesCount               | Count of retries in case of TestRail server returns a not success status code                 | No       |
+| PauseBetweenRetriesSeconds | Pause between retries in seconds in case of TestRail server returns a not success status code | No       |
+| BaseUrl                    | TestRail URL address                                                                          | Yes      |
+| UserName                   | TestRail user name                                                                            | Yes      |
+| Password                   | TestRail password                                                                             | Yes      |
 
 ## Usage
 

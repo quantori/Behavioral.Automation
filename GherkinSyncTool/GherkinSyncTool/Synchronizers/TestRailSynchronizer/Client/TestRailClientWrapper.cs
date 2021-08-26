@@ -31,8 +31,8 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             _testRailClient = testRailClient;
             _config = ConfigurationManager.GetConfiguration();
             _requestsCount ??= 0;
-            _attemptsCount = _config.TestRailSettings.TestRailRetriesCount ?? 3;
-            _sleepDuration = _config.TestRailSettings.TestRailPauseBetweenRetriesSeconds ?? 5;
+            _attemptsCount = _config.TestRailSettings.RetriesCount ?? 3;
+            _sleepDuration = _config.TestRailSettings.PauseBetweenRetriesSeconds ?? 5;
         }
 
         public Case AddCase(CaseRequest caseRequest)
