@@ -20,6 +20,8 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
         private readonly TestRailClientWrapper _testRailClientWrapper;
         private readonly CaseContentBuilder _caseContentBuilder;
         private readonly SectionSynchronizer _sectionSynchronizer;
+        private readonly Config _config = ConfigurationManager.GetConfiguration();
+        private readonly string _tagIndentation;
 
         public TestRailSynchronizer(TestRailClientWrapper testRailClientWrapper, CaseContentBuilder caseContentBuilder,
             SectionSynchronizer sectionSynchronizer)
@@ -27,12 +29,12 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
             _testRailClientWrapper = testRailClientWrapper;
             _caseContentBuilder = caseContentBuilder;
             _sectionSynchronizer = sectionSynchronizer;
+            _tagIndentation = new string(' ', _config.FormattingSettings.TagIndentation);
         }
 
         public void Sync(List<IFeatureFile> featureFiles)
         {
             Log.Info($"# Start synchronization with TestRail");
-            var config = ConfigurationManager.GetConfiguration();
             var stopwatch = Stopwatch.StartNew();
             var casesToMove = new Dictionary<ulong, List<ulong>>(); 
             foreach (var featureFile in featureFiles)
@@ -41,7 +43,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                 var sectionId = _sectionSynchronizer.GetOrCreateSectionIdFromPath(featureFile.RelativePath);
                 foreach (var scenario in featureFile.Document.Feature.Children.OfType<Scenario>())
                 {
-                    var tagId = scenario.Tags.FirstOrDefault(tag => tag.Name.Contains(config.TagIdPrefix));
+                    var tagId = scenario.Tags.FirstOrDefault(tag => tag.Name.Contains(_config.TagIdPrefix));
 
                     var caseRequest = _caseContentBuilder.BuildCaseRequest(scenario, featureFile, sectionId);
                     //Feature file that first time sync with TestRail, no tag id present.  
@@ -50,7 +52,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                         var addCaseResponse = _testRailClientWrapper.AddCase(caseRequest);
 
                         var lineNumberToInsert = scenario.Location.Line - 1 + insertedTagIds;
-                        var formattedTagId = config.FormattingSettings.TagIndentation + config.TagIdPrefix + addCaseResponse.Id;
+                        var formattedTagId = _tagIndentation + _config.TagIdPrefix + addCaseResponse.Id;
                         InsertLineToTheFile(featureFile.AbsolutePath, lineNumberToInsert, formattedTagId);
                         insertedTagIds++;
                     }

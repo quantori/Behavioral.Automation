@@ -66,6 +66,6 @@ namespace GherkinSyncTool.Configuration
 
     public class FormattingSettings
     {
-        public string TagIndentation { get; set; } = "  ";
+        public int TagIndentation { get; set; } = 2;
     }
 }

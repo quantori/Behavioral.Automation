@@ -51,9 +51,9 @@ below. The template should not contain the required fields.
 
 ### Formatting settings
 
-| Parameter      | Description                                                  | Required |
-| -------------- | ------------------------------------------------------------ | :------: |
-| TagIndentation | The space left between the margin and the start of an tag id | No       |
+| Parameter      | Description            | Required |
+| -------------- | ---------------------- | :------: |
+| TagIndentation | Left indent for tag id | No       |
 
 ### TestRail settings
 
