@@ -52,24 +52,24 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             return addCaseResponse.Payload;
         }
 
-        public void UpdateCase(Case currentCase, CaseRequest updatedCase)
+        public void UpdateCase(Case currentCase, CaseRequest caseToUpdate)
         {
             var policy = CreateResultHandlerPolicy<Case>();
             var caseId = currentCase.Id ?? 
                          throw new ArgumentException("Case Id cannot be null");
-            if (!IsTestCaseContentEqual(updatedCase, currentCase))
+            if (!IsTestCaseContentEqual(caseToUpdate, currentCase))
             {
                 var updateCaseResult = policy.Execute(()=>
-                    _testRailClient.UpdateCase(caseId, updatedCase.Title, null, null, null, null, null, 
-                        updatedCase.JObjectCustomFields, updatedCase.TemplateId));
+                    _testRailClient.UpdateCase(caseId, caseToUpdate.Title, null, null, null, null, null, 
+                        caseToUpdate.JObjectCustomFields, caseToUpdate.TemplateId));
                 
                 ValidateRequestResult(updateCaseResult);
 
-                Log.Info($"Updated: [{caseId}] {updatedCase.Title}");
+                Log.Info($"Updated: [{caseId}] {caseToUpdate.Title}");
             }
             else
             {
-                Log.Info($"Up-to-date: [{caseId}] {updatedCase.Title}");
+                Log.Info($"Up-to-date: [{caseId}] {caseToUpdate.Title}");
             }
         }
 

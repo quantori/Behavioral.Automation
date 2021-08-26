@@ -66,6 +66,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                         try
                         {
                             testRailCase = _testRailClientWrapper.GetCase(caseId);
+                            _testRailClientWrapper.UpdateCase(testRailCase, caseRequest);
                         }
                         catch (TestRailNoCaseException e)
                         {
@@ -73,9 +74,8 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                             Log.Info($"Case with id {caseId} not found. Reason: {message}" +
                                      $"{Environment.NewLine}Recreating missing case");
                             testRailCase = _testRailClientWrapper.AddCase(caseRequest);
-                            ReplaceLineInFile(featureFile.AbsolutePath, caseId.ToString(),testRailCase.Id.ToString());
+                            ReplaceLineInTheFile(featureFile.AbsolutePath, caseId.ToString(),testRailCase.Id.ToString());
                         }
-                        _testRailClientWrapper.UpdateCase(testRailCase, caseRequest);
                         var testRailSectionId = testRailCase.SectionId;
                         AddCasesToMove(testRailSectionId, featureFileSectionId, caseId, casesToMove);
                     }
@@ -115,7 +115,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
             File.WriteAllLines(path, featureFIleLines);
         }
 
-        private static void ReplaceLineInFile(string path, string oldLine, string newLine)
+        private static void ReplaceLineInTheFile(string path, string oldLine, string newLine)
         {
             var featureFileLines = File.ReadAllLines(path).ToList();
             var index = featureFileLines.FindIndex(s=>s.Contains(oldLine));
