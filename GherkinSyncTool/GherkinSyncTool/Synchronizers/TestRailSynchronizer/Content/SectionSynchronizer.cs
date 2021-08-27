@@ -8,7 +8,6 @@ using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Model;
 using NLog;
 using TestRail.Types;
-using Config = GherkinSyncTool.Configuration.Config;
 
 namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
 {
@@ -16,7 +15,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
     {
         private static readonly Logger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType?.Name);
         private readonly TestRailClientWrapper _testRailClientWrapper;
-        private readonly Config _config;
+        private readonly GherkynSyncToolConfig _config;
         private List<TestRailSection> _testRailSections;
 
         public SectionSynchronizer(TestRailClientWrapper testRailClientWrapper)
@@ -58,16 +57,9 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content
                 .Select(s => new TestRailSection(s))
                 .ToDictionary(k => k.Id);
 
-            var testRailCases = _testRailClientWrapper
-                .GetCases(projectId, suiteId.Value)
-                .GroupBy(k => k.SectionId)
-                .ToDictionary(k => k.Key, k => k.ToArray());
-
             var result = new List<TestRailSection>();
             foreach (var section in testRailSectionsDictionary.Values)
             {
-                if (testRailCases.TryGetValue(section.Id, out Case[] value))
-                    testRailSectionsDictionary[section.Id].FeatureFiles.AddRange(value);
                 if (section.ParentId != null)
                     testRailSectionsDictionary[section.ParentId].ChildSections.Add(section);
                 else result.Add(section);

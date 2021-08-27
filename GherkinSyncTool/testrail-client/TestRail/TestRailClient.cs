@@ -1,6 +1,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -1149,6 +1150,15 @@ namespace TestRail
 
             // If there is an error, will try to create a new result object
             // with the corresponding response code
+            catch (WebException ex)
+            {
+                var response = (HttpWebResponse) ex.Response;
+                using (var reader = new StreamReader(response.GetResponseStream() ?? Stream.Null))
+                {
+                    var json = reader.ReadToEnd();
+                    return new RequestResult<T>(response.StatusCode, json, ex);
+                }
+            }
             catch (Exception thrownException)
             {
                 var message = thrownException.Message;

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using GherkinSyncTool.Configuration;
 using GherkinSyncTool.Exceptions;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Model;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NLog;
 using Polly;
@@ -12,7 +15,6 @@ using Polly.Retry;
 using TestRail;
 using TestRail.Types;
 using TestRail.Utils;
-using Config = GherkinSyncTool.Configuration.Config;
 
 namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
 {
@@ -20,7 +22,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
     {
         private static readonly Logger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod()?.DeclaringType?.Name);
         private readonly TestRailClient _testRailClient;
-        private readonly Config _config;
+        private readonly GherkynSyncToolConfig _config;
         private readonly int _attemptsCount;
         private readonly int _sleepDuration;
 
@@ -50,28 +52,25 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             return addCaseResponse.Payload;
         }
 
-        public Case UpdateCase(ulong caseId, CaseRequest caseRequest)
+        public void UpdateCase(Case currentCase, CaseRequest caseToUpdate)
         {
             var policy = CreateResultHandlerPolicy<Case>();
-            
-            var testRailCase = GetCase(caseId);
-            RequestResult<Case> updateCaseResult = null;
-            if (!IsTestCaseContentEqual(caseRequest, testRailCase))
+            var caseId = currentCase.Id ?? 
+                         throw new ArgumentException("Case Id cannot be null");
+            if (!IsTestCaseContentEqual(caseToUpdate, currentCase))
             {
-                updateCaseResult = policy.Execute(()=>
-                    _testRailClient.UpdateCase(caseId, caseRequest.Title, null, null, null, null, null, 
-                        caseRequest.JObjectCustomFields, caseRequest.TemplateId));
+                var updateCaseResult = policy.Execute(()=>
+                    _testRailClient.UpdateCase(caseId, caseToUpdate.Title, null, null, null, null, null, 
+                        caseToUpdate.JObjectCustomFields, caseToUpdate.TemplateId));
                 
                 ValidateRequestResult(updateCaseResult);
 
-                Log.Info($"Updated: [{caseId}] {caseRequest.Title}");
+                Log.Info($"Updated: [{caseId}] {caseToUpdate.Title}");
             }
             else
             {
-                Log.Info($"Up-to-date: [{caseId}] {caseRequest.Title}");
+                Log.Info($"Up-to-date: [{caseId}] {caseToUpdate.Title}");
             }
-
-            return updateCaseResult?.Payload ?? testRailCase;
         }
 
         public Case GetCase(ulong id)
@@ -79,7 +78,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
             var policy = CreateResultHandlerPolicy<Case>();
             var testRailCase = policy.Execute(()=>
                 _testRailClient.GetCase(id));
-
+            
             ValidateRequestResult(testRailCase);
 
             return testRailCase.Payload;
@@ -89,6 +88,10 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
         {
             if (requestResult.StatusCode != HttpStatusCode.OK)
             {
+                if(!string.IsNullOrEmpty(requestResult.RawJson) &&
+                   requestResult.RawJson.Contains("not a valid test case"))
+                    throw new TestRailNoCaseException("Case not found", requestResult.ThrownException);
+                
                 throw new TestRailException(
                     $"There is an issue with requesting TestRail: {requestResult.StatusCode.ToString()} " +
                     $"{Environment.NewLine}{requestResult.RawJson}",
@@ -153,10 +156,10 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client
         /// <returns></returns>
         private RetryPolicy<RequestResult<T>> CreateResultHandlerPolicy<T>()
         {
-            return Policy.HandleResult<RequestResult<T>>(r=>(int)r.StatusCode < 200 && (int)r.StatusCode > 299)
+            return Policy.HandleResult<RequestResult<T>>(r=>(int)r.StatusCode < 200 || (int)r.StatusCode > 299)
                 .WaitAndRetry(_attemptsCount, retryAttempt =>
                 {
-                    Log.Debug($"Attempt {retryAttempt} of {_attemptsCount}, waiting for {_sleepDuration}");
+                    Log.Debug($"Attempt {retryAttempt} of {_attemptsCount}, waiting for {_sleepDuration} seconds");
                     return TimeSpan.FromSeconds(_sleepDuration);
                 });
         }

@@ -1,16 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Gherkin.Ast;
 using GherkinSyncTool.Configuration;
+using GherkinSyncTool.Exceptions;
 using GherkinSyncTool.Interfaces;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Client;
 using GherkinSyncTool.Synchronizers.TestRailSynchronizer.Content;
+using GherkinSyncTool.Utils;
 using NLog;
+using TestRail.Types;
 
 namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
 {
@@ -20,7 +22,7 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
         private readonly TestRailClientWrapper _testRailClientWrapper;
         private readonly CaseContentBuilder _caseContentBuilder;
         private readonly SectionSynchronizer _sectionSynchronizer;
-        private readonly Config _config = ConfigurationManager.GetConfiguration();
+        private readonly GherkynSyncToolConfig _config = ConfigurationManager.GetConfiguration();
         private readonly string _tagIndentation;
 
         public TestRailSynchronizer(TestRailClientWrapper testRailClientWrapper, CaseContentBuilder caseContentBuilder,
@@ -40,12 +42,12 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
             foreach (var featureFile in featureFiles)
             {
                 var insertedTagIds = 0;
-                var sectionId = _sectionSynchronizer.GetOrCreateSectionIdFromPath(featureFile.RelativePath);
+                var featureFileSectionId = _sectionSynchronizer.GetOrCreateSectionIdFromPath(featureFile.RelativePath);
                 foreach (var scenario in featureFile.Document.Feature.Children.OfType<Scenario>())
                 {
                     var tagId = scenario.Tags.FirstOrDefault(tag => tag.Name.Contains(_config.TagIdPrefix));
 
-                    var caseRequest = _caseContentBuilder.BuildCaseRequest(scenario, featureFile, sectionId);
+                    var caseRequest = _caseContentBuilder.BuildCaseRequest(scenario, featureFile, featureFileSectionId);
                     //Feature file that first time sync with TestRail, no tag id present.  
                     if (tagId is null)
                     {
@@ -53,16 +55,28 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
 
                         var lineNumberToInsert = scenario.Location.Line - 1 + insertedTagIds;
                         var formattedTagId = _tagIndentation + _config.TagIdPrefix + addCaseResponse.Id;
-                        InsertLineToTheFile(featureFile.AbsolutePath, lineNumberToInsert, formattedTagId);
+                        TextFilesEditMethods.InsertLineToTheFile(featureFile.AbsolutePath, lineNumberToInsert, formattedTagId);
                         insertedTagIds++;
                     }
                     //Update scenarios that have tag id
                     if (tagId is not null)
                     {
                         var caseId = UInt64.Parse(Regex.Match(tagId.Name, @"\d+").Value);
-                        var updatedCase = _testRailClientWrapper.UpdateCase(caseId, caseRequest);
-                        var oldSectionId = updatedCase.SectionId;
-                        AddCasesToMove(oldSectionId, sectionId, caseId, casesToMove);
+                        Case testRailCase;
+                        try
+                        {
+                            testRailCase = _testRailClientWrapper.GetCase(caseId);
+                            _testRailClientWrapper.UpdateCase(testRailCase, caseRequest);
+                        }
+                        catch (TestRailNoCaseException e)
+                        {
+                            var message = string.IsNullOrEmpty(e.Message) ? "unknown" : e.Message;
+                            Log.Warn($"Case with id {caseId} not found. Reason: {message} Recreating missing case");
+                            testRailCase = _testRailClientWrapper.AddCase(caseRequest);
+                            TextFilesEditMethods.ReplaceLineInTheFile(featureFile.AbsolutePath, caseId.ToString(),testRailCase.Id.ToString());
+                        }
+                        var testRailSectionId = testRailCase.SectionId;
+                        AddCasesToMove(testRailSectionId, featureFileSectionId, caseId, casesToMove);
                     }
                 }
             }
@@ -91,13 +105,6 @@ namespace GherkinSyncTool.Synchronizers.TestRailSynchronizer
                     casesToMove.Add(key, new List<ulong>() { caseId });
                 else casesToMove[key].Add(caseId);
             }
-        }
-
-        private static void InsertLineToTheFile(string path, int lineNumber, string text)
-        {
-            var featureFIleLines = File.ReadAllLines(path).ToList();
-            featureFIleLines.Insert(lineNumber, text);
-            File.WriteAllLines(path, featureFIleLines);
         }
     }
 }

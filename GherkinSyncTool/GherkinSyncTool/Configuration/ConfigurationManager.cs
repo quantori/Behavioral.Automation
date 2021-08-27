@@ -6,11 +6,11 @@ namespace GherkinSyncTool.Configuration
 {
     public static class ConfigurationManager
     {
-        private static Config _configurationModel;
+        private static GherkynSyncToolConfig _configurationModel;
 
-        public static Config GetConfiguration()
+        public static GherkynSyncToolConfig GetConfiguration()
         {
-            return _configurationModel??=GetIConfiguration().Get<Config>();
+            return _configurationModel??=GetIConfiguration().Get<GherkynSyncToolConfig>();
         }
         private static IConfiguration GetIConfiguration(string[] args = null)
         {
