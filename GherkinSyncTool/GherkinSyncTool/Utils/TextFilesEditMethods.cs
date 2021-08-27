@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace GherkinSyncTool.Utils
 {
-    internal static class FeatureFilesEditMethods
+    internal static class TextFilesEditMethods
     {
         internal static void InsertLineToTheFile(string path, int lineNumber, string text)
         {
