@@ -8,7 +8,10 @@ namespace Behavioral.Automation.Services
     public static class ConfigServiceBase
     {
         public static readonly IConfigurationRoot ConfigRoot =
-            new ConfigurationBuilder().AddJsonFile("AutomationConfig.json").Build();
+            new ConfigurationBuilder()
+                .AddJsonFile("AutomationConfig.json")
+                .AddEnvironmentVariables()
+                .Build();
 
         private const string BaseUrlString = "BASE_URL";
 
@@ -21,6 +24,8 @@ namespace Behavioral.Automation.Services
         private const string SearchAttributeString = "SEARCH_ATTRIBUTE";
 
         private const string AccessClipboardString = "ACCESS_CLIPBOARD";
+        
+        private const string BrowserBinaryLocationString = "BROWSER_BINARY_LOCATION";
 
         public static string BaseUrl => ConfigRoot[BaseUrlString];
 
@@ -43,6 +48,12 @@ namespace Behavioral.Automation.Services
 
                 return AppContext.BaseDirectory;
             }
+        }
+        
+        public static string BrowserBinaryLocation
+        {
+            get => ConfigRoot[BrowserBinaryLocationString];
+            set => ConfigRoot[BrowserBinaryLocationString] = value;
         }
     }
 }

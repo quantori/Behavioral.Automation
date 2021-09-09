@@ -38,6 +38,10 @@ namespace Behavioral.Automation.Services
                 }
                 options.AddUserProfilePreference("intl.accept_languages", "en,en_US");
                 options.AcceptInsecureCertificates = ConfigServiceBase.AcceptInsecureCertificates;
+                if (!string.IsNullOrWhiteSpace(ConfigServiceBase.BrowserBinaryLocation))
+                {
+                    options.BinaryLocation = ConfigServiceBase.BrowserBinaryLocation;
+                }
             }
 
             var driver = new ChromeDriver(options);
