@@ -22,5 +22,10 @@ Please read [DEVNOTES.md](DEVNOTES.md) for details.
 ## Binding list
 List of available bindings can be found [here](BINDINGS.md)
 
+## Configurations
+Quantori Behavioral Automation can be configured in two ways. The priority corresponds to the list order.
+1. AutomationConfig.json [Example](Behavioral.Automation.DemoBindings/AutomationConfig.json).
+2. Environment variables
+
 ## License
 Quantori Behavioral Automation tool is released under [Apache License, Version 2.0](LICENSE)
