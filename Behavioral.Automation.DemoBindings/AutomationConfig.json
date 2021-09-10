@@ -9,5 +9,6 @@
   "SEARCH_ATTRIBUTE": "automation-id",
   "BAUTH_LOGIN": "",
   "BAUTH_PWD": "",
-  "BAUTH_IGNORE": "true"
+  "BAUTH_IGNORE": "true",
+  "BROWSER_BINARY_LOCATION" : ""
 }

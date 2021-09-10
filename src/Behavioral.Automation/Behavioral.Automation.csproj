@@ -16,7 +16,7 @@ The whole automation code is divided into the following parts:
 - UI structure descriptive code
 - Supportive code</Description>
         <Copyright>Quantori Inc.</Copyright>
-        <PackageVersion>1.0.10</PackageVersion>
+        <PackageVersion>1.1.0</PackageVersion>
         <RepositoryUrl>https://github.com/quantori/Behavioral.Automation</RepositoryUrl>
     </PropertyGroup>
     <ItemGroup>
@@ -26,6 +26,7 @@ The whole automation code is divided into the following parts:
       <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="5.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
       <PackageReference Include="NUnit" Version="3.13.1" />
       <PackageReference Include="Selenium.Support" Version="3.141.0" />

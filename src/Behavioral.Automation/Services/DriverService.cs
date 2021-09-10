@@ -25,7 +25,6 @@ namespace Behavioral.Automation.Services
         public DriverService([NotNull] IScopeContextManager scopeContextManager)
         {
             _scopeContextManager = scopeContextManager;
-            Navigate("about:blank");
         }
 
         private WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(4));
