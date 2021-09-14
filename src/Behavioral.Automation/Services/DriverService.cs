@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Drawing;
+using System.Text.RegularExpressions;
 using Behavioral.Automation.Services.Mapping.Contract;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
@@ -9,6 +10,7 @@ using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.Support.UI;
 using System.Threading;
+using NUnit.Framework;
 
 namespace Behavioral.Automation.Services
 {
@@ -23,7 +25,6 @@ namespace Behavioral.Automation.Services
         public DriverService([NotNull] IScopeContextManager scopeContextManager)
         {
             _scopeContextManager = scopeContextManager;
-            Navigate("about:blank");
         }
 
         private WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(4));
@@ -165,7 +166,7 @@ namespace Behavioral.Automation.Services
 
         public string MakeScreenShot()
         {
-            var fileName = "screenshot_" + DateTime.Now.ToString("dd_MM_yyyy_HH_mm_ss") + ".png";
+            var fileName = Regex.Replace(TestContext.CurrentContext.Test.Name, @"(\\|\"")", string.Empty) + ".png";
             Driver.GetScreenshot().SaveAsFile(fileName, ScreenshotImageFormat.Png);
             return fileName;
         }

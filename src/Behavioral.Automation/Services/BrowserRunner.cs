@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
 
@@ -31,8 +32,16 @@ namespace Behavioral.Automation.Services
                 {
                     ConfigureChromeHeadlessDownload(options, downloadPath);
                 }
+                if (ConfigServiceBase.AccessClipboard)
+                {
+                    ConfigureClipboardAccess(options);
+                }
                 options.AddUserProfilePreference("intl.accept_languages", "en,en_US");
                 options.AcceptInsecureCertificates = ConfigServiceBase.AcceptInsecureCertificates;
+                if (!string.IsNullOrWhiteSpace(ConfigServiceBase.BrowserBinaryLocation))
+                {
+                    options.BinaryLocation = ConfigServiceBase.BrowserBinaryLocation;
+                }
             }
 
             var driver = new ChromeDriver(options);
@@ -50,6 +59,19 @@ namespace Behavioral.Automation.Services
             options.AddUserProfilePreference("download.prompt_for_download", "false");
             options.AddUserProfilePreference("download.directory_upgrade", "true");
             options.AddUserProfilePreference("download.default_directory", downloadPath);
+        }
+
+        private void ConfigureClipboardAccess(ChromeOptions options)
+        {
+            var clipboardExceptionSettings = new Dictionary<string, object> {
+                {ConfigServiceBase.BaseUrl,
+                    new Dictionary<string, long> {
+                        {"last_modified", DateTimeOffset.Now.ToUnixTimeMilliseconds()},
+                        {"setting", 1}
+                    }
+                }
+            };
+            options.AddUserProfilePreference("profile.content_settings.exceptions.clipboard", clipboardExceptionSettings);
         }
     }
 }
