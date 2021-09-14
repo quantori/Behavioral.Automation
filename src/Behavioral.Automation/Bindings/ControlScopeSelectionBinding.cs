@@ -10,10 +10,12 @@ namespace Behavioral.Automation.Bindings
     public sealed class ControlScopeSelectionBinding
     {
         private readonly IScopeContextManager _contextManager;
+        private readonly ScenarioContext _scenarioContext;
 
-        public ControlScopeSelectionBinding(IScopeContextManager contextManager)
+        public ControlScopeSelectionBinding(IScopeContextManager contextManager, ScenarioContext scenarioContext)
         {
             _contextManager = contextManager;
+            _scenarioContext = scenarioContext;
         }
 
 
@@ -23,7 +25,7 @@ namespace Behavioral.Automation.Bindings
         public void ExecuteMultipleActionsInsideControlScope(ControlScopeSelector controlScopeSelector,
             [NotNull] Table actionsTable)
         {
-            var stepDefinitionType = ScenarioStepContext.Current.StepInfo.StepDefinitionType;
+            var stepDefinitionType = _scenarioContext.StepContext.StepInfo.StepDefinitionType;
             using (var controlScopeRuntime = _contextManager.UseControlScopeContextRuntime(controlScopeSelector))
             {
                 foreach (var action in actionsTable.Rows)
@@ -40,7 +42,7 @@ namespace Behavioral.Automation.Bindings
             string action,
             Table table)
         {
-            var stepDefinitionType = ScenarioStepContext.Current.StepInfo.StepDefinitionType;
+            var stepDefinitionType = _scenarioContext.StepContext.StepInfo.StepDefinitionType;
             using (var controlScopeRuntime = _contextManager.UseControlScopeContextRuntime(controlScopeSelector))
             {
                 controlScopeRuntime.RunAction(action, stepDefinitionType, table);
@@ -52,8 +54,8 @@ namespace Behavioral.Automation.Bindings
         [Then("inside (.+?): (.+?)")]
         public void ExecuteActionInsideControlScope(ControlScopeSelector controlScopeSelector, string action)
         {
-            var stepDefinitionType = ScenarioStepContext.Current.StepInfo.StepDefinitionType;
-           
+            var stepDefinitionType = _scenarioContext.StepContext.StepInfo.StepDefinitionType;
+
             using (var controlScopeRuntime = _contextManager.UseControlScopeContextRuntime(controlScopeSelector))
             {
                 controlScopeRuntime.RunAction(action, stepDefinitionType);
