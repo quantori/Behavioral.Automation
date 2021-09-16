@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
-using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
 
@@ -9,17 +7,7 @@ namespace Behavioral.Automation.Services
 {
     public class BrowserRunner
     {
-        public void OpenBrowser([NotNull] RemoteWebDriver driver)
-        {
-            DriverService.Driver = driver;
-        }
-
-        public void CloseBrowser()
-        {
-            DriverService.Driver.Dispose();
-        }
-
-        public void OpenChrome(ChromeOptions options = null)
+        public RemoteWebDriver OpenChrome(ChromeOptions options = null)
         {
             var downloadPath = ConfigServiceBase.DownloadPath ?? Environment.CurrentDirectory;
 
@@ -51,7 +39,7 @@ namespace Behavioral.Automation.Services
                 {"downloadPath", downloadPath}
             };
             driver.ExecuteChromeCommand("Page.setDownloadBehavior", param);
-            OpenBrowser(driver);
+            return driver;
         }
 
         private void ConfigureChromeHeadlessDownload(ChromeOptions options, string downloadPath)

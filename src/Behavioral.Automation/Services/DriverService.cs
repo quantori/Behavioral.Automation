@@ -20,17 +20,15 @@ namespace Behavioral.Automation.Services
         [NotNull]
         private readonly IScopeContextManager _scopeContextManager;
 
-        public static RemoteWebDriver Driver;
+        public RemoteWebDriver Driver { get; }
 
-        public DriverService([NotNull] IScopeContextManager scopeContextManager)
+        public DriverService([NotNull] IScopeContextManager scopeContextManager, RemoteWebDriver driver)
         {
             _scopeContextManager = scopeContextManager;
+            Driver = driver;
         }
 
-        private WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(4));
-        private ReadOnlyCollection<string> WindowHandles => Driver.WindowHandles;
-
-        private string SearchAttribute = ConfigServiceBase.SearchAttribute;
+        private readonly string SearchAttribute = ConfigServiceBase.SearchAttribute;
 
         public string Title => Driver.Title;
 

@@ -1,11 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Remote;
 
 namespace Behavioral.Automation.Services
 {
-    public interface IDriverService 
+    public interface IDriverService
     {
+        RemoteWebDriver Driver { get; }
+
         string CurrentUrl { [NotNull] get; }
 
         string Title { [CanBeNull] get; }
