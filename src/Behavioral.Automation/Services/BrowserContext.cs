@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Remote;
 
