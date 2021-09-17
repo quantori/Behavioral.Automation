@@ -27,7 +27,7 @@ namespace Behavioral.Automation.Services
             _scopeContextManager = scopeContextManager;
             Driver = driver;
         }
-
+       
         private readonly string SearchAttribute = ConfigServiceBase.SearchAttribute;
 
         public string Title => Driver.Title;
