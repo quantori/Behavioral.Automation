@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Drawing;
+using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Behavioral.Automation.Services.Mapping.Contract;
 using JetBrains.Annotations;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Remote;
-using OpenQA.Selenium.Support.UI;
-using System.Threading;
-using NUnit.Framework;
 
 namespace Behavioral.Automation.Services
 {
@@ -19,18 +18,17 @@ namespace Behavioral.Automation.Services
     {
         [NotNull]
         private readonly IScopeContextManager _scopeContextManager;
+        private readonly BrowserContext _browserContext;
 
-        public static RemoteWebDriver Driver;
-
-        public DriverService([NotNull] IScopeContextManager scopeContextManager)
+        public DriverService([NotNull] IScopeContextManager scopeContextManager, BrowserContext browserContext)
         {
             _scopeContextManager = scopeContextManager;
+            _browserContext = browserContext;
         }
 
-        private WebDriverWait wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(4));
-        private ReadOnlyCollection<string> WindowHandles => Driver.WindowHandles;
+        public RemoteWebDriver Driver => _browserContext.Driver;
 
-        private string SearchAttribute = ConfigServiceBase.SearchAttribute;
+        private readonly string SearchAttribute = ConfigServiceBase.SearchAttribute;
 
         public string Title => Driver.Title;
 
@@ -85,8 +83,8 @@ namespace Behavioral.Automation.Services
         public void ScrollTo(IWebElement element)
         {
             var scrollElementIntoMiddle = "var viewPortHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);"
-                                             + "var elementTop = arguments[0].getBoundingClientRect().top;"
-                                             + "window.scrollBy(0, elementTop-(viewPortHeight/2));";
+                                          + "var elementTop = arguments[0].getBoundingClientRect().top;"
+                                          + "window.scrollBy(0, elementTop-(viewPortHeight/2));";
 
             Driver.ExecuteScript(scrollElementIntoMiddle, element);
             Actions actions = new Actions(Driver);
@@ -160,7 +158,7 @@ namespace Behavioral.Automation.Services
         }
 
         public void ResizeWindow(int Height, int Width)
-        {
+        { 
             Driver.Manage().Window.Size = new Size(Width, Height);
         }
 
