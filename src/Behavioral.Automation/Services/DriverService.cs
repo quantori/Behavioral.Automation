@@ -136,7 +136,7 @@ namespace Behavioral.Automation.Services
 
         public void DebugDumpPage()
         {
-            var page = _browserContext.Driver.PageSource;
+            var page = Driver.PageSource;
             Console.WriteLine(page);
         }
 
@@ -154,7 +154,7 @@ namespace Behavioral.Automation.Services
 
         public void SwitchToLastWindow()
         {
-            Driver.SwitchTo().Window(_browserContext.Driver.WindowHandles.Last());
+            Driver.SwitchTo().Window(Driver.WindowHandles.Last());
         }
 
         public void ResizeWindow(int Height, int Width)
@@ -171,7 +171,7 @@ namespace Behavioral.Automation.Services
 
         public void ScrollElementTo(IWebElement element, int offset)
         {
-            _browserContext.Driver.ExecuteScript(@"
+            Driver.ExecuteScript(@"
                 var element = arguments[0];
                 var offset = arguments[1];
                 element.scrollTo({top: offset, behavior: 'smooth'});", element, offset);
