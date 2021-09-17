@@ -7,16 +7,18 @@ using OpenQA.Selenium.Remote;
 
 namespace Behavioral.Automation.Services
 {
-    public class BrowserRunner
+    public class BrowserContext
     {
+        public RemoteWebDriver Driver;
+        
         public void OpenBrowser([NotNull] RemoteWebDriver driver)
         {
-            DriverService.Driver = driver;
+            Driver = driver;
         }
 
         public void CloseBrowser()
         {
-            DriverService.Driver.Dispose();
+            Driver.Dispose();
         }
 
         public void OpenChrome(ChromeOptions options = null)
