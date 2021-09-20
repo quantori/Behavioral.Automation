@@ -41,7 +41,7 @@ namespace Behavioral.Automation.Services
                 options.AcceptInsecureCertificates = ConfigServiceBase.AcceptInsecureCertificates;
                 if (!string.IsNullOrWhiteSpace(ConfigServiceBase.BrowserBinaryLocation))
                 {
-                    options.BinaryLocation = ConfigServiceBase.BrowserBinaryLocation;
+                    options.BinaryLocation = Environment.ExpandEnvironmentVariables(ConfigServiceBase.BrowserBinaryLocation);
                 }
             }
 
