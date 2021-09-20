@@ -6,7 +6,7 @@ using OpenQA.Selenium.Remote;
 
 namespace Behavioral.Automation.Services
 {
-    public class BrowserContext
+    public class BrowserRunner
     {
         public RemoteWebDriver Driver;
         
