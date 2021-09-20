@@ -18,15 +18,15 @@ namespace Behavioral.Automation.Services
     {
         [NotNull]
         private readonly IScopeContextManager _scopeContextManager;
-        private readonly BrowserContext _browserContext;
+        private readonly BrowserRunner _browserRunner;
 
-        public DriverService([NotNull] IScopeContextManager scopeContextManager, BrowserContext browserContext)
+        public DriverService([NotNull] IScopeContextManager scopeContextManager, BrowserRunner browserRunner)
         {
             _scopeContextManager = scopeContextManager;
-            _browserContext = browserContext;
+            _browserRunner = browserRunner;
         }
 
-        public RemoteWebDriver Driver => _browserContext.Driver;
+        public RemoteWebDriver Driver => _browserRunner.Driver;
 
         private readonly string SearchAttribute = ConfigServiceBase.SearchAttribute;
 

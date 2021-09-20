@@ -11,20 +11,20 @@ namespace Behavioral.Automation.DemoBindings
         private readonly IObjectContainer _objectContainer;
         private readonly ITestRunner _runner;
         private readonly DemoTestServicesBuilder _servicesBuilder;
-        private readonly BrowserContext _browserContext;
+        private readonly BrowserRunner _browserRunner;
 
-        public Bootstrapper(IObjectContainer objectContainer, ITestRunner runner, BrowserContext browserContext)
+        public Bootstrapper(IObjectContainer objectContainer, ITestRunner runner, BrowserRunner browserRunner)
         {
             _objectContainer = objectContainer;
             _runner = runner;
-            _browserContext = browserContext;
+            _browserRunner = browserRunner;
             _servicesBuilder = new DemoTestServicesBuilder(objectContainer, new TestServicesBuilder(_objectContainer));
         }
 
         [AfterScenario]
         public void CloseBrowser()
         {
-            _browserContext.CloseBrowser();
+            _browserRunner.CloseBrowser();
         }
 
         [BeforeScenario(Order = 0)]
@@ -34,7 +34,7 @@ namespace Behavioral.Automation.DemoBindings
             _objectContainer.RegisterTypeAs<UserInterfaceBuilder, IUserInterfaceBuilder>();
             _servicesBuilder.Build();
             Assert.SetConsumer(_objectContainer.Resolve<IScenarioExecutionConsumer>());
-            _browserContext.OpenChrome();
+            _browserRunner.OpenChrome();
         }
     }
 }
