@@ -8,7 +8,8 @@ namespace Behavioral.Automation.Services
     {
         public static string GetPrintableValues(this IEnumerable<ITableRowWrapper> rows)
         {
-            return rows.SelectMany(x => x.CellsText).Aggregate((x, y) => $"{x}, {y}");
+            var values = rows.Aggregate("\r\n|", (current, row) => current + (row.CellsText.Aggregate((x, y) => $" {x} | {y}") + " |\r\n |"));
+            return values.Remove(values.Length - 3);
         }
     }
 }
