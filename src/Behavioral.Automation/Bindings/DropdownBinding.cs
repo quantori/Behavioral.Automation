@@ -116,7 +116,7 @@ namespace Behavioral.Automation.Bindings
         {
             foreach (var row in table.Rows)
             {
-                runnerAction($"the \"{row.Values.First()} \" value {behavior} {enabled} in {wrapper.Caption}:");
+                runnerAction($"the \"{row.Values.First()}\" value {behavior} {enabled} in {wrapper.Caption}");
             }
         }
 
