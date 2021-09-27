@@ -26,8 +26,9 @@ namespace Behavioral.Automation.Bindings
             [NotNull] AssertionBehavior behavior, 
             bool enabled)
         {
+            var status = enabled ? " not" : string.Empty;
             Assert.ShouldBecome(() => element.Enabled, enabled, behavior,
-                $"{element.Caption} is{behavior.BehaviorAppendix()} enabled");
+                $"{element.Caption} is{status} enabled");
         }
 
         [StepArgumentTransformation("(enabled|disabled)")]

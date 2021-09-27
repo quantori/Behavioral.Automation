@@ -33,7 +33,7 @@ namespace Behavioral.Automation.Bindings
                 Assert.ShouldBecome(() => gridRows.Rows.ToStringRows().DoesntContainValues(table.Rows.ToStringRows()),
                     true,
                     new AssertionBehavior(AssertionType.Immediate, true),
-                    $"{gridRows.Caption} is {gridRows.Rows.GetPrintableValues()}");
+                    $"{gridRows.Caption} is: {gridRows.Rows.GetPrintableValues()}");
             }
             else
             {
@@ -41,7 +41,7 @@ namespace Behavioral.Automation.Bindings
                 Assert.ShouldBecome(() => gridRows.Rows.ToStringRows().HaveValues(table.Rows.ToStringRows(), false),
                     true,
                     new AssertionBehavior(AssertionType.Immediate, false),
-                    $"{gridRows.Caption} is {gridRows.Rows.GetPrintableValues()}");
+                    $"{gridRows.Caption} is: {gridRows.Rows.GetPrintableValues()}");
             }
         }
 
@@ -53,7 +53,7 @@ namespace Behavioral.Automation.Bindings
             Assert.ShouldBecome(() => gridRows.Rows.ToStringRows().HaveValues(table.Rows.ToStringRows(), true),
                 true,
                 new AssertionBehavior(AssertionType.Immediate, false),
-                $"{gridRows.Caption} is {gridRows.Rows.GetPrintableValues()}");
+                $"{gridRows.Caption} is: {gridRows.Rows.GetPrintableValues()}");
         }
 
         [Given("(.+?) (contains|does not contain) the following rows:")]
@@ -68,14 +68,14 @@ namespace Behavioral.Automation.Bindings
                 Assert.ShouldBecome(() => gridRows.Rows.ToStringRows().DoesntContainValues(table.Rows.ToStringRows()),
                     true,
                     new AssertionBehavior(AssertionType.Immediate, false),
-                    $"{gridRows.Caption} is {gridRows.Rows.GetPrintableValues()}");
+                    $"{gridRows.Caption} is: {gridRows.Rows.GetPrintableValues()}");
             }
             else
             {
                 Assert.ShouldBecome(() => gridRows.Rows.ToStringRows().ContainsValues(table.Rows.ToStringRows()),
                     true,
                     new AssertionBehavior(AssertionType.Immediate, false),
-                    $"{gridRows.Caption} is {gridRows.Rows.GetPrintableValues()}");
+                    $"{gridRows.Caption} is: {gridRows.Rows.GetPrintableValues()}");
             }
         }
 
