@@ -116,6 +116,8 @@ namespace Behavioral.Automation.Bindings
         {
             foreach (var row in table.Rows)
             {
+                Assert.ShouldBecome(() => row.Values.Any(), true, new AssertionBehavior(AssertionType.Immediate, false),
+                    "One of the rows in the provided table doesn't have values");
                 runnerAction($"the \"{row.Values.First()}\" value {behavior} {enabled} in {wrapper.Caption}");
             }
         }
