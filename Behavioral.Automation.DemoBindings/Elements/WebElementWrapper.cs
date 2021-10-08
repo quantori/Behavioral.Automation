@@ -5,6 +5,7 @@ using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Behavioral.Automation.Elements.Interfaces;
 
 namespace Behavioral.Automation.DemoBindings.Elements
 {
