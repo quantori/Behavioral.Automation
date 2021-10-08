@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Behavioral.Automation.Elements;
+using Behavioral.Automation.Elements.Interfaces;
 using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Model;
 using TechTalk.SpecFlow;

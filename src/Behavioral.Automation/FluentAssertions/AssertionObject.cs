@@ -3,6 +3,7 @@ using Behavioral.Automation.FluentAssertions.Abstractions;
 using Behavioral.Automation.Model;
 using System;
 using System.Threading;
+using Behavioral.Automation.Elements.Interfaces;
 
 namespace Behavioral.Automation.FluentAssertions
 {

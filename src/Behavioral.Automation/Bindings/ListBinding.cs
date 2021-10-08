@@ -1,6 +1,7 @@
 using System.Linq;
 using FluentAssertions;
 using Behavioral.Automation.Elements;
+using Behavioral.Automation.Elements.Interfaces;
 using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Services;
 using JetBrains.Annotations;
@@ -11,12 +12,6 @@ namespace Behavioral.Automation.Bindings
     [Binding]
     public class ListBinding
     {
-        private readonly IDriverService _driverService;
-
-        public ListBinding([NotNull] IDriverService driverService)
-        {
-            _driverService = driverService;
-        }
 
         [Given("(.+?) (has|does not have) the following items:")]
         [Then("(.+?) should (have|not have) the following items:")]

@@ -10,6 +10,7 @@ using NAssert = NUnit.Framework.Assert;
 using BAssert = Behavioral.Automation.FluentAssertions.Assert;
 using Behavioral.Automation.Model;
 using Behavioral.Automation.Abstractions;
+using Behavioral.Automation.Elements.Interfaces;
 
 namespace Behavioral.Automation.UnitTests
 {

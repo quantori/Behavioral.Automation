@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using Behavioral.Automation.Elements;
+using Behavioral.Automation.Elements.Interfaces;
 using Behavioral.Automation.Services.Mapping;
-using Behavioral.Automation.Services.Mapping.Contract;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 

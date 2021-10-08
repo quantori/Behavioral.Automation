@@ -2,6 +2,7 @@
 using System.Data;
 using System.Linq;
 using Behavioral.Automation.Elements;
+using Behavioral.Automation.Elements.Interfaces;
 using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Services

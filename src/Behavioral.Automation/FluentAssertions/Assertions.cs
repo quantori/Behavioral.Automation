@@ -1,7 +1,4 @@
 ﻿using Behavioral.Automation.Services;
-using System;
-using System.Text;
-using PredicateFactory = System.Func<Behavioral.Automation.Elements.IWebElementWrapper, System.Func<bool>>;
 
 namespace Behavioral.Automation.FluentAssertions
 {

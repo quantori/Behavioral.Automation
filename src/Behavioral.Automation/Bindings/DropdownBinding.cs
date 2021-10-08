@@ -2,6 +2,7 @@
 using System.Linq;
 using FluentAssertions;
 using Behavioral.Automation.Elements;
+using Behavioral.Automation.Elements.Interfaces;
 using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Model;
 using JetBrains.Annotations;
@@ -36,9 +37,9 @@ namespace Behavioral.Automation.Bindings
         }
 
         [Then("(.*?) should have the following groups:")]
-        public void CheckDropdownHeaders([NotNull] IGroupedDropdownWrapper wrapper, [NotNull] Table items)
+        public void CheckDropdownHeaders([NotNull] IDropdownWrapper wrapper, [NotNull] Table items)
         {
-            wrapper.GroupTexts.Should().BeEquivalentTo(items.Rows.Select(x => x.Values.Single()));
+            wrapper.Groups.Should().BeEquivalentTo(items.Rows.Select(x => x.Values.Single()));
         }
 
         [When("(.*?) (contain|not contain) \"(.*)\"")]

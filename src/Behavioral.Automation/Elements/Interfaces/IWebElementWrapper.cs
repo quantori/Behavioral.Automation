@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 
-namespace Behavioral.Automation.Elements
+namespace Behavioral.Automation.Elements.Interfaces
 {
     public interface IWebElementWrapper
     {

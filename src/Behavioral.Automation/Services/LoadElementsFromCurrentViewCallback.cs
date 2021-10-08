@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Behavioral.Automation.Elements;
+using Behavioral.Automation.Elements.Interfaces;
 
 namespace Behavioral.Automation.Services
 {

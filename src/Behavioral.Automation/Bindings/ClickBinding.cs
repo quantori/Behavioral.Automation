@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Behavioral.Automation.Elements;
+using Behavioral.Automation.Elements.Interfaces;
 using Behavioral.Automation.Model;
 using TechTalk.SpecFlow;
 

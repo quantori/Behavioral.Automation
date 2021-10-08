@@ -1,5 +1,6 @@
 using Behavioral.Automation.Elements;
 using System;
+using Behavioral.Automation.Elements.Interfaces;
 
 namespace Behavioral.Automation.FluentAssertions.Abstractions
 {

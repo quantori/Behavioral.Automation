@@ -3,6 +3,7 @@ using Behavioral.Automation.FluentAssertions.Abstractions;
 using Behavioral.Automation.Model;
 using System;
 using System.Collections.Generic;
+using Behavioral.Automation.Elements.Interfaces;
 using GlobalAssert = Behavioral.Automation.FluentAssertions.Assert;
 using NAssert = NUnit.Framework.Assert;
 
@@ -15,8 +16,6 @@ namespace Behavioral.Automation.FluentAssertions
         private BuilderContext _currentContext = new BuilderContext();
 
         private AssertionType? _definedAssertionType = null;
-
-        private readonly List<IAssertionAccessor> _assertions = new List<IAssertionAccessor>();
 
         public AssertionBuilder(IWebElementWrapper elementWrapper)
         {
@@ -111,8 +110,9 @@ namespace Behavioral.Automation.FluentAssertions
 
         private void ConfigureContext<T>(AssertionObject<T> assertion)
         {
-            _currentContext.Inversion = _currentContext.Inversion ?? false;
-            assertion.Type = _definedAssertionType.Value;
+            _currentContext.Inversion ??= false;
+            if (_definedAssertionType != null) 
+                assertion.Type = _definedAssertionType.Value;
             assertion.SetElement(_elementWrapper);
             assertion.Inversion = _currentContext.Inversion.Value;
         }

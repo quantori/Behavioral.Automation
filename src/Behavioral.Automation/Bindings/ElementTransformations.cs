@@ -1,4 +1,6 @@
 ﻿using System;
+using Behavioral.Automation.Elements.Implementations;
+using Behavioral.Automation.Elements.Interfaces;
 using Behavioral.Automation.Model;
 using Behavioral.Automation.Services;
 using Behavioral.Automation.Services.Mapping;
@@ -12,15 +14,48 @@ namespace Behavioral.Automation.Bindings
     {
         private readonly IDriverService _driverService;
         private readonly IElementSelectionService _selectionService;
+        private readonly IVirtualizedElementsSelectionService _virtualizedElementsSelectionService;
 
         public ElementTransformations(
             [NotNull] IDriverService driverService, 
-            [NotNull] IElementSelectionService selectionService)
+            [NotNull] IElementSelectionService selectionService,
+            [NotNull] IVirtualizedElementsSelectionService virtualizedElementsSelectionService)
         {
             _driverService = driverService;
             _selectionService = selectionService;
+            _virtualizedElementsSelectionService = virtualizedElementsSelectionService;
         }
-        
+
+        [StepArgumentTransformation]
+        public IWebElementWrapper FindElement([NotNull] string caption)
+        {
+            return new WebElementWrapper(() => _selectionService.Find(caption), caption, _driverService);
+        }
+
+        [StepArgumentTransformation("(.*)")]
+        public IDropdownWrapper FindDropdown([NotNull] IWebElementWrapper element)
+        {
+            return new DropdownWrapper(element, element.Caption, _driverService);
+        }
+
+        [StepArgumentTransformation("(.*)")]
+        public ITableWrapper FindTable([NotNull] IWebElementWrapper element)
+        {
+            return new TableWrapper(element, element.Caption, _driverService, _virtualizedElementsSelectionService);
+        }
+
+        [StepArgumentTransformation("(.*)")]
+        public ITextElementWrapper FindTextElement([NotNull] IWebElementWrapper element)
+        {
+            return new TextElementWrapper(element, element.Caption, _driverService);
+        }
+
+        [StepArgumentTransformation("(.*)")]
+        public IElementCollectionWrapper FindElementCollection([NotNull] IWebElementWrapper element)
+        {
+            return new ElementCollectionWrapper(element, element.Caption, _driverService, _virtualizedElementsSelectionService);
+        }
+
         [StepArgumentTransformation, NotNull]
         public AssertionBehavior ParseBehavior(string verb)
         {

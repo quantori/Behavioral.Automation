@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace Behavioral.Automation.Elements
+namespace Behavioral.Automation.Elements.Interfaces
 {
     public interface IDropdownWrapper : IWebElementWrapper
     {
@@ -12,6 +12,8 @@ namespace Behavioral.Automation.Elements
         IEnumerable<string> Items { [NotNull, ItemNotNull] get; }
 
         IEnumerable<IWebElementWrapper> Elements { [NotNull, ItemNotNull] get; }
+
+        IEnumerable<IWebElementWrapper> Groups { [NotNull, ItemNotNull] get; }
 
         bool Empty { get; }
     }

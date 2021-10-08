@@ -12,13 +12,10 @@ namespace Behavioral.Automation.Bindings
     public sealed class NavigationBinding
     {
         private readonly IDriverService _driverService;
-        private readonly IScopeContextManager _scopeContextManager;
 
-        public NavigationBinding([NotNull] IDriverService driverService,
-            [NotNull] IScopeContextManager scopeContextManager)
+        public NavigationBinding([NotNull] IDriverService driverService)
         {
             _driverService = driverService;
-            _scopeContextManager = scopeContextManager;
         }
 
         [Given("URL \"(.*)\" is opened")]
@@ -71,14 +68,14 @@ namespace Behavioral.Automation.Bindings
             Assert.ShouldBecome(() => _driverService.Title, title, behavior,
                 $"page title is {_driverService.Title}");
         }
-        
+
         [When("page dumps content to the output")]
         [Then("page dumps content to the output")]
         public void DumpPageContent()
         {
             _driverService.DebugDumpPage();
         }
-        
+
         [Given("user resized window to (.*) height and (.*) width")]
         [When("user resize window to (.*) height and (.*) width")]
         public void CheckOpened([NotNull] int pageHeight, [NotNull] int pageWidth)

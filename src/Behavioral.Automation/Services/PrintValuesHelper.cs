@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Behavioral.Automation.Elements;
+using Behavioral.Automation.Elements.Interfaces;
 using JetBrains.Annotations;
 
 namespace Behavioral.Automation.Services

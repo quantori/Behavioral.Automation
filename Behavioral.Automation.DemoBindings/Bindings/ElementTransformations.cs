@@ -1,5 +1,5 @@
 ﻿using Behavioral.Automation.DemoBindings.Elements;
-using Behavioral.Automation.Elements;
+using Behavioral.Automation.Elements.Interfaces;
 using Behavioral.Automation.Services;
 using JetBrains.Annotations;
 using TechTalk.SpecFlow;

@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Behavioral.Automation.Elements
+namespace Behavioral.Automation.Elements.Interfaces
 {
     public interface ITextElementWrapper : IWebElementWrapper
     {

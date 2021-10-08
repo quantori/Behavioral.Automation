@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using Behavioral.Automation.Elements;
+using Behavioral.Automation.Elements.Interfaces;
 
 namespace Behavioral.Automation.Services
 {
@@ -18,9 +19,7 @@ namespace Behavioral.Automation.Services
             string format,
             bool ignoreCase)
         {
-            string[] values;
-
-            if (TryParseExact(data, format, out values, ignoreCase))
+            if (TryParseExact(data, format, out var values, ignoreCase))
                 return values;
             else
                 throw new ArgumentException("Format not compatible with value.");
