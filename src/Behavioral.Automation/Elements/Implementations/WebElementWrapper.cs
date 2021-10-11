@@ -56,7 +56,14 @@ namespace Behavioral.Automation.Elements.Implementations
         {
             MouseHover();
             Assert.ShouldBecome(() => Enabled, true, $"Unable to click on {Caption}. The element was disabled");
-            Driver.MouseClick();
+            try
+            {
+                Element.Click();
+            }
+            catch (ElementClickInterceptedException)
+            {
+                Driver.MouseClick();
+            }
         }
 
         public void MouseHover()
