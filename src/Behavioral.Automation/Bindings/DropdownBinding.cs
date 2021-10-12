@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Behavioral.Automation.Elements;
 using Behavioral.Automation.FluentAssertions;
@@ -31,25 +32,13 @@ namespace Behavioral.Automation.Bindings
         [Then("the (.*?) should have the following values:")]
         public void CheckAllItems([NotNull] IDropdownWrapper wrapper, [NotNull] Table items)
         {
-            for (var i = 0; i < items.Rows.Count; i++)
-            {
-                var expectedValue = items.Rows.ElementAt(i).Values.FirstOrDefault();
-                var actualValue = wrapper.Items.ElementAt(i);
-                Assert.ShouldBecome(() => expectedValue, actualValue,
-                    $"Expected one of the {wrapper.Caption} values to be {expectedValue} but was {actualValue}");
-            }
+            CheckDropdownElements(wrapper.Items, items, $"{wrapper.Caption} values");
         }
 
         [Then("(.*?) should have the following groups:")]
         public void CheckDropdownHeaders([NotNull] IGroupedDropdownWrapper wrapper, [NotNull] Table items)
         {
-            for (var i = 0; i < items.Rows.Count; i++)
-            {
-                var expectedValue = items.Rows.ElementAt(i).Values.FirstOrDefault();
-                var actualValue = wrapper.GroupTexts.ElementAt(i);
-                Assert.ShouldBecome(() => expectedValue, actualValue,
-                    $"Expected one of the {wrapper.Caption} groups to be {expectedValue} but was {actualValue}");
-            }
+            CheckDropdownElements(wrapper.GroupTexts, items, $"{wrapper.Caption} groups");
         }
 
         [When("(.*?) (contain|not contain) \"(.*)\"")]
@@ -95,13 +84,7 @@ namespace Behavioral.Automation.Bindings
         [Then("the following values should be selected in (.*?):")]
         public void CheckMultipleSelectedValues([NotNull] IMultiSelectDropdownWrapper wrapper, [NotNull] Table values)
         {
-            for (var i = 0; i < values.Rows.Count; i++)
-            {
-                var expectedValue = values.Rows.ElementAt(i).Values.FirstOrDefault();
-                var actualValue = wrapper.SelectedValuesTexts.ElementAt(i);
-                Assert.ShouldBecome(() => expectedValue, actualValue,
-                    $"Expected one of the {wrapper.Caption} selected values to be {expectedValue} but was {actualValue}");
-            }
+            CheckDropdownElements(wrapper.SelectedValuesTexts, values, $"{wrapper.Caption} selected values");
         }
 
         [Given("the \"(.+?)\" value (is|become) (enabled|disabled) in (.+?)")]
@@ -152,6 +135,17 @@ namespace Behavioral.Automation.Bindings
         {
             Assert.ShouldBecome(() => wrapper.Empty, true, behavior,
                 $"{wrapper.Caption} selected value is{behavior.BehaviorAppendix()} empty");
+        }
+
+        private void CheckDropdownElements([NotNull] IEnumerable<string> actualValues, [NotNull] Table expectedValues, [NotNull] string valueType)
+        {
+            for (var i = 0; i < expectedValues.Rows.Count; i++)
+            {
+                var expectedValue = expectedValues.Rows.ElementAt(i).Values.FirstOrDefault();
+                var actualValue = actualValues.Any()? actualValues.ElementAt(i) : null;
+                Assert.ShouldBecome(() => expectedValue, actualValue,
+                    $"Expected one of the {valueType} to be {expectedValue} but was {actualValue}");
+            }
         }
     }
 }
