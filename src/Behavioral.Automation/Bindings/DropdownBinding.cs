@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using FluentAssertions;
 using Behavioral.Automation.Elements;
 using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Model;
@@ -32,13 +31,25 @@ namespace Behavioral.Automation.Bindings
         [Then("the (.*?) should have the following values:")]
         public void CheckAllItems([NotNull] IDropdownWrapper wrapper, [NotNull] Table items)
         {
-            wrapper.Items.Should().BeEquivalentTo(items.Rows.Select(x => x.Values.Single()));
+            for (var i = 0; i < items.Rows.Count; i++)
+            {
+                var expectedValue = items.Rows.ElementAt(i).Values.FirstOrDefault();
+                var actualValue = wrapper.Items.ElementAt(i);
+                Assert.ShouldBecome(() => expectedValue, actualValue,
+                    $"Expected one of the {wrapper.Caption} values to be {expectedValue} but was {actualValue}");
+            }
         }
 
         [Then("(.*?) should have the following groups:")]
         public void CheckDropdownHeaders([NotNull] IGroupedDropdownWrapper wrapper, [NotNull] Table items)
         {
-            wrapper.GroupTexts.Should().BeEquivalentTo(items.Rows.Select(x => x.Values.Single()));
+            for (var i = 0; i < items.Rows.Count; i++)
+            {
+                var expectedValue = items.Rows.ElementAt(i).Values.FirstOrDefault();
+                var actualValue = wrapper.GroupTexts.ElementAt(i);
+                Assert.ShouldBecome(() => expectedValue, actualValue,
+                    $"Expected one of the {wrapper.Caption} groups to be {expectedValue} but was {actualValue}");
+            }
         }
 
         [When("(.*?) (contain|not contain) \"(.*)\"")]
@@ -84,7 +95,13 @@ namespace Behavioral.Automation.Bindings
         [Then("the following values should be selected in (.*?):")]
         public void CheckMultipleSelectedValues([NotNull] IMultiSelectDropdownWrapper wrapper, [NotNull] Table values)
         {
-            wrapper.SelectedValuesTexts.Should().BeEquivalentTo(values.Rows.Select(x => x.Values.Single()));
+            for (var i = 0; i < values.Rows.Count; i++)
+            {
+                var expectedValue = values.Rows.ElementAt(i).Values.FirstOrDefault();
+                var actualValue = wrapper.SelectedValuesTexts.ElementAt(i);
+                Assert.ShouldBecome(() => expectedValue, actualValue,
+                    $"Expected one of the {wrapper.Caption} selected values to be {expectedValue} but was {actualValue}");
+            }
         }
 
         [Given("the \"(.+?)\" value (is|become) (enabled|disabled) in (.+?)")]
