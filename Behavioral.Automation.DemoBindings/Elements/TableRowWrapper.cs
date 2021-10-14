@@ -5,9 +5,9 @@ using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Services;
 using OpenQA.Selenium;
 
-namespace Behavioral.Automation.Elements.Implementations
+namespace Behavioral.Automation.DemoBindings.Elements
 {
-    public class TableRowWrapper : WebElementWrapper, ITableRowWrapper
+    public class TableRowWrapper : Automation.Elements.Implementations.WebElementWrapper, ITableRowWrapper
     {
         private readonly string _searchAttribute = ConfigServiceBase.SearchAttribute;
 

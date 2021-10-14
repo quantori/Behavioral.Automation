@@ -6,9 +6,9 @@ using Behavioral.Automation.Model;
 using Behavioral.Automation.Services;
 using OpenQA.Selenium;
 
-namespace Behavioral.Automation.Elements.Implementations
+namespace Behavioral.Automation.DemoBindings.Elements
 {
-   public sealed class DropdownWrapper : WebElementWrapper, IDropdownWrapper
+   public sealed class DropdownWrapper : Automation.Elements.Implementations.WebElementWrapper, IDropdownWrapper
     {
         public DropdownWrapper(IWebElementWrapper wrapper, string caption, IDriverService driverService) : 
             base(() => wrapper.Element, caption, driverService) { }

@@ -95,16 +95,6 @@ namespace Behavioral.Automation.Elements.Implementations
 
         public bool Enabled => Displayed && Element.Enabled;
 
-        public string Tooltip
-        {
-            get
-            {
-                var e2ETooltip = GetAttribute("e2e-tooltip");
-                return e2ETooltip ?? GetAttribute("title");
-            }
-        }
-
-
         public bool Stale
         {
             get

@@ -33,18 +33,6 @@ namespace Behavioral.Automation.Bindings
         }
 
         [StepArgumentTransformation("(.*)")]
-        public IDropdownWrapper FindDropdown([NotNull] IWebElementWrapper element)
-        {
-            return new DropdownWrapper(element, element.Caption, _driverService);
-        }
-
-        [StepArgumentTransformation("(.*)")]
-        public ITableWrapper FindTable([NotNull] IWebElementWrapper element)
-        {
-            return new TableWrapper(element, element.Caption, _driverService, _virtualizedElementsSelectionService);
-        }
-
-        [StepArgumentTransformation("(.*)")]
         public ITextElementWrapper FindTextElement([NotNull] IWebElementWrapper element)
         {
             return new TextElementWrapper(element, element.Caption, _driverService);

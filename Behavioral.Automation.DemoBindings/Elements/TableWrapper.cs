@@ -6,9 +6,9 @@ using Behavioral.Automation.Services;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 
-namespace Behavioral.Automation.Elements.Implementations
+namespace Behavioral.Automation.DemoBindings.Elements
 {
-    public class TableWrapper : WebElementWrapper, ITableWrapper
+    public class TableWrapper : Automation.Elements.Implementations.WebElementWrapper, ITableWrapper
     {
         private readonly string _searchAttribute = ConfigServiceBase.SearchAttribute;
         private readonly IVirtualizedElementsSelectionService _virtualizedElementsSelectionService;

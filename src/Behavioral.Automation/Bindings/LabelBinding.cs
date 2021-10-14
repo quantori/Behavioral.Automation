@@ -45,7 +45,7 @@ namespace Behavioral.Automation.Bindings
 
         [Then("the (.*?) should (have|not have) tooltip with text \"(.*)\"")]
         public void CheckElementTooltip(
-            [NotNull] IWebElementWrapper element,
+            [NotNull] ITooltipLabelWrapper element,
             [NotNull] AssertionBehavior behavior,
             [NotNull] string value)
         {

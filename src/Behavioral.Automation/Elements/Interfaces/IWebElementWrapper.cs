@@ -26,8 +26,6 @@ namespace Behavioral.Automation.Elements.Interfaces
 
        public bool Enabled { get; }
 
-       public string Tooltip { get; }
-       
        public bool Stale { get; }
     }
 }
