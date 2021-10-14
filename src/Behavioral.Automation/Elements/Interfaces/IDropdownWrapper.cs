@@ -15,6 +15,8 @@ namespace Behavioral.Automation.Elements.Interfaces
 
         IEnumerable<IWebElementWrapper> Groups { [NotNull, ItemNotNull] get; }
 
+        IEnumerable<string> GroupTexts { [NotNull, ItemNotNull] get; }
+
         bool Empty { get; }
     }
 }
