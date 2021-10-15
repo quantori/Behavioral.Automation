@@ -6,6 +6,7 @@ using Behavioral.Automation.Abstractions;
 using Behavioral.Automation.FluentAssertions.Abstractions;
 using Behavioral.Automation.Model;
 using Behavioral.Automation.Services;
+using NUnit.Framework;
 using OpenQA.Selenium;
 using TechTalk.SpecFlow;
 
@@ -15,7 +16,6 @@ namespace Behavioral.Automation.FluentAssertions
     {
         private const int DefaultAttempts = 30;
         private static ITestRunnerWrapper _runner;
-        private static IScenarioExecutionConsumer _consumer;
 
         public static void SetRunner(ITestRunner runner)
         {
@@ -25,11 +25,6 @@ namespace Behavioral.Automation.FluentAssertions
         public static void SetRunner(ITestRunnerWrapper runner)
         {
             _runner = runner;
-        }
-
-        public static void SetConsumer(IScenarioExecutionConsumer consumer)
-        {
-            _consumer = consumer;
         }
 
         public static T ShouldGet<T>(Func<T> predicate)
@@ -93,7 +88,8 @@ namespace Behavioral.Automation.FluentAssertions
         {
             if (!condition)
             {
-                NUnit.Framework.Assert.Fail(BuildMessage(message));
+                TestContext.WriteLine($"\nActual:\n{message}");
+                NUnit.Framework.Assert.Fail();
             }
         }
 
@@ -105,17 +101,6 @@ namespace Behavioral.Automation.FluentAssertions
             }
 
             return string.Empty;
-        }
-
-        private static string BuildMessage(string message)
-        {
-            IEnumerable<string> executedSteps = _consumer.Get();
-            string aggregatedSteps = "";
-            if (executedSteps.Any())
-            {
-                aggregatedSteps = _consumer.Get().Aggregate((x, y) => $"{x}\n{y}");
-            }
-            return $"{aggregatedSteps}\n\nExpected:\n{_runner.StepInfoText}\nActual:\n{message}";
         }
 
         private static T TryGetValue<T>(Func<T> getValue, TimeSpan wait, int attempts = 10)
