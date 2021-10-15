@@ -22,11 +22,7 @@ namespace Behavioral.Automation.UnitTests
             Mock<ITestRunnerWrapper> wrapperMock = new Mock<ITestRunnerWrapper>();
             wrapperMock.Setup(w => w.StepInfoText).Returns("TEST");
 
-            Mock<IScenarioExecutionConsumer> consumerMock = new Mock<IScenarioExecutionConsumer>();
-            consumerMock.Setup(c => c.Get()).Returns(new[] { "TEST STEP" });
-
             BAssert.SetRunner(wrapperMock.Object);
-            BAssert.SetConsumer(consumerMock.Object);
         }
 
         [TestCase(0, false)]

@@ -33,7 +33,6 @@ namespace Behavioral.Automation.DemoBindings
             Assert.SetRunner(_runner);
             _objectContainer.RegisterTypeAs<UserInterfaceBuilder, IUserInterfaceBuilder>();
             _servicesBuilder.Build();
-            Assert.SetConsumer(_objectContainer.Resolve<IScenarioExecutionConsumer>());
             _browserRunner.OpenChrome();
         }
     }

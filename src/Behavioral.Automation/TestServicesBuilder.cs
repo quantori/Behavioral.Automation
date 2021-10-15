@@ -16,7 +16,6 @@ namespace Behavioral.Automation
         
         public void Build()
         {
-            _objectContainer.RegisterTypeAs<ScenarioExecutionConsumer, IScenarioExecutionConsumer>();
             _objectContainer.RegisterTypeAs<DriverService, IDriverService>();
             _objectContainer.RegisterTypeAs<ElementSelectionService, IElementSelectionService>();
             _objectContainer.RegisterTypeAs<VirtualizedElementsSelectionService, IVirtualizedElementsSelectionService>();
