@@ -66,7 +66,7 @@ namespace Behavioral.Automation.Bindings
             {
                 var value = row.Values.FirstOrDefault();
                 Assert.ShouldBecome(()=>dropdownItems.Contains(value), !behavior.Contains("not"),
-                $"{wrapper.Caption} items are {dropdownItems.Aggregate((x, y) => $"{x}, {y}")}"););
+                $"{wrapper.Caption} items are {dropdownItems.Aggregate((x, y) => $"{x}, {y}")}");
             }
         }
 
