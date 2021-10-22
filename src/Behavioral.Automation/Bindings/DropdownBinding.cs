@@ -56,6 +56,7 @@ namespace Behavioral.Automation.Bindings
 
         [Given("the (.*?) (contains|not contains) the following values:")]
         [Then("the (.*?) should (contain|not contain) the following values:")]
+        [Then("the \"(.*?)\" menu should (contain|not contain) the following values:")]
         public void CheckDropdownContainsMultipleItems([NotNull] IDropdownWrapper wrapper, [NotNull] string behavior, [NotNull] Table table)
         {
             Assert.ShouldBecome(()=> table.Rows.Any(),true, 
