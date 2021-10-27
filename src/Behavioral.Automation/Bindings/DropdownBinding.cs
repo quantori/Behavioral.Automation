@@ -41,7 +41,7 @@ namespace Behavioral.Automation.Bindings
             CheckDropdownElements(wrapper.GroupTexts, items, $"{wrapper.Caption} groups");
         }
 
-        [When("(.*?) (contain|not contain) \"(.*)\"")]
+        [Given("(.*?) (contain|not contain) \"(.*)\"")]
         [Then("(.*?) should (contain|not contain) \"(.*)\"")]
         public void CheckDropdownContainsItems(
             [NotNull] IDropdownWrapper wrapper,
@@ -52,6 +52,23 @@ namespace Behavioral.Automation.Bindings
                 () => wrapper.Items.Contains(value),
                 !behavior.Contains("not"),
                 $"{wrapper.Caption} items are {wrapper.Items.Aggregate((x, y) => $"{x}, {y}")}");
+        }
+
+        [Given("the (.*?) (contains|not contains) the following values:")]
+        [Then("the (.*?) should (contain|not contain) the following values:")]
+        [Then("the \"(.*?)\" menu should (contain|not contain) the following values:")]
+        public void CheckDropdownContainsMultipleItems([NotNull] IDropdownWrapper wrapper, [NotNull] string behavior, [NotNull] Table table)
+        {
+            Assert.ShouldBecome(()=> table.Rows.Any(),true, 
+                new AssertionBehavior(AssertionType.Immediate, false), "Please provide data in the table");
+
+            var dropdownItems = wrapper.Items;
+            foreach (var row in table.Rows)
+            {
+                var value = row.Values.FirstOrDefault();
+                Assert.ShouldBecome(()=>dropdownItems.Contains(value), !behavior.Contains("not"),
+                $"{wrapper.Caption} items are {dropdownItems.Aggregate((x, y) => $"{x}, {y}")}");
+            }
         }
 
         [Then("all items in the (.+?) should (have|not have) \"(.+?)\"")]
