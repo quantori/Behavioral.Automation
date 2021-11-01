@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 using System;
 using TechTalk.SpecFlow;
 
-namespace Behavioral.Automation.Bindings
+namespace Behavioral.Automation.Hooks.BeforeStep
 {
     /// <summary>
     /// Allows to automatically switch PageContext, depending on current Driver url
@@ -22,7 +22,7 @@ namespace Behavioral.Automation.Bindings
         }
 
         [BeforeStep]
-        public void CheckScopeSwitch()
+        public void SwitchContextToCurrentUrl()
         {
             _scopeContextManager.SwitchToCurrentUrl(new Uri(_driverService.CurrentUrl));
         }
