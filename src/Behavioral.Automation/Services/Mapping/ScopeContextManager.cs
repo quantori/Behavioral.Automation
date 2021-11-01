@@ -7,8 +7,8 @@ namespace Behavioral.Automation.Services.Mapping
     {
         private readonly IScopeContextRuntime _scopeContextRuntime;
         private readonly IUriToPageScopeMapper _uriToPageScopeMapper;
-        private string LastVisitedUrl = string.Empty;
-        private const string EmptyPageUrl = "data:,";
+        private Uri LastVisitedUrl = default;
+        private readonly Uri EmptyPageUrl = new Uri("data:,");
 
         public ScopeContextManager(IScopeContextRuntime scopeContextRuntime, IUriToPageScopeMapper uriToPageScopeMapper)
         {
@@ -44,12 +44,12 @@ namespace Behavioral.Automation.Services.Mapping
             _scopeContextRuntime.SwitchToPageScope(pageScopeContext);
         }
 
-        public void SwitchToCurrentUrl(string currentUrl)
+        public void SwitchToCurrentUrl(Uri currentUrl)
         {
             if (currentUrl == EmptyPageUrl || currentUrl == LastVisitedUrl)
                 return;
 
-            SwitchPage(new Uri(currentUrl));
+            SwitchPage(currentUrl);
             LastVisitedUrl = currentUrl;
         }
     }

@@ -1,6 +1,7 @@
 ﻿using Behavioral.Automation.Services;
 using Behavioral.Automation.Services.Mapping.Contract;
 using JetBrains.Annotations;
+using System;
 using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings
@@ -23,7 +24,7 @@ namespace Behavioral.Automation.Bindings
         [BeforeStep]
         public void CheckScopeSwitch()
         {
-            _scopeContextManager.SwitchToCurrentUrl(_driverService.CurrentUrl);
+            _scopeContextManager.SwitchToCurrentUrl(new Uri(_driverService.CurrentUrl));
         }
     }
 }
