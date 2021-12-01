@@ -18,6 +18,8 @@ The whole automation code is divided into the following parts:
         <Copyright>Quantori Inc.</Copyright>
         <PackageVersion>1.1.0</PackageVersion>
         <RepositoryUrl>https://github.com/quantori/Behavioral.Automation</RepositoryUrl>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
     <ItemGroup>
       <PackageReference Include="ExcelDataReader" Version="3.6.0" />
@@ -28,6 +30,10 @@ The whole automation code is divided into the following parts:
       <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+      <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
       <PackageReference Include="NUnit" Version="3.13.2" />
       <PackageReference Include="Selenium.Support" Version="4.1.0" />
       <PackageReference Include="Selenium.WebDriver" Version="4.1.0" />
