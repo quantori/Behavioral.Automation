@@ -11,13 +11,6 @@ namespace Behavioral.Automation.Bindings
     [Binding]
     public class ListBinding
     {
-        private readonly IDriverService _driverService;
-
-        public ListBinding([NotNull] IDriverService driverService)
-        {
-            _driverService = driverService;
-        }
-
         [Given("(.+?) (has|does not have) the following items:")]
         [Then("(.+?) should (have|not have) the following items:")]
         public void CheckListHaveItems(IListWrapper list, string behavior, Table table)

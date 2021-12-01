@@ -7,7 +7,7 @@ namespace Behavioral.Automation.Services
 {
     public interface IDriverService 
     {
-        RemoteWebDriver Driver { get; }
+        IWebDriver Driver { get; }
 
         string CurrentUrl { [NotNull] get; }
 
@@ -25,6 +25,8 @@ namespace Behavioral.Automation.Services
         ReadOnlyCollection<IWebElement> FindElements([NotNull] string id);
 
         ReadOnlyCollection<IWebElement> FindElementsByXpath([NotNull] string path);
+
+        object ExecuteScript(string script, params object[] args);
 
         public void Refresh();
 
