@@ -8,8 +8,8 @@ using Behavioral.Automation.Services.Mapping.Contract;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Chromium;
 using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium.Remote;
 
 namespace Behavioral.Automation.Services
 {
@@ -26,7 +26,7 @@ namespace Behavioral.Automation.Services
             _browserRunner = browserRunner;
         }
 
-        public RemoteWebDriver Driver => _browserRunner.Driver;
+        public ChromiumDriver Driver => _browserRunner.Driver;
 
         private readonly string SearchAttribute = ConfigServiceBase.SearchAttribute;
 

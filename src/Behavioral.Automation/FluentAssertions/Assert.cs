@@ -89,7 +89,7 @@ namespace Behavioral.Automation.FluentAssertions
             if (!condition)
             {
                 TestContext.WriteLine($"\nActual:\n{message}");
-                NUnit.Framework.Assert.Fail();
+                NUnit.Framework.Assert.Fail($"Test execution failed: \n{message}");
             }
         }
 

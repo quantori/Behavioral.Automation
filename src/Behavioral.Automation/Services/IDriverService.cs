@@ -1,13 +1,13 @@
 ﻿using System.Collections.ObjectModel;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Chromium;
 
 namespace Behavioral.Automation.Services
 {
     public interface IDriverService 
     {
-        RemoteWebDriver Driver { get; }
+        ChromiumDriver Driver { get; }
 
         string CurrentUrl { [NotNull] get; }
 
