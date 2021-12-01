@@ -8,8 +8,8 @@ using Behavioral.Automation.Services.Mapping.Contract;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chromium;
 using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Remote;
 
 namespace Behavioral.Automation.Services
 {
@@ -26,7 +26,7 @@ namespace Behavioral.Automation.Services
             _browserRunner = browserRunner;
         }
 
-        public ChromiumDriver Driver => _browserRunner.Driver;
+        public IWebDriver Driver => _browserRunner.Driver;
 
         private readonly string SearchAttribute = ConfigServiceBase.SearchAttribute;
 
@@ -80,13 +80,19 @@ namespace Behavioral.Automation.Services
             return Driver.FindElements(By.XPath(path));
         }
 
+        public object ExecuteScript(string script, params object[] args)
+        {
+            IJavaScriptExecutor js = (IJavaScriptExecutor)Driver;
+            return js.ExecuteScript(script, args);
+        }
+
         public void ScrollTo(IWebElement element)
         {
             var scrollElementIntoMiddle = "var viewPortHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);"
                                           + "var elementTop = arguments[0].getBoundingClientRect().top;"
                                           + "window.scrollBy(0, elementTop-(viewPortHeight/2));";
 
-            Driver.ExecuteScript(scrollElementIntoMiddle, element);
+            ExecuteScript(scrollElementIntoMiddle, element);
             Actions actions = new Actions(Driver);
             actions.MoveToElement(element);
             actions.Perform();
@@ -130,8 +136,8 @@ namespace Behavioral.Automation.Services
         }
 
         public void RemoveFocusFromActiveElement()
-        {
-            Driver.ExecuteScript("document.activeElement.blur()");
+        { 
+            ExecuteScript("document.activeElement.blur()");
         }
 
         public void DebugDumpPage()
@@ -165,13 +171,14 @@ namespace Behavioral.Automation.Services
         public string MakeScreenShot()
         {
             var fileName = Regex.Replace(TestContext.CurrentContext.Test.Name, @"(\\|\"")", string.Empty) + ".png";
-            Driver.GetScreenshot().SaveAsFile(fileName, ScreenshotImageFormat.Png);
+            Screenshot screenshot = ((ITakesScreenshot)Driver).GetScreenshot();
+            screenshot.SaveAsFile(fileName, ScreenshotImageFormat.Png);
             return fileName;
         }
 
         public void ScrollElementTo(IWebElement element, int offset)
         {
-            Driver.ExecuteScript(@"
+            ExecuteScript(@"
                 var element = arguments[0];
                 var offset = arguments[1];
                 element.scrollTo({top: offset, behavior: 'smooth'});", element, offset);

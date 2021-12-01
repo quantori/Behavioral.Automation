@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Chromium;
 using OpenQA.Selenium.Remote;
@@ -9,9 +10,9 @@ namespace Behavioral.Automation.Services
 {
     public class BrowserRunner
     {
-        public ChromiumDriver Driver;
-        
-        public void OpenBrowser([NotNull] ChromiumDriver driver)
+        public IWebDriver Driver;
+
+        public void OpenBrowser([NotNull] IWebDriver driver)
         {
             Driver = driver;
         }
