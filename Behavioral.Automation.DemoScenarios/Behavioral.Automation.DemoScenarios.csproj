@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
     <Authors>Quantori Inc.</Authors>
     <Description>Specflow scenarios for demonstration of Behavioral.Automation framework features and testing.</Description>
     <Copyright>Quantori Inc.</Copyright>
@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="96.0.4664.4500" />
 	<PackageReference Include="SpecFlow" Version="3.9.40" />
 	<PackageReference Include="SpecFlow.NUnit" Version="3.9.40" />
 	<PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.40" />
