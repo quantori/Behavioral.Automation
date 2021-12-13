@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>Quantori Inc.</Authors>
     <Description>Specflow scenarios for demonstration of Behavioral.Automation framework features and testing.</Description>
     <Copyright>Quantori Inc.</Copyright>

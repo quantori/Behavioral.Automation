@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
 	<IsPackable>false</IsPackable>
 	<Authors>Quantori Inc.</Authors>
 	<Description>Demo project that can be used as example of test configuration.</Description>
