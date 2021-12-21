@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -170,7 +171,7 @@ namespace Behavioral.Automation.Services
 
         public string MakeScreenShot()
         {
-            var fileName = Regex.Replace(TestContext.CurrentContext.Test.Name, @"(\/|\\|\"")", string.Empty) + ".png";
+            var fileName = string.Join("", TestContext.CurrentContext.Test.Name.Split(Path.GetInvalidFileNameChars())) + ".png";
             Screenshot screenshot = ((ITakesScreenshot)Driver).GetScreenshot();
             screenshot.SaveAsFile(fileName, ScreenshotImageFormat.Png);
             return fileName;
