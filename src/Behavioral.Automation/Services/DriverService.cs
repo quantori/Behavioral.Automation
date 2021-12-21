@@ -170,7 +170,7 @@ namespace Behavioral.Automation.Services
 
         public string MakeScreenShot()
         {
-            var fileName = Regex.Replace(TestContext.CurrentContext.Test.Name, @"(\\|\"")", string.Empty) + ".png";
+            var fileName = Regex.Replace(TestContext.CurrentContext.Test.Name, @"(Bug\((.+?)\)|\\|\"")", string.Empty) + ".png";
             Screenshot screenshot = ((ITakesScreenshot)Driver).GetScreenshot();
             screenshot.SaveAsFile(fileName, ScreenshotImageFormat.Png);
             return fileName;
