@@ -1,16 +1,18 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Chromium;
 using OpenQA.Selenium.Remote;
 
 namespace Behavioral.Automation.Services
 {
     public class BrowserRunner
     {
-        public RemoteWebDriver Driver;
-        
-        public void OpenBrowser([NotNull] RemoteWebDriver driver)
+        public IWebDriver Driver;
+
+        public void OpenBrowser([NotNull] IWebDriver driver)
         {
             Driver = driver;
         }
@@ -51,7 +53,7 @@ namespace Behavioral.Automation.Services
                 {"behavior", "allow"},
                 {"downloadPath", downloadPath}
             };
-            driver.ExecuteChromeCommand("Page.setDownloadBehavior", param);
+            driver.ExecuteCdpCommand("Page.setDownloadBehavior", param);
             OpenBrowser(driver);
         }
 

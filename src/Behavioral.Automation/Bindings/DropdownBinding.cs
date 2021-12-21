@@ -1,8 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using FluentAssertions;
 using Behavioral.Automation.Elements;
-using Behavioral.Automation.Elements.Interfaces;
 using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Model;
 using JetBrains.Annotations;
@@ -33,16 +32,16 @@ namespace Behavioral.Automation.Bindings
         [Then("the (.*?) should have the following values:")]
         public void CheckAllItems([NotNull] IDropdownWrapper wrapper, [NotNull] Table items)
         {
-            wrapper.Items.Should().BeEquivalentTo(items.Rows.Select(x => x.Values.Single()));
+            CheckDropdownElements(wrapper.Items, items, $"{wrapper.Caption} values");
         }
 
         [Then("(.*?) should have the following groups:")]
-        public void CheckDropdownHeaders([NotNull] IDropdownWrapper wrapper, [NotNull] Table items)
+        public void CheckDropdownHeaders([NotNull] IGroupedDropdownWrapper wrapper, [NotNull] Table items)
         {
-            wrapper.Groups.Should().BeEquivalentTo(items.Rows.Select(x => x.Values.Single()));
+            CheckDropdownElements(wrapper.GroupTexts, items, $"{wrapper.Caption} groups");
         }
 
-        [When("(.*?) (contain|not contain) \"(.*)\"")]
+        [Given("(.*?) (contain|not contain) \"(.*)\"")]
         [Then("(.*?) should (contain|not contain) \"(.*)\"")]
         public void CheckDropdownContainsItems(
             [NotNull] IDropdownWrapper wrapper,
@@ -53,6 +52,23 @@ namespace Behavioral.Automation.Bindings
                 () => wrapper.Items.Contains(value),
                 !behavior.Contains("not"),
                 $"{wrapper.Caption} items are {wrapper.Items.Aggregate((x, y) => $"{x}, {y}")}");
+        }
+
+        [Given("the (.*?) (contains|not contains) the following values:")]
+        [Then("the (.*?) should (contain|not contain) the following values:")]
+        [Then("the \"(.*?)\" menu should (contain|not contain) the following values:")]
+        public void CheckDropdownContainsMultipleItems([NotNull] IDropdownWrapper wrapper, [NotNull] string behavior, [NotNull] Table table)
+        {
+            Assert.ShouldBecome(()=> table.Rows.Any(),true, 
+                new AssertionBehavior(AssertionType.Immediate, false), "Please provide data in the table");
+
+            var dropdownItems = wrapper.Items;
+            foreach (var row in table.Rows)
+            {
+                var value = row.Values.FirstOrDefault();
+                Assert.ShouldBecome(()=>dropdownItems.Contains(value), !behavior.Contains("not"),
+                $"{wrapper.Caption} items are {dropdownItems.Aggregate((x, y) => $"{x}, {y}")}");
+            }
         }
 
         [Then("all items in the (.+?) should (have|not have) \"(.+?)\"")]
@@ -85,7 +101,7 @@ namespace Behavioral.Automation.Bindings
         [Then("the following values should be selected in (.*?):")]
         public void CheckMultipleSelectedValues([NotNull] IMultiSelectDropdownWrapper wrapper, [NotNull] Table values)
         {
-            wrapper.SelectedValuesTexts.Should().BeEquivalentTo(values.Rows.Select(x => x.Values.Single()));
+            CheckDropdownElements(wrapper.SelectedValuesTexts, values, $"{wrapper.Caption} selected values");
         }
 
         [Given("the \"(.+?)\" value (is|become) (enabled|disabled) in (.+?)")]
@@ -136,6 +152,17 @@ namespace Behavioral.Automation.Bindings
         {
             Assert.ShouldBecome(() => wrapper.Empty, true, behavior,
                 $"{wrapper.Caption} selected value is{behavior.BehaviorAppendix()} empty");
+        }
+
+        private void CheckDropdownElements([NotNull] IEnumerable<string> actualValues, [NotNull] Table expectedValues, [NotNull] string valueType)
+        {
+            for (var i = 0; i < expectedValues.Rows.Count; i++)
+            {
+                var expectedValue = expectedValues.Rows.ElementAt(i).Values.FirstOrDefault();
+                var actualValue = actualValues.Any()? actualValues.ElementAt(i) : null;
+                Assert.ShouldBecome(() => expectedValue, actualValue,
+                    $"Expected one of the {valueType} to be {expectedValue} but was {actualValue}");
+            }
         }
     }
 }

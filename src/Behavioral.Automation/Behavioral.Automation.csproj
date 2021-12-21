@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Authors>Quantori Inc.</Authors>
         <Description>Platform design is based on strong and well-defined borderline between procedural test cases structure and object-oriented code-behind.
@@ -18,20 +18,27 @@ The whole automation code is divided into the following parts:
         <Copyright>Quantori Inc.</Copyright>
         <PackageVersion>1.1.0</PackageVersion>
         <RepositoryUrl>https://github.com/quantori/Behavioral.Automation</RepositoryUrl>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <IncludeSymbols>true</IncludeSymbols>
+        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     </PropertyGroup>
     <ItemGroup>
       <PackageReference Include="ExcelDataReader" Version="3.6.0" />
       <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
-      <PackageReference Include="FluentAssertions" Version="5.10.3" />
-      <PackageReference Include="JetBrains.Annotations" Version="2020.3.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="5.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="5.0.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
-      <PackageReference Include="NUnit" Version="3.13.1" />
-      <PackageReference Include="Selenium.Support" Version="3.141.0" />
-      <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
-      <PackageReference Include="SpecFlow" Version="3.7.13" />
+      <PackageReference Include="FluentAssertions" Version="6.2.0" />
+      <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+      <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="NUnit" Version="3.13.2" />
+      <PackageReference Include="Selenium.Support" Version="4.1.0" />
+      <PackageReference Include="Selenium.WebDriver" Version="4.1.0" />
+      <PackageReference Include="SpecFlow" Version="3.9.40" />
     </ItemGroup>
 
 </Project>
