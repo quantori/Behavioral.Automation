@@ -137,7 +137,7 @@ namespace Behavioral.Automation.Services
         }
 
         public void RemoveFocusFromActiveElement()
-        { 
+        {
             ExecuteScript("document.activeElement.blur()");
         }
 
@@ -165,13 +165,15 @@ namespace Behavioral.Automation.Services
         }
 
         public void ResizeWindow(int Height, int Width)
-        { 
+        {
             Driver.Manage().Window.Size = new Size(Width, Height);
         }
 
         public string MakeScreenShot()
         {
-            var fileName = string.Join("", TestContext.CurrentContext.Test.Name.Split(Path.GetInvalidFileNameChars())) + ".png";
+            var fileName = new string(TestContext.CurrentContext.Test.Name
+                .Where(x => !Path.GetInvalidFileNameChars().Contains(x))
+                .ToArray()) + ".png";
             Screenshot screenshot = ((ITakesScreenshot)Driver).GetScreenshot();
             screenshot.SaveAsFile(fileName, ScreenshotImageFormat.Png);
             return fileName;
