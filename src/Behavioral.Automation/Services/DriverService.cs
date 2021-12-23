@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -136,7 +137,7 @@ namespace Behavioral.Automation.Services
         }
 
         public void RemoveFocusFromActiveElement()
-        { 
+        {
             ExecuteScript("document.activeElement.blur()");
         }
 
@@ -164,13 +165,15 @@ namespace Behavioral.Automation.Services
         }
 
         public void ResizeWindow(int Height, int Width)
-        { 
+        {
             Driver.Manage().Window.Size = new Size(Width, Height);
         }
 
         public string MakeScreenShot()
         {
-            var fileName = Regex.Replace(TestContext.CurrentContext.Test.Name, @"(\\|\"")", string.Empty) + ".png";
+            var fileName = new string(TestContext.CurrentContext.Test.Name
+                .Where(x => !Path.GetInvalidFileNameChars().Contains(x))
+                .ToArray()) + ".png";
             Screenshot screenshot = ((ITakesScreenshot)Driver).GetScreenshot();
             screenshot.SaveAsFile(fileName, ScreenshotImageFormat.Png);
             return fileName;
