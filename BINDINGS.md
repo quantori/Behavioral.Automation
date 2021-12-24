@@ -364,8 +364,8 @@ When first element among "Search results" grid rows is expanded
 
 # Scenario hooks guides
 ## Basic auth hook
-In order to make the following should be done:
+In order to make basic authentication work user should do the following:
 * @BasicAuth tag should be added to scenario which requires authentication
 * AutomationConfig.json should have credentials for basic auth. Please refer to [example](Behavioral.Automation.DemoBindings/AutomationConfig.json).
 * If you want to use credentials from different sources IBasicAuthConfig interface can be used
-* If basic auth should be ignored on env then IgnoreAuth field can be used to disable basic auth
+* To ignore basic auth on given env the IgnoreAuth field can be used to disable basic auth
