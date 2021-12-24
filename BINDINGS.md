@@ -366,5 +366,6 @@ When first element among "Search results" grid rows is expanded
 ## Basic auth hook
 In order to make the following should be done:
 * @BasicAuth tag should be added to scenario which requires authentication
-* IBasicAuthConfig interface should be implemented. It should provide values with app url, login, password
-* If basic auth should be ignored on env then IgnoreAuth field can be used to disable basic auth. Set it to false if needed
+* AutomationConfig.json should have credentials for basic auth. Please refer to [example](Behavioral.Automation.DemoBindings/AutomationConfig.json).
+* If you want to use credentials from different sources IBasicAuthConfig interface can be used
+* If basic auth should be ignored on env then IgnoreAuth field can be used to disable basic auth
