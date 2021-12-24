@@ -4,7 +4,6 @@ using Behavioral.Automation.Model;
 using Behavioral.Automation.Services;
 using Behavioral.Automation.Services.Mapping.Contract;
 using JetBrains.Annotations;
-using OpenQA.Selenium.Support.UI;
 using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings
