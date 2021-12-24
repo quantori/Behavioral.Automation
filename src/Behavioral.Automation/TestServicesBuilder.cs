@@ -25,8 +25,9 @@ namespace Behavioral.Automation
             _objectContainer.RegisterTypeAs<UriToPageScopeMapper, IUriToPageScopeMapper>();
             _objectContainer.RegisterTypeAs<ScopeContextManager, IScopeContextManager>();
             _objectContainer.RegisterTypeAs<ScopeContextRuntime, IScopeContextRuntime>();
-            
-           var builder = _objectContainer.Resolve<IUserInterfaceBuilder>(); 
+            _objectContainer.RegisterTypeAs<BasicAuthConfig, IBasicAuthConfig>();
+
+            var builder = _objectContainer.Resolve<IUserInterfaceBuilder>(); 
            builder.Build();
         }
     }
