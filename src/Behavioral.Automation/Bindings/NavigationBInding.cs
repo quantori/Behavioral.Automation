@@ -4,6 +4,7 @@ using Behavioral.Automation.Model;
 using Behavioral.Automation.Services;
 using Behavioral.Automation.Services.Mapping.Contract;
 using JetBrains.Annotations;
+using OpenQA.Selenium.Support.UI;
 using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings
@@ -84,6 +85,12 @@ namespace Behavioral.Automation.Bindings
         public void CheckOpened([NotNull] int pageHeight, [NotNull] int pageWidth)
         {
             _driverService.ResizeWindow(pageHeight, pageWidth);
+        }
+
+        [When("user reloads current page")]
+        public void ReloadCurrentPage()
+        {
+            _driverService.Refresh();
         }
     }
 }
