@@ -1,6 +1,4 @@
 ﻿using Behavioral.Automation.Services;
-using Newtonsoft.Json.Linq;
-using OpenQA.Selenium.Remote;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
@@ -8,14 +6,6 @@ using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings.Authorization
 {
-    public interface IBasicAuthConfig {
-        public string HomeUrl { get; set; }
-        public string Login { get; set; }
-        public string Password { get; set; }
-        public bool IgnoreAuth { get; set; }
-    }
-
-
     [Binding]
     public class BasicAuthBindings : Steps
     {

@@ -361,3 +361,11 @@ Then "Search results" grid should contain no records
 [Then("(.*?) element among (.*) should (be|be not) expanded")]
 Example:
 When first element among "Search results" grid rows is expanded
+
+# Scenario hooks guides
+## Basic auth hook
+In order to make basic authentication work user should do the following:
+* @BasicAuth tag should be added to scenario which requires authentication
+* AutomationConfig.json should have credentials for basic auth. Please refer to [example](Behavioral.Automation.DemoBindings/AutomationConfig.json).
+* If you want to use credentials from different sources IBasicAuthConfig interface can be used
+* To ignore basic auth on given env the IgnoreAuth field can be used to disable basic auth
