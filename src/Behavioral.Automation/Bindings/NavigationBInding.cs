@@ -86,6 +86,7 @@ namespace Behavioral.Automation.Bindings
             _driverService.ResizeWindow(pageHeight, pageWidth);
         }
 
+        [Given("user reloaded current page")]
         [When("user reloads current page")]
         public void ReloadCurrentPage()
         {
