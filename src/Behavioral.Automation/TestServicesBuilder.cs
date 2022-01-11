@@ -26,6 +26,8 @@ namespace Behavioral.Automation
             _objectContainer.RegisterTypeAs<ScopeContextManager, IScopeContextManager>();
             _objectContainer.RegisterTypeAs<ScopeContextRuntime, IScopeContextRuntime>();
             _objectContainer.RegisterTypeAs<BasicAuthConfig, IBasicAuthConfig>();
+            _objectContainer.RegisterTypeAs<ComplexBindingBuilder, IComplexBindingBuilder>();
+            _objectContainer.RegisterTypeAs<StepParametersProcessor, IStepParametersProcessor>();
 
             var builder = _objectContainer.Resolve<IUserInterfaceBuilder>(); 
            builder.Build();

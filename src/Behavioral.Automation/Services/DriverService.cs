@@ -187,5 +187,25 @@ namespace Behavioral.Automation.Services
                 element.scrollTo({top: offset, behavior: 'smooth'});", element, offset);
             Thread.Sleep(1000);
         }
+
+        public string SaveBrowserLog()
+        {
+            var fileName = new string(TestContext.CurrentContext.Test.Name
+                               .Where(x => !Path.GetInvalidFileNameChars().Contains(x))
+                               .ToArray()) + ".log";
+            if (!File.Exists(fileName))
+            {
+                File.Create(fileName).Dispose();
+            }
+
+            using var sw = File.AppendText(fileName);
+            var log = Driver.Manage().Logs.GetLog(LogType.Browser);
+            foreach (var entry in log)
+            {
+                sw.WriteLine(entry.ToString());
+            }
+
+            return fileName;
+        }
     }
 }
