@@ -198,12 +198,8 @@ namespace Behavioral.Automation.Services
                 File.Create(fileName).Dispose();
             }
 
-            using var sw = File.AppendText(fileName);
             var log = Driver.Manage().Logs.GetLog(LogType.Browser);
-            foreach (var entry in log)
-            {
-                sw.WriteLine(entry.ToString());
-            }
+            File.AppendAllLines(fileName, log.Select(l => l.ToString()));
 
             return fileName;
         }
