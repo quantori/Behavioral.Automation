@@ -4,9 +4,14 @@ using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Bindings;
 
 namespace Behavioral.Automation.Services
 {
+    /// <summary>
+    /// Contains BuildAction methods which should be used to call other bindings inside the code (multiple clicks, value selections, etc.)
+    /// This way ctions in called bindings will appear in test logs
+    /// </summary>
     public class ComplexBindingBuilder : IComplexBindingBuilder
     {
         private readonly ITestRunner _runner;
@@ -38,41 +43,41 @@ namespace Behavioral.Automation.Services
 
         public void BuildAction(Action method)
         {
-            IEnumerable<StepDefinitionBaseAttribute> attributes = method.GetMethodInfo().GetCustomAttributes<StepDefinitionBaseAttribute>(true);
+            var attributes = method.GetMethodInfo().GetCustomAttributes<StepDefinitionBaseAttribute>(true);
             BuildAction(Array.Empty<object>(), attributes, method.GetMethodInfo().Name);
         }
 
         public void BuildAction<T>(Action<T> method, params object[] pars)
         {
-            IEnumerable<StepDefinitionBaseAttribute> attributes = method.GetMethodInfo().GetCustomAttributes<StepDefinitionBaseAttribute>(true);
+            var attributes = method.GetMethodInfo().GetCustomAttributes<StepDefinitionBaseAttribute>(true);
             BuildAction(pars, attributes, method.GetMethodInfo().Name);
         }
 
         public void BuildAction<T1, T2>(Action<T1, T2> method, params object[] pars)
         {
-            IEnumerable<StepDefinitionBaseAttribute> attributes = method.GetMethodInfo().GetCustomAttributes<StepDefinitionBaseAttribute>(true);
+            var attributes = method.GetMethodInfo().GetCustomAttributes<StepDefinitionBaseAttribute>(true);
             BuildAction(pars, attributes, method.GetMethodInfo().Name);
         }
 
         public void BuildAction<T1, T2, T3>(Action<T1, T2, T3> method, params object[] pars)
         {
-            IEnumerable<StepDefinitionBaseAttribute> attributes = method.GetMethodInfo().GetCustomAttributes<StepDefinitionBaseAttribute>(true);
+            var attributes = method.GetMethodInfo().GetCustomAttributes<StepDefinitionBaseAttribute>(true);
             BuildAction(pars, attributes, method.GetMethodInfo().Name);
         }
 
         public void BuildAction<T1, T2, T3, T4>(Action<T1, T2, T3, T4> method, params object[] pars)
         {
-            IEnumerable<StepDefinitionBaseAttribute> attributes = method.GetMethodInfo().GetCustomAttributes<StepDefinitionBaseAttribute>(true);
+            var attributes = method.GetMethodInfo().GetCustomAttributes<StepDefinitionBaseAttribute>(true);
             BuildAction(pars, attributes, method.GetMethodInfo().Name);
         }
 
         private void BuildAction(object[] pars, IEnumerable<StepDefinitionBaseAttribute> attributes, string methodName)
         {
-            string definitionType = _scenarioContext.StepContext.StepInfo.StepDefinitionType.ToString();
+            var definitionType = _scenarioContext.StepContext.StepInfo.StepDefinitionType.ToString();
             var attributeForCurrentStep = attributes.FirstOrDefault(a => a.GetType().Name.StartsWith(definitionType, StringComparison.OrdinalIgnoreCase));
             if (attributeForCurrentStep == null)
             {
-                NUnit.Framework.Assert.Inconclusive($"{definitionType} attribute is not provided for {methodName} binding method");
+                Assert.Inconclusive($"{definitionType} attribute is not provided for {methodName} binding method");
             }
 
             string stepExpression;
@@ -96,15 +101,15 @@ namespace Behavioral.Automation.Services
         {
             switch (_scenarioContext.StepContext.StepInfo.StepDefinitionType)
             {
-                case TechTalk.SpecFlow.Bindings.StepDefinitionType.Given:
+                case StepDefinitionType.Given:
                     _runner.Given(stepExpression);
                     break;
 
-                case TechTalk.SpecFlow.Bindings.StepDefinitionType.When:
+                case StepDefinitionType.When:
                     _runner.When(stepExpression);
                     break;
 
-                case TechTalk.SpecFlow.Bindings.StepDefinitionType.Then:
+                case StepDefinitionType.Then:
                     _runner.Then(stepExpression);
                     break;
             }
@@ -114,15 +119,15 @@ namespace Behavioral.Automation.Services
         {
             switch (_scenarioContext.StepContext.StepInfo.StepDefinitionType)
             {
-                case TechTalk.SpecFlow.Bindings.StepDefinitionType.Given:
+                case StepDefinitionType.Given:
                     _runner.Given(stepExpression, null, table);
                     break;
 
-                case TechTalk.SpecFlow.Bindings.StepDefinitionType.When:
+                case StepDefinitionType.When:
                     _runner.When(stepExpression, null, table);
                     break;
 
-                case TechTalk.SpecFlow.Bindings.StepDefinitionType.Then:
+                case StepDefinitionType.Then:
                     _runner.Then(stepExpression, null, table);
                     break;
             }
