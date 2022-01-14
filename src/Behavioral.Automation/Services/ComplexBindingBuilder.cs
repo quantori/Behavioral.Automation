@@ -10,7 +10,7 @@ namespace Behavioral.Automation.Services
 {
     /// <summary>
     /// Contains BuildAction methods which should be used to call other bindings inside the code (multiple clicks, value selections, etc.)
-    /// This way ctions in called bindings will appear in test logs
+    /// This way actions in called bindings will appear in test logs
     /// </summary>
     public class ComplexBindingBuilder : IComplexBindingBuilder
     {
