@@ -2,6 +2,10 @@
 
 namespace Behavioral.Automation.Services
 {
+    /// <summary>
+    /// This interface is used to implement ComplexBindingBuilder class
+    /// ComplexBindingBuilder is used to call other bindings inside test methods, so their actions appear in the logs
+    /// </summary>
     public interface IComplexBindingBuilder
     {
         void BuildAction(Action method);
