@@ -6,6 +6,9 @@ using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings
 {
+    /// <summary>
+    /// Bindings to execute actions inside control scopes
+    /// </summary>
     [Binding]
     public sealed class ControlScopeSelectionBinding
     {
@@ -18,7 +21,16 @@ namespace Behavioral.Automation.Bindings
             _scenarioContext = scenarioContext;
         }
 
-
+        /// <summary>
+        /// Execute multiple steps inside scope
+        /// </summary>
+        /// <param name="controlScopeId">Name of the scope</param>
+        /// <param name="actionsTable">Specflow table which contains actions to be executed</param>
+        /// <example>
+        /// Then inside "Profile" panel the following steps should be executed:
+        /// | "Name" input should become visible |
+        /// | "Data" table should be empty       |
+        /// </example>
         [Given("inside (.+?) the following steps were executed:")]
         [When("inside (.+?) the following steps are executed:")]
         [Then("inside (.+?) the following conditions should be true:")]
@@ -35,6 +47,18 @@ namespace Behavioral.Automation.Bindings
             }
         }
 
+        /// <summary>
+        /// Execute action inside scope which contains table
+        /// </summary>
+        /// <param name="controlScopeId">Name of the scope</param>
+        /// <param name="action">Action definition</param>
+        /// <param name="table">Specflow table with test data</param>
+        /// <example>
+        /// Then inside "Calculations" panel: "Data" table should contain the following rows:
+        /// | rowName |
+        /// | row 1   |
+        /// | row 2   |
+        /// </example>
         [Given("inside (.+?): (.+?)")]
         [When("inside (.+?): (.+?)")]
         [Then("inside (.+?): (.+?)")]
@@ -49,6 +73,12 @@ namespace Behavioral.Automation.Bindings
             }
         }
 
+        /// <summary>
+        /// Execute action inside scope
+        /// </summary>
+        /// <param name="controlScopeId">Name of the scope</param>
+        /// <param name="action">Action definition</param>
+        /// <example>When inside "Login" page: "Email" input should become visible</example>
         [Given("inside (.+?): (.+?)")]
         [When("inside (.+?): (.+?)")]
         [Then("inside (.+?): (.+?)")]

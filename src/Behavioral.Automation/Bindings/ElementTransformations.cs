@@ -7,6 +7,9 @@ using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings
 {
+    /// <summary>
+    /// Methods to transform steps' arguments
+    /// </summary>
     [Binding]
     public class ElementTransformations
     {
@@ -21,6 +24,11 @@ namespace Behavioral.Automation.Bindings
             _selectionService = selectionService;
         }
         
+        /// <summary>
+        /// Convert strings "be/is/have/become/be not/is not/ not have/become not" into AssertionBehavior object
+        /// </summary>
+        /// <param name="verb">String with the verb which is received from Specflow steps</param>
+        /// <returns></returns>
         [StepArgumentTransformation, NotNull]
         public AssertionBehavior ParseBehavior(string verb)
         {
@@ -43,6 +51,11 @@ namespace Behavioral.Automation.Bindings
             }
         }
 
+        /// <summary>
+        /// Convert strings into the numbers
+        /// </summary>
+        /// <param name="number">String with the number which is received from Specflow steps</param>
+        /// <returns></returns>
         [StepArgumentTransformation, NotNull]
         public int ParseNumber(string number)
         {

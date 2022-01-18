@@ -6,6 +6,9 @@ using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings
 {
+    /// <summary>
+    /// Bindings for inputs or text fields testing
+    /// </summary>
     [Binding]
     public sealed class InputBinding
     {
@@ -16,6 +19,12 @@ namespace Behavioral.Automation.Bindings
             _runner = runner;
         }
 
+        /// <summary>
+        /// Enter string into text field or input
+        /// </summary>
+        /// <param name="input">String to enter</param>
+        /// <param name="element">Tested web element wrapper</param>
+        /// <example>When user enters "test string" into "Test" input</example>
         [Given("user entered \"(.+?)\" into (.+?)")]
         [When("user enters \"(.+?)\" into (.+?)")]
         public void EnterInput([NotNull] string input, [NotNull] ITextElementWrapper element)
@@ -24,7 +33,7 @@ namespace Behavioral.Automation.Bindings
             if (input.Contains(stringToReplace))
             {
                 var length = 8;
-                
+
                 if (input.Split(':').Length > 1)
                 {
                     var strNumber = input.Split(':')[1];
@@ -38,6 +47,10 @@ namespace Behavioral.Automation.Bindings
             element.EnterString(input);
         }
 
+        /// <summary>
+        /// Clear input or text field
+        /// </summary>
+        /// <param name="element">Tested web element wrapper</param>
         [Given("user cleared (.*)")]
         [When("user clears (.*)")]
         public void ClearInput([NotNull] ITextElementWrapper element)
@@ -45,6 +58,16 @@ namespace Behavioral.Automation.Bindings
             element.ClearInput();
         }
 
+        /// <summary>
+        /// Enter multiple value into multiple controls
+        /// </summary>
+        /// <param name="table">Specflow table which stores name of controls and values to enter</param>
+        /// <example>
+        /// When user enters the following values into the following controls:
+        /// | value        | controlName | controlType |
+        /// | "Test value" | Test1       | input       |
+        /// | "Test value" | Test2       | input       |
+        /// </example>
         [When("user enters the following values into the following controls:")]
         public void EnterInputIntoMultipleControls([NotNull] Table table)
         {

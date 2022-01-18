@@ -8,6 +8,9 @@ using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings
 {
+    /// <summary>
+    /// Bindings for scopes and windows interaction
+    /// </summary>
     [Binding]
     public sealed class RedirectionBinding
     {
@@ -26,6 +29,10 @@ namespace Behavioral.Automation.Bindings
             _WindowsHandleSwitched = false;
         }
 
+        /// <summary>
+        /// Switch elements' scope manually
+        /// </summary>
+        /// <param name="pageName"></param>
         [Given("user is redirected to (.*) page")]
         [When("user is redirected to (.*) page")]
         [When("user should be redirected to (.*) page")]
@@ -42,6 +49,11 @@ namespace Behavioral.Automation.Bindings
             _scopeContextManager.SwitchPage(pageName);
         }
         
+        /// <summary>
+        /// Switch scope to another page
+        /// </summary>
+        /// <param name="pageName">Name of the page to switch scope</param>
+        /// <example>When user sees opened window Test page</example>
         [Given("user sees opened window (.*) page")]
         [When("user sees opened window (.*) page")]
         public void CheckOpened([NotNull] string pageName)
