@@ -48,5 +48,6 @@ namespace Behavioral.Automation.Services
         void ResizeWindow(int Height, int Width);
         string MakeScreenShot();
         void ScrollElementTo(IWebElement element, int offset);
+        string SaveBrowserLog();
     }
 }
