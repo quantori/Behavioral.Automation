@@ -1,5 +1,8 @@
 ﻿namespace Behavioral.Automation.Services.Mapping
 {
+    /// <summary>
+    /// This class is used to map control to control storage
+    /// </summary>
     public class ControlMap : IControlMap
     {
         private readonly IMarkupStorageInitializer _storage;
@@ -22,6 +25,11 @@
             _subpath = subpath;
         }
 
+        /// <summary>
+        /// Add control to the storage
+        /// </summary>
+        /// <param name="caption">Control caption</param>
+        /// <returns></returns>
         public IHtmlTagMapper As(string caption)
         {
             _storage.AddComposition(_htmlTag, _id, caption, _subpath);

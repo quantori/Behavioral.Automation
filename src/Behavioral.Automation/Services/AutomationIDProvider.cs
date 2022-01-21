@@ -3,6 +3,9 @@ using JetBrains.Annotations;
 
 namespace Behavioral.Automation.Services
 {
+    /// <summary>
+    /// Contains method used to get control description
+    /// </summary>
     [UsedImplicitly]
     public sealed class AutomationIdProvider : IAutomationIdProvider
     {
@@ -13,6 +16,12 @@ namespace Behavioral.Automation.Services
             _scopeContextRuntime = scopeContextRuntime;
         }
 
+
+        /// <summary>
+        /// Get control description by element caption
+        /// </summary>
+        /// <param name="caption">Caption of the tested element</param>
+        /// <returns>Element control description containing its name, type, id and subpath</returns>
         public ControlDescription Get(string caption)
         {
             ParseCaption(caption, out var name, out var type);

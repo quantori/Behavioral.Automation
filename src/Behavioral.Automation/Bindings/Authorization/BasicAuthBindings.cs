@@ -6,6 +6,9 @@ using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings.Authorization
 {
+    /// <summary>
+    /// Bindings for basic authentication
+    /// </summary>
     [Binding]
     public class BasicAuthBindings : Steps
     {
@@ -20,6 +23,10 @@ namespace Behavioral.Automation.Bindings.Authorization
             _signInRequired = !basicAuthConfig.IgnoreAuth;
         }
 
+        /// <summary>
+        /// Hook which executes basic authentication before scenarios with @BasicAuth tag
+        /// </summary>
+        /// <returns></returns>
         [BeforeScenario(Order = 1), Scope(Tag = "BasicAuth")]
         public async Task BasicAuth()
         {
