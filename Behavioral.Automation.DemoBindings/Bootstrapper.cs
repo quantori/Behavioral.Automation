@@ -5,6 +5,7 @@ using System.Net;
 using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Services;
 using BoDi;
+using Newtonsoft.Json.Linq;
 using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.DemoBindings
@@ -17,8 +18,13 @@ namespace Behavioral.Automation.DemoBindings
         private readonly DemoTestServicesBuilder _servicesBuilder;
         private readonly BrowserRunner _browserRunner;
         private static Process _coreRunProcess;
-        private const string BaseUrl = "http://localhost:4200";
-
+        
+        private static string GetUrl(string path)
+        {
+            var url = JObject.Parse(File.ReadAllText(path)).GetValue("BASE_URL")?.ToString();
+            return url;
+        }
+       
         public Bootstrapper(IObjectContainer objectContainer, ITestRunner runner, BrowserRunner browserRunner)
         {
             _objectContainer = objectContainer;
@@ -40,7 +46,7 @@ namespace Behavioral.Automation.DemoBindings
         }
 
         private static WebResponse PingTestApp() =>
-            WebRequest.CreateHttp(BaseUrl).GetResponse();
+            WebRequest.CreateHttp(GetUrl("AutomationConfig.json")).GetResponse();
 
         private static void RunTestApp()
         {
