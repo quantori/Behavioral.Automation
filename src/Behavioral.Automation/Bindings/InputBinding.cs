@@ -28,22 +28,7 @@ namespace Behavioral.Automation.Bindings
         [Given("user entered \"(.+?)\" into (.+?)")]
         [When("user enters \"(.+?)\" into (.+?)")]
         public void EnterInput([NotNull] string input, [NotNull] ITextElementWrapper element)
-        {
-            var stringToReplace = "__random_string";
-            if (input.Contains(stringToReplace))
-            {
-                var length = 8;
-
-                if (input.Split(':').Length > 1)
-                {
-                    var strNumber = input.Split(':')[1];
-                    length = Int32.Parse(strNumber);
-                    stringToReplace += ":" + strNumber;
-                };
-                var randomString = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, length);
-
-                input = input.Replace(stringToReplace, randomString);
-            }
+        { 
             element.EnterString(input);
         }
 

@@ -20,17 +20,6 @@ namespace Behavioral.Automation.Bindings
         }
 
         /// <summary>
-        /// Write page content into the console
-        /// </summary>
-        /// <example>When page dumps content to the output</example>
-        [When("page dumps content to the output")]
-        [Then("page dumps content to the output")]
-        public void DumpPageContent()
-        {
-            _driverService.DebugDumpPage();
-        }
-
-        /// <summary>
         /// Stop test execution for 5 seconds
         /// </summary>
         ///<example>Then wait</example>

@@ -43,6 +43,11 @@ namespace Behavioral.Automation.Services
             return _driverService.FindElement(description.Id);
         }
 
+        /// <summary>
+        /// Find multiple elements by caption from the step
+        /// </summary>
+        /// <param name="caption">Element caption</param>
+        /// <returns>IWebElement object collection</returns>
         public IEnumerable<IWebElement> FindMultipleElements(string caption)
         {
             var description = _provider.Get(caption);

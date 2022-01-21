@@ -112,16 +112,6 @@ namespace Behavioral.Automation.Bindings
             Assert.ShouldBecome(() => _driverService.Title, title, behavior,
                 $"page title is {_driverService.Title}");
         }
-        
-        /// <summary>
-        /// Dump page content into console output
-        /// </summary>
-        [When("page dumps content to the output")]
-        [Then("page dumps content to the output")]
-        public void DumpPageContent()
-        {
-            _driverService.DebugDumpPage();
-        }
 
         /// <summary>
         /// Resize opened browser window

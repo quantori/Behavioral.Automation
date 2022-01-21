@@ -62,40 +62,6 @@ namespace Behavioral.Automation.Services
         }
 
         /// <summary>
-        /// Convert Specflow table rows into list of strings
-        /// </summary>
-        /// <param name="table">Specflwo table</param>
-        /// <returns>List of table rows texts</returns>
-        public static List<string> TableToRowsList(Table table)
-        {
-            List<string> result = new List<string>();
-            foreach (var row in table.Rows)
-            {
-                string rowText = string.Empty;
-                for (int i = 0; i < row.Count; i++)
-                {
-                    if (row[i] != string.Empty)
-                    {
-                        rowText += row[i] + " ";
-                    }
-                }
-                result.Add(rowText.Remove(rowText.Length - 1, 1));
-            }
-            return result;
-        }
-
-        /// <summary>
-        /// Check that list contains specific value
-        /// </summary>
-        /// <param name="list">Tested list</param>
-        /// <param name="value">Value that list should contain</param>
-        /// <returns>True if list contains value or false if not</returns>
-        public static bool CheckListContainValue(List<string> list, string value)
-        {
-           return list.Any(s => s == value);
-        }
-
-        /// <summary>
         /// Convert list of strings into list of integers
         /// </summary>
         /// <param name="stringList">List of strings</param>
