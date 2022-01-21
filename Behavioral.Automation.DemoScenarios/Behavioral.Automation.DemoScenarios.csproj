@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Authors>Quantori Inc.</Authors>
     <Description>Specflow scenarios for demonstration of Behavioral.Automation framework features and testing.</Description>
     <Copyright>Quantori Inc.</Copyright>
@@ -19,6 +19,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Behavioral.Automation.DemoBindings\Behavioral.Automation.DemoBindings.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\src\BlazorApp\BlazorApp.csproj" />
   </ItemGroup>
 
   <ItemGroup>

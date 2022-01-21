@@ -16,8 +16,9 @@ The whole automation code is divided into the following parts:
 - UI structure descriptive code
 - Supportive code</Description>
         <Copyright>Quantori Inc.</Copyright>
-        <PackageVersion>1.1.0</PackageVersion>
-        <RepositoryUrl>https://github.com/quantori/Behavioral.Automation</RepositoryUrl>
+        <PackageVersion>1.1.2</PackageVersion>
+        <RepositoryUrl>https://github.com/alspozdnyakov/Behavioral.Automation.git</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -39,6 +40,18 @@ The whole automation code is divided into the following parts:
       <PackageReference Include="Selenium.Support" Version="4.1.0" />
       <PackageReference Include="Selenium.WebDriver" Version="4.1.0" />
       <PackageReference Include="SpecFlow" Version="3.9.40" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="obj" />
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Remove="obj\Release\**" />
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Remove="obj\Release\**" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Remove="obj\Release\**" />
     </ItemGroup>
 
 </Project>
