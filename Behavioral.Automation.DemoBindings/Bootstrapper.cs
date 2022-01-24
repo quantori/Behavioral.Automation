@@ -35,18 +35,23 @@ namespace Behavioral.Automation.DemoBindings
         
         private static void SetUpTestApp()
         {
+            if (!IsConnectionEstablished())
+                RunTestApp();
+        }
+
+        private static bool IsConnectionEstablished()
+        {
             try
             {
-                PingTestApp();
+                WebRequest.CreateHttp(GetUrl("AutomationConfig.json")).GetResponse();
+                return true;
             }
             catch (WebException)
             {
-                RunTestApp();
+                return false;
             }
         }
-
-        private static WebResponse PingTestApp() =>
-            WebRequest.CreateHttp(GetUrl("AutomationConfig.json")).GetResponse();
+            
 
         private static void RunTestApp()
         {
