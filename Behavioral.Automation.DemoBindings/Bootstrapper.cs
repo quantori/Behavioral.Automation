@@ -5,7 +5,6 @@ using System.Net;
 using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Services;
 using BoDi;
-using Newtonsoft.Json.Linq;
 using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.DemoBindings
@@ -19,12 +18,6 @@ namespace Behavioral.Automation.DemoBindings
         private readonly BrowserRunner _browserRunner;
         private static Process _coreRunProcess;
         
-        private static string GetUrl(string path)
-        {
-            var url = JObject.Parse(File.ReadAllText(path)).GetValue("BASE_URL")?.ToString();
-            return url;
-        }
-       
         public Bootstrapper(IObjectContainer objectContainer, ITestRunner runner, BrowserRunner browserRunner)
         {
             _objectContainer = objectContainer;
@@ -32,18 +25,12 @@ namespace Behavioral.Automation.DemoBindings
             _browserRunner = browserRunner;
             _servicesBuilder = new DemoTestServicesBuilder(objectContainer, new TestServicesBuilder(_objectContainer));
         }
-        
-        private static void SetUpTestApp()
-        {
-            if (!IsConnectionEstablished())
-                RunTestApp();
-        }
 
         private static bool IsConnectionEstablished()
         {
             try
             {
-                WebRequest.CreateHttp(GetUrl("AutomationConfig.json")).GetResponse();
+                WebRequest.CreateHttp(ConfigServiceBase.BaseUrl).GetResponse();
                 return true;
             }
             catch (WebException)
@@ -51,7 +38,6 @@ namespace Behavioral.Automation.DemoBindings
                 return false;
             }
         }
-            
 
         private static void RunTestApp()
         {
@@ -73,7 +59,8 @@ namespace Behavioral.Automation.DemoBindings
         [BeforeTestRun]
         public static void StartDemoApp()
         {
-            SetUpTestApp();
+            if (!IsConnectionEstablished())
+                RunTestApp();
         }
 
         [AfterTestRun]
@@ -85,7 +72,6 @@ namespace Behavioral.Automation.DemoBindings
                 _coreRunProcess.Dispose();
             }
         }
-        
 
         [AfterScenario]
         public void CloseBrowser()

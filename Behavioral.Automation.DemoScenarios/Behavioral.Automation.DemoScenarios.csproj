@@ -20,10 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Behavioral.Automation.DemoBindings\Behavioral.Automation.DemoBindings.csproj" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\src\BlazorApp\BlazorApp.csproj" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Update="specflow.json">
