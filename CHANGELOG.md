@@ -6,5 +6,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [1.7.2] - 2022-01-27
 ### Added
-- New method ClearSelectedValues to IMultiSelectDropdownWrapper
-- ClearSelectedValues binding to DropdownBinding.cs
+- Added new dropdown binding, that allows to clear selected values
