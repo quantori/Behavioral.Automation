@@ -5,7 +5,7 @@
   "BROWSER_PARAMS": "--window-size=1920,1080",
   "ACCESS_CLIPBOARD": false, 
   "DOWNLOAD_PATH": "",
-  "SEARCH_ATTRIBUTE": "automation-id",
+  "SEARCH_ATTRIBUTE": "data-automation-id",
   "BAUTH_URL": "",
   "BAUTH_LOGIN": "",
   "BAUTH_PWD": "",

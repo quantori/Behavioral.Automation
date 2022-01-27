@@ -14,5 +14,10 @@ namespace Behavioral.Automation.Elements
         /// Selected values in form of <see cref="string"/> collection
         /// </summary>
         IEnumerable<string> SelectedValuesTexts { [NotNull] get; }
+
+        /// <summary>
+        /// Clears the selection of multidropdown
+        /// </summary>
+        void ClearSelectedValues();
     }
 }

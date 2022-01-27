@@ -282,6 +282,17 @@ namespace Behavioral.Automation.Bindings
                     $"Expected one of the {valueType} to be {expectedValue} but was {actualValue}");
             }
         }
+
+        /// <summary>
+        /// Clears the selection of multidropdown
+        /// </summary>
+        /// <param name="wrapper">Tested web element wrapper</param>
+        [Given("user deselected all values in (.*)")]
+        [When("user deselects all values in (.*)")]
+        public void ClearSelectedValues([NotNull] IMultiSelectDropdownWrapper wrapper)
+        {
+            wrapper.ClearSelectedValues();
+        }
     }
 }
 
