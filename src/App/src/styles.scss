@@ -1,7 +1,0 @@
-@import 'app-theme';
-@import './styles/variables';
-@import './styles/reset';
-@import './styles/base';
-@import './styles/typography';
-
-@include mat-core($app-typography);
