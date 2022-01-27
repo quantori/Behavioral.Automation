@@ -16,9 +16,8 @@ The whole automation code is divided into the following parts:
 - UI structure descriptive code
 - Supportive code</Description>
         <Copyright>Quantori Inc.</Copyright>
-        <PackageVersion>1.1.2</PackageVersion>
-        <RepositoryUrl>https://github.com/quantori/Behavioral.Automation.git</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
+        <PackageVersion>1.7.1</PackageVersion>
+        <RepositoryUrl>https://github.com/quantori/Behavioral.Automation</RepositoryUrl>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <IncludeSymbols>true</IncludeSymbols>
         <SymbolPackageFormat>snupkg</SymbolPackageFormat>
