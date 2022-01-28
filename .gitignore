@@ -1,7 +1,6 @@
 .idea
 bin
 obj
-src/App/node_modules/
 .vs
 .vscode
 *.feature.cs
