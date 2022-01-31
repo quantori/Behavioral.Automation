@@ -1,23 +1,26 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Behavioral.Automation.Elements;
 using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Model;
+using Behavioral.Automation.Services;
 using JetBrains.Annotations;
 using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings
-{   /// <summary>
+{
+    /// <summary>
     /// Bindings for element's attributes testing
     /// </summary>
     [Binding]
     public sealed class AttributeBinding
     {
-        private readonly ITestRunner _runner;
+        private readonly RunnerService _runnerService;
+        private readonly ScenarioContext _scenarioContext;
 
-        public AttributeBinding([NotNull] ITestRunner runner)
+        public AttributeBinding([NotNull] RunnerService runnerService, [NotNull] ScenarioContext scenarioContext)
         {
-            _runner = runner;
+            _runnerService = runnerService;
+            _scenarioContext = scenarioContext;
         }
 
         /// <summary>
@@ -41,18 +44,7 @@ namespace Behavioral.Automation.Bindings
         }
 
         /// <summary>
-        /// Transform "enabled" or "disabled" string into bool value
-        /// </summary>
-        /// <param name="enabled">"enabled" or "disabled" string</param>
-        /// <returns></returns>
-        [StepArgumentTransformation("(enabled|disabled)")]
-        public bool ConvertEnabledState([NotNull] string enabled)
-        {
-            return enabled == "enabled";
-        }
-
-        /// <summary>
-        /// Check that multiple elements are disabled or enabled in "Then" steps
+        /// Check that multiple elements are disabled or enabled
         /// </summary>
         /// <param name="behavior">Assertion behavior (instant or continuous)</param>
         /// <param name="enabled">Elements expected status (enabled or disabled)</param>
@@ -63,28 +55,13 @@ namespace Behavioral.Automation.Bindings
         /// | "Test1" input |
         /// | "Test2" input |
         /// </example>
+        [Given("the following controls (are|are not|become|become not) (enabled|disabled)")]
         [Then("the following controls should (be|be not|become|become not) (enabled|disabled):")]
-        public void CheckThenControlTypeCollectionShown([NotNull] string behavior, string enabled, [NotNull] Table table)
+        public void CheckControlTypeCollectionShown([NotNull] string behavior, string enabled, [NotNull] Table table)
         {
-            behavior = $"should {behavior}";
-            CheckControlTypeCollectionEnabled(behavior, enabled, table, _runner.Then);
-        }
+            behavior = _runnerService.ConvertBehaviorForGroupRun(_scenarioContext, behavior);
 
-        /// <summary>
-        /// Check that multiple elements are disabled or enabled in "Given" or "When" steps
-        /// </summary>
-        /// <param name="behavior">Assertion behavior (instant or continuous)</param>
-        /// <param name="enabled">>Elements expected status (enabled or disabled)</param>
-        /// <param name="table">Specflow table with element names to be tested</param>
-        [Given("the following controls (are|are not|become| become not) (enabled|disabled):")]
-        [When("the following controls (are|are not|become| become not) (enabled|disabled):")]
-        public void CheckGivenControlTypeCollectionEnabled([NotNull] string behavior, string enabled, [NotNull] Table table)
-        {
-            if (behavior.Contains("are"))
-            {
-                behavior = behavior.Replace("are", "is");
-            }
-            CheckControlTypeCollectionEnabled(behavior, enabled, table, _runner.Given);
+            CheckControlTypeCollectionEnabled(behavior, enabled, table);
         }
 
         /// <summary>
@@ -97,11 +74,11 @@ namespace Behavioral.Automation.Bindings
         private void CheckControlTypeCollectionEnabled(
             [NotNull] string behavior,
             string enabled,
-            [NotNull] Table table,
-            [NotNull] Action<string> runnerAction)
+            [NotNull] Table table)
         {
             foreach (var row in table.Rows)
             {
+                var runnerAction = _runnerService.GetRunner(_scenarioContext);
                 var control = "the \"" + row.Values.First() + "\" " + row.Values.Last();
                 runnerAction($"{control} {behavior} {enabled}");
             }
