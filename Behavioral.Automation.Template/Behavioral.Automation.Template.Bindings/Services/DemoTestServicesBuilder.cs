@@ -1,7 +1,7 @@
 ﻿using BoDi;
 using Behavioral.Automation;
 
-namespace Behavioral.Automation.Template.Bindings
+namespace Behavioral.Automation.Template.Bindings.Services
 {
     internal class DemoTestServicesBuilder
     {

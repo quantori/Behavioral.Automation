@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <Authors>Quantori Inc.</Authors>
     <Description>Demo project that can be used as example of test configuration.</Description>
@@ -9,10 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Selenium.Support" Version="4.1.0" />
-    <PackageReference Include="Selenium.WebDriver" Version="4.1.0" />
-    <PackageReference Include="SpecFlow" Version="3.9.40" />
-    <PackageReference Include="Behavioral.Automation" Version="1.*" />
+    <PackageReference Include="Behavioral.Automation" Version="1.8.0" />
   </ItemGroup>
 
   <ItemGroup>

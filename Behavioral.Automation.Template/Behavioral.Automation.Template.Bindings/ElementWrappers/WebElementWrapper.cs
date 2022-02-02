@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Behavioral.Automation.Template.Bindings.Elements
+namespace Behavioral.Automation.Template.Bindings.ElementWrappers
 {
     public class WebElementWrapper : IWebElementWrapper
     {

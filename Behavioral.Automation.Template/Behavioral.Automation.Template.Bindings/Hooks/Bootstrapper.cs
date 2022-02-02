@@ -1,11 +1,12 @@
 ﻿using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Services;
-using Behavioral.Automation.Template.Services;
+using Behavioral.Automation.Template.Bindings.ElementStorage;
 using BoDi;
 using TechTalk.SpecFlow;
 using Behavioral.Automation;
+using Behavioral.Automation.Template.Bindings.Services;
 
-namespace Behavioral.Automation.Template.Bindings
+namespace Behavioral.Automation.Template.Bindings.Hooks
 {
     [Binding]
     public class Bootstrapper

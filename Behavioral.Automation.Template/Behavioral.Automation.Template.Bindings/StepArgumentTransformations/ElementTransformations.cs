@@ -1,10 +1,10 @@
-﻿using Behavioral.Automation.Template.Bindings.Elements;
+﻿using Behavioral.Automation.Template.Bindings.ElementWrappers;
 using Behavioral.Automation.Elements;
 using Behavioral.Automation.Services;
 using JetBrains.Annotations;
 using TechTalk.SpecFlow;
 
-namespace Behavioral.Automation.Template.Bindings
+namespace Behavioral.Automation.Template.Bindings.StepArgumentTransformations
 {
     [Binding]
     class ElementTransformations

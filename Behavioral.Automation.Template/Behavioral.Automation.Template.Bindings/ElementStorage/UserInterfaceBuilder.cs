@@ -1,7 +1,7 @@
 ﻿using Behavioral.Automation.Services;
 using Behavioral.Automation.Services.Mapping.Contract;
 
-namespace Behavioral.Automation.Template.Services
+namespace Behavioral.Automation.Template.Bindings.ElementStorage
 {
     public class UserInterfaceBuilder : UserInterfaceBuilderBase
     {

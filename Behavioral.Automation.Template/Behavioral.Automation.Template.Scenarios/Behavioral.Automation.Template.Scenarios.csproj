@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+	<TargetFramework>net6.0</TargetFramework>
     <Authors>Quantori Inc.</Authors>
     <Description>Specflow scenarios for demonstration of Behavioral.Automation framework features and testing.</Description>
     <Copyright>Quantori Inc.</Copyright>
@@ -11,22 +11,15 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="96.0.4664.4500" />
-	  <PackageReference Include="SpecFlow" Version="3.9.40" />
-	  <PackageReference Include="SpecFlow.NUnit" Version="3.9.40" />
-	  <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.40" />
+	<PackageReference Include="SpecFlow" Version="3.9.40" />
+	<PackageReference Include="SpecFlow.NUnit" Version="3.9.40" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.1.0" />
-    <PackageReference Include="Behavioral.Automation" Version="1.7.0" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="specflow.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Features\LabelBinding.feature.cs" />
-    <Compile Remove="Features\ExampleBinding.feature.cs" />
   </ItemGroup>
 
   <ItemGroup>
