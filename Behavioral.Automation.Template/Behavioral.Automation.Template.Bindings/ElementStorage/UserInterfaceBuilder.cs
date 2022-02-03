@@ -15,8 +15,14 @@ namespace Behavioral.Automation.Template.Bindings.ElementStorage
         {
             using (var mappingPipe = Mapper.GetGlobalMappingPipe())
             {
-                mappingPipe.Register("label").Alias("label")
-                    .With("label-simple-text").As("Demo");
+                mappingPipe.Register("input").Alias("input")
+                    .With("searchInput").As("Search");
+
+                mappingPipe.Register("input").Alias("button")
+                    .With("searchButton").As("Magnifying glass");
+
+                mappingPipe.Register("h1")
+                    .With("firstHeading").As("Page header");
             }
         }
     }

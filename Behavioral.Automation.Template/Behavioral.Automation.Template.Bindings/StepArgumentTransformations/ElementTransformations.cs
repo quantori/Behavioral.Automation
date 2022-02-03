@@ -27,5 +27,11 @@ namespace Behavioral.Automation.Template.Bindings.StepArgumentTransformations
                 caption,
                 _driverService);
         }
+
+        [StepArgumentTransformation("(.*)")]
+        public ITextElementWrapper FindTextElement([NotNull] IWebElementWrapper element)
+        {
+            return new TextElementWrapper(element, element.Caption, _driverService);
+        }
     }
 }
