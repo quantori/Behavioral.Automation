@@ -75,6 +75,7 @@ namespace Behavioral.Automation.Bindings
         /// <param name="index">Number of the tested element in the collection</param>
         /// <param name="element">Tested web element wrapper</param>
         /// <example>When user clicks at first element among "Test" buttons (note that numbers from 1 to 10 can be written as words)</example>
+        [Given("user clicked at (.*) element among (.*)")]
         [When("user clicks at (.*) element among (.*)")]
         public void ClickByIndex(int index, IElementCollectionWrapper elements)
         {
@@ -87,6 +88,7 @@ namespace Behavioral.Automation.Bindings
         /// <param name="index">Number of the tested element in the collection</param>
         /// <param name="element">Tested web element wrapper</param>
         /// <example>When user clicks twice at first element among "Test" buttons (note that numbers from 1 to 10 can be written as words)</example>
+        [Given("user clicked twice at (.*) element among (.*)")]
         [When("user clicks twice at (.*) element among (.*)")]
         public void ClickTwiceByIndex(int index, IElementCollectionWrapper elements)
         {
@@ -100,6 +102,7 @@ namespace Behavioral.Automation.Bindings
         /// <param name="index">Number of the tested element in the collection</param>
         /// <param name="element">Tested web element wrapper</param>
         /// <example>When user clicks three times at first element among "Test" buttons (note that numbers from 1 to 10 can be written as words)</example>
+        [Given("user clicked three times at (.*) element among (.*)")]
         [When("user clicks three times at (.*) element among (.*)")]
         public void ClickByIndexThreeTimes(int index, IElementCollectionWrapper elements)
         {
@@ -113,6 +116,7 @@ namespace Behavioral.Automation.Bindings
         /// </summary>
         /// <param name="element">Tested web element wrapper</param>
         /// <example>When user hovers mouse over "Test" button</example>
+        [Given("user hovered mouse over (.*)")]
         [When("user hovers mouse over (.*)")]
         public void HoverMouse(IWebElementWrapper element)
         {
