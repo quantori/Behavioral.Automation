@@ -91,7 +91,5 @@ namespace Behavioral.Automation.Bindings
                 controlScopeRuntime.RunAction(action, stepDefinitionType);
             }
         }
-
-      
     }
 }
