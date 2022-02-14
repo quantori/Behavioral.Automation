@@ -23,7 +23,6 @@ namespace Behavioral.Automation.Bindings
         /// <param name="count">Expected number of rows</param>
         /// <example>Then "Test" table should have 5 items</example>
         [Given(@"(.*?) has (\d+) items")]
-        [When(@"(.*?) has (\d+) items")]
         [Then(@"(.*?) should have (\d+) items")]
         public void CheckRowsCount([NotNull] ITableWrapper element, int count)
         {
@@ -48,7 +47,7 @@ namespace Behavioral.Automation.Bindings
         {
             Assert.ShouldBecome(() => gridRows.Stale, false, $"{gridRows.Caption} is stale");
 
-            bool inversion = behavior.Contains("not");
+            var inversion = behavior.Contains("not");
             if (inversion)
             {
                 Assert.ShouldBecome(() => gridRows.Rows.ToStringRows().DoesntContainValues(table.Rows.ToStringRows()),
@@ -78,6 +77,7 @@ namespace Behavioral.Automation.Bindings
         /// | Test 1   | Test 2   |
         /// | Test 3   | Test 4   |
         /// </example>
+        [Given("(.+?) has in exact order the following rows:")]
         [Then("(.+?) should have in exact order the following rows:")]
         public void CheckTableHaveRowsInExactOrder(ITableWrapper gridRows, Table table)
         {
@@ -107,7 +107,7 @@ namespace Behavioral.Automation.Bindings
         {
             Assert.ShouldBecome(() => gridRows.Stale, false, $"{gridRows.Caption} is stale");
 
-            bool inversion = behavior.Contains("not");
+            var inversion = behavior.Contains("not");
             if (inversion)
             {
                 Assert.ShouldBecome(() => gridRows.Rows.ToStringRows().DoesntContainValues(table.Rows.ToStringRows()),
@@ -132,6 +132,7 @@ namespace Behavioral.Automation.Bindings
         /// <param name="value">Expected value</param>
         /// <param name="column">Tested column with the desired value</param>
         /// <example>Then "Test" table should have "expected string" in "Data" column</example>
+        [Given("the (.+?) (has|does not have) \"(.+?)\" in (.+?)")]
         [Then("the (.+?) should (have|not have) \"(.+?)\" in (.+?)")]
         public void CheckTableHaveValueInColumn(ITableWrapper table, string behavior, string value, IElementCollectionWrapper column)
         {
@@ -149,7 +150,8 @@ namespace Behavioral.Automation.Bindings
         /// <param name="condition">Lesser or greater parameter</param>
         /// <param name="value">Expected value</param>
         /// <example> Then "Test" column values should be greater than "2"</example>
-        [Then("(.*?) values should be (lesser|greater) than \"(.*)\"")]
+        [Given("the (.*?) values are (lesser|greater) than \"(.*)\"")]
+        [Then("the (.*?) values should be (lesser|greater) than \"(.*)\"")]
         public void CompareTableRowGreaterLesser(IElementCollectionWrapper column,  string condition,
             int value)
         {
@@ -167,7 +169,8 @@ namespace Behavioral.Automation.Bindings
         /// <param name="value1">First boundary</param>
         /// <param name="value2">Second boundary</param>
         /// <example>Then "Test" column values should be between "5" and "10"</example>
-        [Then("(.*?) values should be (between|not between) \"(.*)\" and \"(.*)\"")]
+        [Then("the (.*?) values are (between|not between) \"(.*)\" and \"(.*)\"")]
+        [Then("the (.*?) values should be (between|not between) \"(.*)\" and \"(.*)\"")]
         public void CheckRowValuesAreBetween(IElementCollectionWrapper column, string behavior, int value1, int value2)
         {
             Assert.ShouldBecome(() => column.Stale, false, $"{column.Caption} is stale");
@@ -210,7 +213,6 @@ namespace Behavioral.Automation.Bindings
         /// <param name="behavior">Assertion type</param>
         /// <example>Then first element among "Test" table rows should be expanded</example>
         [Given("(.*?) element among (.*) (is| is not) expanded")]
-        [When("(.*?) element among (.*) (is| is not) expanded")]
         [Then("(.*?) element among (.*) should (be|be not) expanded")]
         public void CheckRowIsExpanded(int index, IElementCollectionWrapper table, string behavior)
         {

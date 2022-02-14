@@ -34,8 +34,6 @@ namespace Behavioral.Automation.Bindings
         /// </summary>
         /// <param name="pageName"></param>
         [Given("user is redirected to (.*) page")]
-        [When("user is redirected to (.*) page")]
-        [When("user should be redirected to (.*) page")]
         [Then("user should be redirected to (.*) page")]
         public void CheckRedirect([NotNull] string pageName)
         {

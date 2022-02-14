@@ -53,6 +53,7 @@ namespace Behavioral.Automation.Bindings
         /// | "Test value" | Test1       | input       |
         /// | "Test value" | Test2       | input       |
         /// </example>
+        [Given("user entered the following values into the following controls:")]
         [When("user enters the following values into the following controls:")]
         public void EnterInputIntoMultipleControls([NotNull] Table table)
         {

@@ -75,6 +75,17 @@ namespace Behavioral.Automation.Bindings
             };
         }
 
+        /// <summary>
+        /// Transform "enabled" or "disabled" string into bool value
+        /// </summary>
+        /// <param name="enabled">"enabled" or "disabled" string</param>
+        /// <returns></returns>
+        [StepArgumentTransformation("(enabled|disabled)")]
+        public bool ConvertEnabledState([NotNull] string enabled)
+        {
+            return enabled == "enabled";
+        }
+
         [StepArgumentTransformation]
         public ControlScopeSelector ParseControlScopeSelector(string selectionSteps)
         {

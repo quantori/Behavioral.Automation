@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Chromium;
-using OpenQA.Selenium.Remote;
 
 namespace Behavioral.Automation.Services
 {
@@ -56,6 +54,7 @@ namespace Behavioral.Automation.Services
                 }
                 options.AddUserProfilePreference("intl.accept_languages", "en,en_US");
                 options.AcceptInsecureCertificates = ConfigServiceBase.AcceptInsecureCertificates;
+                options.SetLoggingPreference(LogType.Browser, LogLevel.All);
                 if (!string.IsNullOrWhiteSpace(ConfigServiceBase.BrowserBinaryLocation))
                 {
                     options.BinaryLocation = Environment.ExpandEnvironmentVariables(ConfigServiceBase.BrowserBinaryLocation);

@@ -50,6 +50,7 @@ namespace Behavioral.Automation.Bindings
         /// | Test value 1 |
         /// | Test value 2 |
         /// </example>
+        [Given("the (.+?) has the following values:")]
         [Then("the (.*?) should have the following values:")]
         public void CheckAllItems([NotNull] IDropdownWrapper wrapper, [NotNull] Table items)
         {
@@ -67,6 +68,7 @@ namespace Behavioral.Automation.Bindings
         /// | Group header 1 |
         /// | Group header 2 |
         /// </example>
+        [Given("the (.+?) has the following groups:")]
         [Then("(.*?) should have the following groups:")]
         public void CheckDropdownHeaders([NotNull] IGroupedDropdownWrapper wrapper, [NotNull] Table items)
         {
@@ -128,6 +130,7 @@ namespace Behavioral.Automation.Bindings
         /// <param name="behavior">Assertion behavior (instant or continuous)</param>
         /// <param name="value">Expected value</param>
         /// <example>Then "Test" dropdown should have "Test value" in all elements</example>
+        [Given("all items in the (.+?) (have|does not have) \"(.+?)\"")]
         [Then("all items in the (.+?) should (have|not have) \"(.+?)\"")]
         public void CheckAllItemsContainString(
             [NotNull] IDropdownWrapper wrapper,

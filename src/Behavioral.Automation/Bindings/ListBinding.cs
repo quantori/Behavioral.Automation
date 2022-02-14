@@ -1,9 +1,7 @@
 using System.Linq;
 using FluentAssertions;
 using Behavioral.Automation.Elements;
-using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Services;
-using JetBrains.Annotations;
 using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings
@@ -57,8 +55,8 @@ namespace Behavioral.Automation.Bindings
         /// | Test value 1 |
         /// | Test value 2 |
         /// </example>
-        [Given("(.+?) (contains|does not contain) the following items:")]
-        [Then("(.+?) should (contain|not contain) the following items:")]
+        [Given("the (.+?) (contains|does not contain) the following items:")]
+        [Then("the (.+?) should (contain|not contain) the following items:")]
         public void CheckListContainsItems(IListWrapper list, string behavior, Table table)
         {
             bool checkResult;
@@ -87,7 +85,8 @@ namespace Behavioral.Automation.Bindings
         /// | Test value 1 |
         /// | Test value 2 |
         /// </example>
-        [Then("(.+?) should have in exact order the following items:")]
+        [Given("the (.+?) has in exact order the following items:")]
+        [Then("the (.+?) should have in exact order the following items:")]
         public void CheckListContainsItemsInExactOrder(IListWrapper list, Table table)
         {
             var expectedValues = table.Rows.Select(r => r.Values.First()).ToArray();
