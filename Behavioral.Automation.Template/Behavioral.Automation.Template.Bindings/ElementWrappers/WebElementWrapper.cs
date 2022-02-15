@@ -85,16 +85,16 @@ namespace Behavioral.Automation.Template.Bindings.ElementWrappers
             {
                 try
                 {
-                    return !(Element is null) && Element.Displayed;
+                    return Element is not null && Element.Displayed;
                 }
-                catch (Exception e) when (e is NullReferenceException || e is StaleElementReferenceException)
+                catch (Exception e) when (e is NullReferenceException or StaleElementReferenceException)
                 {
                     return false;
                 }
             }
         }
 
-        public bool Enabled => Displayed && (Element.Enabled || AriaEnabled);
+        public bool Enabled => Displayed && Element.Enabled;
 
         public string Tooltip => GetAttribute("data-test-tooltip-text");
 
@@ -134,18 +134,5 @@ namespace Behavioral.Automation.Template.Bindings.ElementWrappers
         }
 
         protected IDriverService Driver { get; }
-
-        private bool AriaEnabled
-        {
-            get
-            {
-                return Element.GetAttribute("aria-disabled") switch
-                {
-                    null => true,
-                    "false" => true,
-                    _ => false
-                };
-            }
-        }
     }
 }
