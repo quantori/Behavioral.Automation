@@ -51,7 +51,7 @@ namespace Behavioral.Automation.Bindings
             Assert.ShouldBecome(
                 () => wrapper.Items.Contains(value),
                 !behavior.Contains("not"),
-                $"{wrapper.Caption} items are {wrapper.Items.Aggregate((x, y) => $"{x}, {y}")}");
+                GenerateErrorMessage(wrapper.Caption, wrapper.Items));
         }
 
         [Given("the (.*?) (contains|not contains) the following values:")]
@@ -62,12 +62,12 @@ namespace Behavioral.Automation.Bindings
             Assert.ShouldBecome(()=> table.Rows.Any(),true, 
                 new AssertionBehavior(AssertionType.Immediate, false), "Please provide data in the table");
 
-            var dropdownItems = wrapper.Items;
+            var dropdownItems = wrapper.Items.ToArray();
             foreach (var row in table.Rows)
             {
                 var value = row.Values.FirstOrDefault();
                 Assert.ShouldBecome(()=>dropdownItems.Contains(value), !behavior.Contains("not"),
-                $"{wrapper.Caption} items are {dropdownItems.Aggregate((x, y) => $"{x}, {y}")}");
+                GenerateErrorMessage(wrapper.Caption, dropdownItems));
             }
         }
 
@@ -80,7 +80,7 @@ namespace Behavioral.Automation.Bindings
             Assert.ShouldBecome(() => wrapper.Stale, false, $"{wrapper.Caption} is stale");
             var items = wrapper.Items;
             Assert.ShouldBecome(() => wrapper.Items.All(x => x.ToLower().Contains(value.ToLower().Trim())),
-                !behavior.Contains("not"), $"{wrapper.Caption} items are {items.Aggregate((x, y) => $"{x}, {y}")}");
+                !behavior.Contains("not"), GenerateErrorMessage(wrapper.Caption, items));
         }
 
         [Given("user selected \"(.*?)\" in (.*?)")]
@@ -143,7 +143,7 @@ namespace Behavioral.Automation.Bindings
         [Then("no values should be selected in (.*?):")]
         public void CheckMultiSelectDropdownHasNoValuesSelected([NotNull] IMultiSelectDropdownWrapper wrapper)
         {
-            Assert.ShouldBecome(() => !wrapper.SelectedValuesTexts.Any(), true, $"{wrapper.Caption} has the following values : {wrapper.SelectedValuesTexts.Aggregate((x, y) => $"{x}, {y}")}");
+            Assert.ShouldBecome(() => !wrapper.SelectedValuesTexts.Any(), true, GenerateErrorMessage(wrapper.Caption, wrapper.SelectedValuesTexts));
         }
 
         [Given("(.*?) selected value (is|is not|become|become not) empty")]
@@ -164,6 +164,15 @@ namespace Behavioral.Automation.Bindings
                     $"Expected one of the {valueType} to be {expectedValue} but was {actualValue}");
             }
         }
+
+        /// <summary>
+        /// Method that returns error message with elements aggregation 
+        /// </summary>
+        /// <param name="caption">wrapper caption</param>
+        /// <param name="items">collection of dropdown elements in string form</param>
+        /// <returns></returns>
+        private string GenerateErrorMessage(string caption, IEnumerable<string> items)
+            => $"'{caption}' items are: {(items.Any() ? items.Aggregate((x, y) => $"{x}, {y}") : "'none'")}";
     }
 }
 
