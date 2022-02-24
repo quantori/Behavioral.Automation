@@ -14,6 +14,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Behavioral.Automation.DemoB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp", "src\BlazorApp\BlazorApp.csproj", "{E9DD80F4-5499-4BEA-A385-D77F162AC5C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behavioral.Automation.Playwright", "src\PlaywrightMVP\Behavioral.Automation.Playwright\Behavioral.Automation.Playwright.csproj", "{F132FCB6-0428-4C72-8689-68D825D8F50F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behavioral.Automation.Selenium", "Behavioral.Automation.Selenium\Behavioral.Automation.Selenium.csproj", "{BF182DF2-79E1-4BF6-B064-F88C20359573}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,15 +44,20 @@ Global
 		{E9DD80F4-5499-4BEA-A385-D77F162AC5C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9DD80F4-5499-4BEA-A385-D77F162AC5C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9DD80F4-5499-4BEA-A385-D77F162AC5C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F132FCB6-0428-4C72-8689-68D825D8F50F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F132FCB6-0428-4C72-8689-68D825D8F50F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F132FCB6-0428-4C72-8689-68D825D8F50F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F132FCB6-0428-4C72-8689-68D825D8F50F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF182DF2-79E1-4BF6-B064-F88C20359573}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF182DF2-79E1-4BF6-B064-F88C20359573}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF182DF2-79E1-4BF6-B064-F88C20359573}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF182DF2-79E1-4BF6-B064-F88C20359573}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{054B7FBC-190D-43FA-B6D6-13A2BA7CB92D} = {BB7AC02C-03FD-4F17-B4A9-CDECC1A63DA5}
-		{C7AF5750-75A5-4E8D-80FA-FB54914B0B17} = {BB7AC02C-03FD-4F17-B4A9-CDECC1A63DA5}
-		{4DD5E62E-E447-419D-82BF-C918F08091BD} = {BB7AC02C-03FD-4F17-B4A9-CDECC1A63DA5}
-		{E9DD80F4-5499-4BEA-A385-D77F162AC5C5} = {BB7AC02C-03FD-4F17-B4A9-CDECC1A63DA5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {724FD185-E1F2-44BD-89EA-DFD1DBF6453A}

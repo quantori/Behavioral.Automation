@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Behavioral.Automation.Services;
 using Behavioral.Automation.Services.Mapping;
 using JetBrains.Annotations;
-using OpenQA.Selenium;
+using Microsoft.Playwright;
 
-namespace Behavioral.Automation.Services
+namespace Behavioral.Automation.Playwright.Services
 {
     /// <summary>
     /// Method for caption to element conversion
@@ -29,7 +30,7 @@ namespace Behavioral.Automation.Services
         /// </summary>
         /// <param name="caption">Element caption</param>
         /// <returns>IWebElement object</returns>
-        public IWebElement Find(string caption)
+        public IElementHandle Find(string caption)
         {
             var description = _provider.Get(caption);
             if (description.Id == null)
@@ -48,7 +49,7 @@ namespace Behavioral.Automation.Services
         /// </summary>
         /// <param name="caption">Element caption</param>
         /// <returns>IWebElement object collection</returns>
-        public IEnumerable<IWebElement> FindMultipleElements(string caption)
+        public IEnumerable<IElementHandle> FindMultipleElements(string caption)
         {
             var description = _provider.Get(caption);
             if (description.Id == null)
