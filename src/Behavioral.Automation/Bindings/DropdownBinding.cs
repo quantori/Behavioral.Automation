@@ -172,7 +172,12 @@ namespace Behavioral.Automation.Bindings
         /// <param name="items">collection of dropdown elements in string form</param>
         /// <returns></returns>
         private string GenerateErrorMessage(string caption, IEnumerable<string> items)
-            => $"'{caption}' items are: {(items.Any() ? items.Aggregate((x, y) => $"{x}, {y}") : "'none'")}";
+        {
+            if (items == null || !items.Any())
+                return $"'{caption}' is empty";
+            
+            return $"'{caption}' items are: {items.Aggregate((x, y) => $"{x}, {y}")}";
+        }
     }
 }
 
