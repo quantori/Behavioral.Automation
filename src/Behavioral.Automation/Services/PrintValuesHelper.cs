@@ -17,8 +17,6 @@ namespace Behavioral.Automation.Services
 
             return "\r\n Rows collection was empty";
         }
-        
-        
 
         /// <summary>
         /// Method that returns error message with elements aggregation 
