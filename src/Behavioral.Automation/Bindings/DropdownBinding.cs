@@ -4,6 +4,7 @@ using System.Linq;
 using Behavioral.Automation.Elements;
 using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Model;
+using Behavioral.Automation.Services;
 using JetBrains.Annotations;
 using TechTalk.SpecFlow;
 
@@ -92,7 +93,7 @@ namespace Behavioral.Automation.Bindings
             Assert.ShouldBecome(
                 () => wrapper.Items.Contains(value),
                 !behavior.Contains("not"),
-                GenerateErrorMessage(wrapper.Caption, wrapper.Items));
+                wrapper.Items.CreateDropdownErrorMessage(wrapper.Caption));
         }
 
         /// <summary>
@@ -119,7 +120,7 @@ namespace Behavioral.Automation.Bindings
             {
                 var value = row.Values.FirstOrDefault();
                 Assert.ShouldBecome(()=>dropdownItems.Contains(value), !behavior.Contains("not"),
-                GenerateErrorMessage(wrapper.Caption, dropdownItems));
+                dropdownItems.CreateDropdownErrorMessage(wrapper.Caption));
             }
         }
 
@@ -140,7 +141,7 @@ namespace Behavioral.Automation.Bindings
             Assert.ShouldBecome(() => wrapper.Stale, false, $"{wrapper.Caption} is stale");
             var items = wrapper.Items;
             Assert.ShouldBecome(() => wrapper.Items.All(x => x.ToLower().Contains(value.ToLower().Trim())),
-                !behavior.Contains("not"), GenerateErrorMessage(wrapper.Caption, items));
+                !behavior.Contains("not"), items.CreateDropdownErrorMessage(wrapper.Caption));
         }
 
         /// <summary>
@@ -258,7 +259,7 @@ namespace Behavioral.Automation.Bindings
         [Then("no values should be selected in (.*?):")]
         public void CheckMultiSelectDropdownHasNoValuesSelected([NotNull] IMultiSelectDropdownWrapper wrapper)
         {
-            Assert.ShouldBecome(() => !wrapper.SelectedValuesTexts.Any(), true, GenerateErrorMessage(wrapper.Caption, wrapper.SelectedValuesTexts));
+            Assert.ShouldBecome(() => !wrapper.SelectedValuesTexts.Any(), true, wrapper.SelectedValuesTexts.CreateDropdownErrorMessage(wrapper.Caption));
         }
 
         /// <summary>
@@ -295,20 +296,6 @@ namespace Behavioral.Automation.Bindings
         public void ClearSelectedValues([NotNull] IMultiSelectDropdownWrapper wrapper)
         {
             wrapper.ClearSelectedValues();
-        }
-
-        /// <summary>
-        /// Method that returns error message with elements aggregation 
-        /// </summary>
-        /// <param name="caption">wrapper caption</param>
-        /// <param name="items">collection of dropdown elements in string form</param>
-        /// <returns></returns>
-        private string GenerateErrorMessage(string caption, IEnumerable<string> items)
-        {
-            if (items == null || !items.Any())
-                return $"'{caption}' is empty";
-            
-            return $"'{caption}' items are: {items.Aggregate((x, y) => $"{x}, {y}")}";
         }
     }
 }
