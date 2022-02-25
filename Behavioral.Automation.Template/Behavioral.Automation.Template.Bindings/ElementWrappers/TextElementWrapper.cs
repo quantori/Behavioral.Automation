@@ -27,6 +27,7 @@ namespace Behavioral.Automation.Template.Bindings.ElementWrappers
                 new AssertionBehavior(AssertionType.Continuous, false),
                 $"{Caption} is not enabled");
 
+            Element.Clear();
             while (Element.GetAttribute("value").Length > 0)
             {
                 Element.SendKeys(Keys.Backspace);

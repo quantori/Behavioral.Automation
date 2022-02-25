@@ -66,11 +66,6 @@ namespace Behavioral.Automation.Elements
         public bool Enabled { get; }
 
         /// <summary>
-        /// Message that appears when mouse is hovered over element
-        /// </summary>
-        public string Tooltip { get; }
-
-        /// <summary>
         /// Element staleness. See <seealso cref="StaleElementReferenceException"/>
         /// </summary>
         public bool Stale { get; }

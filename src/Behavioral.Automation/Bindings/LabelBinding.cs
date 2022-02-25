@@ -68,7 +68,7 @@ namespace Behavioral.Automation.Bindings
         /// <example>Then the "Test" element should have tooltip with text "expected string"</example>
         [Then("the (.*?) should (have|not have) tooltip with text \"(.*)\"")]
         public void CheckElementTooltip(
-            [NotNull] IWebElementWrapper element,
+            [NotNull] ITooltipElementWrapper element,
             [NotNull] AssertionBehavior behavior,
             [NotNull] string value)
         {
