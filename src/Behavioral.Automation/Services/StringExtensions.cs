@@ -4,8 +4,17 @@ using Behavioral.Automation.Elements;
 
 namespace Behavioral.Automation.Services
 {
+    /// <summary>
+    /// Perform various operations with strings
+    /// </summary>
     public static class StringExtensions
     {
+        /// <summary>
+        /// Parse values from the string in the given format
+        /// </summary>
+        /// <param name="data">String to parse</param>
+        /// <param name="format">Parsing format</param>
+        /// <returns>Parsed values</returns>
         public static string[] ParseExact(
             this string data,
             string format)
@@ -13,6 +22,13 @@ namespace Behavioral.Automation.Services
             return ParseExact(data, format, false);
         }
 
+        /// <summary>
+        /// Parse values from the string in the given format with option to ignore case 
+        /// </summary>
+        /// <param name="data">String to parse</param>
+        /// <param name="format">Parsing format</param>
+        /// <param name="ignoreCase">Ignore case option</param>
+        /// <returns>Parsed values</returns>
         public static string[] ParseExact(
             this string data,
             string format,
@@ -26,6 +42,13 @@ namespace Behavioral.Automation.Services
                 throw new ArgumentException("Format not compatible with value.");
         }
 
+        /// <summary>
+        /// Try to parse values from string
+        /// </summary>
+        /// <param name="data">String to be parsed</param>
+        /// <param name="format">Parsing format</param>
+        /// <param name="values">Values to store parsed data</param>
+        /// <returns>True if parsing was successful or false otherwise</returns>
         public static bool TryExtract(
             this string data,
             string format,
@@ -34,6 +57,14 @@ namespace Behavioral.Automation.Services
             return TryParseExact(data, format, out values, false);
         }
 
+        /// <summary>
+        /// Try to parse values from string with option to ignore case
+        /// </summary>
+        /// <param name="data">String to be parsed</param>
+        /// <param name="format">Parsing format</param>
+        /// <param name="values">Values to store parsed data</param>
+        /// <param name="ignoreCase">Ignore case option</param>
+        /// <returns>True if parsing was successful or false otherwise</returns>
         public static bool TryParseExact(
             this string data,
             string format,
@@ -71,11 +102,21 @@ namespace Behavioral.Automation.Services
             }
         }
 
+        /// <summary>
+        /// Convert string into int
+        /// </summary>
+        /// <param name="s">String to get number from</param>
+        /// <returns>int converted from string</returns>
         public static int ParseNumberFromString(string s)
         {
             return int.Parse(Regex.Match(s, @"\d+").Value);
         }
 
+        /// <summary>
+        /// Get text or value of the web element
+        /// </summary>
+        /// <param name="element">Tested element</param>
+        /// <returns>String with element's text or value</returns>
         public static string GetElementTextOrValue(IWebElementWrapper element)
         {
             if (element.GetAttribute("value") == null)

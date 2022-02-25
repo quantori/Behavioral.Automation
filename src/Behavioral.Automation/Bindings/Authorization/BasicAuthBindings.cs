@@ -1,6 +1,4 @@
 ﻿using Behavioral.Automation.Services;
-using Newtonsoft.Json.Linq;
-using OpenQA.Selenium.Remote;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
@@ -8,14 +6,9 @@ using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Bindings.Authorization
 {
-    public interface IBasicAuthConfig {
-        public string HomeUrl { get; set; }
-        public string Login { get; set; }
-        public string Password { get; set; }
-        public bool IgnoreAuth { get; set; }
-    }
-
-
+    /// <summary>
+    /// Bindings for basic authentication
+    /// </summary>
     [Binding]
     public class BasicAuthBindings : Steps
     {
@@ -30,6 +23,10 @@ namespace Behavioral.Automation.Bindings.Authorization
             _signInRequired = !basicAuthConfig.IgnoreAuth;
         }
 
+        /// <summary>
+        /// Hook which executes basic authentication before scenarios with @BasicAuth tag
+        /// </summary>
+        /// <returns></returns>
         [BeforeScenario(Order = 1), Scope(Tag = "BasicAuth")]
         public async Task BasicAuth()
         {

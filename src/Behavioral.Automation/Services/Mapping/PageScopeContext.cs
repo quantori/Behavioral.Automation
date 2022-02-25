@@ -2,6 +2,7 @@
 using Behavioral.Automation.Services.Mapping.Contract;
 using Behavioral.Automation.Services.Mapping.PageMapping;
 using JetBrains.Annotations;
+using NUnit.Framework;
 
 namespace Behavioral.Automation.Services.Mapping
 {
@@ -10,7 +11,7 @@ namespace Behavioral.Automation.Services.Mapping
         private readonly IMarkupStorage _globalMarkupStorage;
 
         [CanBeNull]
-        private readonly IMarkupStorage _markupStorage;
+        private IMarkupStorage _markupStorage;
 
         public PageScopeContext(PageScopeId scopeId,
             IMarkupStorage globalMarkupStorage,
@@ -24,7 +25,7 @@ namespace Behavioral.Automation.Services.Mapping
         public ControlReference FindControlReference(string type,
             string name)
         {
-            var whereToSearch = new []{_markupStorage, _globalMarkupStorage};
+            var whereToSearch = new[] { _markupStorage, _globalMarkupStorage };
 
             foreach (var storage in whereToSearch)
             {
@@ -51,8 +52,8 @@ namespace Behavioral.Automation.Services.Mapping
         {
             if (_markupStorage == null)
             {
-                throw new InvalidOperationException(
-                    $"MarkupStorage for PageContext with name=\"{ScopeId.Name}\" is not defined, so nested control scope with name = \"{controlScopeId.Name} can't be found");
+                TestContext.WriteLine($"\r\nMarkupStorage for PageContext with name=\"{ScopeId.Name}\" is not defined, switching to Global scope\r\n");
+                _markupStorage = _globalMarkupStorage;
             }
 
             var controlScopeMarkupStorage = (_markupStorage.TryGetControlScopeMarkupStorage(controlScopeId) ??

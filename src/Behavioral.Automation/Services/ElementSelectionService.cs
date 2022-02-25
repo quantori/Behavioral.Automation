@@ -5,6 +5,9 @@ using OpenQA.Selenium;
 
 namespace Behavioral.Automation.Services
 {
+    /// <summary>
+    /// Method for caption to element conversion
+    /// </summary>
     [UsedImplicitly]
     public sealed class ElementSelectionService : IElementSelectionService
     {
@@ -21,6 +24,11 @@ namespace Behavioral.Automation.Services
             _contextRuntime = contextRuntime;
         }
 
+        /// <summary>
+        /// Find element by caption from the step
+        /// </summary>
+        /// <param name="caption">Element caption</param>
+        /// <returns>IWebElement object</returns>
         public IWebElement Find(string caption)
         {
             var description = _provider.Get(caption);
@@ -35,6 +43,11 @@ namespace Behavioral.Automation.Services
             return _driverService.FindElement(description.Id);
         }
 
+        /// <summary>
+        /// Find multiple elements by caption from the step
+        /// </summary>
+        /// <param name="caption">Element caption</param>
+        /// <returns>IWebElement object collection</returns>
         public IEnumerable<IWebElement> FindMultipleElements(string caption)
         {
             var description = _provider.Get(caption);

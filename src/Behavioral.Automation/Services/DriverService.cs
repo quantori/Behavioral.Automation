@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using Behavioral.Automation.Services.Mapping.Contract;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium.Remote;
 
 namespace Behavioral.Automation.Services
 {
+    /// <summary>
+    /// WebDriver interactions methods
+    /// </summary>
     [UsedImplicitly]
     public sealed class DriverService : IDriverService
     {
@@ -34,6 +36,11 @@ namespace Behavioral.Automation.Services
 
         public string CurrentUrl => Driver.Url;
 
+        /// <summary>
+        /// Find web element using search attribute
+        /// </summary>
+        /// <param name="id">Element id</param>
+        /// <returns>IWebElement object or null if element was not found</returns>
         public IWebElement FindElement(string id)
         {
             try
@@ -46,6 +53,12 @@ namespace Behavioral.Automation.Services
             }
         }
 
+        /// <summary>
+        /// Find element using search attribute and xpath
+        /// </summary>
+        /// <param name="id">Element id</param>
+        /// <param name="subpath">Xpath subpath</param>
+        /// <returns>IWebElement object or null if element was not found</returns>
         public IWebElement FindElement(string id, string subpath)
         {
             try
@@ -58,6 +71,11 @@ namespace Behavioral.Automation.Services
             }
         }
 
+        /// <summary>
+        /// Find element by xpath only
+        /// </summary>
+        /// <param name="path">Element's xpath</param>
+        /// <returns>IWebElement object or null if element was not found</returns>
         public IWebElement FindElementByXpath(string path)
         {
             try
@@ -70,22 +88,42 @@ namespace Behavioral.Automation.Services
             }
         }
 
+        /// <summary>
+        /// Find element collection by id
+        /// </summary>
+        /// <param name="id">Element id</param>
+        /// <returns>ReadOnlyCollection of IWebElement objects</returns>
         public ReadOnlyCollection<IWebElement> FindElements(string id)
         {
             return Driver.FindElements(By.XPath($"//*[@{SearchAttribute}='{id}']"));
         }
 
+        /// <summary>
+        /// Find element collection by xpath
+        /// </summary>
+        /// <param name="path">Element xpath</param>
+        /// <returns>ReadOnlyCollection of IWebElement objects</returns>
         public ReadOnlyCollection<IWebElement> FindElementsByXpath(string path)
         {
             return Driver.FindElements(By.XPath(path));
         }
 
+        /// <summary>
+        /// Execute JavaScript
+        /// </summary>///
+        /// <param name="script">Script text</param>
+        /// <param name="args">Script arguments</param>
+        /// <returns>ReadOnlyCollection of IWebElement objects</returns>
         public object ExecuteScript(string script, params object[] args)
         {
             IJavaScriptExecutor js = (IJavaScriptExecutor)Driver;
             return js.ExecuteScript(script, args);
         }
 
+        /// <summary>
+        /// Scroll page to element
+        /// </summary>
+        /// <param name="element">IWebElement object</param>
         public void ScrollTo(IWebElement element)
         {
             var scrollElementIntoMiddle = "var viewPortHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);"
@@ -98,6 +136,9 @@ namespace Behavioral.Automation.Services
             actions.Perform();
         }
 
+        /// <summary>
+        /// Execute mouse click
+        /// </summary>
         public void MouseClick()
         {
             Actions actions = new Actions(Driver);
@@ -105,12 +146,19 @@ namespace Behavioral.Automation.Services
             actions.Perform();
         }
 
+        /// <summary>
+        /// Remove focus from the element
+        /// </summary>
         public void CloseActiveElement()
         {
             var element = Driver.SwitchTo().ActiveElement();
             element.SendKeys(Keys.Escape);
         }
 
+        /// <summary>
+        /// Open relative URL
+        /// </summary>
+        /// <param name="url">Relative URL</param>
         public void NavigateToRelativeUrl(string url)
         {
             var uri = GetUriFromRelativePath(url);
@@ -118,39 +166,63 @@ namespace Behavioral.Automation.Services
             _scopeContextManager.SwitchPage(uri);
         }
 
+        /// <summary>
+        /// Switch to the last opened window
+        /// </summary>
         public void SwitchToTheLastWindow()
         {
             var handle = Driver.WindowHandles.Last();
             Driver.SwitchTo().Window(handle);
         }
 
+        /// <summary>
+        /// Switch to the window which was opened first
+        /// </summary>
         public void SwitchToTheFirstWindow()
         {
             var handle = Driver.WindowHandles.First();
             Driver.SwitchTo().Window(handle);
         }
-
+        
+        /// <summary>
+        /// Get URI from relative URL
+        /// </summary>
+        /// <param name="url">Relative URL</param>
+        /// <returns>URI</returns>
         private Uri GetUriFromRelativePath(string url)
         {
             return new Uri(new Uri(CurrentUrl), url);
         }
 
+        /// <summary>
+        /// Removes focus from active page element
+        /// </summary>
         public void RemoveFocusFromActiveElement()
-        { 
+        {
             ExecuteScript("document.activeElement.blur()");
         }
 
+        /// <summary>
+        /// Make DOM tree dump into the console
+        /// </summary>
         public void DebugDumpPage()
         {
             var page = Driver.PageSource;
             Console.WriteLine(page);
         }
-
+        
+        /// <summary>
+        /// Refresh currently opened page
+        /// </summary>
         public void Refresh()
         {
             Driver.Navigate().Refresh();
         }
 
+        /// <summary>
+        /// Open page by full URL
+        /// </summary>
+        /// <param name="url">URL</param>
         public void Navigate(string url)
         {
             Driver.Navigate().GoToUrl(url);
@@ -158,24 +230,43 @@ namespace Behavioral.Automation.Services
             _scopeContextManager.SwitchPage(uri);
         }
 
+        /// <summary>
+        /// Switch to the last opened window
+        /// </summary>
         public void SwitchToLastWindow()
         {
             Driver.SwitchTo().Window(Driver.WindowHandles.Last());
         }
-
+        
+        /// <summary>
+        /// Change size of opened browser window
+        /// </summary>
+        /// <param name="Height">Desired height</param>
+        /// <param name="Width">Desired width</param>
         public void ResizeWindow(int Height, int Width)
-        { 
+        {
             Driver.Manage().Window.Size = new Size(Width, Height);
         }
-
+        
+        /// <summary>
+        /// Make .png screenshot with date and time
+        /// </summary>
+        /// <returns>Name of the screenshot file</returns>
         public string MakeScreenShot()
         {
-            var fileName = Regex.Replace(TestContext.CurrentContext.Test.Name, @"(\\|\"")", string.Empty) + ".png";
+            var fileName = new string(TestContext.CurrentContext.Test.Name
+                .Where(x => !Path.GetInvalidFileNameChars().Contains(x))
+                .ToArray()) + ".png";
             Screenshot screenshot = ((ITakesScreenshot)Driver).GetScreenshot();
             screenshot.SaveAsFile(fileName, ScreenshotImageFormat.Png);
             return fileName;
         }
 
+        /// <summary>
+        /// Scroll element to offset
+        /// </summary>
+        /// <param name="element">IWebElement object</param>
+        /// <param name="offset">Offset to scroll element to</param>
         public void ScrollElementTo(IWebElement element, int offset)
         {
             ExecuteScript(@"
@@ -183,6 +274,26 @@ namespace Behavioral.Automation.Services
                 var offset = arguments[1];
                 element.scrollTo({top: offset, behavior: 'smooth'});", element, offset);
             Thread.Sleep(1000);
+        }
+
+        /// <summary>
+        /// Save browser log into file
+        /// </summary>
+        /// <returns></returns>
+        public string SaveBrowserLog()
+        {
+            var fileName = new string(TestContext.CurrentContext.Test.Name
+                               .Where(x => !Path.GetInvalidFileNameChars().Contains(x))
+                               .ToArray()) + ".log";
+            if (!File.Exists(fileName))
+            {
+                File.Create(fileName).Dispose();
+            }
+
+            var log = Driver.Manage().Logs.GetLog(LogType.Browser);
+            File.AppendAllLines(fileName, log.Select(l => l.ToString()));
+
+            return fileName;
         }
     }
 }
