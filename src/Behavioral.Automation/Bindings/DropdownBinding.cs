@@ -4,6 +4,7 @@ using System.Linq;
 using Behavioral.Automation.Elements;
 using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Model;
+using Behavioral.Automation.Services;
 using JetBrains.Annotations;
 using TechTalk.SpecFlow;
 
@@ -92,7 +93,7 @@ namespace Behavioral.Automation.Bindings
             Assert.ShouldBecome(
                 () => wrapper.Items.Contains(value),
                 !behavior.Contains("not"),
-                $"{wrapper.Caption} items are {wrapper.Items.Aggregate((x, y) => $"{x}, {y}")}");
+                wrapper.Items.CreateDropdownErrorMessage(wrapper.Caption));
         }
 
         /// <summary>
@@ -111,15 +112,15 @@ namespace Behavioral.Automation.Bindings
         [Then("the \"(.*?)\" menu should (contain|not contain) the following values:")]
         public void CheckDropdownContainsMultipleItems([NotNull] IDropdownWrapper wrapper, [NotNull] string behavior, [NotNull] Table table)
         {
-            Assert.ShouldBecome(() => table.Rows.Any(), true,
+            Assert.ShouldBecome(()=> table.Rows.Any(),true, 
                 new AssertionBehavior(AssertionType.Immediate, false), "Please provide data in the table");
 
-            var dropdownItems = wrapper.Items;
+            var dropdownItems = wrapper.Items.ToArray();
             foreach (var row in table.Rows)
             {
                 var value = row.Values.FirstOrDefault();
-                Assert.ShouldBecome(() => dropdownItems.Contains(value), !behavior.Contains("not"),
-                $"{wrapper.Caption} items are {dropdownItems.Aggregate((x, y) => $"{x}, {y}")}");
+                Assert.ShouldBecome(()=>dropdownItems.Contains(value), !behavior.Contains("not"),
+                dropdownItems.CreateDropdownErrorMessage(wrapper.Caption));
             }
         }
 
@@ -140,7 +141,7 @@ namespace Behavioral.Automation.Bindings
             Assert.ShouldBecome(() => wrapper.Stale, false, $"{wrapper.Caption} is stale");
             var items = wrapper.Items;
             Assert.ShouldBecome(() => wrapper.Items.All(x => x.ToLower().Contains(value.ToLower().Trim())),
-                !behavior.Contains("not"), $"{wrapper.Caption} items are {items.Aggregate((x, y) => $"{x}, {y}")}");
+                !behavior.Contains("not"), items.CreateDropdownErrorMessage(wrapper.Caption));
         }
 
         /// <summary>
@@ -258,7 +259,7 @@ namespace Behavioral.Automation.Bindings
         [Then("no values should be selected in (.*?):")]
         public void CheckMultiSelectDropdownHasNoValuesSelected([NotNull] IMultiSelectDropdownWrapper wrapper)
         {
-            Assert.ShouldBecome(() => !wrapper.SelectedValuesTexts.Any(), true, $"{wrapper.Caption} has the following values : {wrapper.SelectedValuesTexts.Aggregate((x, y) => $"{x}, {y}")}");
+            Assert.ShouldBecome(() => !wrapper.SelectedValuesTexts.Any(), true, wrapper.SelectedValuesTexts.CreateDropdownErrorMessage(wrapper.Caption));
         }
 
         /// <summary>
