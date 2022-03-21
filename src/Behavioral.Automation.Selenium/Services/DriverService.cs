@@ -115,10 +115,10 @@ namespace Behavioral.Automation.Selenium.Services
         /// <param name="script">Script text</param>
         /// <param name="args">Script arguments</param>
         /// <returns>ReadOnlyCollection of IWebElement objects</returns>
-        public void ExecuteScript(string script, params object[] args)
+        public object ExecuteScript(string script, params object[] args)
         {
-            IJavaScriptExecutor js = (IJavaScriptExecutor)Driver; 
-            js.ExecuteScript(script, args);
+            var jsExecutor = (IJavaScriptExecutor)Driver; 
+            return jsExecutor.ExecuteScript(script, args);
         }
 
         /// <summary>
@@ -127,12 +127,12 @@ namespace Behavioral.Automation.Selenium.Services
         /// <param name="element">IWebElement object</param>
         public void ScrollTo(IWebElement element)
         {
-            var scrollElementIntoMiddle = "var viewPortHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);"
-                                          + "var elementTop = arguments[0].getBoundingClientRect().top;"
-                                          + "window.scrollBy(0, elementTop-(viewPortHeight/2));";
+            const string scrollElementIntoMiddle = "var viewPortHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);"
+                                                   + "var elementTop = arguments[0].getBoundingClientRect().top;"
+                                                   + "window.scrollBy(0, elementTop-(viewPortHeight/2));";
 
             ExecuteScript(scrollElementIntoMiddle, element);
-            Actions actions = new Actions(Driver);
+            var actions = new Actions(Driver);
             actions.MoveToElement(element);
             actions.Perform();
         }
@@ -142,7 +142,7 @@ namespace Behavioral.Automation.Selenium.Services
         /// </summary>
         public void MouseClick()
         {
-            Actions actions = new Actions(Driver);
+            var actions = new Actions(Driver);
             actions.Click();
             actions.Perform();
         }
@@ -258,7 +258,7 @@ namespace Behavioral.Automation.Selenium.Services
             var fileName = new string(TestContext.CurrentContext.Test.Name
                 .Where(x => !Path.GetInvalidFileNameChars().Contains(x))
                 .ToArray()) + ".png";
-            Screenshot screenshot = ((ITakesScreenshot)Driver).GetScreenshot();
+            var screenshot = ((ITakesScreenshot)Driver).GetScreenshot();
             screenshot.SaveAsFile(fileName, ScreenshotImageFormat.Png);
             return fileName;
         }

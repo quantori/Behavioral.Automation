@@ -8,7 +8,7 @@ namespace Behavioral.Automation.Services
 
         string Title { [CanBeNull] get; }
         
-         void ExecuteScript(string script, params object[] args);
+         object ExecuteScript(string script, params object[] args);
 
         /// <summary>
         /// Refresh opened page

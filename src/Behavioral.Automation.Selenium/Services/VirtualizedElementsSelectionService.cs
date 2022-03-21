@@ -36,7 +36,7 @@ namespace Behavioral.Automation.Selenium.Services
 
             ResetScrollPosition<T>(frameElementToScroll, scrollingArguments.ScrollHeight);
 
-            HashSet<string> visitedElements = new HashSet<string>();
+            var visitedElements = new HashSet<string>();
             foreach (var element in GetElements(loadElementsCallback, visitedElements))
             {
                 yield return element;
@@ -75,7 +75,7 @@ namespace Behavioral.Automation.Selenium.Services
 
         private static int CalculateScrollingOffset(ScrollingArguments scrollingArguments, int i)
         {
-            int offset = scrollingArguments.FrameElementHeight * i;
+            var offset = scrollingArguments.FrameElementHeight * i;
             if (i == scrollingArguments.NumberOfScrolls)
             {
                 offset = scrollingArguments.FrameElementHeight * (i - 1) + scrollingArguments.LastStepOffset;
@@ -105,7 +105,7 @@ namespace Behavioral.Automation.Selenium.Services
             var scrollHeight = int.Parse(frameElementToScroll.GetAttribute("scrollHeight"));
             var frameElementHeight = frameElementToScroll.Size.Height;
             var numberOfScrolls = (scrollHeight / frameElementHeight) - 1;
-            int lastStepOffset = frameElementHeight;
+            var lastStepOffset = frameElementHeight;
             var remainder = scrollHeight % frameElementHeight;
             if (remainder > 0)
             {

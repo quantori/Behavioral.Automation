@@ -89,9 +89,9 @@ namespace Behavioral.Automation.Playwright.Services
         /// <param name="script">Script text</param>
         /// <param name="args">Script arguments</param>
         /// <returns>ReadOnlyCollection of IElementHandle objects</returns>
-        public void ExecuteScript(string script, params object[] args)
+        public object ExecuteScript(string script, params object[] args)
         {
-             _page.EvaluateAsync(script, args);
+            return _page.EvaluateAsync(script, args).Result;
         }
 
         /// <summary>

@@ -11,6 +11,11 @@ namespace Behavioral.Automation.Selenium.Services
     public interface IDriverService : IDriverServiceBase
     {
         /// <summary>
+        /// IWebDriverObject
+        /// </summary>
+        IWebDriver Driver { get; }
+        
+        /// <summary>
         /// Find element by search attribute value
         /// </summary>
         /// <param name="id">Search attribute value</param>
