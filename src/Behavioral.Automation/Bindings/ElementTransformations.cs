@@ -13,17 +13,6 @@ namespace Behavioral.Automation.Bindings
     [Binding]
     public class ElementTransformations
     {
-        private readonly IDriverService _driverService;
-        private readonly IElementSelectionService _selectionService;
-
-        public ElementTransformations(
-            [NotNull] IDriverService driverService, 
-            [NotNull] IElementSelectionService selectionService)
-        {
-            _driverService = driverService;
-            _selectionService = selectionService;
-        }
-        
         /// <summary>
         /// Convert strings "be/is/have/become/be not/is not/ not have/become not" into AssertionBehavior object
         /// </summary>

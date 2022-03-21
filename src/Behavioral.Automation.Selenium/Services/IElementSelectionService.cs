@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 
-namespace Behavioral.Automation.Services
+namespace Behavioral.Automation.Selenium.Services
 {
     public interface IElementSelectionService
     {
@@ -11,8 +11,7 @@ namespace Behavioral.Automation.Services
         /// </summary>
         /// <param name="caption"></param>
         /// <returns></returns>
-        [CanBeNull]
-        IWebElement Find([NotNull] string caption);
+        IWebElement? Find([NotNull] string caption);
 
         IEnumerable<IWebElement> FindMultipleElements([NotNull] string caption);
     }

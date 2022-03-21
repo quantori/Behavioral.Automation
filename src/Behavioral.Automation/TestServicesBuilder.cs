@@ -19,9 +19,6 @@ namespace Behavioral.Automation
         
         public void Build()
         {
-            _objectContainer.RegisterTypeAs<DriverService, IDriverService>();
-            _objectContainer.RegisterTypeAs<ElementSelectionService, IElementSelectionService>();
-            _objectContainer.RegisterTypeAs<VirtualizedElementsSelectionService, IVirtualizedElementsSelectionService>();
             _objectContainer.RegisterTypeAs<AutomationIdProvider, IAutomationIdProvider>();
             _objectContainer.RegisterTypeAs<ScopeMarkupStorageContainer, IScopeMarkupStorageContainer>();
             _objectContainer.RegisterTypeAs<ScopeMarkupMapper, IScopeMarkupMapper>();

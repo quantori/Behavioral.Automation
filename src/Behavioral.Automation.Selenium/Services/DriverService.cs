@@ -4,13 +4,14 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Behavioral.Automation.Services;
 using Behavioral.Automation.Services.Mapping.Contract;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 
-namespace Behavioral.Automation.Services
+namespace Behavioral.Automation.Selenium.Services
 {
     /// <summary>
     /// WebDriver interactions methods
@@ -114,10 +115,10 @@ namespace Behavioral.Automation.Services
         /// <param name="script">Script text</param>
         /// <param name="args">Script arguments</param>
         /// <returns>ReadOnlyCollection of IWebElement objects</returns>
-        public object ExecuteScript(string script, params object[] args)
+        public void ExecuteScript(string script, params object[] args)
         {
-            IJavaScriptExecutor js = (IJavaScriptExecutor)Driver;
-            return js.ExecuteScript(script, args);
+            IJavaScriptExecutor js = (IJavaScriptExecutor)Driver; 
+            js.ExecuteScript(script, args);
         }
 
         /// <summary>

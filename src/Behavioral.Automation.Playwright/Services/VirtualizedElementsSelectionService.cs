@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Behavioral.Automation.Playwright.Elements;
+using Behavioral.Automation.Elements;
 using Behavioral.Automation.Services;
 using Behavioral.Automation.Services.Mapping;
 using JetBrains.Annotations;

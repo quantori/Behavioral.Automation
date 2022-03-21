@@ -14,10 +14,10 @@ namespace Behavioral.Automation.Bindings
     [Binding]
     public sealed class NavigationBinding
     {
-        private readonly IDriverService _driverService;
+        private readonly IDriverServiceBase _driverService;
         private readonly IScopeContextManager _scopeContextManager;
 
-        public NavigationBinding([NotNull] IDriverService driverService,
+        public NavigationBinding([NotNull] IDriverServiceBase driverService,
             [NotNull] IScopeContextManager scopeContextManager)
         {
             _driverService = driverService;

@@ -1,25 +1,21 @@
 ﻿using System.Threading.Tasks;
-using Behavioral.Automation;
 using Behavioral.Automation.Services;
 using BoDi;
 using Microsoft.Playwright;
-using TechTalk.SpecFlow;
 using NUnit.Framework;
-using IDriverService = Behavioral.Automation.Playwright.Services.IDriverService;
+using TechTalk.SpecFlow;
 
-namespace Behavioral.Automation.Playwright
+namespace Behavioral.Automation.Playwright.Services
 {
     [Binding]
-    public class Bootstrapper
+    public class BrowserRunner
     {
-        private readonly ScenarioContext _scenarioContext;
         private readonly IObjectContainer _objectContainer;
         private static TestServicesBuilder _testServicesBuilder;
 
-        public Bootstrapper(IObjectContainer objectContainer, ScenarioContext scenarioContext)
+        public BrowserRunner(IObjectContainer objectContainer)
         {
             _objectContainer = objectContainer;
-            _scenarioContext = scenarioContext;
             _objectContainer = objectContainer;
             _testServicesBuilder = new TestServicesBuilder(_objectContainer);
         }
@@ -40,17 +36,6 @@ namespace Behavioral.Automation.Playwright
             container.RegisterInstanceAs(playwright);
             container.RegisterInstanceAs(browser);
             container.RegisterInstanceAs(page);
-        }
-
-        [AfterScenario]
-        public void SaveScreenshotAndLog()
-        {
-            var driverService = _objectContainer.Resolve<IDriverService>();
-            if (_scenarioContext.TestError != null)
-            {
-                var screenShotPath = driverService.MakeScreenShot();
-                TestContext.AddTestAttachment(screenShotPath);
-            }
         }
     }
 }

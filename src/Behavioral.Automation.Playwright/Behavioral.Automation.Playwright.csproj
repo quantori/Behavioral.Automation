@@ -1,43 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ExcelDataReader" Version="3.7.0-develop00310" />
-    <PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0-develop00310" />
-    <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="Microsoft.Playwright" Version="1.16.1" />
     <PackageReference Include="Microsoft.Playwright.NUnit" Version="1.16.1" />
-    <PackageReference Include="SpecFlow.Plus.LivingDocPlugin" Version="3.9.5" />
-
-    
-
-    
-
-    
-    <PackageReference Include="SpecFlow.NUnit" Version="3.9.8" />
-    <PackageReference Include="nunit" Version="3.13.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
-    
-
-    
-
-    
-    <PackageReference Include="FluentAssertions" Version="5.10.3" />
-
-    <Content Include="AutomationConfig.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Behavioral.Automation\Behavioral.Automation.csproj" />
+    <ProjectReference Include="..\Behavioral.Automation\Behavioral.Automation.csproj" />
   </ItemGroup>
 
 </Project>

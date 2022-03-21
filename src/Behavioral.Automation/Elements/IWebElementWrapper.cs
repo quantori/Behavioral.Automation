@@ -1,19 +1,9 @@
-﻿using System.Collections.Generic;
-using JetBrains.Annotations;
-using OpenQA.Selenium;
+﻿using JetBrains.Annotations;
 
 namespace Behavioral.Automation.Elements
 {
-    /// <summary>
-    /// Common interface for every web page element with general properties and methods
-    /// </summary>
     public interface IWebElementWrapper
     {
-        /// <summary>
-        /// Web element object of <see cref="IWebElement"/> type
-        /// </summary>
-        IWebElement Element { get; }
-
         /// <summary>
         /// Element caption
         /// </summary>
@@ -40,14 +30,6 @@ namespace Behavioral.Automation.Elements
         /// Moves pointer over web element
         /// </summary>
         public void MouseHover();
-
-        /// <summary>
-        /// Collection of elements that are nested inside current web element
-        /// </summary>
-        /// <param name="locator">mechanism of finding element children using <see cref="By"/> class object</param>
-        /// <param name="caption">element caption</param>
-        /// <returns></returns>
-        public IEnumerable<IWebElementWrapper> FindSubElements([NotNull] By locator, [CanBeNull] string caption);
 
         /// <summary>
         /// Sends given text symbol by symbol, including special symbols. See <see cref="Keys"/>

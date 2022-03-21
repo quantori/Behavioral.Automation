@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using Behavioral.Automation.Abstractions;
 using Behavioral.Automation.FluentAssertions.Abstractions;
 using Behavioral.Automation.Model;
-using Behavioral.Automation.Services;
 using NUnit.Framework;
-using OpenQA.Selenium;
 using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.FluentAssertions
@@ -112,17 +108,11 @@ namespace Behavioral.Automation.FluentAssertions
                 {
                     return getValue();
                 }
-                catch (StaleElementReferenceException)
+                catch (Exception)
                 {
                     Thread.Sleep(wait);
                     if (counter++ == attempts)
                         throw;
-                }
-                catch (NullReferenceException)
-                {
-                    Thread.Sleep(wait);
-                    if (counter++ == attempts)
-                        return getValue();
                 }
             }
         }

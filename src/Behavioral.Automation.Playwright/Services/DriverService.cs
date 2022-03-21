@@ -89,9 +89,9 @@ namespace Behavioral.Automation.Playwright.Services
         /// <param name="script">Script text</param>
         /// <param name="args">Script arguments</param>
         /// <returns>ReadOnlyCollection of IWebElement objects</returns>
-        public object ExecuteScript(string script, params object[] args)
+        public void ExecuteScript(string script, params object[] args)
         {
-            return _page.EvaluateAsync(script, args);
+             _page.EvaluateAsync(script, args);
         }
 
         /// <summary>
@@ -119,8 +119,9 @@ namespace Behavioral.Automation.Playwright.Services
         /// </summary>
         public void SwitchToTheLastWindow()
         {
-            // var handle = Driver.WindowHandles.Last();
-            // Driver.SwitchTo().Window(handle);
+            _page.Context.Page += async  (_, page) => {
+                await page.WaitForLoadStateAsync();
+            };
         }
 
         /// <summary>
@@ -128,8 +129,7 @@ namespace Behavioral.Automation.Playwright.Services
         /// </summary>
         public void SwitchToTheFirstWindow()
         {
-            //  var handle = Driver.WindowHandles.First();
-            // Driver.SwitchTo().Window(handle);
+            _page.Context.Pages.First().WaitForLoadStateAsync();
         }
 
         /// <summary>
@@ -186,6 +186,14 @@ namespace Behavioral.Automation.Playwright.Services
         public void ResizeWindow(int height, int width)
         {
             _page.SetViewportSizeAsync(width, height);
+        }
+
+        /// <summary>
+        /// Remove focus from the element
+        /// </summary>
+        public void CloseActiveElement()
+        {
+            _page.ClickAsync($"xpath=//body");
         }
 
         /// <summary>

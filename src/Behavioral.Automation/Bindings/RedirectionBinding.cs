@@ -15,12 +15,12 @@ namespace Behavioral.Automation.Bindings
     public sealed class RedirectionBinding
     {
         [NotNull] private readonly IScopeContextManager _scopeContextManager;
-        private readonly IDriverService _driverService;
+        private readonly IDriverServiceBase _driverService;
         private readonly IUriToPageScopeMapper _uriToPageScopeMapper;
         private bool _WindowsHandleSwitched;
 
         public RedirectionBinding([NotNull] IScopeContextManager scopeContextManager,
-            IDriverService driverService,
+            IDriverServiceBase driverService,
             IUriToPageScopeMapper uriToPageScopeMapper)
         {
             _scopeContextManager = scopeContextManager;

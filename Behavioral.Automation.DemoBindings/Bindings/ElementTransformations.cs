@@ -1,6 +1,8 @@
 ﻿using Behavioral.Automation.DemoBindings.Elements;
 using Behavioral.Automation.Elements;
-using Behavioral.Automation.Services;
+using Behavioral.Automation.Selenium;
+using Behavioral.Automation.Selenium.Elements;
+using Behavioral.Automation.Selenium.Services;
 using JetBrains.Annotations;
 using TechTalk.SpecFlow;
 
@@ -21,7 +23,7 @@ namespace Behavioral.Automation.DemoBindings.Bindings
         }
 
         [StepArgumentTransformation]
-        public IWebElementWrapper FindElement([NotNull] string caption)
+        public IWebElementWrapperSelenium FindElement([NotNull] string caption)
         {
             return new WebElementWrapper(() => _selectionService.Find(caption),
                 caption,

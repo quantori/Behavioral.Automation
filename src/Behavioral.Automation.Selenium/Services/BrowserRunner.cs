@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Behavioral.Automation.Services;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
-namespace Behavioral.Automation.Services
+namespace Behavioral.Automation.Selenium.Services
 {
     /// <summary>
     /// Methods for browser configuration

@@ -29,7 +29,7 @@ namespace Behavioral.Automation.Playwright.Services
         /// Find element by caption from the step
         /// </summary>
         /// <param name="caption">Element caption</param>
-        /// <returns>IWebElement object</returns>
+        /// <returns>IElementHandleObject object</returns>
         public IElementHandle Find(string caption)
         {
             var description = _provider.Get(caption);
@@ -48,7 +48,7 @@ namespace Behavioral.Automation.Playwright.Services
         /// Find multiple elements by caption from the step
         /// </summary>
         /// <param name="caption">Element caption</param>
-        /// <returns>IWebElement object collection</returns>
+        /// <returns>IElementHandle object collection</returns>
         public IEnumerable<IElementHandle> FindMultipleElements(string caption)
         {
             var description = _provider.Get(caption);

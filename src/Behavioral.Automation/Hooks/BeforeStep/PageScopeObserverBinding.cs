@@ -13,9 +13,9 @@ namespace Behavioral.Automation.Hooks.BeforeStep
     public class PageScopeObserverBinding
     {
         private readonly IScopeContextManager _scopeContextManager;
-        private readonly IDriverService _driverService;
+        private readonly IDriverServiceBase _driverService;
 
-        public PageScopeObserverBinding([NotNull] IScopeContextManager scopeContextManager, [NotNull] IDriverService driverService)
+        public PageScopeObserverBinding([NotNull] IScopeContextManager scopeContextManager, [NotNull] IDriverServiceBase driverService)
         {
             _scopeContextManager = scopeContextManager;
             _driverService = driverService;

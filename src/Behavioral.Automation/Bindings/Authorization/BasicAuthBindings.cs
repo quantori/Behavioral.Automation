@@ -12,11 +12,11 @@ namespace Behavioral.Automation.Bindings.Authorization
     [Binding]
     public class BasicAuthBindings : Steps
     {
-        private readonly IDriverService _driverService;
+        private readonly IDriverServiceBase _driverService;
         private readonly IBasicAuthConfig _basicAuthConfig;
         private bool _signInRequired = true;
 
-        public BasicAuthBindings([NotNull]IDriverService driverService, IBasicAuthConfig basicAuthConfig)
+        public BasicAuthBindings([NotNull]IDriverServiceBase driverService, IBasicAuthConfig basicAuthConfig)
         {
             _driverService = driverService;
             _basicAuthConfig = basicAuthConfig;

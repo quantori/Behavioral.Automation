@@ -12,13 +12,6 @@ namespace Behavioral.Automation.Bindings
     [Binding]
     public sealed class DebugBinding
     {
-        private readonly IDriverService _driverService;
-
-        public DebugBinding([NotNull] IDriverService driverService)
-        {
-            _driverService = driverService;
-        }
-
         /// <summary>
         /// Stop test execution for 5 seconds
         /// </summary>

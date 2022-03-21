@@ -5,10 +5,12 @@ using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Behavioral.Automation.Selenium.Elements;
+using Behavioral.Automation.Selenium.Services;
 
 namespace Behavioral.Automation.DemoBindings.Elements
 {
-    public class WebElementWrapper : IWebElementWrapper
+    public class WebElementWrapper : IWebElementWrapperSelenium
     {
         private readonly Func<IWebElement> _elementSelector;
         private readonly IDriverService _driverService;

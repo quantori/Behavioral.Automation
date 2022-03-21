@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Behavioral.Automation.Services;
 using Behavioral.Automation.Services.Mapping;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 
-namespace Behavioral.Automation.Services
+namespace Behavioral.Automation.Selenium.Services
 {
     /// <summary>
     /// Method for caption to element conversion

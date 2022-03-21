@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using Behavioral.Automation.Elements;
+using Behavioral.Automation.Services;
 using Behavioral.Automation.Services.Mapping;
-using Behavioral.Automation.Services.Mapping.Contract;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
 
-namespace Behavioral.Automation.Services
+namespace Behavioral.Automation.Selenium.Services
 {
     [UsedImplicitly]
     public sealed class VirtualizedElementsSelectionService : IVirtualizedElementsSelectionService
@@ -132,6 +132,7 @@ namespace Behavioral.Automation.Services
             }
 
             var frameElementToScroll = _selectionService.Find(frameElementToScrollCaption);
+            
             return frameElementToScroll;
         }
 

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using Behavioral.Automation.FluentAssertions;
+using Behavioral.Automation.Selenium.Services;
 using Behavioral.Automation.Services;
 using BoDi;
 using TechTalk.SpecFlow;
