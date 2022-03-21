@@ -36,7 +36,7 @@ namespace Behavioral.Automation.Playwright.Services
         /// Find web element using search attribute
         /// </summary>
         /// <param name="id">Element id</param>
-        /// <returns>IWebElement object or null if element was not found</returns>
+        /// <returns>IElementHandle object or null if element was not found</returns>
         public IElementHandle FindElement(string id)
         {
             return _page.QuerySelectorAsync($"xpath=//*[@{SearchAttribute}='{id}']").Result;
@@ -47,7 +47,7 @@ namespace Behavioral.Automation.Playwright.Services
         /// </summary>
         /// <param name="id">Element id</param>
         /// <param name="subpath">Xpath subpath</param>
-        /// <returns>IWebElement object or null if element was not found</returns>
+        /// <returns>IElementHandle object or null if element was not found</returns>
         public IElementHandle FindElement(string id, string subpath)
         {
             return FindElement(id).QuerySelectorAsync(subpath).Result;
@@ -57,7 +57,7 @@ namespace Behavioral.Automation.Playwright.Services
         /// Find element by xpath only
         /// </summary>
         /// <param name="path">Element's xpath</param>
-        /// <returns>IWebElement object or null if element was not found</returns>
+        /// <returns>IElementHandle object or null if element was not found</returns>
         public IElementHandle FindElementByXpath(string path)
         {
             return _page.QuerySelectorAsync(path).Result;
@@ -67,7 +67,7 @@ namespace Behavioral.Automation.Playwright.Services
         /// Find element collection by id
         /// </summary>
         /// <param name="id">Element id</param>
-        /// <returns>ReadOnlyCollection of IWebElement objects</returns>
+        /// <returns>ReadOnlyCollection of IElementHandle objects</returns>
         public IEnumerable<IElementHandle> FindElements(string id)
         {
             return _page.QuerySelectorAllAsync($"xpath=//*[@{SearchAttribute}='{id}']").Result;
@@ -77,7 +77,7 @@ namespace Behavioral.Automation.Playwright.Services
         /// Find element collection by xpath
         /// </summary>
         /// <param name="path">Element xpath</param>
-        /// <returns>ReadOnlyCollection of IWebElement objects</returns>
+        /// <returns>ReadOnlyCollection of IElementHandle objects</returns>
         public IEnumerable<IElementHandle> FindElementsByXpath(string path)
         {
             return _page.QuerySelectorAllAsync($"xpath=${path}").Result;
@@ -88,7 +88,7 @@ namespace Behavioral.Automation.Playwright.Services
         /// </summary>///
         /// <param name="script">Script text</param>
         /// <param name="args">Script arguments</param>
-        /// <returns>ReadOnlyCollection of IWebElement objects</returns>
+        /// <returns>ReadOnlyCollection of IElementHandle objects</returns>
         public void ExecuteScript(string script, params object[] args)
         {
              _page.EvaluateAsync(script, args);
@@ -97,7 +97,7 @@ namespace Behavioral.Automation.Playwright.Services
         /// <summary>
         /// Scroll page to element
         /// </summary>
-        /// <param name="element">IWebElement object</param>
+        /// <param name="element">IElementHandle object</param>
         public void ScrollTo(IElementHandle element)
         {
             element.ScrollIntoViewIfNeededAsync();
@@ -212,8 +212,9 @@ namespace Behavioral.Automation.Playwright.Services
         /// <summary>
         /// Scroll element to offset
         /// </summary>
-        /// <param name="element">IWebElement object</param>
-        /// <param name="offsetX">Offset to scroll element to</param>
+        /// <param name="element">IELementHandle object</param>
+        /// <param name="offsetX">Offset to scroll element to by X coords</param>
+        /// <param name="offsetY">Offset to scroll element to by Y coords</param>
         public void ScrollElementTo(IElementHandle element, int offsetX, int offsetY = 0)
         {
             element.HoverAsync();

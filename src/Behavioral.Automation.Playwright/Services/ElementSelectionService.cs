@@ -14,22 +14,19 @@ namespace Behavioral.Automation.Playwright.Services
     {
         private readonly IDriverService _driverService;
         private readonly IAutomationIdProvider _provider;
-        private readonly IScopeContextRuntime _contextRuntime;
         public ElementSelectionService(
             [NotNull] IDriverService driverService,
-            [NotNull] IAutomationIdProvider provider,
-            [NotNull] IScopeContextRuntime contextRuntime)
+            [NotNull] IAutomationIdProvider provider)
         {
             _driverService = driverService;
             _provider = provider;
-            _contextRuntime = contextRuntime;
         }
 
         /// <summary>
         /// Find element by caption from the step
         /// </summary>
         /// <param name="caption">Element caption</param>
-        /// <returns>IElementHandleObject object</returns>
+        /// <returns>IElementHandle object</returns>
         public IElementHandle Find(string caption)
         {
             var description = _provider.Get(caption);

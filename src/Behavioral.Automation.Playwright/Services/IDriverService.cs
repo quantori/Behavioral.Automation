@@ -15,7 +15,7 @@ namespace Behavioral.Automation.Playwright.Services
         /// Find element by search attribute value
         /// </summary>
         /// <param name="id">Search attribute value</param>
-        /// <returns>IWebElement object or null if element was not found</returns>
+        /// <returns>IElementHandle object or null if element was not found</returns>
         [NotNull]
         IElementHandle FindElement([NotNull] string id);
 
@@ -25,7 +25,7 @@ namespace Behavioral.Automation.Playwright.Services
         /// </summary>
         /// <param name="id">Search attribute value</param>
         /// <param name="subpath">Xpath</param>
-        /// <returns>IWebElement object or null if element was not found</returns>
+        /// <returns>IElementHandle object or null if element was not found</returns>
         [NotNull]
         IElementHandle FindElement([NotNull] string id, [NotNull] string subpath);
 
@@ -41,14 +41,14 @@ namespace Behavioral.Automation.Playwright.Services
         /// Find multiple elements having the same search attribute
         /// </summary>
         /// <param name="id">Search attribute</param>
-        /// <returns>Read only collection of IWebElement objects or null if elements were not found</returns>
+        /// <returns>Read only collection of IElementHandle objects or null if elements were not found</returns>
         IEnumerable<IElementHandle> FindElements([NotNull] string id);
 
         /// <summary>
         /// Find multiple elements having the same search attribute
         /// </summary>
         /// <param name="path">Xpath string</param>
-        /// <returns>Read only collection of IWebElement objects or null if elements were not found</returns>
+        /// <returns>Read only collection of IElementHandle objects or null if elements were not found</returns>
         IEnumerable<IElementHandle> FindElementsByXpath([NotNull] string path);
 
         /// <summary>
@@ -64,14 +64,14 @@ namespace Behavioral.Automation.Playwright.Services
         /// <summary>
         /// Scroll element into view by offset
         /// </summary>
-        /// <param name="element">IWebElement object</param>
+        /// <param name="element">IElementHandle object</param>
         /// <param name="offset">Desired offset</param>
         void ScrollElementTo(IElementHandle element, int offsetX, int offsetY = 0);
         
         /// <summary>
         /// Scroll to element
         /// </summary>
-        /// <param name="element">Tested web element</param>
+        /// <param name="element">IElementHandle object</param>
         void ScrollTo(IElementHandle element);
     }
 }

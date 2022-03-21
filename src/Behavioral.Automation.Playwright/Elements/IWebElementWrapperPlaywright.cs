@@ -11,7 +11,7 @@ namespace Behavioral.Automation.Playwright.Elements
     public interface IWebElementWrapperPlaywright : IWebElementWrapper
     {
         /// <summary>
-        /// Web element object of <see cref="IWebElement"/> type
+        /// Web element object of <see cref="IElementHandle"/> type
         /// </summary>
         IElementHandle Element { get; }
         

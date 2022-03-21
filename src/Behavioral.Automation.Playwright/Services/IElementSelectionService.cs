@@ -10,7 +10,7 @@ namespace Behavioral.Automation.Playwright.Services
         /// Find web element by caption
         /// </summary>
         /// <param name="caption"></param>
-        /// <returns></returns>
+        /// <returns>IElementHandle object</returns>
         [CanBeNull]
         IElementHandle Find([NotNull] string caption);
 
