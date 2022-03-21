@@ -2,7 +2,6 @@
 using Behavioral.Automation.Services;
 using BoDi;
 using Microsoft.Playwright;
-using NUnit.Framework;
 using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Playwright.Services
