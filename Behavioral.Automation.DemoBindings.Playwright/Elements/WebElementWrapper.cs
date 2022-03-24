@@ -25,9 +25,15 @@ namespace Behavioral.Automation.DemoBindings.Playwright.Elements
 
         public string GetAttribute(string attribute)
         {
-            var attr = Element.GetAttributeAsync(attribute);
-            attr.Wait();
-            return attr.Result;
+            try
+            {
+                return Element.GetAttributeAsync(attribute).Result;
+            }
+            catch (AggregateException)
+            {
+                return null;
+            }
+            
         }
 
         public void Click()
@@ -46,15 +52,7 @@ namespace Behavioral.Automation.DemoBindings.Playwright.Elements
             Element.FillAsync(text);
         }
 
-        public string Text
-        {
-            get
-            {
-                var text = Element.TextContentAsync();
-                text.Wait();
-                return text.Result;
-            }
-        }
+        public string Text => Element.TextContentAsync().Result;
 
         public bool Displayed
         {

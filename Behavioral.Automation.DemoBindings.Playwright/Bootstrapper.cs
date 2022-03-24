@@ -90,8 +90,8 @@ namespace Behavioral.Automation.DemoBindings.Playwright
         {
             Assert.SetRunner(_runner);
             _objectContainer.RegisterTypeAs<UserInterfaceBuilder, IUserInterfaceBuilder>();
-            _browserRunner.OpenChrome(_objectContainer);
             _servicesBuilder.Build();
+            _browserRunner.OpenChrome(_objectContainer).Wait();
         }
     }
 }

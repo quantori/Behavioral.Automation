@@ -19,14 +19,14 @@ namespace Behavioral.Automation.DemoBindings.Playwright.Bindings
             _selectionService = selectionService;
         }
 
-        [StepArgumentTransformation]
+        [StepArgumentTransformation("(.+?)")]
         public IWebElementWrapperPlaywright FindElementWrapperPlaywright([NotNull] string caption)
         {
             return new WebElementWrapper(() => _selectionService.Find(caption),
                 caption);
         }
         
-        [StepArgumentTransformation]
+        [StepArgumentTransformation("(.+?)")]
         public IWebElementWrapper FindElement([NotNull] string caption)
         {
             return new WebElementWrapper(() => _selectionService.Find(caption), caption);
