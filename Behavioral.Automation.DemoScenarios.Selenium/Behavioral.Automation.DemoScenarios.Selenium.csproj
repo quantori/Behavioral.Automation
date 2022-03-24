@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Behavioral.Automation.DemoBindings\Behavioral.Automation.DemoBindings.csproj" />
+    <ProjectReference Include="..\Behavioral.Automation.DemoBindings.Selenium\Behavioral.Automation.DemoBindings.Selenium.csproj" />
   </ItemGroup>
 
   <ItemGroup>

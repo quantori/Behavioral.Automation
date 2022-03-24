@@ -18,6 +18,7 @@ public sealed class PlaywrightTestServicesBuilder
 
     public void Build()
     {
+        _objectContainer.RegisterTypeAs<DriverService, IDriverServiceBase>();
         _objectContainer.RegisterTypeAs<DriverService, IDriverService>();
         _objectContainer.RegisterTypeAs<ElementSelectionService, IElementSelectionService>();
         _objectContainer.RegisterTypeAs<VirtualizedElementsSelectionService, IVirtualizedElementsSelectionService>();

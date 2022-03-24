@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Behavioral.Automation.Services;
 using BoDi;
 using Microsoft.Playwright;
@@ -9,32 +12,54 @@ namespace Behavioral.Automation.Playwright.Services
     [Binding]
     public class BrowserRunner
     {
-        private readonly IObjectContainer _objectContainer;
-        private static TestServicesBuilder _testServicesBuilder;
+        public IPage Page;
+        private IBrowser _browser;
 
-        public BrowserRunner(IObjectContainer objectContainer)
+        public void OpenBrowser(IPage page)
         {
-            _objectContainer = objectContainer;
-            _objectContainer = objectContainer;
-            _testServicesBuilder = new TestServicesBuilder(_objectContainer);
+            Page = page;
         }
-
-        [BeforeScenario]
-        public async Task OpenChrome(IObjectContainer container)
+        
+        public void OpenChrome(IObjectContainer container)
         {
-            _testServicesBuilder.Build();
-            var playwright = await Microsoft.Playwright.Playwright.CreateAsync();
-            var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+            var playwrightTask = Microsoft.Playwright.Playwright.CreateAsync();
+            playwrightTask.Wait();
+            var playwright = playwrightTask.Result;
+            var browserTask = playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
                 Headless = ConfigServiceBase.BrowserParameters.Contains("--headless"),
                 Channel = "chrome",
                 SlowMo = 500
             });
-            var page = await browser.NewPageAsync();
-            await page.GotoAsync(ConfigServiceBase.BaseUrl);
+            browserTask.Wait();
+            _browser = browserTask.Result;
+            var resolution = ParseWindowSize(ConfigServiceBase.BrowserParameters);
+            var pageTask = _browser.NewPageAsync(new BrowserNewPageOptions
+            {
+                BaseURL = ConfigServiceBase.BaseUrl,
+                ViewportSize = new ViewportSize
+                {
+                    Width = resolution.FirstOrDefault(),
+                    Height = resolution.LastOrDefault()
+                }
+            });
+            pageTask.Wait();
+            var page = pageTask.Result;
             container.RegisterInstanceAs(playwright);
-            container.RegisterInstanceAs(browser);
+            container.RegisterInstanceAs(_browser);
             container.RegisterInstanceAs(page);
+            OpenBrowser(page);
+        }
+
+        public void CloseBrowser()
+        {
+            _browser.CloseAsync();
+        }
+
+        private IEnumerable<int> ParseWindowSize(string config)
+        {
+            var regex = new Regex(@"(\d)*,(\d)*");
+            return regex.Match(config).Value.Split(",").Select(i => int.Parse(i));
         }
     }
 }

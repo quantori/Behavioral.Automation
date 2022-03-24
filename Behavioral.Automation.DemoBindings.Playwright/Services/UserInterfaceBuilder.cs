@@ -1,7 +1,7 @@
 ﻿using Behavioral.Automation.Services;
 using Behavioral.Automation.Services.Mapping.Contract;
 
-namespace Behavioral.Automation.DemoBindings
+namespace Behavioral.Automation.DemoBindings.Selenium
 {
     public class UserInterfaceBuilder : UserInterfaceBuilderBase
     {

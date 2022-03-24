@@ -2,13 +2,16 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
+using Behavioral.Automation.DemoBindings.Selenium;
 using Behavioral.Automation.FluentAssertions;
-using Behavioral.Automation.Selenium.Services;
+using Behavioral.Automation.Playwright;
+using Behavioral.Automation.Playwright.Services;
 using Behavioral.Automation.Services;
 using BoDi;
 using TechTalk.SpecFlow;
 
-namespace Behavioral.Automation.DemoBindings
+namespace Behavioral.Automation.DemoBindings.Playwright
 {
     [Binding]
     public class Bootstrapper
@@ -24,7 +27,9 @@ namespace Behavioral.Automation.DemoBindings
             _objectContainer = objectContainer;
             _runner = runner;
             _browserRunner = browserRunner;
-            _servicesBuilder = new DemoTestServicesBuilder(objectContainer, new TestServicesBuilder(_objectContainer));
+            _servicesBuilder = new DemoTestServicesBuilder(objectContainer, 
+                new TestServicesBuilder(_objectContainer), 
+                new PlaywrightTestServicesBuilder(_objectContainer));
         }
 
         private static bool IsConnectionEstablished()
@@ -78,7 +83,6 @@ namespace Behavioral.Automation.DemoBindings
         public void CloseBrowser()
         {
             _browserRunner.CloseBrowser();
-            
         }
 
         [BeforeScenario(Order = 0)]
@@ -86,8 +90,8 @@ namespace Behavioral.Automation.DemoBindings
         {
             Assert.SetRunner(_runner);
             _objectContainer.RegisterTypeAs<UserInterfaceBuilder, IUserInterfaceBuilder>();
+            _browserRunner.OpenChrome(_objectContainer);
             _servicesBuilder.Build();
-            _browserRunner.OpenChrome();
         }
     }
 }

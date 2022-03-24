@@ -8,7 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 using Behavioral.Automation.Selenium.Elements;
 using Behavioral.Automation.Selenium.Services;
 
-namespace Behavioral.Automation.DemoBindings.Elements
+namespace Behavioral.Automation.DemoBindings.Selenium.Elements
 {
     public class WebElementWrapper : IWebElementWrapperSelenium
     {

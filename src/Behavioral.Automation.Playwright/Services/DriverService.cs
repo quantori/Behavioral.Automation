@@ -18,15 +18,17 @@ namespace Behavioral.Automation.Playwright.Services
     public sealed class DriverService : IDriverService
     {
         [NotNull] private readonly IScopeContextManager _scopeContextManager;
+        private readonly BrowserRunner _browserRunner;
         private readonly IPage _page;
 
-        public DriverService([NotNull] IScopeContextManager scopeContextManager, IPage page)
+        public DriverService([NotNull] IScopeContextManager scopeContextManager, BrowserRunner browserRunner, IPage page)
         {
             _page = page;
+            _browserRunner = browserRunner;
             _scopeContextManager = scopeContextManager;
         }
 
-        private readonly string SearchAttribute = ConfigServiceBase.SearchAttribute;
+        private readonly string _searchAttribute = ConfigServiceBase.SearchAttribute;
 
         public string Title => _page.TitleAsync().Result;
 
@@ -39,7 +41,9 @@ namespace Behavioral.Automation.Playwright.Services
         /// <returns>IElementHandle object or null if element was not found</returns>
         public IElementHandle FindElement(string id)
         {
-            return _page.QuerySelectorAsync($"xpath=//*[@{SearchAttribute}='{id}']").Result;
+            var element = _page.QuerySelectorAsync($"xpath=//*[@{_searchAttribute}='{id}']");
+            element.Wait();
+            return element.Result;
         }
 
         /// <summary>
@@ -50,7 +54,9 @@ namespace Behavioral.Automation.Playwright.Services
         /// <returns>IElementHandle object or null if element was not found</returns>
         public IElementHandle FindElement(string id, string subpath)
         {
-            return FindElement(id).QuerySelectorAsync(subpath).Result;
+            var element = FindElement(id).QuerySelectorAsync(subpath);
+            element.Wait();
+            return element.Result;
         }
 
         /// <summary>
@@ -60,7 +66,9 @@ namespace Behavioral.Automation.Playwright.Services
         /// <returns>IElementHandle object or null if element was not found</returns>
         public IElementHandle FindElementByXpath(string path)
         {
-            return _page.QuerySelectorAsync(path).Result;
+            var elements = _page.QuerySelectorAsync(path);
+            elements.Wait();
+            return elements.Result;
         }
 
         /// <summary>
@@ -70,7 +78,7 @@ namespace Behavioral.Automation.Playwright.Services
         /// <returns>ReadOnlyCollection of IElementHandle objects</returns>
         public IEnumerable<IElementHandle> FindElements(string id)
         {
-            return _page.QuerySelectorAllAsync($"xpath=//*[@{SearchAttribute}='{id}']").Result;
+            return _page.QuerySelectorAllAsync($"xpath=//*[@{_searchAttribute}='{id}']").Result;
         }
 
         /// <summary>
@@ -80,7 +88,9 @@ namespace Behavioral.Automation.Playwright.Services
         /// <returns>ReadOnlyCollection of IElementHandle objects</returns>
         public IEnumerable<IElementHandle> FindElementsByXpath(string path)
         {
-            return _page.QuerySelectorAllAsync($"xpath=${path}").Result;
+            var elements = _page.QuerySelectorAllAsync($"xpath=${path}");
+            elements.Wait();
+            return elements.Result;
         }
 
         /// <summary>
@@ -95,7 +105,7 @@ namespace Behavioral.Automation.Playwright.Services
         }
 
         /// <summary>
-        /// Scroll page to element
+        /// Scroll _page to element
         /// </summary>
         /// <param name="element">IElementHandle object</param>
         public void ScrollTo(IElementHandle element)
@@ -119,9 +129,7 @@ namespace Behavioral.Automation.Playwright.Services
         /// </summary>
         public void SwitchToTheLastWindow()
         {
-            _page.Context.Page += async  (_, page) => {
-                await page.WaitForLoadStateAsync();
-            };
+            _page.Context.Page += async (_, page) => { await page.WaitForLoadStateAsync(); };
         }
 
         /// <summary>
@@ -143,7 +151,7 @@ namespace Behavioral.Automation.Playwright.Services
         }
 
         /// <summary>
-        /// Removes focus from active page element
+        /// Removes focus from active _page element
         /// </summary>
         public void RemoveFocusFromActiveElement()
         {
@@ -156,11 +164,11 @@ namespace Behavioral.Automation.Playwright.Services
         public void DebugDumpPage()
         {
             var page = _page.ContentAsync();
-            Console.WriteLine(page);
+            Console.WriteLine(_page);
         }
 
         /// <summary>
-        /// Refresh currently opened page
+        /// Refresh currently opened _page
         /// </summary>
         public void Refresh()
         {
@@ -168,7 +176,7 @@ namespace Behavioral.Automation.Playwright.Services
         }
 
         /// <summary>
-        /// Open page by full URL
+        /// Open _page by full URL
         /// </summary>
         /// <param name="url">URL</param>
         public void Navigate(string url)

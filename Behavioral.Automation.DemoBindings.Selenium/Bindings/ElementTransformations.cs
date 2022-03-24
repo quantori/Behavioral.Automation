@@ -1,15 +1,14 @@
-﻿using Behavioral.Automation.DemoBindings.Elements;
+﻿using Behavioral.Automation.DemoBindings.Selenium.Elements;
 using Behavioral.Automation.Elements;
-using Behavioral.Automation.Selenium;
 using Behavioral.Automation.Selenium.Elements;
 using Behavioral.Automation.Selenium.Services;
 using JetBrains.Annotations;
 using TechTalk.SpecFlow;
 
-namespace Behavioral.Automation.DemoBindings.Bindings
+namespace Behavioral.Automation.DemoBindings.Selenium.Bindings
 {
     [Binding]
-    class ElementTransformations
+    public class ElementTransformations
     {
         private readonly IDriverService _driverService;
         private readonly IElementSelectionService _selectionService;
@@ -23,11 +22,17 @@ namespace Behavioral.Automation.DemoBindings.Bindings
         }
 
         [StepArgumentTransformation]
-        public IWebElementWrapperSelenium FindElement([NotNull] string caption)
+        public IWebElementWrapperSelenium FindElementWrapperSelenium([NotNull] string caption)
         {
             return new WebElementWrapper(() => _selectionService.Find(caption),
                 caption,
                 _driverService);
+        }
+        
+        [StepArgumentTransformation]
+        public IWebElementWrapper FindElement([NotNull] string caption)
+        {
+            return new WebElementWrapper(() => _selectionService.Find(caption), caption, _driverService);
         }
     }
 }

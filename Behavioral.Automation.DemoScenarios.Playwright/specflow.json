@@ -10,13 +10,14 @@
   },
   "stepAssemblies": [
     {
-      "assembly": "Behavioral.Automation.DemoBindings"
+      "assembly": "Behavioral.Automation.DemoBindings.Playwright"
     },
     {
       "assembly": "Behavioral.Automation"
     },
     {
-      "assembly": "Behavioral.Automation.Selenium"
+      "assembly": "Behavioral.Automation.Playwright"
     }
+    
   ]
 }

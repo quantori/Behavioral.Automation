@@ -52,16 +52,6 @@ namespace Behavioral.Automation.Playwright.Services
         IEnumerable<IElementHandle> FindElementsByXpath([NotNull] string path);
 
         /// <summary>
-        /// Switch to the last opened window
-        /// </summary>
-        void SwitchToTheLastWindow();
-
-        /// <summary>
-        /// Switch to the window which was opened first
-        /// </summary>
-        void SwitchToTheFirstWindow();
-
-        /// <summary>
         /// Scroll element into view by offset
         /// </summary>
         /// <param name="element">IElementHandle object</param>
