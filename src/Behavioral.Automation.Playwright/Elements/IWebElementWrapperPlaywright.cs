@@ -21,6 +21,6 @@ namespace Behavioral.Automation.Playwright.Elements
         /// <param name="locator">string for element locator</param>
         /// <param name="caption">element caption</param>
         /// <returns></returns>
-        public IEnumerable<IWebElementWrapper> FindSubElements([NotNull] string locator, [CanBeNull] string caption);
+        public IEnumerable<IWebElementWrapperPlaywright> FindSubElements([NotNull] string locator, [CanBeNull] string caption);
     }
 }

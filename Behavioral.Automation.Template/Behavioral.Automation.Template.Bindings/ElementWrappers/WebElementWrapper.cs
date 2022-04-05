@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace Behavioral.Automation.Template.Bindings.ElementWrappers
 {
-     public class WebElementWrapper : IWebElementWrapper
+    public class WebElementWrapper : IWebElementWrapper
     {
         private readonly Func<IWebElement> _elementSelector;
 

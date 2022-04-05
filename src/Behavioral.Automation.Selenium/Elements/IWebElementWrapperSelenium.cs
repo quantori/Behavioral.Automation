@@ -21,6 +21,6 @@ namespace Behavioral.Automation.Selenium.Elements
         /// <param name="locator">mechanism of finding element children using <see cref="By"/> class object</param>
         /// <param name="caption">element caption</param>
         /// <returns></returns>
-        public IEnumerable<IWebElementWrapper> FindSubElements([NotNull] By locator, [CanBeNull] string caption);
+        public IEnumerable<IWebElementWrapperSelenium> FindSubElements([NotNull] By locator, [CanBeNull] string caption);
     }
 }

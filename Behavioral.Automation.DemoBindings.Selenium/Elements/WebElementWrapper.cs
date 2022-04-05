@@ -5,6 +5,7 @@ using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using Behavioral.Automation.Selenium.Elements;
 using Behavioral.Automation.Selenium.Services;
 
@@ -89,19 +90,15 @@ namespace Behavioral.Automation.DemoBindings.Selenium.Elements
             }
         }
 
-        public IEnumerable<IWebElementWrapper> FindSubElements(By locator, string caption)
+        public IEnumerable<IWebElementWrapperSelenium> FindSubElements(By locator, string caption)
         {
             var elements = Assert.ShouldGet(() => Element.FindElements(locator));
             return ElementsToWrappers(elements, caption);
         }
 
-        private IEnumerable<IWebElementWrapper> ElementsToWrappers(IEnumerable<IWebElement> elements, string caption)
+        private IEnumerable<IWebElementWrapperSelenium> ElementsToWrappers(IEnumerable<IWebElement> elements, string caption)
         {
-            foreach (var element in elements)
-            {
-                var wrapper = new WebElementWrapper(() => element, caption, _driverService);
-                yield return wrapper;
-            }
+            return elements.Select(element => new WebElementWrapper(() => element, caption, _driverService));
         }
 
         protected IDriverService Driver => _driverService;

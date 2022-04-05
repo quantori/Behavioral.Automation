@@ -71,7 +71,7 @@ namespace Behavioral.Automation.DemoBindings.Playwright.Elements
 
         public bool Enabled => Element.IsEnabledAsync().Result;
         
-        public IEnumerable<IWebElementWrapper> FindSubElements(string locator, string caption)
+        public IEnumerable<IWebElementWrapperPlaywright> FindSubElements(string locator, string caption)
         {
             try
             {
