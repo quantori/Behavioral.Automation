@@ -112,7 +112,7 @@ namespace Behavioral.Automation.FluentAssertions
                 {
                     return getValue();
                 }
-                catch (StaleElementReferenceException)
+                catch (Exception e) when (e is StaleElementReferenceException || e is NoSuchElementException)
                 {
                     Thread.Sleep(wait);
                     if (counter++ == attempts)
