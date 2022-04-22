@@ -50,6 +50,14 @@ namespace Behavioral.Automation.Elements
         public IEnumerable<IWebElementWrapper> FindSubElements([NotNull] By locator, [CanBeNull] string caption);
 
         /// <summary>
+        /// Nested Element inside current web element
+        /// </summary>
+        /// <param name="locator">mechanism of finding nested element using <see cref="By"/> class object</param>
+        /// <param name="caption">element caption</param>
+        /// <returns></returns>
+        public IWebElementWrapper FindSubElement([NotNull] By locator, [CanBeNull] string caption);
+
+        /// <summary>
         /// Sends given text symbol by symbol, including special symbols. See <see cref="Keys"/>
         /// </summary>
         /// <param name="text">text to enter</param>
