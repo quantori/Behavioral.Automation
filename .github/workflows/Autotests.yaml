@@ -1,0 +1,26 @@
+name: AutotestsRun
+
+on:
+  push:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0.x'
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        working-directory: ./Behavioral.Automation.DemoScenarios
+        run: dotnet build -c Release --no-restore
+      - name: Test
+        working-directory: ./Behavioral.Automation.DemoScenarios
+        run: dotnet test -c Release --no-build --verbosity normal
