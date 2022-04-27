@@ -2,7 +2,7 @@
   "BASE_URL": "http://localhost:4200/",
   "TEST_EMAIL": "",
   "TEST_PASSWORD": "",
-  "BROWSER_PARAMS": "--window-size=1920,1080 --allowed-ips",
+  "BROWSER_PARAMS": "--window-size=1920,1080",
   "ACCESS_CLIPBOARD": false, 
   "DOWNLOAD_PATH": "",
   "SEARCH_ATTRIBUTE": "data-automation-id",

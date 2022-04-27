@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
     branches: [ main ]
+    
+env:
+  BROWSER_PARAMS: "--window-size=1920,1080 --allowed-ips"
 
 jobs:
   build:
