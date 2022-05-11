@@ -67,7 +67,7 @@ namespace Behavioral.Automation.Bindings
             }
             else
             {
-                checkResult = list.ListValues.ContainsValues(expectedValues);
+                checkResult = list.ListValues.ContainsValues(expectedValues, false);
             }
 
             checkResult.Should().Be(true);

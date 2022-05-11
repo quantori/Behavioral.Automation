@@ -157,15 +157,20 @@ namespace Behavioral.Automation.Services
         /// <typeparam name="T"></typeparam>
         /// <param name="actualCollection">Checked collection object</param>
         /// <param name="expectedValues">Collection of expected values to check</param>
+        /// <param name="exactOrder">True if order should matter, false otherwise</param>
         /// <returns>True if actualCollection contains the same objects as expected, false otherwise</returns>
-        public static bool ContainsValues<T>(this IEnumerable<T> actualCollection, T[] expectedValues)
+        public static bool ContainsValues<T>(this IEnumerable<T> actualCollection, T[] expectedValues, bool exactOrder)
         {
-            var expectedRows = new HashSet<T>(expectedValues);
-            if (expectedRows.IsSubsetOf(actualCollection))
+            if (exactOrder)
             {
-                return true;
+                var actualCollectionList = actualCollection.ToList();
+                var expectedValuesList = expectedValues.ToList();
+                return Enumerable
+                    .Range(0, actualCollectionList.Count - expectedValuesList.Count + 1)
+                    .Any(n => actualCollectionList.Skip(n).Take(expectedValuesList.Count).SequenceEqual(expectedValuesList));
             }
-            return false;
+            var expectedRows = new HashSet<T>(expectedValues);
+            return expectedRows.IsSubsetOf(actualCollection);
         }
 
         /// <summary>
