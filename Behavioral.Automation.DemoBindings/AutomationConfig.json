@@ -1,14 +1,12 @@
 ﻿{
   "BASE_URL": "http://localhost:4200/",
-  "TEST_EMAIL": "",
-  "TEST_PASSWORD": "",
   "BROWSER_PARAMS": "--window-size=1920,1080",
   "ACCESS_CLIPBOARD": false, 
   "DOWNLOAD_PATH": "",
   "SEARCH_ATTRIBUTE": "data-automation-id",
   "BAUTH_URL": "",
   "BAUTH_LOGIN": "",
-  "BAUTH_PWD": "",
+  "BAUTH_PASSWORD": "",
   "BAUTH_IGNORE": "true",
   "BROWSER_BINARY_LOCATION" : ""
 }
