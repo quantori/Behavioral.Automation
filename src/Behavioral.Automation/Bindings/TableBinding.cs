@@ -117,11 +117,34 @@ namespace Behavioral.Automation.Bindings
             }
             else
             {
-                Assert.ShouldBecome(() => gridRows.Rows.ToStringRows().ContainsValues(table.Rows.ToStringRows()),
+                Assert.ShouldBecome(() => gridRows.Rows.ToStringRows().ContainsValues(table.Rows.ToStringRows(), false),
                     true,
                     new AssertionBehavior(AssertionType.Immediate, false),
                     $"{gridRows.Caption} is: {gridRows.Rows.GetPrintableValues()}");
             }
+        }
+        
+        /// <summary>
+        /// Check that table contains expected rows in exact order
+        /// </summary>
+        /// <param name="gridRows">Tested web element wrapper</param>
+        /// <param name="table">Specflow table which contains expected values</param>
+        /// <example>
+        /// Then "Test" table should contain in exact order the following rows:
+        /// | column 1 | column 2 |
+        /// | Test 1   | Test 2   |
+        /// | Test 3   | Test 4   |
+        /// </example>
+        [Given("the (.+?) contains in exact order the following rows:")]
+        [Then("the (.+?) should contain in exact order the following rows:")]
+        public void CheckTableContainsRowsInExactOrder(ITableWrapper gridRows, Table table)
+        {
+            Assert.ShouldBecome(() => gridRows.Stale, false, $"{gridRows.Caption} is stale");
+
+            Assert.ShouldBecome(() => gridRows.Rows.ToStringRows().ContainsValues(table.Rows.ToStringRows(), true),
+                true,
+                new AssertionBehavior(AssertionType.Immediate, false),
+                $"{gridRows.Caption} is: {gridRows.Rows.GetPrintableValues()}");
         }
 
         // <summary>
