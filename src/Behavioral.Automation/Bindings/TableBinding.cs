@@ -26,7 +26,7 @@ namespace Behavioral.Automation.Bindings
         [Then(@"(.*?) should have (\d+) items")]
         public void CheckRowsCount([NotNull] ITableWrapper element, int count)
         {
-            Assert.ShouldBecome(() => element.Rows.Count(), count, $"{element.Caption} has {element.Rows.Count()} rows");
+            Assert.ShouldBecome(() => element.Rows.Count(), count, $"{element.Caption}: rows count mismatch.");
         }
 
         /// <summary>
