@@ -56,7 +56,7 @@ namespace Behavioral.Automation.Bindings
         [When("user opens relative URL \"(.*)\"")]
         public void NavigateToRelativeUrl([NotNull] string url)
         {
-            _driverService.NavigateToRelativeUrl(url);
+            _driverService.Navigate(ConfigServiceBase.BaseUrl + url);
         }
 
         /// <summary>
