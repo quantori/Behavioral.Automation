@@ -11,5 +11,10 @@ namespace Behavioral.Automation.Elements
         /// Row cells texts in form of <see cref="string"/> collection
         /// </summary>
         IEnumerable<string> CellsText { get; }
+        
+        /// <summary>
+        /// Row cells in form of <see cref="IWebElementWrapper"/> collection
+        /// </summary>
+        IEnumerable<IWebElementWrapper> Cells { get; }
     }
 }
