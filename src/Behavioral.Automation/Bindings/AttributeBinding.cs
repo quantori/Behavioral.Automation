@@ -55,7 +55,7 @@ namespace Behavioral.Automation.Bindings
         /// | "Test1" input |
         /// | "Test2" input |
         /// </example>
-        [Given("the following controls (are|are not|become|become not) (enabled|disabled)")]
+        [Given("the following controls (are|are not|become|become not) (enabled|disabled):")]
         [Then("the following controls should (be|be not|become|become not) (enabled|disabled):")]
         public void CheckControlTypeCollectionShown([NotNull] string behavior, string enabled, [NotNull] Table table)
         {
