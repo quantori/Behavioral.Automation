@@ -73,7 +73,7 @@ namespace Behavioral.Automation.Services
 
         private void BuildAction(object[] pars, IEnumerable<StepDefinitionBaseAttribute> attributes, string methodName)
         {
-            var definitionType = _scenarioContext.StepContext.StepInfo.StepDefinitionType.ToString();
+            var definitionType = GetStepDefinitionType().ToString();
             var attributeForCurrentStep = attributes.FirstOrDefault(a => a.GetType().Name.StartsWith(definitionType, StringComparison.OrdinalIgnoreCase));
             if (attributeForCurrentStep == null)
             {
@@ -99,7 +99,7 @@ namespace Behavioral.Automation.Services
 
         private void RunAction(string stepExpression)
         {
-            switch (_scenarioContext.StepContext.StepInfo.StepDefinitionType)
+            switch (GetStepDefinitionType())
             {
                 case StepDefinitionType.Given:
                     _runner.Given(stepExpression);
@@ -115,6 +115,18 @@ namespace Behavioral.Automation.Services
             }
         }
 
+        private StepDefinitionType GetStepDefinitionType()
+        {
+            try
+            {
+                return _scenarioContext.StepContext.StepInfo.StepDefinitionType;
+            }
+            catch (NullReferenceException)
+            {
+                return StepDefinitionType.Given;
+            }
+        }
+        
         private void RunAction(string stepExpression, Table table)
         {
             switch (_scenarioContext.StepContext.StepInfo.StepDefinitionType)
