@@ -113,14 +113,14 @@ namespace Behavioral.Automation.Bindings
                 Assert.ShouldBecome(() => gridRows.Rows.ToStringRows().DoesntContainValues(table.Rows.ToStringRows()),
                     true,
                     new AssertionBehavior(AssertionType.Immediate, false),
-                    $"{gridRows.Caption} is: {gridRows.Rows.GetPrintableValues()}");
+                    () => $"{gridRows.Caption} is: {gridRows.Rows.GetPrintableValues()}");
             }
             else
             {
                 Assert.ShouldBecome(() => gridRows.Rows.ToStringRows().ContainsValues(table.Rows.ToStringRows(), false),
                     true,
                     new AssertionBehavior(AssertionType.Immediate, false),
-                    $"{gridRows.Caption} is: {gridRows.Rows.GetPrintableValues()}");
+                    () => $"{gridRows.Caption} is: {gridRows.Rows.GetPrintableValues()}");
             }
         }
         
