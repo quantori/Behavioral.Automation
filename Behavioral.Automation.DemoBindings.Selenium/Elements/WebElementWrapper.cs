@@ -101,6 +101,12 @@ namespace Behavioral.Automation.DemoBindings.Selenium.Elements
             return elements.Select(element => new WebElementWrapper(() => element, caption, _driverService));
         }
 
+        public IWebElementWrapperSelenium FindSubElement(By locator, string caption)
+        {
+            var element = Assert.ShouldGet(() => Element.FindElement(locator));
+            return new WebElementWrapper(() => element, caption, _driverService);
+        }
+
         protected IDriverService Driver => _driverService;
 
         private bool AriaEnabled

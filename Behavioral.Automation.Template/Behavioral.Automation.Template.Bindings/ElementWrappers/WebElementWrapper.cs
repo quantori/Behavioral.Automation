@@ -128,6 +128,12 @@ namespace Behavioral.Automation.Template.Bindings.ElementWrappers
             }
         }
 
+        public IWebElementWrapper FindSubElement(By locator, string caption)
+        {
+            var element = Assert.ShouldGet(() => Element.FindElement(locator));
+            return new WebElementWrapper(() => element, caption, Driver);
+        }
+
         private IEnumerable<IWebElementWrapper> ElementsToWrappers(IEnumerable<IWebElement> elements, string caption)
         {
             return elements.Select(element => new WebElementWrapper(() => element, caption, Driver));

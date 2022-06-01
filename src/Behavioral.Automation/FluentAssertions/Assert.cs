@@ -41,6 +41,19 @@ namespace Behavioral.Automation.FluentAssertions
             }
         }
 
+        public static void ShouldBecome<T>(this Func<T> predicate, T value, AssertionBehavior behavior, Func<string> message)
+        {
+            if (behavior.Type == AssertionType.Immediate)
+            {
+                var actualValue = TryGetValue(predicate, TimeSpan.FromMilliseconds(500));
+                True(actualValue.Equals(value) == !behavior.Inversion, message());
+            }
+            else
+            {
+                ShouldBecome(predicate, value, message, !behavior.Inversion);
+            }
+        }
+
         public static void ShouldBecome<T>(Func<T> predicate, T value, string message, bool direction = true, int attempts = DefaultAttempts)
         {
 
@@ -57,6 +70,25 @@ namespace Behavioral.Automation.FluentAssertions
             message ??= $"actual value is {actual}";
 
             True(actual.Equals(value) == direction, message);
+        }
+
+        public static void ShouldBecome<T>(Func<T> predicate, T value, Func<string> message, bool direction = true, int attempts = DefaultAttempts)
+        {
+
+            for (int index = 0; index < attempts; index++)
+            {
+                if (TryGetValue(predicate, TimeSpan.FromMilliseconds(500)).Equals(value) == direction)
+                {
+                    return;
+                }
+                Thread.Sleep(500);
+            }
+
+            var actual = TryGetValue(predicate, TimeSpan.FromMilliseconds(500));
+            var errorMessage = message();
+            errorMessage ??= $"actual value is {actual}";
+
+            True(actual.Equals(value) == direction, errorMessage);
         }
 
         public static void ShouldBe(IAssertionAccessor assertion, string caption, int attempts = DefaultAttempts)

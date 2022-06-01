@@ -30,7 +30,7 @@ namespace Behavioral.Automation.Elements
         /// Moves pointer over web element
         /// </summary>
         public void MouseHover();
-
+        
         /// <summary>
         /// Sends given text symbol by symbol, including special symbols. See <see cref="Keys"/>
         /// </summary>

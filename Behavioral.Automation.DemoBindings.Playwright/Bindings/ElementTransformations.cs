@@ -12,9 +12,7 @@ namespace Behavioral.Automation.DemoBindings.Playwright.Bindings
     {
         private readonly IElementSelectionService _selectionService;
 
-        public ElementTransformations(
-            [NotNull] IDriverService driverService,
-            [NotNull] IElementSelectionService selectionService)
+        public ElementTransformations([NotNull] IElementSelectionService selectionService)
         {
             _selectionService = selectionService;
         }

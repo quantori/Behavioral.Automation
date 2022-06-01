@@ -22,6 +22,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behavioral.Automation.DemoB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behavioral.Automation.DemoScenarios.Playwright", "Behavioral.Automation.DemoScenarios.Playwright\Behavioral.Automation.DemoScenarios.Playwright.csproj", "{6499A926-EC18-4642-B87D-CCD9218A1A6C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Behavioral.Automation.Playwright", "Behavioral.Automation.Playwright", "{06E2C79E-4EF3-4445-B64A-5B8B7FF2B61C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Behavioral.Automation.Selenium", "Behavioral.Automation.Selenium", "{80160D5D-2C5D-4F9F-9E57-92A4DDEED159}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +74,12 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{054B7FBC-190D-43FA-B6D6-13A2BA7CB92D} = {BB7AC02C-03FD-4F17-B4A9-CDECC1A63DA5}
+		{4DD5E62E-E447-419D-82BF-C918F08091BD} = {80160D5D-2C5D-4F9F-9E57-92A4DDEED159}
+		{27455814-982D-4B41-A0B9-80DFA4284468} = {80160D5D-2C5D-4F9F-9E57-92A4DDEED159}
+		{C7AF5750-75A5-4E8D-80FA-FB54914B0B17} = {80160D5D-2C5D-4F9F-9E57-92A4DDEED159}
+		{DF362F73-2186-4099-B263-2FE0F8AB74DE} = {06E2C79E-4EF3-4445-B64A-5B8B7FF2B61C}
+		{6499A926-EC18-4642-B87D-CCD9218A1A6C} = {06E2C79E-4EF3-4445-B64A-5B8B7FF2B61C}
+		{1471DFF1-9950-4C8B-BD51-D07DAC5AC69E} = {06E2C79E-4EF3-4445-B64A-5B8B7FF2B61C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {724FD185-E1F2-44BD-89EA-DFD1DBF6453A}

@@ -14,6 +14,14 @@ namespace Behavioral.Automation.Playwright.Elements
         /// Web element object of <see cref="IElementHandle"/> type
         /// </summary>
         IElementHandle Element { get; }
+
+        /// <summary>
+        /// Nested Element inside current web element
+        /// </summary>
+        /// <param name="locator">mechanism of finding nested element using <see cref="By"/> class object</param>
+        /// <param name="caption">element caption</param>
+        /// <returns></returns>
+        public IWebElementWrapperPlaywright FindSubElement([NotNull] string locator, [CanBeNull] string caption);
         
         /// <summary>
         /// Collection of elements that are nested inside current web element

@@ -2,8 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net;
-using System.Threading.Tasks;
-using Behavioral.Automation.DemoBindings.Selenium;
+using Behavioral.Automation.DemoBindings.Playwright.ElementStorage;
 using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Playwright;
 using Behavioral.Automation.Playwright.Services;
@@ -27,8 +26,7 @@ namespace Behavioral.Automation.DemoBindings.Playwright
             _objectContainer = objectContainer;
             _runner = runner;
             _browserRunner = browserRunner;
-            _servicesBuilder = new DemoTestServicesBuilder(objectContainer, 
-                new TestServicesBuilder(_objectContainer), 
+            _servicesBuilder = new DemoTestServicesBuilder(new TestServicesBuilder(_objectContainer), 
                 new PlaywrightTestServicesBuilder(_objectContainer));
         }
 

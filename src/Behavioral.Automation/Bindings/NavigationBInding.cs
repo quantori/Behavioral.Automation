@@ -33,7 +33,12 @@ namespace Behavioral.Automation.Bindings
         [When("user opens URL \"(.*)\"")]
         public void Navigate([NotNull] string url)
         {
-            _driverService.Navigate(url);
+            if(IsAbsoluteUrl(url))
+            {
+                _driverService.Navigate(url);
+                return;
+            }
+            _driverService.Navigate(ConfigServiceBase.BaseUrl + url);
         }
 
         /// <summary>
@@ -135,6 +140,11 @@ namespace Behavioral.Automation.Bindings
         public void ReloadCurrentPage()
         {
             _driverService.Refresh();
+        }
+        
+        private static bool IsAbsoluteUrl(string url)
+        {
+            return Uri.IsWellFormedUriString(url, UriKind.Absolute);
         }
     }
 }

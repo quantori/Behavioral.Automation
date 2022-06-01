@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Behavioral.Automation.Elements;
 using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Playwright.Elements;
 using JetBrains.Annotations;
@@ -38,18 +37,18 @@ namespace Behavioral.Automation.DemoBindings.Playwright.Elements
 
         public void Click()
         {
-            Element.ClickAsync();
+            Element.ClickAsync().Wait();
         }
 
         public void MouseHover()
         {
-            Element.HoverAsync();
+            Element.HoverAsync().Wait();
         }
 
         public void SendKeys(string text)
         {
             Assert.ShouldBecome(() => Enabled, true, $"{Caption} was not enabled");
-            Element.FillAsync(text);
+            Element.FillAsync(text).Wait();
         }
 
         public string Text => Element.TextContentAsync().Result;
@@ -70,6 +69,19 @@ namespace Behavioral.Automation.DemoBindings.Playwright.Elements
         } 
 
         public bool Enabled => Element.IsEnabledAsync().Result;
+        
+        public IWebElementWrapperPlaywright FindSubElement(string locator, string caption)
+        {
+            try
+            {
+                return new WebElementWrapper(() => Element.QuerySelectorAsync(locator).Result, caption);
+            }
+            catch (Exception e) when (e is NullReferenceException or InvalidOperationException)
+            {
+                NUnit.Framework.Assert.Fail($"Couldn't find subelement with {caption}");
+                return null;
+            }
+        }
         
         public IEnumerable<IWebElementWrapperPlaywright> FindSubElements(string locator, string caption)
         {
