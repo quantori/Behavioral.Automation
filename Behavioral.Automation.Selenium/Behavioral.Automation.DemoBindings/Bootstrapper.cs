@@ -41,7 +41,7 @@ namespace Behavioral.Automation.DemoBindings
 
         private static void RunTestApp()
         {
-            string testAppPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "src",
+            string testAppPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "src",
                 "BlazorApp");
 
             _coreRunProcess = new Process
