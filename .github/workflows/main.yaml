@@ -28,7 +28,7 @@ jobs:
         run: dotnet build -c Release --no-restore
       - name: Get version
         run: |
-              export VER=$(grep -oP '\d+\.\d+\.\d+(?=</PackageVersion>)' /Behavioral.Automation.Selenium/Behavioral.Automation/Behavioral.Automation.csproj)
+              export VER=$(grep -oP '\d+\.\d+\.\d+(?=</PackageVersion>)' Behavioral.Automation.Selenium/Behavioral.Automation/Behavioral.Automation.csproj)
               echo "VER=$VER" >> $GITHUB_ENV
               echo $VER
       - name: Package app

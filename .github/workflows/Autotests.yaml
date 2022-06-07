@@ -6,7 +6,7 @@ on:
     branches: [ main ]
     
 env:
-  BROWSER_PARAMS: "--window-size=1920,1080 --allowed-ips"
+  BROWSER_PARAMS: "--window-size=1920,1080 --allowed-ips --no-sandbox"
 
 jobs:
   build:
