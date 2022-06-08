@@ -44,7 +44,6 @@ namespace Behavioral.Automation.Services
             Thread.Sleep(500);
             _scopeContextManager.SwitchToCurrentUrl(new Uri(_driverService.CurrentUrl));
 
-
             var scopeId = ((PageScopeContext)((ScopeContextRuntime)_scopeContextRuntime).CurrentContext).ScopeId;
             return _scopeContextRuntime.FindControlDescription(type, name) ??
                    throw new ArgumentException($"Control with alias=\"{type}\" and caption=\"{name}\" not found in PageContext with urlWildcard=\"{scopeId.UrlWildCard}\"");
