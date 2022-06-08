@@ -44,8 +44,7 @@ namespace Behavioral.Automation.Services.Mapping
                 }
             }
 
-            throw new ArgumentException(
-                    $"Control with alias=\"{type}\" and caption=\"{name}\" not found in PageContext with urlWildcard=\"{ScopeId.UrlWildCard}\"");
+            return null;
         }
 
         public IControlScopeContext GetNestedControlScopeContext(ControlScopeId controlScopeId)
