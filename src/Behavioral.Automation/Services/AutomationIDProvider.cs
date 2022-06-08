@@ -1,4 +1,7 @@
-﻿using Behavioral.Automation.Services.Mapping;
+﻿using System;
+using System.Threading;
+using Behavioral.Automation.Services.Mapping;
+using Behavioral.Automation.Services.Mapping.Contract;
 using JetBrains.Annotations;
 
 namespace Behavioral.Automation.Services
@@ -10,9 +13,16 @@ namespace Behavioral.Automation.Services
     public sealed class AutomationIdProvider : IAutomationIdProvider
     {
         private readonly IScopeContextRuntime _scopeContextRuntime;
+        private readonly IDriverService _driverService;
+        private readonly IScopeContextManager _scopeContextManager;
 
-        public AutomationIdProvider([NotNull] IScopeContextRuntime scopeContextRuntime)
+        public AutomationIdProvider(
+            [NotNull] IScopeContextRuntime scopeContextRuntime,
+            [NotNull] IDriverService driverService,
+            [NotNull] IScopeContextManager scopeContextManager)
         {
+            _scopeContextManager = scopeContextManager;
+            _driverService = driverService;
             _scopeContextRuntime = scopeContextRuntime;
         }
 
@@ -25,7 +35,19 @@ namespace Behavioral.Automation.Services
         public ControlDescription Get(string caption)
         {
             ParseCaption(caption, out var name, out var type);
-            return _scopeContextRuntime.FindControlDescription(type, name);
+
+            var controlDescription = _scopeContextRuntime.FindControlDescription(type, name);
+
+            if (controlDescription != null) 
+                return controlDescription;
+
+            Thread.Sleep(500);
+            _scopeContextManager.SwitchToCurrentUrl(new Uri(_driverService.CurrentUrl));
+
+
+            var scopeId = ((PageScopeContext)((ScopeContextRuntime)_scopeContextRuntime).CurrentContext).ScopeId;
+            return _scopeContextRuntime.FindControlDescription(type, name) ??
+                   throw new ArgumentException($"Control with alias=\"{type}\" and caption=\"{name}\" not found in PageContext with urlWildcard=\"{scopeId.UrlWildCard}\"");
         }
 
         public void ParseCaption(string caption, out string name, out string type)
