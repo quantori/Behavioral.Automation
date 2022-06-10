@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Behavioral.Automation.Playwright.Services
+namespace Behavioral.Automation.Playwright.Services.ComplexBindingBuilder
 {
     /// <summary>
     /// This interface contain methods which are used to call other bindings inside test methods, so their actions appear in the logs

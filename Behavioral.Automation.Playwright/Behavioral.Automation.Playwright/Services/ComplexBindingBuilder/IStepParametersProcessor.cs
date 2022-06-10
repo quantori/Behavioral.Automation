@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Behavioral.Automation.Playwright.Services
+namespace Behavioral.Automation.Playwright.Services.ComplexBindingBuilder
 {
     /// <summary>
     /// This interface contains methods which convert objects passed to ComplexBindingBuilder into step expression to use in Runner

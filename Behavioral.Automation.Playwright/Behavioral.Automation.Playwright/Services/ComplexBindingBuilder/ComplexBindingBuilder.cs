@@ -6,7 +6,7 @@ using NUnit.Framework;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Bindings;
 
-namespace Behavioral.Automation.Playwright.Services
+namespace Behavioral.Automation.Playwright.Services.ComplexBindingBuilder
 {
     /// <summary>
     /// Contains BuildAction methods which should be used to call other bindings inside the code (multiple clicks, value selections, etc.)

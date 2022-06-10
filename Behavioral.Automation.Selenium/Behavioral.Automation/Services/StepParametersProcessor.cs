@@ -41,7 +41,6 @@ namespace Behavioral.Automation.Services
                 return true;
             }
 
-
             arguments = new string[] { };
             return false;
         }

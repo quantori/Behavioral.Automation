@@ -10,7 +10,6 @@ public class BrowserRunner
             using var playwright = await Microsoft.Playwright.Playwright.CreateAsync();
             await using var browser = await playwright.Chromium.LaunchAsync();
             var page = await browser.NewPageAsync();
-            await page.GotoAsync("https://playwright.dev/dotnet");
 
             return page;
         }
