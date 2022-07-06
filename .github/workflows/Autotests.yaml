@@ -6,7 +6,7 @@ on:
     branches: [ main ]
     
 env:
-  BROWSER_PARAMS: "--window-size=1920,1080 --allowed-ips"
+  BROWSER_PARAMS: "--window-size=1920,1080 --allowed-ips --no-sandbox"
 
 jobs:
   build:
@@ -22,8 +22,8 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
       - name: Build
-        working-directory: ./Behavioral.Automation.DemoScenarios
+        working-directory: ./Behavioral.Automation.Selenium/Behavioral.Automation.DemoScenarios
         run: dotnet build -c Release --no-restore
       - name: Test
-        working-directory: ./Behavioral.Automation.DemoScenarios
+        working-directory: ./Behavioral.Automation.Selenium/Behavioral.Automation.DemoScenarios
         run: dotnet test -c Release --no-build --verbosity normal

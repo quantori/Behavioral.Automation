@@ -28,12 +28,12 @@ jobs:
         run: dotnet build -c Release --no-restore
       - name: Get version
         run: |
-              export VER=$(grep -oP '\d+\.\d+\.\d+(?=</PackageVersion>)' src/Behavioral.Automation/Behavioral.Automation.csproj)
+              export VER=$(grep -oP '\d+\.\d+\.\d+(?=</PackageVersion>)' Behavioral.Automation.Selenium/Behavioral.Automation/Behavioral.Automation.csproj)
               echo "VER=$VER" >> $GITHUB_ENV
               echo $VER
       - name: Package app
         run: |
-          dotnet pack ./src/Behavioral.Automation/Behavioral.Automation.csproj \
+          dotnet pack ./Behavioral.Automation.Selenium/Behavioral.Automation/Behavioral.Automation.csproj \
           --configuration Release /p:Platform=\"AnyCPU\" \
           /p:PackageVersion=${{ env.VER }} --output ./
       - name: Create Release
@@ -41,7 +41,7 @@ jobs:
         with:
           tag: ${{ env.VER }}
           artifacts: "Behavioral.Automation.${{ env.VER }}.nupkg"
-          bodyFile: "CHANGELOG.md"
+          bodyFile: "Behavioral.Automation.Selenium/CHANGELOG.md"
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish app into nuget.org
         env:
