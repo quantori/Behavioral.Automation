@@ -30,7 +30,6 @@
 
     <ItemGroup>
         <PackageReference Include="BoDi" Version="1.5.0" />
-        <PackageReference Include="CucumberExpressions.SpecFlow.3-9" Version="1.0.7" />
         <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
