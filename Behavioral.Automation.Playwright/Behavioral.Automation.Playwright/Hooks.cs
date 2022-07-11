@@ -35,6 +35,12 @@ public class Hooks
     [BeforeTestRun]
     public static async Task InitBrowser()
     {
+        var exitCode = Program.Main(new[] { "install" });
+        if (exitCode != 0)
+        {
+            throw new Exception($"Playwright exited with code {exitCode}");
+        }
+
         _playwright = await Microsoft.Playwright.Playwright.CreateAsync();
         if (_playwright is null) throw new Exception("Failed to initialize playwright.");
         _browser = await InitBrowserAsync();
@@ -69,11 +75,11 @@ public class Hooks
             var path = new string(TestContext.CurrentContext.Test.Name
                 .Where(x => !Path.GetInvalidFileNameChars().Contains(x))
                 .ToArray()) + ".png";
-           await _webContext.Page.ScreenshotAsync(new PageScreenshotOptions
+            await _webContext.Page.ScreenshotAsync(new PageScreenshotOptions
             {
                 Path = path
             });
-            
+
             TestContext.AddTestAttachment(path);
         }
     }
