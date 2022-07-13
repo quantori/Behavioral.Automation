@@ -50,7 +50,15 @@ public class Hooks
     [BeforeScenario]
     public async Task CreateContextAsync()
     {
-        _webContext.Context = await _browser!.NewContextAsync();
+        if (_browser is null)
+        {
+            throw new NullReferenceException($"Playwright browser is not initialized.");
+        }
+
+        _webContext.Context = RecordVideo
+            ? await _browser.NewContextAsync(new BrowserNewContextOptions { RecordVideoDir = "videos/" })
+            : await _browser.NewContextAsync();
+
         _webContext.Page = await _webContext.Context.NewPageAsync();
     }
 
@@ -87,7 +95,8 @@ public class Hooks
     //TODO Implement configuration
     private static async Task<IBrowser?> InitBrowserAsync()
     {
-        return await _playwright!.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
+        if (_playwright is null) throw new NullReferenceException($"Playwright is not initialized.");
+        return await _playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
         {
             Headless = Headless,
             SlowMo = SlowMoMilliseconds,
