@@ -22,6 +22,7 @@ public class Hooks
     private readonly ScenarioContext _scenarioContext;
     private static readonly float? SlowMoMilliseconds = ConfigManager.GetConfig<Config>().SlowMoMilliseconds;
     private static readonly bool? Headless = ConfigManager.GetConfig<Config>().Headless;
+    private static readonly bool RecordVideo = ConfigManager.GetConfig<Config>().RecordVideo;
     private readonly TestServicesBuilder _testServicesBuilder;
 
     public Hooks(WebContext webContext, ScenarioContext scenarioContext, IObjectContainer objectContainer)
