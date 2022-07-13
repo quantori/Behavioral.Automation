@@ -17,4 +17,5 @@ public class Config
     public float? SlowMoMilliseconds { get; set; }
 
     [ConfigurationKeyName("HEADLESS")] public bool? Headless { get; set; } = true;
+    [ConfigurationKeyName("RECORD_VIDEO")] public bool RecordVideo { get; set; } = false;
 }
