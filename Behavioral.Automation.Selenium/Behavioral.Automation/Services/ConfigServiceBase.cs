@@ -29,7 +29,11 @@ namespace Behavioral.Automation.Services
         private const string AccessClipboardString = "ACCESS_CLIPBOARD";
         
         private const string BrowserBinaryLocationString = "BROWSER_BINARY_LOCATION";
+        
+        private const string UnhandledPromptBehaviorString = "UNHANDLED_PROMPT_BEHAVIOR";
 
+        public static string UnhandledPromptBehavior => ConfigRoot[UnhandledPromptBehaviorString];
+        
         public static string BaseUrl => ConfigRoot[BaseUrlString];
 
         public static string BrowserParameters => ConfigRoot[BrowserParametersString];
