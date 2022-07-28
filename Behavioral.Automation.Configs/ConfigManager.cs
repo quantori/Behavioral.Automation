@@ -4,10 +4,12 @@ namespace Behavioral.Automation.Configs;
 
 public static class ConfigManager
 {
-    private static IConfiguration Configuration { get; set; }
+    private static IConfiguration Configuration { get; }
 
-    public static void InitConfiguration(string env)
+    static ConfigManager()
     {
+        var env = Environment.GetEnvironmentVariable("STAND")?? "";
+
         Configuration = new ConfigurationBuilder()
             .AddJsonFile("AutomationConfig.json", true, true)
             .AddJsonFile($"AutomationConfig.{env.ToLower()}.json", true, true)
