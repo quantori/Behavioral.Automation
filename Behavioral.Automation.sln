@@ -16,7 +16,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp", "src\BlazorApp\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behavioral.Automation.Playwright", "Behavioral.Automation.Playwright\Behavioral.Automation.Playwright\Behavioral.Automation.Playwright.csproj", "{F1B23009-3334-4B1B-8198-2C618346062D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behavioral.Automation.Configs", "Behavioral.Automation.Playwright\Behavioral.Automation.Configs\Behavioral.Automation.Configs.csproj", "{7460A60F-85B2-4DCE-B190-000503AE8550}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behavioral.Automation.Configs", "Behavioral.Automation.Configs\Behavioral.Automation.Configs.csproj", "{7460A60F-85B2-4DCE-B190-000503AE8550}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

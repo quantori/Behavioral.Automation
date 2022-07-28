@@ -5,20 +5,10 @@ namespace Behavioral.Automation.Configs;
 
 public static class ConfigManager
 {
-    private static IConfiguration Configuration { get; }
+    private static IConfiguration Configuration { get; set; }
 
-    static ConfigManager()
+    public static void InitConfiguration(string env)
     {
-        var env = Environment.GetEnvironmentVariable("STAND");
-        
-        if (string.IsNullOrEmpty(env))
-        {
-            var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes();
-            var configAttribute = attributes.FirstOrDefault(attribute => attribute.TypeId.Equals(typeof(AssemblyConfigurationAttribute)));
-            var configEnv = (AssemblyConfigurationAttribute) configAttribute!;
-            env = configEnv.Configuration;
-        }
-
         Configuration = new ConfigurationBuilder()
             .AddJsonFile("AutomationConfig.json", true, true)
             .AddJsonFile($"AutomationConfig.{env.ToLower()}.json", true, true)
