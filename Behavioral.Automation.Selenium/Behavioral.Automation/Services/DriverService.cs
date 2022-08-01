@@ -183,6 +183,26 @@ namespace Behavioral.Automation.Services
             var handle = Driver.WindowHandles.First();
             Driver.SwitchTo().Window(handle);
         }
+
+        /// <summary>
+        /// Close inactive windows
+        /// </summary>
+        public void CloseInactiveWindows()
+        {
+            var currentWindowHandle = Driver.CurrentWindowHandle;
+            var windowHandles = Driver.WindowHandles;
+
+            foreach (var windowHandle in windowHandles)
+            {
+                if (!windowHandle.Equals(currentWindowHandle))
+                {
+                    Driver.SwitchTo().Window(windowHandle);
+                    Driver.Close();
+                }
+            }
+
+            Driver.SwitchTo().Window(currentWindowHandle);
+        }
         
         /// <summary>
         /// Get URI from relative URL
@@ -229,23 +249,15 @@ namespace Behavioral.Automation.Services
             var uri = new Uri(url);
             _scopeContextManager.SwitchPage(uri);
         }
-
-        /// <summary>
-        /// Switch to the last opened window
-        /// </summary>
-        public void SwitchToLastWindow()
-        {
-            Driver.SwitchTo().Window(Driver.WindowHandles.Last());
-        }
         
         /// <summary>
         /// Change size of opened browser window
         /// </summary>
-        /// <param name="Height">Desired height</param>
-        /// <param name="Width">Desired width</param>
-        public void ResizeWindow(int Height, int Width)
+        /// <param name="height">Desired height</param>
+        /// <param name="width">Desired width</param>
+        public void ResizeWindow(int height, int width)
         {
-            Driver.Manage().Window.Size = new Size(Width, Height);
+            Driver.Manage().Window.Size = new Size(width, height);
         }
         
         /// <summary>
@@ -294,6 +306,12 @@ namespace Behavioral.Automation.Services
             File.AppendAllLines(fileName, log.Select(l => l.ToString()));
 
             return fileName;
+        }
+
+        public void ClearCache()
+        {
+            Driver.Manage().Cookies.DeleteAllCookies();
+            ExecuteScript("javascript: localStorage.clear()");
         }
     }
 }

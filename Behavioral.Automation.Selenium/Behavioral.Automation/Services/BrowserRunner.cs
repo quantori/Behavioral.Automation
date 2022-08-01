@@ -59,6 +59,16 @@ namespace Behavioral.Automation.Services
                 {
                     options.BinaryLocation = Environment.ExpandEnvironmentVariables(ConfigServiceBase.BrowserBinaryLocation);
                 }
+                if (!string.IsNullOrWhiteSpace(ConfigServiceBase.UnhandledPromptBehavior))
+                {
+                    options.UnhandledPromptBehavior = ConfigServiceBase.UnhandledPromptBehavior switch
+                    {
+                        "Accept" => UnhandledPromptBehavior.Accept,
+                        "Dismiss" => UnhandledPromptBehavior.Dismiss,
+                        "Ignore" => UnhandledPromptBehavior.Ignore,
+                        _ => options.UnhandledPromptBehavior
+                    };
+                }
             }
 
             var driver = new ChromeDriver(options);

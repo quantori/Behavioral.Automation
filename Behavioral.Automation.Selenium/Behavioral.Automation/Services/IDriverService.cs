@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using JetBrains.Annotations;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Remote;
 
 namespace Behavioral.Automation.Services
 {
@@ -114,9 +113,9 @@ namespace Behavioral.Automation.Services
         /// <summary>
         /// Change size of opened browser window
         /// </summary>
-        /// <param name="Height">Desired height</param>
-        /// <param name="Width">Desired width</param>
-        void ResizeWindow(int Height, int Width);
+        /// <param name="height">Desired height</param>
+        /// <param name="width">Desired width</param>
+        void ResizeWindow(int height, int width);
 
         /// <summary>
         /// Make screenshot
@@ -136,5 +135,15 @@ namespace Behavioral.Automation.Services
         /// </summary>
         /// <returns>Path to saved log</returns>
         string SaveBrowserLog();
+
+        /// <summary>
+        /// Clears browser cache
+        /// </summary>
+        void ClearCache();
+
+        /// <summary>
+        /// Close inactive windows
+        /// </summary>
+        public void CloseInactiveWindows();
     }
 }
