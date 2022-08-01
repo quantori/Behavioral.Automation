@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace Behavioral.Automation.Configs;
 
@@ -9,15 +8,7 @@ public static class ConfigManager
 
     static ConfigManager()
     {
-        var env = Environment.GetEnvironmentVariable("STAND");
-        
-        if (string.IsNullOrEmpty(env))
-        {
-            var attributes = Assembly.GetExecutingAssembly().GetCustomAttributes();
-            var configAttribute = attributes.FirstOrDefault(attribute => attribute.TypeId.Equals(typeof(AssemblyConfigurationAttribute)));
-            var configEnv = (AssemblyConfigurationAttribute) configAttribute!;
-            env = configEnv.Configuration;
-        }
+        var env = Environment.GetEnvironmentVariable("STAND") ?? "";
 
         Configuration = new ConfigurationBuilder()
             .AddJsonFile("AutomationConfig.json", true, true)
