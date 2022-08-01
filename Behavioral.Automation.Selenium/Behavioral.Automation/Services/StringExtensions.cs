@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Behavioral.Automation.Elements;
 
@@ -9,6 +10,12 @@ namespace Behavioral.Automation.Services
     /// </summary>
     public static class StringExtensions
     {
+        /// <summary>
+        /// List of element tags to avoid getting 'value' attribute in GetElementTextOrValue
+        /// 'li' tag: GetAttribute("value") returns item's index, instead of it's text
+        /// </summary>
+        private static string[] ElementTagsToIgnore = new string[] { "li" };
+
         /// <summary>
         /// Parse values from the string in the given format
         /// </summary>
@@ -119,7 +126,7 @@ namespace Behavioral.Automation.Services
         /// <returns>String with element's text or value</returns>
         public static string GetElementTextOrValue(IWebElementWrapper element)
         {
-            if (element.GetAttribute("value") == null)
+            if (ElementTagsToIgnore.Contains(element.Element.TagName) || element.GetAttribute("value") == null)
             {
                 return element.Text;
             }
