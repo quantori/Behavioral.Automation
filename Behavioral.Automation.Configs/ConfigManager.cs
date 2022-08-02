@@ -8,13 +8,17 @@ public static class ConfigManager
 
     static ConfigManager()
     {
-        var env = Environment.GetEnvironmentVariable("STAND")?? "";
+        var env = Environment.GetEnvironmentVariable("STAND") ?? "";
 
-        Configuration = new ConfigurationBuilder()
-            .AddJsonFile("AutomationConfig.json", true, true)
-            .AddJsonFile($"AutomationConfig.{env.ToLower()}.json", true, true)
-            .AddEnvironmentVariables()
-            .Build();
+        var configurationBuilder = new ConfigurationBuilder()
+            .AddJsonFile("AutomationConfig.json", true, true);
+
+        if (!string.IsNullOrWhiteSpace(env))
+        {
+            configurationBuilder.AddJsonFile($"AutomationConfig.{env.ToLower()}.json", true, true);
+        }
+
+        Configuration = configurationBuilder.AddEnvironmentVariables().Build();
     }
 
     public static T GetConfig<T>()
