@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using Behavioral.Automation.Abstractions;
 using Behavioral.Automation.FluentAssertions.Abstractions;
@@ -14,7 +12,8 @@ namespace Behavioral.Automation.FluentAssertions
 {
     public static class Assert
     {
-        private const int DefaultAttempts = 30;
+        private static readonly int DefaultAttempts = ConfigServiceBase.DefaultAttempts;
+
         private static ITestRunnerWrapper _runner;
 
         public static void SetRunner(ITestRunner runner)
@@ -58,8 +57,12 @@ namespace Behavioral.Automation.FluentAssertions
             }
         }
 
-        public static void ShouldBecome<T>(Func<T> predicate, T value, string message, bool direction = true, int attempts = DefaultAttempts)
+        public static void ShouldBecome<T>(Func<T> predicate, T value, string message, bool direction = true, int attempts = default)
         {
+            if (attempts == default)
+            {
+                attempts = DefaultAttempts;
+            }
 
             for (int index = 0; index < attempts; index++)
             {
@@ -76,8 +79,12 @@ namespace Behavioral.Automation.FluentAssertions
             True(actual.Equals(value) == direction, message);
         }
 
-        public static void ShouldBecome<T>(Func<T> predicate, T value, Func<string> message, bool direction = true, int attempts = DefaultAttempts)
+        public static void ShouldBecome<T>(Func<T> predicate, T value, Func<string> message, bool direction = true, int attempts = default)
         {
+            if (attempts == default)
+            {
+                attempts = DefaultAttempts;
+            }
 
             for (int index = 0; index < attempts; index++)
             {
@@ -95,8 +102,13 @@ namespace Behavioral.Automation.FluentAssertions
             True(actual.Equals(value) == direction, errorMessage);
         }
 
-        public static void ShouldBe(IAssertionAccessor assertion, string caption, int attempts = DefaultAttempts)
+        public static void ShouldBe(IAssertionAccessor assertion, string caption, int attempts = default)
         {
+            if (attempts == default)
+            {
+                attempts = DefaultAttempts;
+            }
+
             bool isValid = WaitForAssertion(assertion, TimeSpan.FromMilliseconds(500));
             if (assertion.Type == AssertionType.Continuous && (!isValid || !assertion.InterruptValidationOnSuccess))
             {

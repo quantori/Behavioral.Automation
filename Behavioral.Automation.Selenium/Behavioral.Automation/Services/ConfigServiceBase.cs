@@ -31,6 +31,8 @@ namespace Behavioral.Automation.Services
         private const string BrowserBinaryLocationString = "BROWSER_BINARY_LOCATION";
         
         private const string UnhandledPromptBehaviorString = "UNHANDLED_PROMPT_BEHAVIOR";
+        
+        private const string DefaultAttemptsString = "DEFAULT_ASSERT_ATTEMPTS";
 
         public static string UnhandledPromptBehavior => ConfigRoot[UnhandledPromptBehaviorString];
         
@@ -62,5 +64,8 @@ namespace Behavioral.Automation.Services
             get => ConfigRoot[BrowserBinaryLocationString];
             set => ConfigRoot[BrowserBinaryLocationString] = value;
         }
+        
+        public static int DefaultAttempts => int.Parse(ConfigRoot[DefaultAttemptsString]);
+
     }
 }
