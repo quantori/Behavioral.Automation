@@ -11,6 +11,11 @@ namespace Behavioral.Automation.Services
     [UsedImplicitly]
     public static class ConfigServiceBase
     {
+        public static readonly IConfigurationRoot ConfigRoot =
+            new ConfigurationBuilder()
+                .AddJsonFile("AutomationConfig.json")
+                .AddEnvironmentVariables()
+                .Build();
         public static string UnhandledPromptBehavior => ConfigManager.GetConfig<Config>().UnhandledPromptBehavior;
         
         public static string BaseUrl => ConfigManager.GetConfig<Config>().BaseUrl;
