@@ -12,7 +12,7 @@ namespace Behavioral.Automation.FluentAssertions
 {
     public static class Assert
     {
-        private static readonly int DefaultAttempts = ConfigServiceBase.DefaultAttempts;
+        private static readonly int? AssertAttempts = ConfigServiceBase.AssertAttempts;
 
         private static ITestRunnerWrapper _runner;
 
@@ -57,12 +57,9 @@ namespace Behavioral.Automation.FluentAssertions
             }
         }
 
-        public static void ShouldBecome<T>(Func<T> predicate, T value, string message, bool direction = true, int attempts = default)
+        public static void ShouldBecome<T>(Func<T> predicate, T value, string message, bool direction = true, int? attempts = null)
         {
-            if (attempts == default)
-            {
-                attempts = DefaultAttempts;
-            }
+            attempts ??= AssertAttempts;
 
             for (int index = 0; index < attempts; index++)
             {
@@ -79,12 +76,10 @@ namespace Behavioral.Automation.FluentAssertions
             True(actual.Equals(value) == direction, message);
         }
 
-        public static void ShouldBecome<T>(Func<T> predicate, T value, Func<string> message, bool direction = true, int attempts = default)
+        public static void ShouldBecome<T>(Func<T> predicate, T value, Func<string> message, bool direction = true, int? attempts = null)
         {
-            if (attempts == default)
-            {
-                attempts = DefaultAttempts;
-            }
+            
+            attempts ??= AssertAttempts;
 
             for (int index = 0; index < attempts; index++)
             {
@@ -102,12 +97,9 @@ namespace Behavioral.Automation.FluentAssertions
             True(actual.Equals(value) == direction, errorMessage);
         }
 
-        public static void ShouldBe(IAssertionAccessor assertion, string caption, int attempts = default)
+        public static void ShouldBe(IAssertionAccessor assertion, string caption, int? attempts = null)
         {
-            if (attempts == default)
-            {
-                attempts = DefaultAttempts;
-            }
+            attempts ??= AssertAttempts;
 
             bool isValid = WaitForAssertion(assertion, TimeSpan.FromMilliseconds(500));
             if (assertion.Type == AssertionType.Continuous && (!isValid || !assertion.InterruptValidationOnSuccess))
