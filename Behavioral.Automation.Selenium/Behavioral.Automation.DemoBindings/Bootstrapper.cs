@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using Behavioral.Automation.Configs;
 using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Services;
 using BoDi;
@@ -30,7 +31,7 @@ namespace Behavioral.Automation.DemoBindings
         {
             try
             {
-                WebRequest.CreateHttp(ConfigServiceBase.BaseUrl).GetResponse();
+                WebRequest.CreateHttp(ConfigManager.GetConfig<Config>().BaseUrl).GetResponse();
                 return true;
             }
             catch (WebException)
