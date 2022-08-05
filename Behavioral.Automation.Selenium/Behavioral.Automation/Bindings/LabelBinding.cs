@@ -38,7 +38,7 @@ namespace Behavioral.Automation.Bindings
             [NotNull] string value)
         {
             Assert.ShouldBecome(() => StringExtensions.GetElementTextOrValue(element), value, behavior,
-                $"{element.Caption} text is \"{StringExtensions.GetElementTextOrValue(element)}\"");
+                () => $"{element.Caption} text is \"{StringExtensions.GetElementTextOrValue(element)}\"");
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Behavioral.Automation.Bindings
             [NotNull] string value)
         {
             Assert.ShouldBecome(() => element.Text.Contains(value), !behavior.Contains("not"),
-                $"{element.Caption} text is \"{element.Text}\"");
+                () => $"{element.Caption} text is \"{element.Text}\". Expected: \"{value}\"");
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace Behavioral.Automation.Bindings
         public void CheckElementIsEmpty([NotNull] IWebElementWrapper element, AssertionBehavior behavior)
         {
             Assert.ShouldBecome(() => StringExtensions.GetElementTextOrValue(element), string.Empty, behavior,
-                $"{element.Caption} text is \"{StringExtensions.GetElementTextOrValue(element)}\"");
+                () => $"{element.Caption} text is \"{StringExtensions.GetElementTextOrValue(element)}\"");
         }
 
         /// <summary>

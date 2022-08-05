@@ -126,7 +126,7 @@ namespace Behavioral.Automation.Services
         /// <returns>String with element's text or value</returns>
         public static string GetElementTextOrValue(IWebElementWrapper element)
         {
-            if (ElementTagsToIgnore.Contains(element.Element.TagName) || element.GetAttribute("value") == null)
+            if (ElementTagsToIgnore.Contains(element.TagName) || element.GetAttribute("value") == null)
             {
                 return element.Text;
             }
