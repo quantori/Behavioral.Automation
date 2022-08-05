@@ -56,7 +56,7 @@ namespace Behavioral.Automation.Bindings
             [NotNull] string value)
         {
             Assert.ShouldBecome(() => element.Text.Contains(value), !behavior.Contains("not"),
-                () => $"{element.Caption} text is \"{element.Text}\". Expected: \"{value}\"");
+                () => $"{element.Caption} text is \"{element.Text}\"");
         }
 
         /// <summary>
