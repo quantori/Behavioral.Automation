@@ -77,5 +77,10 @@ namespace Behavioral.Automation.Elements
         /// Element staleness. See <seealso cref="StaleElementReferenceException"/>
         /// </summary>
         public bool Stale { get; }
+
+        /// <summary>
+        /// Element's Tag name (span, div, etc.)
+        /// </summary>
+        public string TagName { get; }
     }
 }

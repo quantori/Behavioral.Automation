@@ -124,5 +124,7 @@ namespace Behavioral.Automation.DemoBindings.Elements
                 return false;
             }
         }
+
+        public string TagName => Element.TagName;
     }
 }
