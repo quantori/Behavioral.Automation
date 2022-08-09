@@ -2,11 +2,18 @@
 
 <PageTitle>Counter</PageTitle>
 
-<h1>Counter</h1>
+<h1 data-automation-id="counter-page-label">Counter</h1>
 
-<p role="status">Current count: @currentCount</p>
+<p 
+    role="status" 
+    data-automation-id="counter-page-text">Current count: @currentCount
+</p>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button
+    class="btn btn-primary"
+    @onclick="IncrementCount"
+    data-automation-id="counter-page-button">Click me
+</button>
 
 @code {
     private int currentCount = 0;

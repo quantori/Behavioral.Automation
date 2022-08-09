@@ -1,0 +1,34 @@
+﻿@page "/greetings"
+
+<PageTitle>Greetings</PageTitle>
+
+<h2 data-automation-id="greetings-page-header">Here you can test input elements</h2>
+
+<p data-automation-id="greetings-input-header">Enter your name:</p>
+
+<div>
+    <input class="input-group-text" data-automation-id="greetings-page-input" @bind="username">
+    <button
+        class="btn btn-primary"
+        @onclick="ChangeUsername"
+        data-automation-id="greetings-page-button">
+            Say hello
+    </button>
+</div>
+
+<p style="display: @visibility" data-automation-id="greetings-page-paragraph">
+    Hello, @_userName!
+</p>
+
+@code {
+    private string _userName = string.Empty;
+
+    public string visibility = "none";
+    public string username = string.Empty;
+
+    private void ChangeUsername()
+    {
+        _userName = username;
+        visibility = "initial";
+    }
+}
