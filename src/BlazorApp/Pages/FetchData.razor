@@ -5,9 +5,9 @@
 @using BlazorApp.Data
 @inject WeatherForecastService ForecastService
 
-<h1>Weather forecast</h1>
+<h1 data-automation-id="forecast-page-header">Weather forecast</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
+<p data-automation-id="forecast-page-paragraph">This component demonstrates fetching data from a service.</p>
 
 @if (forecasts == null)
 {
@@ -15,23 +15,24 @@
 }
 else
 {
-    <table class="table">
+    <table class="table" data-automation-id="forecast-table">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
+                <th data-automation-id="table-header-date">Date</th>
+                <th data-automation-id="table-header-temp-c">Temp. (C)</th>
+                <th data-automation-id="table-header-temp-f">Temp. (F)</th>
+                <th data-automation-id="table-header-summary">Summary</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
+            @for (int i=0; i<forecasts.Length; i++)
             {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
+                var forecast = forecasts[i];
+                <tr data-automation-id="table-row">
+                    <td data-automation-id="table-cell">@forecast.Date.ToShortDateString()</td>
+                    <td data-automation-id="table-cell">@forecast.TemperatureC</td>
+                    <td data-automation-id="table-cell">@forecast.TemperatureF</td>
+                    <td data-automation-id="table-cell">@forecast.Summary</td>
                 </tr>
             }
         </tbody>
