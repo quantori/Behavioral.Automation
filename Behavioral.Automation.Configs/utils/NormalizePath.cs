@@ -1,11 +1,15 @@
-namespace Behavioral.Automation.Configs.utils;
+﻿using System.IO;
 
-public static class NormalizePath
+namespace Behavioral.Automation.Configs.utils
 {
-    public static string NormalizePathAccordingOs(this string fullPath)
+
+    public static class NormalizePath
     {
-        fullPath = fullPath.Replace("/", Path.DirectorySeparatorChar.ToString());
-        fullPath = fullPath.Replace(@"\", Path.DirectorySeparatorChar.ToString());
-        return fullPath;
+        public static string NormalizePathAccordingOs(this string fullPath)
+        {
+            fullPath = fullPath.Replace("/", Path.DirectorySeparatorChar.ToString());
+            fullPath = fullPath.Replace(@"\", Path.DirectorySeparatorChar.ToString());
+            return fullPath;
+        }
     }
 }
