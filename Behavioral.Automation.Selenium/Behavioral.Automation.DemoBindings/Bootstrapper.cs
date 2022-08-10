@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Threading;
 using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Services;
 using BoDi;
@@ -30,10 +32,18 @@ namespace Behavioral.Automation.DemoBindings
         {
             try
             {
-                WebRequest.CreateHttp(ConfigServiceBase.BaseUrl).GetResponse();
+                using (var client = new HttpClient { BaseAddress = new Uri(ConfigServiceBase.BaseUrl)})
+                {
+                    while (!client.Send(new HttpRequestMessage(HttpMethod.Get, client.BaseAddress)).IsSuccessStatusCode)
+                    {
+                        Thread.Sleep(500);
+                    }
+                    client.Dispose();
+                }
+
                 return true;
             }
-            catch (WebException)
+            catch (HttpRequestException)
             {
                 return false;
             }
@@ -43,6 +53,8 @@ namespace Behavioral.Automation.DemoBindings
         {
             string testAppPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "src",
                 "BlazorApp");
+            if (!Directory.Exists(testAppPath))
+                throw new DirectoryNotFoundException($"Directory with Blazor.App does not exist in {testAppPath}");
 
             _coreRunProcess = new Process
             {
@@ -50,17 +62,22 @@ namespace Behavioral.Automation.DemoBindings
                 {
                     FileName = "cmd.exe",
                     Arguments = "/c dotnet run",
-                    WorkingDirectory = testAppPath
+                    WorkingDirectory = testAppPath,
+                    CreateNoWindow = false,
+                    UseShellExecute = true
                 }
             };
-            _coreRunProcess.Start();
+            _coreRunProcess.Start();                 
         }
 
         [BeforeTestRun]
         public static void StartDemoApp()
         {
-            if (!IsConnectionEstablished())
-                RunTestApp();
+            RunTestApp();
+            while (!IsConnectionEstablished())
+            {
+                Thread.Sleep(1000);
+            }
         }
 
         [AfterTestRun]
@@ -77,7 +94,7 @@ namespace Behavioral.Automation.DemoBindings
         public void CloseBrowser()
         {
             _browserRunner.CloseBrowser();
-            
+            _browserRunner.Driver.Dispose();
         }
 
         [BeforeScenario(Order = 0)]

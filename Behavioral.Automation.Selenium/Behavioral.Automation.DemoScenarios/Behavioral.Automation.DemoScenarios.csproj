@@ -6,6 +6,7 @@
     <Description>Specflow scenarios for demonstration of Behavioral.Automation framework features and testing.</Description>
     <Copyright>Quantori Inc.</Copyright>
     <RepositoryUrl>https://github.com/quantori/Behavioral.Automation</RepositoryUrl>
+    <ImplicitUsings>disable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>

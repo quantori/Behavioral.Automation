@@ -1,9 +1,11 @@
 ﻿using Behavioral.Automation.Playwright.Services.ElementSelectors;
 using Microsoft.Playwright;
 
-namespace Behavioral.Automation.Playwright.Services;
-
-public interface ILocatorProvider
+namespace Behavioral.Automation.Playwright.Services
 {
-    public ILocator GetLocator(ElementSelector selector);
+
+    public interface ILocatorProvider
+    {
+        public ILocator GetLocator(ElementSelector selector);
+    }
 }

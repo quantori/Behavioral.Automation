@@ -16,7 +16,7 @@ namespace Behavioral.Automation.DemoBindings
             using (var mappingPipe = Mapper.GetGlobalMappingPipe())
             {
                 mappingPipe.Register("label").Alias("label")
-                    .With("label-simple-text").As("Demo");
+                    .With("main-page-header").As("Demo");
             }
         }
     }
