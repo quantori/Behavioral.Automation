@@ -1,22 +1,24 @@
-﻿using Behavioral.Automation.Elements;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Behavioral.Automation.Elements;
 using Behavioral.Automation.FluentAssertions;
 using Behavioral.Automation.Services;
+using JetBrains.Annotations;
 using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Behavioral.Automation.DemoBindings.Elements
 {
     public class WebElementWrapper : IWebElementWrapper
     {
         private readonly Func<IWebElement> _elementSelector;
-        private readonly IDriverService _driverService;
 
-        public WebElementWrapper([NotNull] Func<IWebElement> elementSelector, [NotNull] string caption, [NotNull] IDriverService driverService)
+        public WebElementWrapper([NotNull] Func<IWebElement> elementSelector, [NotNull] string caption,
+            [NotNull] IDriverService driverService)
         {
             _elementSelector = elementSelector;
-            _driverService = driverService;
+            Driver = driverService;
             Caption = caption;
         }
 
@@ -24,21 +26,51 @@ namespace Behavioral.Automation.DemoBindings.Elements
 
         public IWebElement Element => _elementSelector();
 
-        public string Text => Element.Text;
+        public string Text
+        {
+            get
+            {
+                try
+                {
+                    return Regex.Replace(Element.Text, @"\t|\n|\r", " ").Replace("  ", " ");
+                }
+                catch (Exception e) when (e is NullReferenceException or StaleElementReferenceException)
+                {
+                    return string.Empty;
+                }
+            }
+        }
 
-        public string GetAttribute(string attribute) => Element.GetAttribute(attribute);
+        public string GetAttribute(string attribute)
+        {
+            try
+            {
+                return Element.GetAttribute(attribute);
+            }
+            catch (Exception e) when (e is NullReferenceException or StaleElementReferenceException)
+            {
+                return null;
+            }
+        }
 
         public void Click()
         {
-            MouseHover();
-            Assert.ShouldGet(() => Enabled);
-            _driverService.MouseClick();
+            Assert.ShouldBecome(() => Enabled, true, $"Unable to click on {Caption}. The element was disabled");
+            try
+            {
+                Element.Click();
+            }
+            catch (ElementClickInterceptedException)
+            {
+                MouseHover();
+                Driver.MouseClick();
+            }
         }
 
         public void MouseHover()
         {
-            Assert.ShouldBecome(() => Enabled, true, $"{Caption} is disabled");
-            _driverService.ScrollTo(Element);
+            Assert.ShouldBecome(() => Displayed, true, $"{Caption} is not visible");
+            Driver.ScrollTo(Element);
         }
 
         public void SendKeys(string text)
@@ -47,28 +79,26 @@ namespace Behavioral.Automation.DemoBindings.Elements
             Element.SendKeys(text);
         }
 
-        public bool Displayed => Element != null && Element.Displayed;
-
-        public bool Enabled => Displayed && Element.Enabled && AriaEnabled;
-
-        public string Tooltip
+        public bool Displayed
         {
             get
             {
-                var matTooltip = GetAttribute("matTooltip");
-                if (matTooltip != null)
+                try
                 {
-                    return matTooltip;
+                    return Element is not null && Element.Displayed;
                 }
-                var ngReflectTip = GetAttribute("ng-reflect-message"); //some elements have their tooltips' texts stored inside 'ng-reflect-message' attribute
-                if (ngReflectTip != null)
+                catch (Exception e) when (e is NullReferenceException or StaleElementReferenceException)
                 {
-                    return ngReflectTip;
+                    return false;
                 }
-
-                return GetAttribute("aria-label"); //some elements have their tooltips' texts stored inside 'aria-label' attribute
             }
         }
+
+        public bool Enabled => Displayed && Element.Enabled && CustomAttributeEnabled;
+
+        public string Tooltip => GetAttribute("data-test-tooltip-text");
+
+        public string TagName => Element.TagName;
 
         public bool Stale
         {
@@ -80,51 +110,52 @@ namespace Behavioral.Automation.DemoBindings.Elements
                     var elementEnabled = Element.Enabled;
                     return false;
                 }
-                catch (StaleElementReferenceException)
+                catch (Exception e) when (e is NullReferenceException or StaleElementReferenceException)
                 {
                     return true;
                 }
             }
         }
 
+        public IWebElementWrapper FindSubElement(By locator, string caption)
+        {
+            var element = Assert.ShouldGet(() =>
+                new WebElementWrapper(() => Element.FindElement(locator), caption, Driver));
+            return element;
+        }
+
         public IEnumerable<IWebElementWrapper> FindSubElements(By locator, string caption)
         {
-            var elements = Assert.ShouldGet(() => Element.FindElements(locator));
-            return ElementsToWrappers(elements, caption);
+            try
+            {
+                return ElementsToWrappers(Assert.ShouldGet(() => Element.FindElements(locator)), caption);
+            }
+            catch (Exception e) when (e is NullReferenceException or InvalidOperationException)
+            {
+                NUnit.Framework.Assert.Fail($"Couldn't find elements with {caption}");
+                return null;
+            }
         }
 
         private IEnumerable<IWebElementWrapper> ElementsToWrappers(IEnumerable<IWebElement> elements, string caption)
         {
-            foreach (var element in elements)
-            {
-                var wrapper = new WebElementWrapper(() => element, caption, _driverService);
-                yield return wrapper;
-            }
+            return elements.Select(element => new WebElementWrapper(() => element, caption, Driver));
         }
 
-        public IWebElementWrapper FindSubElement(By locator, string caption)
-        {
-            var element = Assert.ShouldGet(() => Element.FindElement(locator));
-            return new WebElementWrapper(() => element, caption, _driverService);
-        }
+        protected IDriverService Driver { get; }
 
-        protected IDriverService Driver => _driverService;
-
-        private bool AriaEnabled
+        private bool CustomAttributeEnabled
         {
             get
             {
-                switch (Element.GetAttribute("aria-disabled"))
+                var ariaDisabled = Element.GetAttribute("aria-disabled");
+                if (bool.TryParse(ariaDisabled, out var isDisabled))
                 {
-                    case null:
-                    case "false":
-                        return true;
+                    return !isDisabled;
                 }
 
-                return false;
+                return Element.GetAttribute("disabled") == null;
             }
         }
-
-        public string TagName => Element.TagName;
     }
 }
