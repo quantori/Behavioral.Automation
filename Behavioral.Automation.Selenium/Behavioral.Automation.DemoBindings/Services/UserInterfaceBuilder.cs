@@ -31,6 +31,9 @@ namespace Behavioral.Automation.DemoBindings
                 mappingPipe.Register("table").Alias("table")
                     .With("forecast-table").As("Forecast");
 
+                mappingPipe.Register("list").Alias("list")
+                    .With("main-elements-list").As("Main elements");
+
                 mappingPipe.Register("link").Alias("link")
                     .With("nav-link-home").As("Homepage")
                     .With("nav-link-greetings").As("Greetings")
