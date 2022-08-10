@@ -84,8 +84,9 @@ namespace Behavioral.Automation.DemoBindings.Elements
             }
         }
 
+        //Dropdown elements should have search attribute with "dropdown-option" value
         public IEnumerable<IWebElementWrapper> Elements => Assert.ShouldGet(() =>
-            FindSubElements(By.XPath("//*[@data-automation-id='dropdown-option']|.//option"),
+            FindSubElements(By.XPath($"//*[@{ConfigServiceBase.SearchAttribute}='dropdown-option']|.//option"),
                 $"{Caption} element"));
 
         private string AutoCloseNeeded => Assert.ShouldGet(() => GetAttribute("data-test-close-needed"));
