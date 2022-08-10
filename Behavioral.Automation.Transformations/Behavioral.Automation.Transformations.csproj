@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Configurations>Debug;Release;Test;Dev;Prod</Configurations>
+        <Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Behavioral.Automation" Version="1.9.0" />
+      <PackageReference Include="Scriban" Version="5.4.1" />
+      <PackageReference Include="SpecFlow" Version="3.9.69" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Behavioral.Automation.Configs\Behavioral.Automation.Configs.csproj" />
+    </ItemGroup>
+
+</Project>
