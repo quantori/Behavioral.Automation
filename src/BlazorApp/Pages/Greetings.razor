@@ -4,7 +4,7 @@
 
 <h2 data-automation-id="greetings-page-header">Here you can test input elements</h2>
 
-<p data-automation-id="greetings-input-header">Enter your name:</p>
+<div data-automation-id="greetings-input-text">Enter your name:</div>
 
 <div>
     <input class="input-group-text" data-automation-id="greetings-page-input" @bind="username">
@@ -16,9 +16,9 @@
     </button>
 </div>
 
-<p style="display: @visibility" data-automation-id="greetings-page-paragraph">
+<div style="display: @visibility" data-automation-id="greetings-page-paragraph">
     Hello, @_userName!
-</p>
+</div>
 
 @code {
     private string _userName = string.Empty;
