@@ -1,37 +1,39 @@
 ﻿using System;
 using Microsoft.Extensions.Configuration;
 
-namespace Behavioral.Automation.Configs;
-
-public static class ConfigManager
+namespace Behavioral.Automation.Configs
 {
-    private static IConfiguration Configuration { get; }
 
-    static ConfigManager()
+    public static class ConfigManager
     {
-        var env = Environment.GetEnvironmentVariable("STAND") ?? "";
+        private static IConfiguration Configuration { get; }
 
-        var configurationBuilder = new ConfigurationBuilder()
-            .AddJsonFile("AutomationConfig.json", true, true);
-
-        if (!string.IsNullOrWhiteSpace(env))
+        static ConfigManager()
         {
-            configurationBuilder.AddJsonFile($"AutomationConfig.{env.ToLower()}.json", true, true);
+            var env = Environment.GetEnvironmentVariable("STAND") ?? "";
+
+            var configurationBuilder = new ConfigurationBuilder()
+                .AddJsonFile("AutomationConfig.json", true, true);
+
+            if (!string.IsNullOrWhiteSpace(env))
+            {
+                configurationBuilder.AddJsonFile($"AutomationConfig.{env.ToLower()}.json", true, true);
+            }
+
+            Configuration = configurationBuilder.AddEnvironmentVariables().Build();
         }
 
-        Configuration = configurationBuilder.AddEnvironmentVariables().Build();
-    }
+        public static T GetConfig<T>()
+        {
+            if (Configuration is null) throw new ArgumentException("Please, init configuration");
 
-    public static T GetConfig<T>()
-    {
-        if (Configuration is null) throw new ArgumentException("Please, init configuration");
+            var config = Configuration.Get<T>();
+            return config;
+        }
 
-        var config = Configuration.Get<T>();
-        return config;
-    }
-
-    public static string GetConfig(string configKey)
-    {
-        return Configuration.GetSection(configKey).Value;
+        public static string GetConfig(string configKey)
+        {
+            return Configuration.GetSection(configKey).Value;
+        }
     }
 }

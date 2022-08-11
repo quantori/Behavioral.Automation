@@ -6,21 +6,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Behavioral.Automation", "Be
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Behavioral.Automation.UnitTests", "Behavioral.Automation.Selenium\Behavioral.Automation.UnitTests\Behavioral.Automation.UnitTests.csproj", "{054B7FBC-190D-43FA-B6D6-13A2BA7CB92D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Behavioral.Automation.Selenium\Tests", "{BB7AC02C-03FD-4F17-B4A9-CDECC1A63DA5}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{BB7AC02C-03FD-4F17-B4A9-CDECC1A63DA5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Behavioral.Automation.DemoScenarios", "Behavioral.Automation.Selenium\Behavioral.Automation.DemoScenarios\Behavioral.Automation.DemoScenarios.csproj", "{C7AF5750-75A5-4E8D-80FA-FB54914B0B17}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Behavioral.Automation.DemoBindings", "Behavioral.Automation.Selenium\Behavioral.Automation.DemoBindings\Behavioral.Automation.DemoBindings.csproj", "{4DD5E62E-E447-419D-82BF-C918F08091BD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp", "src\BlazorApp\BlazorApp.csproj", "{EF0AD0D5-3DAC-4C4E-8ED7-0E443C79E168}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp", "src\BlazorApp\BlazorApp.csproj", "{EF0AD0D5-3DAC-4C4E-8ED7-0E443C79E168}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behavioral.Automation.Playwright", "Behavioral.Automation.Playwright\Behavioral.Automation.Playwright\Behavioral.Automation.Playwright.csproj", "{F1B23009-3334-4B1B-8198-2C618346062D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behavioral.Automation.Configs", "Behavioral.Automation.Configs\Behavioral.Automation.Configs.csproj", "{7460A60F-85B2-4DCE-B190-000503AE8550}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Behavioral.Automation.Configs", "Behavioral.Automation.Configs\Behavioral.Automation.Configs.csproj", "{7460A60F-85B2-4DCE-B190-000503AE8550}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Behavioral.Automation.Selenium", "Behavioral.Automation.Selenium", "{430C8D20-03B9-4268-A6BC-F008F4DC2CD1}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Behavioral.Automation.Playwright", "Behavioral.Automation.Playwright", "{2A26C467-6A03-4942-9F9B-62F77F992F70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,10 +44,6 @@ Global
 		{EF0AD0D5-3DAC-4C4E-8ED7-0E443C79E168}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF0AD0D5-3DAC-4C4E-8ED7-0E443C79E168}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF0AD0D5-3DAC-4C4E-8ED7-0E443C79E168}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F1B23009-3334-4B1B-8198-2C618346062D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F1B23009-3334-4B1B-8198-2C618346062D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F1B23009-3334-4B1B-8198-2C618346062D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F1B23009-3334-4B1B-8198-2C618346062D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7460A60F-85B2-4DCE-B190-000503AE8550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7460A60F-85B2-4DCE-B190-000503AE8550}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7460A60F-85B2-4DCE-B190-000503AE8550}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -61,12 +53,11 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{054B7FBC-190D-43FA-B6D6-13A2BA7CB92D} = {BB7AC02C-03FD-4F17-B4A9-CDECC1A63DA5}
-		{C7AF5750-75A5-4E8D-80FA-FB54914B0B17} = {430C8D20-03B9-4268-A6BC-F008F4DC2CD1}
 		{F618BBEA-613A-4A67-A76E-3BEDD43B7175} = {430C8D20-03B9-4268-A6BC-F008F4DC2CD1}
-		{4DD5E62E-E447-419D-82BF-C918F08091BD} = {430C8D20-03B9-4268-A6BC-F008F4DC2CD1}
-		{F1B23009-3334-4B1B-8198-2C618346062D} = {2A26C467-6A03-4942-9F9B-62F77F992F70}
+		{054B7FBC-190D-43FA-B6D6-13A2BA7CB92D} = {BB7AC02C-03FD-4F17-B4A9-CDECC1A63DA5}
 		{BB7AC02C-03FD-4F17-B4A9-CDECC1A63DA5} = {430C8D20-03B9-4268-A6BC-F008F4DC2CD1}
+		{C7AF5750-75A5-4E8D-80FA-FB54914B0B17} = {430C8D20-03B9-4268-A6BC-F008F4DC2CD1}
+		{4DD5E62E-E447-419D-82BF-C918F08091BD} = {430C8D20-03B9-4268-A6BC-F008F4DC2CD1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {724FD185-E1F2-44BD-89EA-DFD1DBF6453A}
