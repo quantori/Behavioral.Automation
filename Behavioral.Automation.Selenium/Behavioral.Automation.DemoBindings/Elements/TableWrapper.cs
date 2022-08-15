@@ -29,7 +29,7 @@ namespace Behavioral.Automation.DemoBindings.Elements
 
         private IEnumerable<IWebElementWrapper> GetRowElementsFromCurrentView()
         {
-            return FindSubElements(By.XPath($".//*[@{_searchAttribute}='row']"), $"{Caption} row");
+            return FindSubElements(By.XPath($".//*[@{_searchAttribute}='table-row']"), $"{Caption} row");
         }
     }
 }

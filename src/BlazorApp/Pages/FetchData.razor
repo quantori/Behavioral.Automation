@@ -25,16 +25,36 @@ else
             </tr>
         </thead>
         <tbody>
-            @for (int i=0; i<forecasts.Length; i++)
-            {
-                var forecast = forecasts[i];
-                <tr data-automation-id="table-row">
-                    <td data-automation-id="table-cell">@forecast.Date.ToShortDateString()</td>
-                    <td data-automation-id="table-cell">@forecast.TemperatureC</td>
-                    <td data-automation-id="table-cell">@forecast.TemperatureF</td>
-                    <td data-automation-id="table-cell">@forecast.Summary</td>
+        <tr data-automation-id="table-row">
+                    <td data-automation-id="table-cell">28.10.2019</td>
+                    <td data-automation-id="table-cell">18</td>
+                    <td data-automation-id="table-cell">64.4</td>
+                    <td data-automation-id="table-cell">Mild</td>
                 </tr>
-            }
+                <tr data-automation-id="table-row">
+                    <td data-automation-id="table-cell">25.07.2021</td>
+                    <td data-automation-id="table-cell">30</td>
+                    <td data-automation-id="table-cell">86</td>
+                    <td data-automation-id="table-cell">Hot</td>
+                </tr>
+                <tr data-automation-id="table-row">
+                    <td data-automation-id="table-cell">31.09.2021</td>
+                    <td data-automation-id="table-cell">20</td>
+                    <td data-automation-id="table-cell">68</td>
+                    <td data-automation-id="table-cell">Warm</td>
+                </tr>
+                <tr data-automation-id="table-row">
+                    <td data-automation-id="table-cell">25.10.2021</td>
+                    <td data-automation-id="table-cell">14</td>
+                    <td data-automation-id="table-cell">57.2</td>
+                    <td data-automation-id="table-cell">Mild</td>
+                </tr>
+                <tr data-automation-id="table-row">
+                    <td data-automation-id="table-cell">07.03.2022</td>
+                    <td data-automation-id="table-cell">0</td>
+                    <td data-automation-id="table-cell">32</td>
+                    <td data-automation-id="table-cell">Bracing</td>
+                </tr>
         </tbody>
     </table>
 }

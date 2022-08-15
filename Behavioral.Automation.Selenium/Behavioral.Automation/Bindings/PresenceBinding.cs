@@ -30,9 +30,9 @@ namespace Behavioral.Automation.Bindings
         /// <param name="table">Specflow table with tested elements' names</param>
         /// <example>
         /// Then the following controls should become visible:
-        /// | controlName    |
-        /// | "Test1" input  |
-        /// | "Test2" button | 
+        /// | controlName    | controlType |
+        /// | "Test1"        | input  |
+        /// | "Test2"        | button | 
         /// </example>
         [Given("the following controls (are|are not|become|become not) visible:")]
         [Then("the following controls should (be|be not|become|become not) visible:")]

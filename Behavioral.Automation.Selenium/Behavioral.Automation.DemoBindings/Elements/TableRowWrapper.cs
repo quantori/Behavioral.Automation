@@ -17,7 +17,7 @@ namespace Behavioral.Automation.DemoBindings.Elements
         }
 
         public IEnumerable<IWebElementWrapper> Cells =>
-            FindSubElements(By.XPath($".//*[@{_searchAttribute}='cell']"),
+            FindSubElements(By.XPath($".//*[@{_searchAttribute}='table-cell']"),
                 $"{Caption} cell");
 
         public IEnumerable<string> CellsText

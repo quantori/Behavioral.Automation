@@ -11,7 +11,7 @@ namespace Behavioral.Automation.DemoBindings.Elements
         public ListWrapper(IWebElementWrapper wrapper, string caption, IDriverService driverService) :
             base(() => wrapper.Element, caption, driverService) { }
 
-        private IEnumerable<IWebElementWrapper> ListElements => FindSubElements(By.XPath(".//li[contains(@automation-id, 'list-item')]"), $"{Caption} item");
+        private IEnumerable<IWebElementWrapper> ListElements => FindSubElements(By.XPath(".//li"), $"{Caption} item");
 
         public IEnumerable<string> ListValues => ListElements.Select(x => x.Text.Replace("\r\n", " "));
     }
