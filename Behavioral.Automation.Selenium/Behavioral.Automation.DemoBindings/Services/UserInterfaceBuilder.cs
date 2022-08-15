@@ -25,6 +25,7 @@ namespace Behavioral.Automation.DemoBindings
                 mappingPipe.Register("text").Alias("text")
                     .With("main-page-paragraph").As("Main page")
                     .With("greetings-input-text").As("Enter your name")
+                    .With("greetings-page-paragraph").As("Hello")
                     .With("counter-page-text").As("Current count")
                     .With("forecast-page-paragraph").As("Forecast page");
 
