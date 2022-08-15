@@ -19,7 +19,7 @@ namespace Behavioral.Automation.DemoBindings
                     .With("main-page-header").As("Main page")
                     .With("main-elements-list-header").As("Elements list")
                     .With("greetings-page-header").As("Greetings page")
-                    .With("counter-page-header").As("Counter page")
+                    .With("counter-page-label").As("Counter page")
                     .With("forecast-page-header").As("Weather forecast page");
 
                 mappingPipe.Register("text").Alias("text")
