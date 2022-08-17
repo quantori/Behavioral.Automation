@@ -50,7 +50,7 @@ namespace Behavioral.Automation.Bindings
         /// <param name="behavior">Assertion type</param>
         /// <param name="table">Specflow table which contains expected values</param>
         /// <example>
-        /// Then "Test" list should contain the following items:
+        /// Then the "Test" list should contain the following items:
         /// | itemName     |
         /// | Test value 1 |
         /// | Test value 2 |
