@@ -39,9 +39,13 @@ The whole automation code is divided into the following parts:
       <PackageReference Include="Selenium.Support" Version="4.3.0" />
       <PackageReference Include="Selenium.WebDriver" Version="4.3.0" />
       <PackageReference Include="SpecFlow" Version="3.9.69" />
+      <PackageReference Include="Teronis.MSBuild.Packaging.ProjectBuildInPackage" Version="1.0.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\..\Behavioral.Automation.Configs\Behavioral.Automation.Configs.csproj" />
+      <ProjectReference Include="..\..\Behavioral.Automation.Configs\Behavioral.Automation.Configs.csproj" PrivateAssets="all" />
     </ItemGroup>
     
 </Project>

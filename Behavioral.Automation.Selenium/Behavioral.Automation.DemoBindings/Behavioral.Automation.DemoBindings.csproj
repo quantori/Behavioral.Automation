@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Behavioral.Automation.Configs\Behavioral.Automation.Configs.csproj" />
     <ProjectReference Include="..\Behavioral.Automation\Behavioral.Automation.csproj" />
   </ItemGroup>
 
