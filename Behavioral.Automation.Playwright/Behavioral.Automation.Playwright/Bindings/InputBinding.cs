@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
-using Behavioral.Automation.Playwright.WebElementsWrappers.Interface;
+using Behavioral.Automation.Playwright.WebElementsWrappers;
 using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Playwright.Bindings;
@@ -21,9 +21,9 @@ public class InputBinding
     /// <param name="input">String to enter</param>
     /// <param name="element">Tested web element wrapper</param>
     /// <example>When user enters "test string" into "Test input"</example>
-    [Given(@"user entered (.+?) into ""(.+?)""")]
+    [Given(@"user entered ""(.+?)"" into ""(.+?)""")]
     [When(@"user enters ""(.+?)"" into ""(.+?)""")]
-    public async Task FillInput(string text, IWebElementWrapper element)
+    public async Task FillInput(string text, WebElementWrapper element)
     {
         await element.Locator.FillAsync(text);
     }

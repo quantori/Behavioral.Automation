@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Behavioral.Automation.Playwright.WebElementsWrappers.Interface;
+using Behavioral.Automation.Playwright.WebElementsWrappers;
 using Microsoft.Playwright;
 using TechTalk.SpecFlow;
 
@@ -25,7 +25,7 @@ public class AttributeBinding
     /// <example>Then "Test" input should be enabled</example>
     [Given(@"the ""(.+?)"" is (enabled|disabled)")]
     [Then(@"the ""(.+?)"" should be| (enabled|disabled)")]
-    public async Task CheckElementIsDisabled(IWebElementWrapper element, bool enabled)
+    public async Task CheckElementIsDisabled(WebElementWrapper element, bool enabled)
     {
         if (enabled)
         {

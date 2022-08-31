@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
-using Behavioral.Automation.Playwright.WebElementsWrappers.Interface;
+using Behavioral.Automation.Playwright.WebElementsWrappers;
 using Microsoft.Playwright;
 using TechTalk.SpecFlow;
 
@@ -18,7 +18,7 @@ public class VisibilityBinding
     
     [Given(@"the ""(.+?)"" (is|is not) visible")]
     [Then(@"the ""(.+?)"" should (be|be not) visible")]
-    public async Task CheckElementVisibility(IWebElementWrapper element, string condition)
+    public async Task CheckElementVisibility(WebElementWrapper element, string condition)
     {
         if (!condition.Contains("not"))
         {

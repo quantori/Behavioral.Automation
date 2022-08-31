@@ -15,7 +15,6 @@ namespace Behavioral.Automation.Playwright;
 [Binding]
 public class Hooks
 {
-    private readonly IObjectContainer _objectContainer;
     private readonly WebContext _webContext;
     private static IPlaywright? _playwright;
     private static IBrowser? _browser;
@@ -23,14 +22,11 @@ public class Hooks
     private static readonly float? SlowMoMilliseconds = ConfigManager.GetConfig<Config>().SlowMoMilliseconds;
     private static readonly bool? Headless = ConfigManager.GetConfig<Config>().Headless;
     private static readonly bool RecordVideo = ConfigManager.GetConfig<Config>().RecordVideo;
-    private readonly TestServicesBuilder _testServicesBuilder;
 
-    public Hooks(WebContext webContext, ScenarioContext scenarioContext, IObjectContainer objectContainer)
+    public Hooks(WebContext webContext, ScenarioContext scenarioContext)
     {
-        _objectContainer = objectContainer;
         _webContext = webContext;
         _scenarioContext = scenarioContext;
-        _testServicesBuilder = new TestServicesBuilder(objectContainer);
     }
 
     [BeforeTestRun]

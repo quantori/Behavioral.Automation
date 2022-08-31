@@ -1,11 +1,10 @@
 using Behavioral.Automation.Playwright.Context;
-using Behavioral.Automation.Playwright.Services;
-using Behavioral.Automation.Playwright.WebElementsWrappers.Interface;
+
 using Microsoft.Playwright;
 
 namespace Behavioral.Automation.Playwright.WebElementsWrappers;
 
-public class WebElementWrapper : IWebElementWrapper
+public class WebElementWrapper 
 {
     public WebElementWrapper(WebContext webContext, ILocator locator, string caption)
     {
