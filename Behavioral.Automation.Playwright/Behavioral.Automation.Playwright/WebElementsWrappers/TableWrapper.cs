@@ -6,28 +6,22 @@ namespace Behavioral.Automation.Playwright.WebElementsWrappers;
 
 public class TableWrapper : WebElementWrapper
 {
-    public TableWrapper(WebContext webContext,
-        ILocator locator,
-        ILocator rowLocator,
-        ElementSelector cellsSelector,
-        ILocator? headerCellsLocator,
-        string caption) :
-        base(webContext, locator, caption)
+    public readonly TableSelector TableSelector;
+
+    public TableWrapper(WebContext webContext, TableSelector tableSelector, string caption) :
+        base(webContext, tableSelector, caption)
     {
-        Rows = rowLocator;
-        CellsSelector = cellsSelector;
-        HeaderCells = headerCellsLocator;
+        TableSelector = tableSelector;
     }
 
-    public ILocator Rows { get; set; }
+    public ILocator Rows => GetChildLocator(TableSelector.RowSelector);
 
-    public ElementSelector CellsSelector { get; set; }
+    public ILocator CellsSelector => GetChildLocator(TableSelector.CellSelector);
 
     public ILocator? HeaderCells { get; set; }
 
     public ILocator GetCellsForRow(ILocator row)
     {
-        var cellSelector = CellsSelector.IdSelector ?? CellsSelector.Selector;
-        return row.Locator(cellSelector);
+        return GetChildLocator(row, TableSelector.CellSelector);
     }
 }

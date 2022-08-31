@@ -11,14 +11,11 @@ namespace Behavioral.Automation.Playwright.ElementTransformations;
 public class ElementTransformations
 {
     private readonly WebContext _webContext;
-    private readonly LocatorProvider _locatorProvider;
     private readonly LocatorStorageService _locatorStorageService;
 
-    public ElementTransformations(WebContext webContext, LocatorProvider locatorProvider,
-        LocatorStorageService locatorStorageService)
+    public ElementTransformations(WebContext webContext, LocatorStorageService locatorStorageService)
     {
         _webContext = webContext;
-        _locatorProvider = locatorProvider;
         _locatorStorageService = locatorStorageService;
     }
 
@@ -26,28 +23,21 @@ public class ElementTransformations
     public WebElementWrapper GetElement(string caption)
     {
         var selector = _locatorStorageService.Get<ElementSelector>(caption);
-        return new WebElementWrapper(_webContext, _locatorProvider.GetLocator(selector), caption);
+        return new WebElementWrapper(_webContext, selector, caption);
     }
 
     [StepArgumentTransformation]
     public DropdownWrapper GetDropdownElement(string caption)
     {
         var dropdownSelector = _locatorStorageService.Get<DropdownSelector>(caption);
-        var mainLocator = _locatorProvider.GetLocator(dropdownSelector.BaseElementSelector);
-        return new DropdownWrapper(_webContext, mainLocator,
-            _locatorProvider.GetLocator(dropdownSelector.ItemSelector), caption);
+        return new DropdownWrapper(_webContext, dropdownSelector, caption);
     }
 
     [StepArgumentTransformation]
     public TableWrapper GetTableElement(string caption)
     {
         var tableSelector = _locatorStorageService.Get<TableSelector>(caption);
-        return new TableWrapper(_webContext,
-            _locatorProvider.GetLocator(tableSelector.BaseElementSelector),
-            _locatorProvider.GetLocator(tableSelector.RowSelector),
-            tableSelector.CellSelector,
-            _locatorProvider.GetLocator(tableSelector.HeaderCellSelector),
-            caption);
+        return new TableWrapper(_webContext, tableSelector, caption);
     }
 
     /// <summary>
