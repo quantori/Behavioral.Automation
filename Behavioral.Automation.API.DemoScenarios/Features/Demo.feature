@@ -6,5 +6,18 @@
 
   Scenario: Get second page
     When user sends a "GET" request to "api/users" url with the following parameters:
-      | Name | Value | Kind  |
-      | page | 2     | Param |
+      | Name         | Value | Kind   |
+      | page         | 2     | Param  |
+      | CustomHeader | test  | Header |
+
+  Scenario: Complex request
+    Given user creates a "POST" request to "api/users" url with the json:
+    """
+    {
+    "name": "morpheus",
+    "job": "leader"
+    }
+    """
+    When user adds parameters and send request:
+      | Name         | Value | Kind   |
+      | CustomHeader | test  | Header |
