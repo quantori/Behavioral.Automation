@@ -14,7 +14,7 @@ class MainPage : ISelectorStorage
     public ElementSelector LoginButton = new() { IdSelector = "login-button"};
     
     //Items
-    public ElementSelector Backpack = new() { IdSelector = "add-to-cart-sauce-labs-backpack" };
+    public ElementSelector AddBackpackToCart = new() { IdSelector = "add-to-cart-sauce-labs-backpack" };
     
     //ShoppingCart
     public ElementSelector ShoppingCartBadge = new() { Selector = "//span[@class='shopping_cart_badge']"};

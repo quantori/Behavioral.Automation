@@ -5,5 +5,5 @@
     And user entered "standard_user" into "Username"
     And user entered "secret_sauce" into "Password"
     When user clicks on "Login button"
-    And user clicks on "Backpack"
+    And user clicks on "Add Backpack to Cart"
     Then the "Shopping cart badge" text should be "1"
