@@ -1,5 +1,10 @@
 ﻿Feature: reqres test
 
-Scenario: Get all users
-	When user sends a "GET" request to "api/users" url
-	Then response json path "$..data[?(@.email == 'george.bluth@reqres.in')].first_name" value should be "["George"]"
+  Scenario: Get all users
+    When user sends a "GET" request to "api/users" url
+    Then response json path "$..data[?(@.email == 'george.bluth@reqres.in')].first_name" value should be "["George"]"
+
+  Scenario: Get second page
+    When user sends a "GET" request to "api/users" url with the following parameters:
+      | Name | Value | Kind  |
+      | page | 2     | Param |
