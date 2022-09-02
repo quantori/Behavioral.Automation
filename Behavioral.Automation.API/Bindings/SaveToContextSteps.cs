@@ -30,7 +30,7 @@ public class SaveToContextSteps
         _specFlowOutputHelper.WriteLine($"Saved '{stringToSave}' with key '{variableName}' in scenario context");
     }
 
-    public string GetStringByJsonPath(string jsonPath)
+    private string GetStringByJsonPath(string jsonPath)
     {
         var actualJTokens = GetActualJTokensFromResponse(jsonPath);
         var stringToSave = ConvertJTokensToString(actualJTokens);
@@ -41,12 +41,12 @@ public class SaveToContextSteps
         return stringToSave;
     }
 
-    public string ConvertJTokensToString(List<JToken> tokens)
+    private string ConvertJTokensToString(List<JToken> tokens)
     {
         return tokens.Count == 1 ? tokens[0].ToString() : JsonConvert.SerializeObject(tokens);
     }
-    
-    public List<JToken> GetActualJTokensFromResponse(string jsonPath)
+
+    private List<JToken> GetActualJTokensFromResponse(string jsonPath)
     {
         if (_apiContext.Response is null) throw new NullReferenceException("Http response is empty.");
         var responseString = _apiContext.Response.Content.ReadAsStringAsync().Result;
