@@ -114,11 +114,11 @@ public class HttpResponseSteps
                 FailJTokensAssertion(actualJTokens, expectedJTokens, "Elements count mismatch.");
         }
 
-        if (!IsJTokenListsSimilar(expectedJTokens, actualJTokens))
+        if (!IsJTokenListItemsAreTheSame(expectedJTokens, actualJTokens))
         {
             if (assertionType == AssertionType.Become)
             {
-                Policy.HandleResult<List<JToken>>(_ => !IsJTokenListsSimilar(expectedJTokens, actualJTokens))
+                Policy.HandleResult<List<JToken>>(_ => !IsJTokenListItemsAreTheSame(expectedJTokens, actualJTokens))
                     .WaitAndRetry(_retryCount, _ => _retryDelay).Execute(() =>
                     {
                         _httpService.SendContextRequest();
@@ -127,7 +127,7 @@ public class HttpResponseSteps
                     });
             }
 
-            if (!IsJTokenListsSimilar(expectedJTokens, actualJTokens))
+            if (!IsJTokenListItemsAreTheSame(expectedJTokens, actualJTokens))
                 FailJTokensAssertion(actualJTokens, expectedJTokens,
                     "The actual result is not equal to the expected result.");
         }
@@ -188,7 +188,7 @@ public class HttpResponseSteps
 
         var actualJTokens = GetActualJTokensFromResponse(jsonPath);
         var expectedJTokens = GetExpectedJTokensFromFile(fullPath);
-        if (!IsJTokenListsSimilar(expectedJTokens, actualJTokens))
+        if (!IsJTokenListItemsAreTheSame(expectedJTokens, actualJTokens))
             FailJTokensAssertion(actualJTokens, expectedJTokens,
                 "The actual result is not equal to the expected result.");
     }
@@ -201,7 +201,7 @@ public class HttpResponseSteps
         Assert.That(responseString, Is.EqualTo(expected));
     }
     
-    private static bool IsJTokenListsSimilar(List<JToken> expectedJTokens, List<JToken> actualJTokens)
+    private static bool IsJTokenListItemsAreTheSame(List<JToken> expectedJTokens, List<JToken> actualJTokens)
     {
         if (expectedJTokens.Count == 0 && actualJTokens.Count == 0) return true;
         bool areEqual = false;
