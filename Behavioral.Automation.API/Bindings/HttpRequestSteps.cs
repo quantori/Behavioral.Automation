@@ -26,13 +26,8 @@ public class HttpRequestSteps
     public HttpResponseMessage UserSendsHttpRequest(string httpMethod, string url)
     {
         var method = new HttpMethod(httpMethod.ToUpper());
-
-        if (!IsAbsoluteUrl(url))
-        {
-            url = ConfigManager.GetConfig<Config>().ApiHost + url;
-        }
-
-        _apiContext.Request = new HttpRequestMessage(method, url);
+        
+        _apiContext.Request = new HttpRequestMessage(method, GetUri(url));
         _httpService.SendContextRequest();
 
         return _apiContext.Response;
@@ -58,14 +53,8 @@ public class HttpRequestSteps
         // GraphQL
         // Consider adding other types
         var method = new HttpMethod(httpMethod.ToUpper());
-        if (!IsAbsoluteUrl(url))
-        {
-            url = ConfigManager.GetConfig<Config>().ApiHost + url;
-        }
 
-        var uriBuilder = new UriBuilder(url);
-
-        _apiContext.Request = new HttpRequestMessage(method, uriBuilder.Uri);
+        _apiContext.Request = new HttpRequestMessage(method, GetUri(url));
         _apiContext.Request.Content = new StringContent(jsonToSend, Encoding.UTF8, "application/json");
 
         _httpService.SendContextRequest();
@@ -78,14 +67,8 @@ public class HttpRequestSteps
     public HttpResponseMessage UserSendsHttpRequestWithFormUrlEncodedContent(string httpMethod, string url, Table parameters)
     {
         var method = new HttpMethod(httpMethod.ToUpper());
-        if (!IsAbsoluteUrl(url))
-        {
-            url = ConfigManager.GetConfig<Config>().ApiHost + url;
-        }
 
-        var uriBuilder = new UriBuilder(url);
-
-        _apiContext.Request = new HttpRequestMessage(method, uriBuilder.Uri);
+        _apiContext.Request = new HttpRequestMessage(method, GetUri(url));
 
         var body = parameters.Rows.Select(row => new KeyValuePair<string, string>(row[0], row[1]));
 
@@ -100,14 +83,8 @@ public class HttpRequestSteps
     public HttpRequestMessage UserCreatesHttpRequestWithJson(string httpMethod, string url, string jsonToSend)
     {
         var method = new HttpMethod(httpMethod.ToUpper());
-        if (!IsAbsoluteUrl(url))
-        {
-            url = ConfigManager.GetConfig<Config>().ApiHost + url;
-        }
 
-        var uriBuilder = new UriBuilder(url);
-
-        _apiContext.Request = new HttpRequestMessage(method, uriBuilder.Uri);
+        _apiContext.Request = new HttpRequestMessage(method, GetUri(url));
         _apiContext.Request.Content = new StringContent(jsonToSend, Encoding.UTF8, "application/json");
         return _apiContext.Request;
     }
@@ -116,14 +93,8 @@ public class HttpRequestSteps
     public HttpRequestMessage GivenUserCreatesARequestToUrl(string httpMethod, string url)
     {
         var method = new HttpMethod(httpMethod.ToUpper());
-        if (!IsAbsoluteUrl(url))
-        {
-            url = ConfigManager.GetConfig<Config>().ApiHost + url;
-        }
 
-        var uriBuilder = new UriBuilder(url);
-
-        _apiContext.Request = new HttpRequestMessage(method, uriBuilder.Uri);
+        _apiContext.Request = new HttpRequestMessage(method, GetUri(url));
         return _apiContext.Request;
     }
 
@@ -131,12 +102,8 @@ public class HttpRequestSteps
     public HttpRequestMessage UserCreatesHttpRequestWithParameters(string httpMethod, string url, Table tableParameters)
     {
         var method = new HttpMethod(httpMethod.ToUpper());
-        if (!IsAbsoluteUrl(url))
-        {
-            url = ConfigManager.GetConfig<Config>().ApiHost + url;
-        }
 
-        _apiContext.Request = new HttpRequestMessage(method, url);
+        _apiContext.Request = new HttpRequestMessage(method, GetUri(url));
         AddParametersToRequest(_apiContext.Request, tableParameters);
         return _apiContext.Request;
     }
@@ -173,9 +140,14 @@ public class HttpRequestSteps
         _apiContext.ExpectedStatusCode = statusCode;
     }
 
-    private static bool IsAbsoluteUrl(string url)
+    private static Uri GetUri(string url)
     {
-        return Uri.IsWellFormedUriString(url, UriKind.Absolute);
+        if (!Uri.IsWellFormedUriString(url, UriKind.Absolute))
+        {
+            url = ConfigManager.GetConfig<Config>().ApiHost + url;
+        }
+
+        return new UriBuilder(url).Uri;
     }
 
     private static void AddParametersToRequest(HttpRequestMessage request, Table tableParameters)
