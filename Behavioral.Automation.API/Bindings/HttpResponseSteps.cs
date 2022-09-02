@@ -250,12 +250,12 @@ public class HttpResponseSteps
     {
         if (!expected.Trim().StartsWith("["))
         {
-            expected = expected.Insert(0, "[");
+            expected = $"[{expected}";
         }
 
         if (!expected.Trim().EndsWith("]"))
         {
-            expected = expected.Insert(expected.Length, "]");
+            expected = $"{expected}]";
         }
 
         return expected;
