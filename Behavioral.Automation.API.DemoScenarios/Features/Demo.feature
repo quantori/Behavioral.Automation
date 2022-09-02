@@ -21,3 +21,6 @@
     When user adds parameters and send request:
       | Name         | Value | Kind   |
       | CustomHeader | test  | Header |
+      
+  Scenario: Request with json file
+    When user sends a "POST" request to "api/users" url with the json file "TestData\User.json"

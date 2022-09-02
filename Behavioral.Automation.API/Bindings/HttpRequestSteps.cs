@@ -5,6 +5,7 @@ using Behavioral.Automation.API.Context;
 using Behavioral.Automation.API.Models;
 using Behavioral.Automation.API.Services;
 using Behavioral.Automation.Configs;
+using Behavioral.Automation.Configs.utils;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 
@@ -43,11 +44,10 @@ public class HttpRequestSteps
     }
 
     [When("user sends a \"(.*)\" request to \"(.*)\" url with the json:")]
-    public HttpResponseMessage UserSendsHttpRequestWithParameters(string httpMethod, string url, string jsonToSend)
+    public HttpResponseMessage UserSendsHttpRequestWithJson(string httpMethod, string url, string jsonToSend)
     {
         //TODO: body can be:
         // form-data
-        // x-www-form-urlencoded
         // raw (Text, JavaScript, JSON, HTML, XML)
         // binary
         // GraphQL
@@ -55,6 +55,34 @@ public class HttpRequestSteps
         var method = new HttpMethod(httpMethod.ToUpper());
 
         _apiContext.Request = new HttpRequestMessage(method, GetUri(url));
+        _apiContext.Request.Content = new StringContent(jsonToSend, Encoding.UTF8, "application/json");
+
+        _httpService.SendContextRequest();
+
+        return _apiContext.Response;
+    }
+    
+    [When("user sends a \"(.*)\" request to \"(.*)\" url with the json file \"(.*)\"")]
+    public HttpResponseMessage UserSendsHttpRequestWithJsonFile(string httpMethod, string url, string filePath)
+    {
+        //TODO: body can be:
+        // form-data
+        // raw (Text, JavaScript, JSON, HTML, XML)
+        // binary
+        // GraphQL
+        // Consider adding other types
+        var method = new HttpMethod(httpMethod.ToUpper());
+
+        _apiContext.Request = new HttpRequestMessage(method, GetUri(url));
+        
+        var fullPath = Path.GetFullPath(Path.Join(Directory.GetCurrentDirectory(), filePath)).NormalizePathAccordingOs();
+        if (!File.Exists(fullPath))
+        {
+            throw new FileNotFoundException("The file does not exist", fullPath);
+        }
+        
+        var jsonToSend = File.ReadAllText(filePath);
+        
         _apiContext.Request.Content = new StringContent(jsonToSend, Encoding.UTF8, "application/json");
 
         _httpService.SendContextRequest();
