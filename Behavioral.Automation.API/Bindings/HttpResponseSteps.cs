@@ -45,19 +45,13 @@ public class HttpResponseSteps
         }
     }
 
-    [Given("response attachment is saved as \"(.*)\"")]
+    [Given("response attachment is saved as a file \"(.*)\"")]
     public void GivenResponseAttachmentIsSavedAs(string filePath)
     {
         if (_apiContext.Response is null) throw new Exception("Http response is empty.");
-        var fullPath = Path.GetFullPath(Path.Join(Directory.GetCurrentDirectory(), filePath))
-            .NormalizePathAccordingOs();
-
-        var directoryPath = Path.GetDirectoryName(fullPath);
-        if (!Directory.Exists(directoryPath))
-        {
-            Directory.CreateDirectory(directoryPath);
-        }
-
+        var fullPath = Path.GetFullPath(Path.Join(Directory.GetCurrentDirectory(), filePath));
+        Directory.CreateDirectory(Path.GetDirectoryName(fullPath));
+        
         var responseContentByteArray = _apiContext.Response.Content.ReadAsByteArrayAsync().Result;
         File.WriteAllBytes(fullPath, responseContentByteArray);
     }
