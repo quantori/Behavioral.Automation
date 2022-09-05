@@ -28,7 +28,7 @@ public class HttpResponseSteps
     [Then("response attachment filename is \"(.*)\"")]
     public void ThenResponseAttachmentFilenameIs(string filename)
     {
-        if (_apiContext.Response is null) throw new NullReferenceException("Http response is empty.");
+        if (_apiContext.Response is null) throw new Exception("Http response is empty.");
         var contentDispositionHeader = _apiContext.Response.Content.Headers.ContentDisposition;
         if (contentDispositionHeader == null)
         {
@@ -48,7 +48,7 @@ public class HttpResponseSteps
     [Given("response attachment is saved as \"(.*)\"")]
     public void GivenResponseAttachmentIsSavedAs(string filePath)
     {
-        if (_apiContext.Response is null) throw new NullReferenceException("Http response is empty.");
+        if (_apiContext.Response is null) throw new Exception("Http response is empty.");
         var fullPath = Path.GetFullPath(Path.Join(Directory.GetCurrentDirectory(), filePath))
             .NormalizePathAccordingOs();
 
@@ -229,7 +229,7 @@ public class HttpResponseSteps
 
     private List<JToken> GetActualJTokensFromResponse(string jsonPath)
     {
-        if (_apiContext.Response is null) throw new NullReferenceException("Http response is empty.");
+        if (_apiContext.Response is null) throw new Exception("Http response is empty.");
         var responseString = _apiContext.Response.Content.ReadAsStringAsync().Result;
 
         JToken responseJToken;
