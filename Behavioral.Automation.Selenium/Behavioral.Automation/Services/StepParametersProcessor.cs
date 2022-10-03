@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using Behavioral.Automation.Elements;
 using Behavioral.Automation.Model;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Bindings;
 
 namespace Behavioral.Automation.Services
 {
@@ -76,18 +77,27 @@ namespace Behavioral.Automation.Services
 
         private string BuildBehaviourString(AssertionBehavior b)
         {
-            var currentStepType = _scenarioContext.StepContext.StepInfo.StepDefinitionType;
+            StepDefinitionType currentStepType;
+            try
+            {
+                currentStepType = _scenarioContext.StepContext.StepInfo.StepDefinitionType;
+            }
+            catch (NullReferenceException)
+            {
+                currentStepType = StepDefinitionType.Given;
+            }
+            
             string behaviorString = string.Empty;
             if (b.Type == AssertionType.Immediate)
             {
                 switch (currentStepType)
                 {
-                    case TechTalk.SpecFlow.Bindings.StepDefinitionType.Given:
-                    case TechTalk.SpecFlow.Bindings.StepDefinitionType.When:
+                    case StepDefinitionType.Given:
+                    case StepDefinitionType.When:
                         behaviorString = "is";
                         break;
 
-                    case TechTalk.SpecFlow.Bindings.StepDefinitionType.Then:
+                    case StepDefinitionType.Then:
                         behaviorString = "be";
                         break;
                 }
