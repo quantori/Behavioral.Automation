@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Behavioral.Automation.Selen
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Behavioral.Automation.Playwright", "Behavioral.Automation.Playwright", "{2A26C467-6A03-4942-9F9B-62F77F992F70}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behavioral.Automation.API", "Behavioral.Automation.API\Behavioral.Automation.API.csproj", "{ED37DAD3-B800-434B-9207-AD546F0099D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{7460A60F-85B2-4DCE-B190-000503AE8550}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7460A60F-85B2-4DCE-B190-000503AE8550}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7460A60F-85B2-4DCE-B190-000503AE8550}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED37DAD3-B800-434B-9207-AD546F0099D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED37DAD3-B800-434B-9207-AD546F0099D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED37DAD3-B800-434B-9207-AD546F0099D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED37DAD3-B800-434B-9207-AD546F0099D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
