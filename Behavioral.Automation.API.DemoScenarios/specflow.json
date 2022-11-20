@@ -1,0 +1,19 @@
+﻿{
+  "bindingCulture": {
+    "language": "en-us"
+  },
+  "language": {
+    "feature": "en-us"
+  },
+  "runtime": {
+    "missingOrPendingStepsOutcome": "Error"
+  },
+  "stepAssemblies": [
+    {
+      "assembly": "Behavioral.Automation.API"
+    },
+    {
+      "assembly": "Behavioral.Automation.Transformations"
+    }
+  ]
+}

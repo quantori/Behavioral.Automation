@@ -1,0 +1,8 @@
+﻿{
+  "BASE_URL": "https://www.saucedemo.com/",
+  "SEARCH_ATTRIBUTE": "data-test",
+  "ASSERT_TIMEOUT_MILLISECONDS" : 30,
+  "SLOW_MO_MILLISECONDS" : 150,
+  "HEADLESS" : false,
+  "RECORD_VIDEO" : false
+}

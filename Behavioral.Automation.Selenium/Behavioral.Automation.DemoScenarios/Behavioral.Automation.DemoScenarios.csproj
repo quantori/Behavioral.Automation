@@ -24,11 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Features\LabelBinding.feature.cs" />
-    <Compile Remove="Features\ExampleBinding.feature.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Behavioral.Automation.DemoBindings\Behavioral.Automation.DemoBindings.csproj" />
   </ItemGroup>
 

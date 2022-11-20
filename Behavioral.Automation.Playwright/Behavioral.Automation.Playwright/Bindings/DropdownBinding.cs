@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Behavioral.Automation.Playwright.Utils;
-using Behavioral.Automation.Playwright.WebElementsWrappers.Interface;
+using Behavioral.Automation.Playwright.WebElementsWrappers;
 using Microsoft.Playwright;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
@@ -19,7 +19,7 @@ public class DropdownBinding
     /// <param name="element">Tested web element wrapper</param>
     [Given(@"user selected ""(.+?)"" in ""(.+?)""")]
     [When(@"user selects ""(.+?)"" in ""(.+?)""")]
-    public async Task SelectValueInDropdown(string entry, IDropdownWrapper element)
+    public async Task SelectValueInDropdown(string entry, DropdownWrapper element)
     {
         await element.SelectValue(entry);
     }
@@ -33,7 +33,7 @@ public class DropdownBinding
     /// <example>Given the "Test" dropdown selected value is "Test value"</example>
     [Given(@"the ""(.+?)"" selected value is ""(.+?)""")]
     [Then(@"the ""(.+?)"" selected value should be ""(.+?)""")]
-    public async Task CheckSelectedValue(IDropdownWrapper wrapper, string value)
+    public async Task CheckSelectedValue(DropdownWrapper wrapper, string value)
     {
         await Assertions.Expect(wrapper.Locator).ToHaveValueAsync(value);
     }
@@ -51,7 +51,7 @@ public class DropdownBinding
     /// </example>
     [Given(@"the ""(.+?)"" has the following values:")]
     [Then(@"the ""(.*?)"" should have the following values:")]
-    public async Task CheckAllItems(IDropdownWrapper wrapper, Table items)
+    public async Task CheckAllItems(DropdownWrapper wrapper, Table items)
     {
         await CheckDropdownElements(wrapper, items, $"{wrapper.Caption} values");
     }
@@ -66,7 +66,7 @@ public class DropdownBinding
     [Given(@"the ""(.+?)"" (contains|does not contain) ""(.+?)""")]
     [Then(@"the ""(.+?)"" should (contain|not contain) ""(.+?)""")]
     public async Task CheckDropdownContainsItems(
-        IDropdownWrapper wrapper,
+        DropdownWrapper wrapper,
         string behavior,
         string value)
     {
@@ -96,7 +96,7 @@ public class DropdownBinding
     /// </example>
     [Given(@"the ""(.+?)"" (contains|does not contain) the following values:")]
     [Then(@"the ""(.+?)"" should (contain|not contain) the following values:")]
-    public async Task CheckDropdownContainsMultipleItems(IDropdownWrapper wrapper, string behavior, Table table)
+    public async Task CheckDropdownContainsMultipleItems(DropdownWrapper wrapper, string behavior, Table table)
     {
         foreach (var row in table.Rows)
         {
@@ -117,7 +117,7 @@ public class DropdownBinding
     /// </example>
     [Given(@"user selected multiple entries in ""(.+?)"":")]
     [When(@"user selects multiple entries in ""(.+?)"":")]
-    public void ClickOnMultipleEntries(IDropdownWrapper wrapper, Table entries)
+    public void ClickOnMultipleEntries(DropdownWrapper wrapper, Table entries)
     {
         wrapper.SelectValue(entries.Rows.Select(x => x.Values.First()).ToArray());
     }
@@ -133,7 +133,7 @@ public class DropdownBinding
     /// </example>
     [Given(@"the ""(.+?)"" value is (enabled|disabled) in ""(.+?)""")]
     [Then(@"the ""(.+?)"" value should be (enabled|disabled) in ""(.+?)""")]
-    public async Task CheckValueInDropdownIsEnabled(string value, bool enabled, IDropdownWrapper wrapper)
+    public async Task CheckValueInDropdownIsEnabled(string value, bool enabled, DropdownWrapper wrapper)
     {
         var optionToCheck = wrapper.GetOption(value);
         if (enabled)
@@ -160,7 +160,7 @@ public class DropdownBinding
     [Given(@"the following values are (enabled|disabled) in ""(.+?)"":")]
     [Then(@"the following values should be (enabled|disabled) in ""(.+?)"":")]
     public async Task CheckMultipleValuesInDropdownAreEnabled(bool enabled,
-        IDropdownWrapper wrapper, Table table)
+        DropdownWrapper wrapper, Table table)
     {
         foreach (var row in table.Rows)
         {
@@ -168,7 +168,7 @@ public class DropdownBinding
         }
     }
 
-    private async Task CheckDropdownElements(IDropdownWrapper wrapper, Table expectedValues, string valueType)
+    private async Task CheckDropdownElements(DropdownWrapper wrapper, Table expectedValues, string valueType)
     {
         for (var i = 0; i < expectedValues.Rows.Count; i++)
         {

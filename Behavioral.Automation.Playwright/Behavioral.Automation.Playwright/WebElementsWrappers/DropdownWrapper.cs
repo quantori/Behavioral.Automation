@@ -1,27 +1,29 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Behavioral.Automation.Playwright.Context;
-using Behavioral.Automation.Playwright.WebElementsWrappers.Interface;
+using Behavioral.Automation.Playwright.ElementSelectors;
 using Microsoft.Playwright;
 
 namespace Behavioral.Automation.Playwright.WebElementsWrappers;
 
-public class DropdownWrapper : WebElementWrapper, IDropdownWrapper
+public class DropdownWrapper : WebElementWrapper
 {
-    public DropdownWrapper(WebContext webContext, ILocator locator, ILocator itemLocator, string caption) :
-        base(webContext, locator, caption)
+    public readonly DropdownSelector DropdownSelector;
+
+    public DropdownWrapper(WebContext webContext, DropdownSelector dropdownSelector, string caption) :
+        base(webContext, dropdownSelector, caption)
     {
-        Items = itemLocator;
+        DropdownSelector = dropdownSelector;
     }
-    public ILocator Items { get; set; }
+
+    public ILocator Items => GetChildLocator(DropdownSelector.ItemSelector);
+    public ILocator Base => GetChildLocator(DropdownSelector.BaseElementSelector);
 
     public Task<IReadOnlyList<string>> ItemsTexts => Items.AllTextContentsAsync();
 
     public async Task SelectValue(params string[] elements)
     {
-        await Locator.ClickAsync();
+        await Base.ClickAsync();
         foreach (var element in elements)
         {
             var optionToClick = GetOption(element);
@@ -31,6 +33,6 @@ public class DropdownWrapper : WebElementWrapper, IDropdownWrapper
 
     public ILocator GetOption(string option)
     {
-        return Items.Filter(new LocatorFilterOptions {HasTextString = option});
+        return Items.Filter(new LocatorFilterOptions { HasTextString = option });
     }
 }

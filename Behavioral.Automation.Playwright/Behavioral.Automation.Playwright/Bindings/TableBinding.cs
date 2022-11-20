@@ -3,8 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Behavioral.Automation.Configs;
 using Behavioral.Automation.Playwright.Configs;
-using Behavioral.Automation.Playwright.Services;
-using Behavioral.Automation.Playwright.WebElementsWrappers.Interface;
+using Behavioral.Automation.Playwright.WebElementsWrappers;
 using Microsoft.Playwright;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
@@ -18,7 +17,7 @@ public class TableBinding
 
     [Given(@"user clicked clicked on ""(.+?)"" header in ""(.+?)""")]
     [When(@"user clicks clicked on ""(.+?)"" header in ""(.+?)""")]
-    public async Task ClickOnHeaderCell(string headerTitle, ITableWrapper element)
+    public async Task ClickOnHeaderCell(string headerTitle, TableWrapper element)
     {
         var headerToClick = element.HeaderCells.Filter(new LocatorFilterOptions {HasTextString = headerTitle});
         await headerToClick.ClickAsync();
@@ -26,7 +25,7 @@ public class TableBinding
 
     [Given(@"the ""(.+?)"" has the following rows (with|without) headers:")]
     [Then(@"the ""(.+?)"" should have the following rows (with|without) headers:")]
-    public async Task CheckTableRows(ITableWrapper element,string countingHeaders, Table expectedTable)
+    public async Task CheckTableRows(TableWrapper element,string countingHeaders, Table expectedTable)
     {
         var checkHeadersNeeded = countingHeaders != "without";
         if (checkHeadersNeeded)
@@ -57,7 +56,7 @@ public class TableBinding
 
     [Given(@"the ""(.+?)"" contains the following rows (with|without) headers:")]
     [Then(@"the ""(.+?)"" should contain the following rows (with|without) headers:")]
-    public async Task CheckTableContainRows(ITableWrapper element, string countingHeaders, Table expectedTable)
+    public async Task CheckTableContainRows(TableWrapper element, string countingHeaders, Table expectedTable)
     {
         var checkHeadersNeeded = countingHeaders != "without";
         if (checkHeadersNeeded)
@@ -87,7 +86,7 @@ public class TableBinding
     /// <example>Then "Test" table should have 5 items</example>
     [Given(@"the ""(.+?)"" has ""(.+?)"" items")]
     [Then(@"the ""(.+?)"" should have ""(.+?)"" items")]
-    public async Task CheckTableItemsCount(ITableWrapper element, int expectedRowsCount)
+    public async Task CheckTableItemsCount(TableWrapper element, int expectedRowsCount)
     {
         await Assertions.Expect(element.Rows).ToHaveCountAsync(expectedRowsCount, new LocatorAssertionsToHaveCountOptions { Timeout = Timeout });
     }

@@ -1,10 +1,8 @@
 ﻿using Behavioral.Automation.Playwright.Context;
+using Behavioral.Automation.Playwright.ElementSelectors;
 using Behavioral.Automation.Playwright.Services;
-using Behavioral.Automation.Playwright.Services.ElementSelectors;
 using Behavioral.Automation.Playwright.Utils;
 using Behavioral.Automation.Playwright.WebElementsWrappers;
-using Behavioral.Automation.Playwright.WebElementsWrappers.Interface;
-using JetBrains.Annotations;
 using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Playwright.ElementTransformations;
@@ -13,42 +11,33 @@ namespace Behavioral.Automation.Playwright.ElementTransformations;
 public class ElementTransformations
 {
     private readonly WebContext _webContext;
-    private readonly ILocatorProvider _locatorProvider;
     private readonly LocatorStorageService _locatorStorageService;
 
-    public ElementTransformations(WebContext webContext, ILocatorProvider locatorProvider,
-        LocatorStorageService locatorStorageService)
+    public ElementTransformations(WebContext webContext, LocatorStorageService locatorStorageService)
     {
         _webContext = webContext;
-        _locatorProvider = locatorProvider;
         _locatorStorageService = locatorStorageService;
     }
 
     [StepArgumentTransformation]
-    public IWebElementWrapper GetElement(string caption)
+    public WebElementWrapper GetElement(string caption)
     {
         var selector = _locatorStorageService.Get<ElementSelector>(caption);
-        return new WebElementWrapper(_webContext, _locatorProvider.GetLocator(selector), caption);
+        return new WebElementWrapper(_webContext, selector, caption);
     }
 
     [StepArgumentTransformation]
-    public IDropdownWrapper GetDropdownElement(string caption)
+    public DropdownWrapper GetDropdownElement(string caption)
     {
         var dropdownSelector = _locatorStorageService.Get<DropdownSelector>(caption);
-        return new DropdownWrapper(_webContext, _locatorProvider.GetLocator(dropdownSelector.BaseElementSelector),
-            _locatorProvider.GetLocator(dropdownSelector.ItemSelector), caption);
+        return new DropdownWrapper(_webContext, dropdownSelector, caption);
     }
 
     [StepArgumentTransformation]
-    public ITableWrapper GetTableElement(string caption)
+    public TableWrapper GetTableElement(string caption)
     {
         var tableSelector = _locatorStorageService.Get<TableSelector>(caption);
-        return new TableWrapper(_webContext,
-            _locatorProvider.GetLocator(tableSelector.BaseElementSelector),
-            _locatorProvider.GetLocator(tableSelector.RowSelector),
-            tableSelector.CellSelector,
-            _locatorProvider.GetLocator(tableSelector.HeaderCellSelector), 
-            caption);
+        return new TableWrapper(_webContext, tableSelector, caption);
     }
 
     /// <summary>
@@ -67,7 +56,7 @@ public class ElementTransformations
     /// </summary>
     /// <param name="number">String with the number which is received from Specflow steps</param>
     /// <returns></returns>
-    [StepArgumentTransformation, NotNull]
+    [StepArgumentTransformation]
     public int ParseNumber(string number)
     {
         return number switch

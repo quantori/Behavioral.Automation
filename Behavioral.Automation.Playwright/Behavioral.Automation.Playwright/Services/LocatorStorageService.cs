@@ -1,12 +1,9 @@
 using System;
 using Behavioral.Automation.Playwright.Pages;
-using Behavioral.Automation.Playwright.Services.ElementSelectors;
 using Behavioral.Automation.Playwright.Utils;
-using JetBrains.Annotations;
 
 namespace Behavioral.Automation.Playwright.Services;
 
-[UsedImplicitly]
 public class LocatorStorageService
 {
     //TODO: Impl factory

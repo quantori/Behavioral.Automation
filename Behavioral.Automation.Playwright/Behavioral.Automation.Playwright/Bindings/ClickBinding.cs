@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Behavioral.Automation.Playwright.WebElementsWrappers.Interface;
+using Behavioral.Automation.Playwright.WebElementsWrappers;
 using TechTalk.SpecFlow;
 
 namespace Behavioral.Automation.Playwright.Bindings;
@@ -14,7 +14,7 @@ public class ClickBinding
     /// <example>When user clicks on "Test" button</example>
     [Given(@"user clicked on ""(.+?)""")]
     [When(@"user clicks on ""(.+?)""")]
-    public async Task ClickOnElement(IWebElementWrapper element)
+    public async Task ClickOnElement(WebElementWrapper element)
     {
         await element.Locator.ClickAsync();
     }
@@ -26,7 +26,7 @@ public class ClickBinding
     /// <example>When user clicks twice on "Test" button</example>  
     [Given(@"user clicked twice on ""(.+?)""")]
     [When(@"user clicks twice on ""(.+?)""")]
-    public async Task ClickTwiceOnElement(IWebElementWrapper element)
+    public async Task ClickTwiceOnElement(WebElementWrapper element)
     {
         await element.Locator.DblClickAsync();
     }
@@ -39,7 +39,7 @@ public class ClickBinding
     /// <example>When user clicks at first element among "Test" buttons (note that numbers from 1 to 10 can be written as words)</e
     [Given(@"user clicked at (.+?) element among ""(.+?)""")]
     [When(@"user clicks at (.+?) element among ""(.+?)""")]
-    public async Task ClickByIndex(int index, IWebElementWrapper element)
+    public async Task ClickByIndex(int index, WebElementWrapper element)
     {
         await element.Locator.Nth(index).ClickAsync();
     }
@@ -51,7 +51,7 @@ public class ClickBinding
     /// <example>When user hovers mouse over "Test" button</example>
     [Given(@"user hovered mouse over ""(.+?)""")]
     [When(@"user hovers mouse over ""(.+?)""")]
-    public async Task HoverMouse(IWebElementWrapper element)
+    public async Task HoverMouse(WebElementWrapper element)
     {
         await element.Locator.HoverAsync();
     }

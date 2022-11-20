@@ -1,4 +1,4 @@
-﻿namespace Behavioral.Automation.Playwright.Services.ElementSelectors;
+﻿namespace Behavioral.Automation.Playwright.ElementSelectors;
 
 public class DropdownSelector : ElementSelector
 {
