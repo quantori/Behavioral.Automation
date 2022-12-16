@@ -2,6 +2,7 @@ using System;
 using Behavioral.Automation.Playwright.Pages;
 using Behavioral.Automation.Playwright.Services.ElementSelectors;
 using Behavioral.Automation.Playwright.Utils;
+using Behavioral.Automation.Playwright.WebElementsWrappers.Interface;
 using JetBrains.Annotations;
 
 namespace Behavioral.Automation.Playwright.Services;
@@ -12,12 +13,24 @@ public class LocatorStorageService
     //TODO: Impl factory
     public T Get<T>(string elementName)
     {
-        //TODO:impl search service, check type is exist
-        var mainPage = typeof(MainPage);
-        var page = Activator.CreateInstance(mainPage);
+        var type = typeof(ISelectorStorage);
+        var types = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(s => s.GetTypes())
+            .Where(p => type.IsAssignableFrom(p) && p.IsClass);
 
-        var element = (T)mainPage.GetField(elementName.ToCamelCase())?.GetValue(page)!;
-        if (element is null) throw new Exception($"'{elementName}' selectors not found.");
-        return element;
+        IWebElement element = null;
+        foreach (var pageType in types)
+        {
+            var pageTemp = Activator.CreateInstance(pageType);
+            var temp = (IWebElement) pageType.GetField(elementName.ToCamelCase())?.GetValue(pageTemp)!;
+            if (element != null && temp != null)
+                throw new Exception($"found the same selector '{elementName}' in different classes");
+            element ??= temp;
+        }
+        
+        if (element == null) throw new Exception($"'{elementName}' selectors not found.");
+
+        element.WebContext = _webContext;
+        return (T) element;
     }
 }
