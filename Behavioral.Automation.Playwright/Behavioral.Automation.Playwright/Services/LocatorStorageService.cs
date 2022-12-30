@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using Behavioral.Automation.Playwright.Pages;
+using Behavioral.Automation.Playwright.Services.ElementSelectors;
 using Behavioral.Automation.Playwright.Utils;
-using Behavioral.Automation.Playwright.WebElementsWrappers.Interface;
 using JetBrains.Annotations;
 
 namespace Behavioral.Automation.Playwright.Services;
@@ -19,17 +19,17 @@ public class LocatorStorageService
             .SelectMany(s => s.GetTypes())
             .Where(p => type.IsAssignableFrom(p) && p.IsClass);
 
-        IWebElementWrapper? element = null;
+        T? element = default(T);
         foreach (var pageType in types)
         {
             var instanceOfClassWithElements = Activator.CreateInstance(pageType);
-            var classField = (IWebElementWrapper) pageType.GetField(elementName.ToCamelCase())?.GetValue(instanceOfClassWithElements)!;
+            var classField = (T) pageType.GetField(elementName.ToCamelCase())?.GetValue(instanceOfClassWithElements)!;
             if (element != null && classField != null)
                 throw new Exception($"found the same selector '{elementName}' in different classes");
             element ??= classField;
         }
         
         if (element == null) throw new Exception($"'{elementName}' selectors not found.");
-        return (T) element;
+        return element;
+        }
     }
-}

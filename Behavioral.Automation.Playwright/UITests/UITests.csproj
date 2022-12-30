@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Authors>Quantori Inc.</Authors>
+        <Description>Specflow scenarios for demonstration of Behavioral.Automation framework features and testing.</Description>
+        <Copyright>Quantori Inc.</Copyright>
+        <RepositoryUrl>https://github.com/quantori/Behavioral.Automation</RepositoryUrl>
+        <RootNamespace>Behavioral.Automation.Playwright.Tests</RootNamespace>
+        <Nullable>enable</Nullable>
+        <IsPackable>false</IsPackable>
+        <OutputType>Library</OutputType>
+        <Platforms>AnyCPU</Platforms>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Update="specflow.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Behavioral.Automation.Playwright\Behavioral.Automation.Playwright.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+      <PackageReference Include="NUnit3TestAdapter" Version="4.3.1" />
+      <PackageReference Include="SpecFlow" Version="3.9.74" />
+      <PackageReference Include="SpecFlow.NUnit" Version="3.9.74" />
+      <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.74" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="AutomationConfig.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+</Project>
