@@ -14,6 +14,7 @@ namespace Behavioral.Automation.Playwright
         public TestServicesBuilder(IObjectContainer objectContainer)
         {
             _objectContainer = objectContainer;
+            Build();
         }
         
         public void Build()
