@@ -13,7 +13,7 @@ public class LocatorStorageService
     //TODO: Impl factory
     public T Get<T>(string elementName)
     {
-        if (elementName.Equals("")) throw new Exception("element name can not be empty. Please correct test step");
+        if (string.IsNullOrEmpty(elementName)) throw new Exception("element name can not be empty. Please correct test step");
         var type = typeof(ISelectorStorage);
         var types = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(s => s.GetTypes())
