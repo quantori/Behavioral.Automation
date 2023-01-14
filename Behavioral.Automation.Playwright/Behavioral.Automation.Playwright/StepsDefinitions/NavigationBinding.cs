@@ -6,7 +6,7 @@ using Behavioral.Automation.Playwright.Context;
 using Microsoft.Playwright;
 using TechTalk.SpecFlow;
 
-namespace Behavioral.Automation.Playwright.StepDefinitions;
+namespace Behavioral.Automation.Playwright.StepsDefinitions;
 
 [Binding]
 public class NavigationBinding

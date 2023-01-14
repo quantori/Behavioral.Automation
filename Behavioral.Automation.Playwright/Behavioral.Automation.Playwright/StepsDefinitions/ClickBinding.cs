@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Behavioral.Automation.Playwright.WebElementsWrappers.Interface;
 using TechTalk.SpecFlow;
 
-namespace Behavioral.Automation.Playwright.StepDefinitions;
+namespace Behavioral.Automation.Playwright.StepsDefinitions;
 
 [Binding]
 public class ClickBinding
