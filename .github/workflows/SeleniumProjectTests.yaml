@@ -1,4 +1,4 @@
-name: AutotestsRun
+name: Selenium project tests
 
 on:
   workflow_dispatch:
