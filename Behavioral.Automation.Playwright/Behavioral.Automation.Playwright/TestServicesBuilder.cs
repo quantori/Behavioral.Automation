@@ -17,7 +17,7 @@ namespace Behavioral.Automation.Playwright
             Build();
         }
 
-        public void Build()
+        private void Build()
         {
             _objectContainer.RegisterTypeAs<LocatorProvider, ILocatorProvider>();
         }
