@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Behavioral.Automation.Playwright.WebElementsWrappers.Interface;
 using TechTalk.SpecFlow;
 
-namespace Behavioral.Automation.Playwright.Bindings;
+namespace Behavioral.Automation.Playwright.StepDefinitions;
 
 [Binding]
 public class InputBinding

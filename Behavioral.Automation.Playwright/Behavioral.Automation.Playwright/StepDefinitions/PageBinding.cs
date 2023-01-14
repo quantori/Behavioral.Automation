@@ -2,7 +2,7 @@ using Behavioral.Automation.Playwright.Context;
 using Microsoft.Playwright;
 using TechTalk.SpecFlow;
 
-namespace Behavioral.Automation.Playwright.Bindings;
+namespace Behavioral.Automation.Playwright.StepDefinitions;
 
 [Binding]
 public class PageBinding

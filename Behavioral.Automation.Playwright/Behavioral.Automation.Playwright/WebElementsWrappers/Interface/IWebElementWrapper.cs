@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Behavioral.Automation.Playwright.Context;
 using Microsoft.Playwright;
 
@@ -10,4 +11,7 @@ public interface IWebElementWrapper
     public string Caption { get;}
     
     public ILocator Locator { get; }
+
+    public Task ShouldBecomeVisibleAsync();
+    public Task ShouldNotBecomeVisibleAsync();
 }

@@ -7,7 +7,7 @@ using Microsoft.Playwright;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 
-namespace Behavioral.Automation.Playwright.Bindings;
+namespace Behavioral.Automation.Playwright.StepDefinitions;
 
 [Binding]
 public class DropdownBinding
