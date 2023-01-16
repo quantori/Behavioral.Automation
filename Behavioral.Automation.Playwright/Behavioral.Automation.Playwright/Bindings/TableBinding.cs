@@ -55,7 +55,7 @@ public class TableBinding
     }
 
     /// <summary>
-    /// The binding checks that table has expected rows:
+    /// The binding checks that a table contains expected rows:
     /// 1. Rows quantity is not checked (Actual table can have more rows than expected table)
     /// 2. Rows order is not checked (Actual table can have expected rows in any order)
     /// 3. TODO: write unit test to check how duplicated rows work
