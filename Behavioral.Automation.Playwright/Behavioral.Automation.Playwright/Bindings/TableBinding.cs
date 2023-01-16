@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Behavioral.Automation.Configs;
 using Behavioral.Automation.Playwright.Configs;
-using Behavioral.Automation.Playwright.Services;
 using Behavioral.Automation.Playwright.WebElementsWrappers.Interface;
 using Microsoft.Playwright;
 using NUnit.Framework;
@@ -55,28 +54,30 @@ public class TableBinding
         }
     }
 
+    /// <summary>
+    /// The binding checks that table has expected rows:
+    /// 1. Rows quantity is not checked (Actual table can have more rows than expected table)
+    /// 2. Rows order is not checked (Actual table can have expected rows in any order)
+    /// 3. TODO: write unit test to check how duplicated rows work
+    /// </summary>
+    /// <param name="actualTableElement">Element to test</param>
+    /// <param name="countingHeaders"></param>
+    /// <param name="expectedTable"></param>
     [Given(@"the ""(.+?)"" contains the following rows (with|without) headers:")]
     [Then(@"the ""(.+?)"" should contain the following rows (with|without) headers:")]
-    public async Task CheckTableContainRows(ITableWrapper element, string countingHeaders, Table expectedTable)
+    public async Task CheckTableContainRows(ITableWrapper actualTableElement, string countingHeaders, Table expectedTable)
     {
         var checkHeadersNeeded = countingHeaders != "without";
         if (checkHeadersNeeded)
         {
-            var actualHeaderText = await element.HeaderCells.AllTextContentsAsync();
+            var actualHeaderText = await actualTableElement.HeaderCells.AllTextContentsAsync();
             var actualHeaderTextTrimmed = actualHeaderText.Select(s => s.Trim());
 
             CollectionAssert.IsSubsetOf(expectedTable.Header, actualHeaderTextTrimmed,
-                $"Element: Header of {element.Caption}{Environment.NewLine}");
+                $"Element: Header of {actualTableElement.Caption}{Environment.NewLine}");
         }
 
-        for (var i = 0; i < expectedTable.Rows.Count; i++)
-        {
-            var rowToCheck = element.Rows.Nth(i);
-            var actualRowValues = await element.GetCellsForRow(rowToCheck).AllTextContentsAsync();
-            var actualRowValuesTrimmed = actualRowValues.Select(s => s.Trim());
-            CollectionAssert.IsSubsetOf(expectedTable.Rows[i].Values, actualRowValuesTrimmed,
-                $"Row #{i}{Environment.NewLine}Row selector:{ await rowToCheck.TextContentAsync()}{Environment.NewLine}Cell selector:{element.CellsSelector}{Environment.NewLine}");
-        }
+        await actualTableElement.ShouldContainRowsAsync(expectedTable);
     }
 
     /// <summary>
