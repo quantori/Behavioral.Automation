@@ -1,8 +1,7 @@
-name: CI
+name: Release
+
 on:
   push:
-    branches:
-      - main
     tags:
       - 'release/*'
   workflow_dispatch:
