@@ -57,6 +57,13 @@ public class ElementTransformations
         var inputSelector = _locatorStorageService.Get<ElementSelector>(caption + "Input");
         return new InputElementWrapper(_webContext, _locatorProvider.GetLocator(inputSelector), caption);
     }
+    
+    [StepArgumentTransformation]
+    public IButtonElement GetButton(string caption)
+    {
+        var buttonSelector = _locatorStorageService.Get<ElementSelector>(caption + "Button");
+        return new ButtonWrapper(_webContext, _locatorProvider.GetLocator(buttonSelector), caption);
+    }
 
     /// <summary>
     /// Transform "enabled" or "disabled" string into bool value
