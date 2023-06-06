@@ -6,4 +6,13 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="SpecFlow" Version="3.9.74" />
+      <PackageReference Include="SpecFlow.NUnit" Version="3.9.74" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Behavioral.Automation.Playwright\Behavioral.Automation.Playwright\Behavioral.Automation.Playwright.csproj" />
+    </ItemGroup>
+
 </Project>
