@@ -1,8 +1,5 @@
-﻿using Behavioral.Automation.Playwright.Context;
-using Behavioral.Automation.Playwright.Services;
-using Behavioral.Automation.Playwright.Services.ElementSelectors;
+﻿using Behavioral.Automation.Playwright.Services;
 using Behavioral.Automation.Playwright.Utils;
-using Behavioral.Automation.Playwright.WebElementsWrappers;
 using Behavioral.Automation.Playwright.WebElementsWrappers.Interface;
 using JetBrains.Annotations;
 using TechTalk.SpecFlow;
@@ -12,43 +9,39 @@ namespace Behavioral.Automation.Playwright.ElementTransformations;
 [Binding]
 public class ElementTransformations
 {
-    private readonly WebContext _webContext;
-    private readonly ILocatorProvider _locatorProvider;
     private readonly LocatorStorageService _locatorStorageService;
 
-    public ElementTransformations(WebContext webContext, ILocatorProvider locatorProvider,
-        LocatorStorageService locatorStorageService)
+    public ElementTransformations(LocatorStorageService locatorStorageService)
     {
-        _webContext = webContext;
-        _locatorProvider = locatorProvider;
         _locatorStorageService = locatorStorageService;
     }
 
     [StepArgumentTransformation]
-    public IWebElementWrapper GetElement(string caption)
+    public IDropdownElement GetDropdownElement(string caption)
     {
-        var selector = _locatorStorageService.Get<ElementSelector>(caption);
-        return new WebElementWrapper(_webContext, _locatorProvider.GetLocator(selector), caption);
-    }
-
-    [StepArgumentTransformation]
-    public IDropdownWrapper GetDropdownElement(string caption)
-    {
-        var dropdownSelector = _locatorStorageService.Get<DropdownSelector>(caption);
-        return new DropdownWrapper(_webContext, _locatorProvider.GetLocator(dropdownSelector.BaseElementSelector),
-            _locatorProvider.GetLocator(dropdownSelector.ItemSelector), caption);
+        var element = _locatorStorageService.Get<IDropdownElement>(caption + " Dropdown");
+        return element;
     }
 
     [StepArgumentTransformation]
     public ITableWrapper GetTableElement(string caption)
     {
-        var tableSelector = _locatorStorageService.Get<TableSelector>(caption);
-        return new TableWrapper(_webContext,
-            _locatorProvider.GetLocator(tableSelector.BaseElementSelector),
-            _locatorProvider.GetLocator(tableSelector.RowSelector),
-            tableSelector.CellSelector,
-            _locatorProvider.GetLocator(tableSelector.HeaderCellSelector), 
-            caption);
+        var element = _locatorStorageService.Get<ITableWrapper>(caption + " Table");
+        return element;
+    }
+    
+    [StepArgumentTransformation]
+    public IInputWebElement GetInput(string caption)
+    {
+        var element = _locatorStorageService.Get<IInputWebElement>(caption + " Input");
+        return element;
+    }
+    
+    [StepArgumentTransformation]
+    public IButtonElement GetButtonElement(string caption)
+    {
+        var element = _locatorStorageService.Get<IButtonElement>(caption + " Button");
+        return element;
     }
 
     /// <summary>

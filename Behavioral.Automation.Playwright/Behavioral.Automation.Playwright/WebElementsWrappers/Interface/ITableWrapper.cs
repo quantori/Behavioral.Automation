@@ -5,7 +5,7 @@ using Microsoft.Playwright;
 
 namespace Behavioral.Automation.Playwright.WebElementsWrappers.Interface;
 
-public interface ITableWrapper: IWebElementWrapper
+public interface ITableWrapper
 {
     public ILocator Rows { get; set; }
     
@@ -16,4 +16,6 @@ public interface ITableWrapper: IWebElementWrapper
     public ILocator GetCellsForRow(ILocator row);
 
         //public Task<IReadOnlyList<string>> HeaderCellsTextAsync { get; }
+
+        public Task ShouldBecomeVisibleAsync();
 }

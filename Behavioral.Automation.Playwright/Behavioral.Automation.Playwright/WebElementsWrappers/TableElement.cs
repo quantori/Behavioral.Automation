@@ -9,21 +9,9 @@ using NUnit.Framework;
 
 namespace Behavioral.Automation.Playwright.WebElementsWrappers;
 
-public class TableWrapper : WebElementWrapper, ITableWrapper
+public class TableElement : WebElement, ITableWrapper
 {
-    public TableWrapper(WebContext webContext, 
-        ILocator locator, 
-        ILocator rowLocator, 
-        ElementSelector cellsSelector, 
-        ILocator? headerCellsLocator, 
-            string caption) :
-        base(webContext, locator, caption)
-    {
-        Rows = rowLocator;
-        CellsSelector = cellsSelector;
-        HeaderCells = headerCellsLocator;
-    }
-    
+
     public ILocator Rows { get; set; }
     
     public ElementSelector CellsSelector { get; set; }
@@ -34,5 +22,10 @@ public class TableWrapper : WebElementWrapper, ITableWrapper
     {
         var cellSelector = CellsSelector.IdSelector ?? CellsSelector.XpathSelector;
         return row.Locator(cellSelector);
+    }
+
+    public async Task ShouldBecomeVisibleAsync()
+    {
+        await Assertions.Expect(Locator).ToBeVisibleAsync(new LocatorAssertionsToBeVisibleOptions() {Timeout = 60000});
     }
 }
