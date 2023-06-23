@@ -11,14 +11,25 @@ using NUnit.Framework;
 
 namespace Behavioral.Automation.Playwright.WebElementsWrappers;
 
-public class DropdownWrapper : WebElement, IDropdownElement
+public class DropdownElement : WebElement, IDropdownElement
 {
     public string MenuSelector { get; set; }
     public ILocator Menu => WebContext.Page.Locator(MenuSelector);
     public ILocator ItemSelection => Menu.Locator(ItemSelectionSelector);
     public string ItemSelectionSelector { get; set; }
+    public string ItemSelector { get; set; }
 
-    public ILocator Items { get; set; }
+
+    public ILocator Items
+    {
+        get
+        {
+            if (WebContext is null) throw new NullReferenceException("Please set web context.");
+            return Menu.Locator(ItemSelector);
+        }
+        set => throw new NotImplementedException();
+    }
+
     public Task<IReadOnlyList<string>> ItemsTexts => Items.AllTextContentsAsync();
 
     public async Task SelectValue(params string[] elements)
@@ -40,12 +51,15 @@ public class DropdownWrapper : WebElement, IDropdownElement
     {
         await Locator.ClickAsync();
         await SelectDropdownOptionAsync(itemText);
+        await Locator.ClickAsync();
     }
     
     public async Task SelectDropdownOptionAsync(string itemText)
     {
+        Thread.Sleep(1000);
         var index = await GetDropdownOptionIndexByTextAsync(itemText, true);
-        await ItemSelection.Nth(index).ClickAsync();
+        await Locator.Locator(ItemSelector).Nth(0).EvaluateAsync("node => node.removeAttribute('selected')");
+        await Locator.Locator(ItemSelector).Nth(index).EvaluateAsync("node => node.setAttribute('selected','selected')");
     }
     
     private async Task<int> GetDropdownOptionIndexByTextAsync(string optionText, bool throwAssert)
@@ -65,7 +79,7 @@ public class DropdownWrapper : WebElement, IDropdownElement
 
         if (throwAssert)
         {
-            Assert.Fail($"Can't find dropdown option {optionText}");
+            if (index == -1) Assert.Fail($"Can't find dropdown option '{optionText}'. Available options are '{string.Join("', '", allTextContents.ToList())}'");
         }
 
         return index;

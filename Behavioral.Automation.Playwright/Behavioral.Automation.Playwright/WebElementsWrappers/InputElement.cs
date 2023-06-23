@@ -6,11 +6,11 @@ using Microsoft.Playwright;
 
 namespace Behavioral.Automation.Playwright.WebElementsWrappers;
 
-public class ButtonWrapper: WebElement, IButtonElement
+public class InputElement: WebElement, IInputWebElement
 {
 
-    public async Task ClickAsync()
+    public async Task TypeAsync(string text)
     {
-        await Locator.ClickAsync();
+        await Locator.FillAsync(text);
     }
 }

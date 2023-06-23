@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace Behavioral.Automation.Playwright.WebElementsWrappers;
 
-public class TableWrapper : WebElement, ITableWrapper
+public class TableElement : WebElement, ITableWrapper
 {
 
     public ILocator Rows { get; set; }
@@ -26,6 +26,6 @@ public class TableWrapper : WebElement, ITableWrapper
 
     public async Task ShouldBecomeVisibleAsync()
     {
-        await Assertions.Expect(Locator).ToBeVisibleAsync();
+        await Assertions.Expect(Locator).ToBeVisibleAsync(new LocatorAssertionsToBeVisibleOptions() {Timeout = 60000});
     }
 }

@@ -13,4 +13,10 @@ public class ButtonBindings
     {
         await element.ClickAsync();
     }
+    
+    [Then(@"""(.+?)"" button should become visible")]
+    public async Task CheckButtonVisibility(IButtonElement element)
+    {
+        await element.ShouldBecomeVisibleAsync();
+    }
 }

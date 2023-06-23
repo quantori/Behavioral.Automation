@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Behavioral.Automation.Playwright.Context;
 using Microsoft.Playwright;
 using TechTalk.SpecFlow;
@@ -14,9 +15,9 @@ public class PageBinding
         _webContext = webContext;
     }
 
-    [Then(@"page title should be ""(.+?)""")]
-    public void ThenPageTitleShouldBe(string title)
+    [Then(@"page title should become ""(.+?)""")]
+    public async Task ThenPageTitleShouldBe(string title)
     {
-        Assertions.Expect(_webContext.Page).ToHaveTitleAsync(title);
+        await Assertions.Expect(_webContext.Page).ToHaveTitleAsync(title, new PageAssertionsToHaveTitleOptions() {Timeout = 60000});
     }
 }
