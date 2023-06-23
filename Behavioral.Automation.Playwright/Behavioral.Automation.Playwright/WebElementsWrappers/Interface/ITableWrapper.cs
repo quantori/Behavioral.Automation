@@ -16,4 +16,6 @@ public interface ITableWrapper: IWebElementWrapper
     public ILocator GetCellsForRow(ILocator row);
 
         //public Task<IReadOnlyList<string>> HeaderCellsTextAsync { get; }
+
+        public Task ShouldBecomeVisibleAsync();
 }

@@ -54,14 +54,14 @@ public class ElementTransformations
     [StepArgumentTransformation]
     public IInputWebElement GetInput(string caption)
     {
-        var inputSelector = _locatorStorageService.Get<ElementSelector>(caption + "Input");
+        var inputSelector = _locatorStorageService.Get<ElementSelector>(caption.ToCamelCase() + "Input");
         return new InputElementWrapper(_webContext, _locatorProvider.GetLocator(inputSelector), caption);
     }
     
     [StepArgumentTransformation]
     public IButtonElement GetButton(string caption)
     {
-        var buttonSelector = _locatorStorageService.Get<ElementSelector>(caption + "Button");
+        var buttonSelector = _locatorStorageService.Get<ElementSelector>(caption.ToCamelCase() + "Button");
         return new ButtonWrapper(_webContext, _locatorProvider.GetLocator(buttonSelector), caption);
     }
 

@@ -181,4 +181,10 @@ public class DropdownBinding
                 $"Expected: {string.Join(" | ", expectedValue)}{Environment.NewLine}");
         }
     }
+
+    [Given(@"user selected ""(.*)"" item in ""(.*)"" dropdown")]
+    public void GivenUserSelectedItemInDropdown(string p0, string database)
+    {
+        ScenarioContext.StepIsPending();
+    }
 }

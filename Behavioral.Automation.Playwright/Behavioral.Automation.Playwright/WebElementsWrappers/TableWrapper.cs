@@ -35,4 +35,9 @@ public class TableWrapper : WebElementWrapper, ITableWrapper
         var cellSelector = CellsSelector.IdSelector ?? CellsSelector.XpathSelector;
         return row.Locator(cellSelector);
     }
+
+    public async Task ShouldBecomeVisibleAsync()
+    {
+        await Assertions.Expect(Locator).ToBeVisibleAsync();
+    }
 }
