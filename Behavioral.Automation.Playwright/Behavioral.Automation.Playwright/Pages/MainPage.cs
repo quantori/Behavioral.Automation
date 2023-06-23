@@ -21,4 +21,7 @@ class MainPageExample : ISelectorStorage
     };
 
     public TableElement PrimersDesignTable = new() {Selector = "//div[@id='alignInfo']"};
+
+    public CheckboxElement PerformSpecificityCheckCheckbox =
+        new() {Selector = "//input[@name='SEARCH_SPECIFIC_PRIMER']"};
 }
