@@ -17,7 +17,7 @@ public class TableBinding
     private static readonly float? Timeout = ConfigManager.GetConfig<Config>().AssertTimeoutMilliseconds;
 
     [Then(@"""(.*)"" table should become visible")]
-    public async void ThenTableShouldBecomeVisible(ITableWrapper table)
+    public async Task ThenTableShouldBecomeVisible(ITableWrapper table)
     {
         await table.ShouldBecomeVisibleAsync();
     }

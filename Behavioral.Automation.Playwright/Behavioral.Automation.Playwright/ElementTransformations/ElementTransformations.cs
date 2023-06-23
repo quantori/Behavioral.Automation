@@ -25,24 +25,16 @@ public class ElementTransformations
     }
 
     [StepArgumentTransformation]
-    public IWebElementWrapper GetElement(string caption)
+    public IDropdownElement GetDropdownElement(string caption)
     {
-        var selector = _locatorStorageService.Get<ElementSelector>(caption);
-        return new WebElementWrapper(_webContext, _locatorProvider.GetLocator(selector), caption);
-    }
-
-    [StepArgumentTransformation]
-    public IDropdownWrapper GetDropdownElement(string caption)
-    {
-        var dropdownSelector = _locatorStorageService.Get<DropdownSelector>(caption);
-        return new DropdownWrapper(_webContext, _locatorProvider.GetLocator(dropdownSelector.BaseElementSelector),
-            _locatorProvider.GetLocator(dropdownSelector.ItemSelector), caption);
+        var dropdownSelector = _locatorStorageService.Get<DropdownSelector>(caption.ToCamelCase() + "Dropdown");
+        return new DropdownWrapper(_webContext, _locatorProvider.GetLocator(dropdownSelector), caption);
     }
 
     [StepArgumentTransformation]
     public ITableWrapper GetTableElement(string caption)
     {
-        var tableSelector = _locatorStorageService.Get<TableSelector>(caption);
+        var tableSelector = _locatorStorageService.Get<TableSelector>(caption.ToCamelCase() + "Table");
         return new TableWrapper(_webContext,
             _locatorProvider.GetLocator(tableSelector.BaseElementSelector),
             _locatorProvider.GetLocator(tableSelector.RowSelector),
