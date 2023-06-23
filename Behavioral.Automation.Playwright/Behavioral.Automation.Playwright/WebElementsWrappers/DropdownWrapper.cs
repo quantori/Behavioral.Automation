@@ -11,7 +11,7 @@ using NUnit.Framework;
 
 namespace Behavioral.Automation.Playwright.WebElementsWrappers;
 
-public class DropdownWrapper : WebElementWrapper, IDropdownElement
+public class DropdownWrapper : WebElement, IDropdownElement
 {
     public string MenuSelector { get; set; }
     public ILocator Menu => WebContext.Page.Locator(MenuSelector);
@@ -69,9 +69,5 @@ public class DropdownWrapper : WebElementWrapper, IDropdownElement
         }
 
         return index;
-    }
-
-    public DropdownWrapper([NotNull] WebContext webContext, [NotNull] ILocator locator, [NotNull] string caption) : base(webContext, locator, caption)
-    {
     }
 }

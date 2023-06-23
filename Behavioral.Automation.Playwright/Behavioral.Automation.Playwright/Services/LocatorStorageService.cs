@@ -1,35 +1,46 @@
 using System;
 using System.Linq;
+using Behavioral.Automation.Playwright.Context;
 using Behavioral.Automation.Playwright.Pages;
-using Behavioral.Automation.Playwright.Services.ElementSelectors;
 using Behavioral.Automation.Playwright.Utils;
-using JetBrains.Annotations;
+using Behavioral.Automation.Playwright.WebElementsWrappers.Interface;
 
 namespace Behavioral.Automation.Playwright.Services;
 
-[UsedImplicitly]
 public class LocatorStorageService
 {
+    private readonly WebContext _webContext;
+
+    public LocatorStorageService(WebContext webContext)
+    {
+        _webContext = webContext;
+    }
+
     //TODO: Impl factory
     public T Get<T>(string elementName)
     {
-        if (string.IsNullOrEmpty(elementName)) throw new Exception("element name can not be empty. Please correct test step");
         var type = typeof(ISelectorStorage);
         var types = AppDomain.CurrentDomain.GetAssemblies()
             .SelectMany(s => s.GetTypes())
             .Where(p => type.IsAssignableFrom(p) && p.IsClass);
 
-        T? element = default(T);
+        IWebElement element = null;
+        var camelCaseElementName = elementName.ToCamelCase();
+
         foreach (var pageType in types)
         {
-            var instanceOfClassWithElements = Activator.CreateInstance(pageType);
-            var classField = (T) pageType.GetField(elementName.ToCamelCase())?.GetValue(instanceOfClassWithElements)!;
-            if (element != null && classField != null)
+            var pageTemp = Activator.CreateInstance(pageType);
+            var temp = (IWebElement) pageType.GetField(camelCaseElementName)?.GetValue(pageTemp)!;
+            if (element != null && temp != null)
                 throw new Exception($"found the same selector '{elementName}' in different classes");
-            element ??= classField;
+            element ??= temp;
         }
+
+        if (element == null) throw new Exception($"'{elementName}' transformed to '{camelCaseElementName}' selectors not found.");
+
+        element.WebContext = _webContext;
+        element.Description = elementName;
         
-        if (element == null) throw new Exception($"'{elementName}' selectors not found.");
-        return element;
-        }
+        return (T) element;
     }
+}

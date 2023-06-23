@@ -6,11 +6,8 @@ using Microsoft.Playwright;
 
 namespace Behavioral.Automation.Playwright.WebElementsWrappers;
 
-public class InputElementWrapper: WebElementWrapper, IInputWebElement
+public class InputElementWrapper: WebElement, IInputWebElement
 {
-    public InputElementWrapper([NotNull] WebContext webContext, [NotNull] ILocator locator, [NotNull] string caption) : base(webContext, locator, caption)
-    {
-    }
 
     public async Task TypeAsync(string text)
     {

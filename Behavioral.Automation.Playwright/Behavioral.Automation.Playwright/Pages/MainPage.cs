@@ -7,6 +7,8 @@ namespace Behavioral.Automation.Playwright.Pages;
 class MainPageExample : ISelectorStorage
 {
     private static readonly string Id = ConfigManager.GetConfig<Config>().SearchAttribute;
+    
+    
 
     public ElementSelector TemplateInput = new() {XpathSelector = "//textarea[@id='seq']"};
 

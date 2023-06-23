@@ -4,7 +4,7 @@ using Microsoft.Playwright;
 
 namespace Behavioral.Automation.Playwright.WebElementsWrappers.Interface;
 
-public interface IDropdownElement: IWebElementWrapper
+public interface IDropdownElement
 {
     public ILocator Items { get; set; }
     
