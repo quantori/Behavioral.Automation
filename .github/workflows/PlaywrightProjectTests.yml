@@ -13,11 +13,7 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '5.0.x'
-      - name: Run Blazor app
+      - name: PR
         run: |
-          cd ./src/BlazorApp
-          dotnet run &
-      - name: Test Blazor app
-        run: |
-          cd ./Behavioral.Automation.Playwright/UITests
+          cd ./Behavioral.Automation.Scenarios
           dotnet test
