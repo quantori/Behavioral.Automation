@@ -26,6 +26,8 @@ class MainPageExample : ISelectorStorage
         ItemSelectionSelector = "//option"
     };
 
+    public LabelElement ErrorLabel = new LabelElement() {Selector = "//p[@class='error']"};
+
     public TableElement PrimersDesignTable = new() {Selector = "//div[@id='alignInfo']"};
 
     public CheckboxElement PerformSpecificityCheckCheckbox =

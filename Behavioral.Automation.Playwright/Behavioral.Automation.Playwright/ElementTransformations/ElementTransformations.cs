@@ -50,6 +50,13 @@ public class ElementTransformations
         var element = _locatorStorageService.Get<ICheckboxElement>(caption + " Checkbox");
         return element;
     }
+    
+    [StepArgumentTransformation]
+    public ILabelElement GetLabelElement(string caption)
+    {
+        var element = _locatorStorageService.Get<ILabelElement>(caption + " Label");
+        return element;
+    }
 
     /// <summary>
     /// Transform "enabled" or "disabled" string into bool value
