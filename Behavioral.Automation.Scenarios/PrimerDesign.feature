@@ -12,7 +12,9 @@ Scenario: primers to amplify DNA can be designed
 	Then page title should become "Primer-Blast results"
 	And "Primers design" table should become visible
 	
-	
+	Scenario: Evaluate primers
+		
+		Scenario: Provide invalid input
 	
 	
 	
