@@ -32,6 +32,21 @@ class MainPageExample : ISelectorStorage
     public InputElement MaximalMeltingTemperatureDifferenceInput =
         new InputElement() {Selector = "//*[@name='PRIMER_MAX_DIFF_TM']"};
     
+    public DropdownElement ExonJunctionSpanDropdown = new()
+    {
+        Selector = "//select[@name='PRIMER_ON_SPLICE_SITE']",
+        MenuSelector = "//select[@name='PRIMER_ON_SPLICE_SITE']",
+        ItemSelector = "//option",
+        ItemSelectionSelector = "//option"
+    };
+    
+    public InputElement MinSiteOverlapByFivePrimeEndInput =
+        new InputElement() {Selector = "//*[@name='SPLICE_SITE_OVERLAP_5END']"};
+    public InputElement MinSiteOverlapByThreePrimeEndInput =
+        new InputElement() {Selector = "//*[@name='SPLICE_SITE_OVERLAP_3END']"};
+    public InputElement MaxSiteOverlapByThreePrimeEndInput =
+        new InputElement() {Selector = "//*[@name='SPLICE_SITE_OVERLAP_3END_MAX']"};
+    
 
     public ButtonElement GetPrimersButton = new()
         {Selector = "//form/div[@class='searchInfo ']//input[@value='Get Primers']"};
