@@ -9,6 +9,7 @@ class MainPageExample : ISelectorStorage
     private static readonly string Id = ConfigManager.GetConfig<Config>().SearchAttribute;
 
     public InputElement TemplateInput = new InputElement() { Selector = "//textarea[@id='seq']"};
+    public ButtonElement ChooseTemplateFileButton = new ButtonElement() {Selector = "//input[@id='upl']"};
     public InputElement ForwardPrimerFromInput = new InputElement() {Selector = "//input[@name='PRIMER5_START']"};
     public InputElement ForwardPrimerToInput = new InputElement() {Selector = "//input[@name='PRIMER5_END']"};
     public InputElement ReversePrimerFromInput = new InputElement() {Selector = "//input[@name='PRIMER3_START']"};
@@ -31,6 +32,21 @@ class MainPageExample : ISelectorStorage
         new InputElement() {Selector = "//*[@name='PRIMER_MAX_TM']"};
     public InputElement MaximalMeltingTemperatureDifferenceInput =
         new InputElement() {Selector = "//*[@name='PRIMER_MAX_DIFF_TM']"};
+    
+    public DropdownElement ExonJunctionSpanDropdown = new()
+    {
+        Selector = "//select[@name='PRIMER_ON_SPLICE_SITE']",
+        MenuSelector = "//select[@name='PRIMER_ON_SPLICE_SITE']",
+        ItemSelector = "//option",
+        ItemSelectionSelector = "//option"
+    };
+    
+    public InputElement MinSiteOverlapByFivePrimeEndInput =
+        new InputElement() {Selector = "//*[@name='SPLICE_SITE_OVERLAP_5END']"};
+    public InputElement MinSiteOverlapByThreePrimeEndInput =
+        new InputElement() {Selector = "//*[@name='SPLICE_SITE_OVERLAP_3END']"};
+    public InputElement MaxSiteOverlapByThreePrimeEndInput =
+        new InputElement() {Selector = "//*[@name='SPLICE_SITE_OVERLAP_3END_MAX']"};
     
 
     public ButtonElement GetPrimersButton = new()
