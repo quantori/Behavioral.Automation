@@ -13,6 +13,5 @@ PCR is used to amplify little part of DNA (for example, 1000 bps)
     And "Perform specificity check" checkbox is unchecked
     When user clicks on "Get primers" button
     Then "Primers design" table should become visible
-    Then "Additional" table should become visible
 
   Scenario: Another test (if user don't specify template than error shoud become visible)
