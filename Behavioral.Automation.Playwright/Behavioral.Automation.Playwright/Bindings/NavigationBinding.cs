@@ -19,6 +19,7 @@ public class NavigationBinding
     }
 
     [Given(@"URL ""(.+?)"" is opened")]
+    [When(@"user opens URL ""(.+?)""")]
     public async Task GivenUrlIsOpened(string url)
     {
         if (IsAbsoluteUrl(url))
