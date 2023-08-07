@@ -9,6 +9,7 @@ class MainPageExample : ISelectorStorage
     private static readonly string Id = ConfigManager.GetConfig<Config>().SearchAttribute;
 
     public InputElement TemplateInput = new InputElement() { Selector = "//textarea[@id='seq']"};
+    public ButtonElement ChooseTemplateFileButton = new ButtonElement() {Selector = "//input[@id='upl']"};
     public InputElement ForwardPrimerFromInput = new InputElement() {Selector = "//input[@name='PRIMER5_START']"};
     public InputElement ForwardPrimerToInput = new InputElement() {Selector = "//input[@name='PRIMER5_END']"};
     public InputElement ReversePrimerFromInput = new InputElement() {Selector = "//input[@name='PRIMER3_START']"};
