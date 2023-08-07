@@ -15,7 +15,7 @@ public class InputBinding
     /// <param name="input">String to enter</param>
     /// <param name="element">Tested web element wrapper</param>
     /// <example>When user enters "test string" into "Test input"</example>
-    [Given(@"user entered (.+?) into ""(.+?)"" input")]
+    [Given(@"user entered ""(.+?)"" into ""(.+?)"" input")]
     [When(@"user enters ""(.+?)"" into ""(.+?)"" input")]
     public async Task FillInput(string text, IInputWebElement element)
     {

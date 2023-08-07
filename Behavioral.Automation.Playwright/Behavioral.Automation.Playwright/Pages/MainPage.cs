@@ -15,6 +15,24 @@ class MainPageExample : ISelectorStorage
     public InputElement ReversePrimerToInput = new InputElement() {Selector = "//input[@name='PRIMER3_END']"};
     public InputElement ForwardPrimerInput = new InputElement() {Selector = "//input[@name='PRIMER_LEFT_INPUT']"};
     public InputElement ReversePrimerInput = new InputElement() {Selector = "//input[@name='PRIMER_RIGHT_INPUT']"};
+    
+    //primer parameters block:
+    public InputElement MinimalSizeOfPCRProductInput =
+        new InputElement() {Selector = "//*[@name='PRIMER_PRODUCT_MIN']"};
+    public InputElement MaximalSizeOfPCRProductInput =
+        new InputElement() {Selector = "//*[@name='PRIMER_PRODUCT_MAX']"};
+    public InputElement NumberOfPrimersToReturnInput =
+        new InputElement() {Selector = "//*[@name='PRIMER_NUM_RETURN']"};
+    public InputElement MinimalMeltingTemperatureOfPrimersInput =
+        new InputElement() {Selector = "//*[@name='PRIMER_MIN_TM']"};
+    public InputElement OptimalMeltingTemperatureOfPrimersInput =
+        new InputElement() {Selector = "//*[@name='PRIMER_OPT_TM']"};
+    public InputElement MaximalMeltingTemperatureOfPrimersInput =
+        new InputElement() {Selector = "//*[@name='PRIMER_MAX_TM']"};
+    public InputElement MaximalMeltingTemperatureDifferenceInput =
+        new InputElement() {Selector = "//*[@name='PRIMER_MAX_DIFF_TM']"};
+    
+
     public ButtonElement GetPrimersButton = new()
         {Selector = "//form/div[@class='searchInfo ']//input[@value='Get Primers']"};
 
