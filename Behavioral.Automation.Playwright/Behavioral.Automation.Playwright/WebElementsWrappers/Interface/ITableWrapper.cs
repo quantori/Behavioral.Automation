@@ -18,4 +18,5 @@ public interface ITableWrapper
         //public Task<IReadOnlyList<string>> HeaderCellsTextAsync { get; }
 
         public Task ShouldBecomeVisibleAsync();
+        public Task ShouldBecomeVisibleAsync(int delay);
 }
