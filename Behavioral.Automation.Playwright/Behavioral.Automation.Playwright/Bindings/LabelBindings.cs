@@ -12,4 +12,10 @@ public class LabelBindings
     {
         await element.ShouldHaveTextAsync(text);
     }
+    
+    [Then(@"label ""(.+?)"" should become visible")]
+    public async Task CheckLabelVisibility(ILabelElement element)
+    {
+        await element.ShouldBecomeVisibleAsync();
+    }
 }

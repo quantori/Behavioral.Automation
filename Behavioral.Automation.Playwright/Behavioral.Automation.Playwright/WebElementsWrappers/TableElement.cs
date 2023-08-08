@@ -28,4 +28,9 @@ public class TableElement : WebElement, ITableWrapper
     {
         await Assertions.Expect(Locator).ToBeVisibleAsync(new LocatorAssertionsToBeVisibleOptions() {Timeout = 60000});
     }
+
+    public async Task ShouldBecomeVisibleAsync(int delay)
+    {
+        await Assertions.Expect(Locator).ToBeVisibleAsync(new LocatorAssertionsToBeVisibleOptions() {Timeout = delay * 1000});
+    }
 }
