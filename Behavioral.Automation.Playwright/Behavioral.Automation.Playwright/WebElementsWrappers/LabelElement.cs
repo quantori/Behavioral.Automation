@@ -10,4 +10,9 @@ public class LabelElement: WebElement, ILabelElement
     {
         await Assertions.Expect(Locator).ToHaveTextAsync(text);
     }
+
+    public async Task ShouldBecomeVisibleAsync()
+    {
+        await Assertions.Expect(Locator).ToBeVisibleAsync();
+    }
 }
