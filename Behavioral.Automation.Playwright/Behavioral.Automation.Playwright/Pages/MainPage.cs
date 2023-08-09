@@ -1,5 +1,6 @@
 using Behavioral.Automation.Configs;
 using Behavioral.Automation.Playwright.Configs;
+using Behavioral.Automation.Playwright.Services.ElementSelectors;
 using Behavioral.Automation.Playwright.WebElementsWrappers;
 
 namespace Behavioral.Automation.Playwright.Pages;
@@ -62,7 +63,13 @@ class MainPageExample : ISelectorStorage
 
     public LabelElement ErrorLabel = new LabelElement() {Selector = "//p[@class='error']"};
 
-    public TableElement PrimersDesignTable = new() {Selector = "//div[@id='alignInfo']"};
+    public TableElement PrimersDesignTable = new()
+    {
+        Selector = "//div[@id='alignInfo']",
+        HeaderCellsSelector = "//div[@class='prPairInfo'][1]//tr[1]/th",
+        RowsSelector = "//tr",
+        CellsSelector = new ElementSelector() {XpathSelector = "/*"}
+    };
 
     public CheckboxElement PerformSpecificityCheckCheckbox =
         new() {Selector = "//input[@name='SEARCH_SPECIFIC_PRIMER']"};

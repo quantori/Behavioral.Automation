@@ -15,7 +15,7 @@ PCR is used to amplify little part of DNA (for example, 1000 bps)
     Then "Primers design" table should become visible
     And "Primers design" table should have the following rows:
       | Sequence (5'->3')    | Length | Tm    |
-      | CCTCACTCACCACTGCCAAT | 20     | 59.96 |
+      | ATTATCGTGTGTGCCCCGTT | 20     | 60.04 |
 
   Scenario: User can provide template as .fasta file
     Given application URL is opened
