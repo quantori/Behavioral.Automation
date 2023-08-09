@@ -1,4 +1,4 @@
-﻿Feature: Primer design
+﻿Feature: Example feature file only for demonstration purpose
 wiki: https://de.wikipedia.org/wiki/Primerdesign
 DNA sequencing is used to read DNA (A, C, T, G nucleotides)
 PCR is used to amplify little part of DNA (for example, 1000 bps)
