@@ -27,4 +27,10 @@ public class TableBinding
     {
         await table.ShouldBecomeVisibleAsync(seconds);
     }
+
+    [Then(@"""(.*)"" table should have the following rows:")]
+    public async Task ThenTableShouldHaveTheFollowingRows(ITableWrapper actualTable, Table expectedTable)
+    {
+        await actualTable.ShouldContainTable(expectedTable);
+    }
 }

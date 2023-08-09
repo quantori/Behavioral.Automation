@@ -1,4 +1,4 @@
-﻿Feature: Primer design
+﻿Feature: Example feature file only for demonstration purpose
 wiki: https://de.wikipedia.org/wiki/Primerdesign
 DNA sequencing is used to read DNA (A, C, T, G nucleotides)
 PCR is used to amplify little part of DNA (for example, 1000 bps)
@@ -13,6 +13,9 @@ PCR is used to amplify little part of DNA (for example, 1000 bps)
     And "Perform specificity check" checkbox is unchecked
     When user clicks on "Get primers" button
     Then "Primers design" table should become visible
+    And "Primers design" table should have the following rows:
+      | Sequence (5'->3')    | Length | Tm    |
+      | ATTATCGTGTGTGCCCCGTT | 20     | 60.04 |
 
   Scenario: User can provide template as .fasta file
     Given application URL is opened
