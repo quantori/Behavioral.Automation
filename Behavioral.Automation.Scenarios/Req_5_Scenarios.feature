@@ -7,7 +7,7 @@ PCR is used to amplify little part of DNA (for example, 1000 bps)
     Given application URL is opened
 
  @fifth_requirement
- Scenario: User can provide DNA template accession number and specify exon-exon junction attribute
+ Scenario: User can provide RNA template accession number and specify exon-exon junction attribute
     Given user entered "NM_000115.3" into "Template" input
     When user opens "Exon junction span" dropdown and selects "Primer must span an exon-exon junction" in dropdown menu
     And user clicks on "Perform specificity check" checkbox
@@ -17,7 +17,7 @@ PCR is used to amplify little part of DNA (for example, 1000 bps)
       | Sequence (5'->3')     | Length | Tm    |
       | TCACCTAAAGCAGAGACGGG  | 20     | 59.10 |
 
- Scenario: User can provide DNA template accession number and specify exon-exon junction attribute with settings
+ Scenario: User can provide RNA template accession number and specify exon-exon junction attribute with settings
     Given user entered "NM_000115.3" into "Template" input
     When user opens "Exon junction span" dropdown and selects "Primer must span an exon-exon junction" in dropdown menu
     And user enters "75" into "Minimal size of PCR product" input
