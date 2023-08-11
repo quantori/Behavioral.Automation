@@ -13,6 +13,9 @@ PCR is used to amplify little part of DNA (for example, 1000 bps)
     And user clicks on "Perform specificity check" checkbox
     And user clicks on "Get primers" button
     Then "Primers design" table should become visible
+    And "Primers design" table should have the following rows:
+      | Sequence (5'->3')     | Length | Tm    |
+      | TCACCTAAAGCAGAGACGGG  | 20     | 59.10 |
 
  Scenario: User can provide DNA template accession number and specify exon-exon junction attribute with settings
     Given user entered "NM_000115.3" into "Template" input
@@ -24,3 +27,6 @@ PCR is used to amplify little part of DNA (for example, 1000 bps)
     And user clicks on "Perform specificity check" checkbox
     And user clicks on "Get primers" button
     Then "Primers design" table should become visible
+    And "Primers design" table should have the following rows:
+      | Sequence (5'->3')    | Length | Self complementarity |
+      | TCACCTAAAGCAGAGACGGG | 20     | 	2.00             |
