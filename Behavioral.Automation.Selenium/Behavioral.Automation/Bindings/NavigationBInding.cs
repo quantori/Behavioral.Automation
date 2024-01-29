@@ -16,12 +16,15 @@ namespace Behavioral.Automation.Bindings
     {
         private readonly IDriverService _driverService;
         private readonly IScopeContextManager _scopeContextManager;
+        private readonly ITestRunner _testRunner;
 
         public NavigationBinding([NotNull] IDriverService driverService,
-            [NotNull] IScopeContextManager scopeContextManager)
+            [NotNull] IScopeContextManager scopeContextManager, 
+            [NotNull] ITestRunner testRunner)
         {
             _driverService = driverService;
             _scopeContextManager = scopeContextManager;
+            _testRunner = testRunner;
         }
 
         /// <summary>
@@ -146,5 +149,33 @@ namespace Behavioral.Automation.Bindings
         {
             return Uri.IsWellFormedUriString(url, UriKind.Absolute);
         }
+
+        [Given(@"user navigated to (.*) by (tab click|URL)")]
+        [When(@"user navigates to (.*) by (tab click|URL)")]
+        public void NavigatesToTabWithDiferentOption([NotNull] string tabName, [NotNull] bool byURL)
+        {
+            if (byURL)
+            {
+                string relativeURL = "/";
+                if (tabName == "Forecast")
+                {
+                    relativeURL += "fetchdata";
+                }
+                else relativeURL += $"{tabName.ToLower()}";
+
+                _driverService.NavigateToRelativeUrl(relativeURL);
+            }
+            else
+            {
+                _testRunner.When($"user clicks on \"{tabName}\" link");
+            }
+        }
+
+        [StepArgumentTransformation("(tab click|URL)")]
+        public bool SetNavigateType([NotNull] string byURL)
+        {
+            return byURL == "URL";
+        }
+
     }
 }

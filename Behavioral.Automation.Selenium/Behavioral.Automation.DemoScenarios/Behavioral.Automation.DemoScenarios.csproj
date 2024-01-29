@@ -15,6 +15,8 @@
 	<PackageReference Include="SpecFlow.NUnit" Version="3.9.69" />
 	<PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.9.69" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.3.1" />
+    <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="108.0.5359.7100" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.3.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +32,22 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Behavioral.Automation.DemoBindings\Behavioral.Automation.DemoBindings.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Features\artemova_homework\CounterPage.feature" />
+    <UpToDateCheckInput Remove="Features\artemova_homework\ForecastPage.feature" />
+    <UpToDateCheckInput Remove="Features\artemova_homework\GreetingsPage.feature" />
+    <UpToDateCheckInput Remove="Features\artemova_homework\HomePage.feature" />
+    <UpToDateCheckInput Remove="Features\artemova_homework\Navigation.feature" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckBuild Remove="Features\artemova_homework\CounterPage.feature.cs" />
+    <UpToDateCheckBuild Remove="Features\artemova_homework\ForecastPage.feature.cs" />
+    <UpToDateCheckBuild Remove="Features\artemova_homework\GreetingsPage.feature.cs" />
+    <UpToDateCheckBuild Remove="Features\artemova_homework\HomePage.feature.cs" />
+    <UpToDateCheckBuild Remove="Features\artemova_homework\Navigation.feature.cs" />
   </ItemGroup>
 
 </Project>

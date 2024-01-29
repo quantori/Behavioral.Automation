@@ -27,14 +27,7 @@ public class AttributeBinding
     [Then(@"the ""(.+?)"" should be| (enabled|disabled)")]
     public async Task CheckElementIsDisabled(IWebElementWrapper element, bool enabled)
     {
-        if (enabled)
-        {
-            await Assertions.Expect(element.Locator).Not.ToBeDisabledAsync();
-        }
-        else
-        {
-            await Assertions.Expect(element.Locator).ToBeDisabledAsync();
-        }
+        await CheckElementEnabled(element, enabled);
     }
     
     /// <summary>
@@ -54,7 +47,21 @@ public class AttributeBinding
     {
         foreach (var row in table.Rows)
         {
-            await CheckElementIsDisabled(_elementTransformations.GetElement(row.Values.First()), enabled);
+            await CheckElementEnabled(_elementTransformations.GetElement(row.Values.First()), enabled);
+        }
+    }
+
+    private async Task CheckElementEnabled(IWebElementWrapper element, bool enabled)
+    {
+        var locator = element.Locator;
+        
+        if (enabled)
+        {
+            await Assertions.Expect(locator).Not.ToBeDisabledAsync();
+        }
+        else
+        {
+            await Assertions.Expect(locator).ToBeDisabledAsync();
         }
     }
 }

@@ -17,6 +17,39 @@ namespace Behavioral.Automation.DemoBindings
             {
                 mappingPipe.Register("label").Alias("label")
                     .With("label-simple-text").As("Demo");
+                mappingPipe.Register("header").Alias("header")
+                    .With("main-page-header").As("Main page")
+                    .With("navigation-app-label").As("Sidebar")
+                    .With("main-elements-list-header").As("Elements list")
+                    .With("greetings-page-header").As("Greetings page")
+                    .With("counter-page-label").As("Counter page")
+                    .With("forecast-page-header").As("Weather forecast page");
+
+                mappingPipe.Register("text").Alias("text")
+                    .With("main-page-paragraph").As("Main page")
+                    .With("greetings-input-text").As("Enter your name")
+                    .With("greetings-page-paragraph").As("Hello")
+                    .With("counter-page-text").As("Current count")
+                    .With("forecast-page-paragraph").As("Forecast page");
+
+                mappingPipe.Register("table").Alias("table")
+                    .With("forecast-table").As("Forecast");
+
+                mappingPipe.Register("list").Alias("list")
+                    .With("main-elements-list").As("Main elements");
+
+                mappingPipe.Register("link").Alias("link")
+                    .With("nav-link-home").As("Homepage")
+                    .With("nav-link-greetings").As("Greetings")
+                    .With("nav-link-counter").As("Counter")
+                    .With("nav-link-forecast").As("Forecast");
+
+                mappingPipe.Register("button").Alias("button")
+                    .With("greetings-page-button").As("Say hello")
+                    .With("counter-page-button").As("Click me");
+
+                mappingPipe.Register("field").Alias("field")
+                    .With("greetings-page-input").As("Name");
             }
         }
     }

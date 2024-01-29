@@ -9,4 +9,6 @@ class MainPageExample : ISelectorStorage
     private static readonly string Id = ConfigManager.GetConfig<Config>().SearchAttribute;
 
     public ElementSelector DemoLabel = new() {IdSelector = "label-simple-text"};
+    public ElementSelector ClickMe = new() {IdSelector = "counter-button"};
+    public ElementSelector Counter = new() {IdSelector = "counter-text"};
 }

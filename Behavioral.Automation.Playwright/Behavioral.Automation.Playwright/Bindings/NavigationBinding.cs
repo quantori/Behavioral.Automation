@@ -39,7 +39,15 @@ public class NavigationBinding
     [Given("application URL is opened")]
     public async Task GivenApplicationUrlIsOpened()
     {
-        await _webContext.Page.GotoAsync(ConfigManager.GetConfig<Config>().BaseUrl,
-            new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle, Timeout = 300000 });
+        var appUrl = ConfigManager.GetConfig<Config>().BaseUrl;
+        var options = new PageGotoOptions { WaitUntil = WaitUntilState.NetworkIdle, Timeout = 300000 };
+        
+        await _webContext.Page.GotoAsync(appUrl, options);
+    }
+
+    [When(@"user waits for (\d) seconds")]
+    public async Task WhenUserWaitsForDSeconds(int seconds)
+    {
+        await Task.Delay(TimeSpan.FromSeconds(seconds));
     }
 }

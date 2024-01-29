@@ -5,7 +5,7 @@
 @using BlazorApp.Data
 @inject WeatherForecastService ForecastService
 
-<h1>Weather forecast</h1>
+<h1 data-automation-id="weather-forecast-header">Weather forecast</h1>
 
 <p>This component demonstrates fetching data from a service.</p>
 
@@ -15,7 +15,7 @@
 }
 else
 {
-    <table class="table">
+    <table class="table" data-automation-id="weather-forecast-table">
         <thead>
             <tr>
                 <th>Date</th>

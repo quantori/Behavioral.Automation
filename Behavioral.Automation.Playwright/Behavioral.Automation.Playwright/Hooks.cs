@@ -23,6 +23,7 @@ public class Hooks
     private static readonly float? SlowMoMilliseconds = ConfigManager.GetConfig<Config>().SlowMoMilliseconds;
     private static readonly bool? Headless = ConfigManager.GetConfig<Config>().Headless;
     private static readonly bool RecordVideo = ConfigManager.GetConfig<Config>().RecordVideo;
+    private static readonly string VideoPath = ConfigManager.GetConfig<Config>().VideoPath;
     private readonly TestServicesBuilder _testServicesBuilder;
 
     public Hooks(WebContext webContext, ScenarioContext scenarioContext, IObjectContainer objectContainer)
@@ -57,7 +58,7 @@ public class Hooks
         }
 
         _webContext.Context = RecordVideo
-            ? await _browser.NewContextAsync(new BrowserNewContextOptions { RecordVideoDir = "videos/" })
+            ? await _browser.NewContextAsync(new BrowserNewContextOptions { RecordVideoDir = VideoPath })
             : await _browser.NewContextAsync();
 
         _webContext.Page = await _webContext.Context.NewPageAsync();
@@ -93,7 +94,6 @@ public class Hooks
         }
     }
 
-    //TODO Implement configuration
     private static async Task<IBrowser?> InitBrowserAsync()
     {
         if (_playwright is null) throw new NullReferenceException($"Playwright is not initialized.");

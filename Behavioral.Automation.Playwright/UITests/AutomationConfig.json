@@ -13,6 +13,7 @@
   "BROWSER_BINARY_LOCATION": "",
   "ASSERT_TIMEOUT_MILLISECONDS": 40000,
   "SLOW_MO_MILLISECONDS": 50,
-  "HEADLESS": true,
-  "RECORD_VIDEO": false
+  "HEADLESS": false,
+  "RECORD_VIDEO": true,
+  "VIDEO_PATH": "C:\\Users\\vladimir.semenovich\\Videos\\Captures\\Playwright"
 }

@@ -14,6 +14,7 @@ public class PageBinding
         _webContext = webContext;
     }
 
+    [Given("page title is \"(.+?)\"")]
     [Then(@"page title should be ""(.+?)""")]
     public void ThenPageTitleShouldBe(string title)
     {

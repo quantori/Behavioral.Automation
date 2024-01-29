@@ -36,7 +36,7 @@ public class ClickBinding
     /// </summary>
     /// <param name="index">Number of the tested element in the collection</param>
     /// <param name="element">Tested web element wrapper</param>
-    /// <example>When user clicks at first element among "Test" buttons (note that numbers from 1 to 10 can be written as words)</e
+    /// <example>When user clicks at first element among "Test" buttons (note that numbers from 1 to 10 can be written as words)</example>
     [Given(@"user clicked at (.+?) element among ""(.+?)""")]
     [When(@"user clicks at (.+?) element among ""(.+?)""")]
     public async Task ClickByIndex(int index, IWebElementWrapper element)
