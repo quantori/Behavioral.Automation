@@ -14,9 +14,9 @@ public class ElementTransformations
     }
 
     [StepArgumentTransformation]
-    public IInputWebElement GetInputElement(string caption)
+    public IInputElement GetInputElement(string caption)
     {
-        var element = _webElementStorageService.Get<IInputWebElement>(caption + "Input");
+        var element = _webElementStorageService.Get<IInputElement>(caption + "Input");
         return element;
     }
     
