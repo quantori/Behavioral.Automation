@@ -270,7 +270,7 @@ namespace Behavioral.Automation.Services
                 .Where(x => !Path.GetInvalidFileNameChars().Contains(x))
                 .ToArray()) + ".png";
             Screenshot screenshot = ((ITakesScreenshot)Driver).GetScreenshot();
-            screenshot.SaveAsFile(fileName, ScreenshotImageFormat.Png);
+            screenshot.SaveAsFile(fileName);
             return fileName;
         }
 
