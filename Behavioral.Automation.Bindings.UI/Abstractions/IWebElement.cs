@@ -7,4 +7,5 @@ public interface IWebElement
     public WebContext WebContext { get; }
     public ElementSelector ElementSelector  { get; }
     public string? Description { get; set; }
+    public Task ShouldBecomeVisibleAsync();
 }

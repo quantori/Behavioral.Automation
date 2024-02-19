@@ -1,6 +1,6 @@
 ﻿namespace Behavioral.Automation.Bindings.UI.Abstractions;
 
-public interface IInputElement
+public interface IInputElement : IWebElement
 {
     public Task TypeAsync(string text);
 }
