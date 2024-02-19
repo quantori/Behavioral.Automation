@@ -10,7 +10,7 @@ public class WebElement : IWebElement, IButtonElement
     public string? Description { get; set; }
     public Task ClickAsync()
     {
-        return Task.Run(() => Console.WriteLine("Clicked button"));
+        return Task.Delay(50);
     }
 
     public Task ShouldBecomeVisibleAsync()
