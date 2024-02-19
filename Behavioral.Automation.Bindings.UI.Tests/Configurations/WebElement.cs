@@ -1,7 +1,5 @@
 ﻿using Behavioral.Automation.Bindings.UI.Abstractions;
 using Behavioral.Automation.Bindings.UI.Context;
-using Microsoft.Playwright;
-using IPage = Microsoft.Playwright.IPage;
 
 namespace Behavioral.Automation.Bindings.UI.Tests.Configurations;
 
