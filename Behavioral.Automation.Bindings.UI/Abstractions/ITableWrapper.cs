@@ -2,5 +2,4 @@
 
 public interface ITableWrapper : IWebElement
 {
-    public Task ShouldBecomeVisibleAsync(int delay);
 }
