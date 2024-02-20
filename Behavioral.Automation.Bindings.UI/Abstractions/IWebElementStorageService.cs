@@ -9,5 +9,5 @@ public interface IWebElementStorageService
         RegisteredElements.Add(typeof(TInterface), typeof(TType));
     }
 
-    T Get<T>(string locatorKey);
+    T Get<T>(string locatorKey) where T : IWebElement;
 }
