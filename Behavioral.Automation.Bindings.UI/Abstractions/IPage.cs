@@ -2,10 +2,9 @@
 
 public interface IPage
 {
-    public Task GotoAsync(string url);
+    public Task GoToUrlAsync(string url);
     public Task GoToApplicationUrlAsync();
-    public Task ToHaveTitleAsync(string title);
+    public Task HaveTitleAsync(string title);
     public Task<IFileChooser> RunAndWaitForFileChooserAsync(Func<Task> action);
     public Task ScreenshotAsync(string path);
-
 }

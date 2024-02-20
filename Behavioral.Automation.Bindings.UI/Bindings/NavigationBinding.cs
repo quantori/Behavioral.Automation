@@ -17,7 +17,7 @@ public class NavigationBinding
     [When(@"user opens URL ""(.+?)""")]
     public async Task GivenUrlIsOpened(string url)
     {
-        await _webContext.Page.GotoAsync(url);
+        await _webContext.Page.GoToUrlAsync(url);
     }
 
     [Given("application URL was opened")]

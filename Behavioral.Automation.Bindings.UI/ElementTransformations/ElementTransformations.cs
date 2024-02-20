@@ -19,21 +19,21 @@ public class ElementTransformations
         var element = _webElementStorageService.Get<IInputElement>(caption + "Input");
         return element;
     }
-    
+
     [StepArgumentTransformation]
     public ICheckboxElement GetCheckboxElement(string caption)
     {
         var element = _webElementStorageService.Get<ICheckboxElement>(caption + "Checkbox");
         return element;
     }
-    
+
     [StepArgumentTransformation]
     public IButtonElement GetButtonElement(string caption)
     {
         var element = _webElementStorageService.Get<IButtonElement>(caption + "Button");
         return element;
     }
-    
+
     [StepArgumentTransformation]
     public ITableWrapper GetTableElement(string caption)
     {

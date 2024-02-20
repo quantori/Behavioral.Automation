@@ -14,10 +14,9 @@ public class Configuration
         _objectContainer = objectContainer;
     }
 
-    [BeforeScenario()]
+    [BeforeScenario]
     public void ResolveDependencyInjectionInterfaces()
     {
         _objectContainer.RegisterTypeAs<WebElementStorageService, IWebElementStorageService>();
     }
-    
 }

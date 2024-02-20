@@ -7,7 +7,6 @@ namespace Behavioral.Automation.Bindings.UI.Bindings;
 [Binding]
 public class ButtonBindings
 {
-
     private readonly WebContext _webContext;
 
     public ButtonBindings(WebContext webContext)
@@ -21,13 +20,13 @@ public class ButtonBindings
     {
         await button.ClickAsync();
     }
-    
+
     [Then(@"""(.+?)"" button should become visible")]
     public async Task ButtonShouldBecomeVisible(IButtonElement button)
     {
         await button.IsVisibleAsync();
     }
-    
+
     [When(@"user uploads ""(.*)"" file after clicking on ""(.*)"" button")]
     public async Task WhenUserUploadsFileAfterClickingOnButton(string filePath, IButtonElement button)
     {

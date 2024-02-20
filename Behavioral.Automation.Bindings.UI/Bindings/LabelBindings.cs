@@ -11,7 +11,7 @@ public class LabelBindings
     {
         await label.ShouldHaveTextAsync(text);
     }
-    
+
     [Then(@"""(.+?)"" label should become visible")]
     public async Task CheckLabelVisibility(ILabelElement label)
     {

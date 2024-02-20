@@ -16,6 +16,6 @@ public class PageBinding
     [Then(@"page title should become ""(.+?)""")]
     public async Task ThenPageTitleShouldBe(string title)
     {
-        await _webContext.Page.ToHaveTitleAsync(title);
+        await _webContext.Page.HaveTitleAsync(title);
     }
 }

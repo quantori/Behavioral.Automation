@@ -2,5 +2,5 @@
 
 public interface IInputElement : IWebElement
 {
-    public Task TypeAsync(string text);
+    public Task InputTextAsync(string text);
 }

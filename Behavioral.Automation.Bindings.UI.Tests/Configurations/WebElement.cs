@@ -6,7 +6,7 @@ namespace Behavioral.Automation.Bindings.UI.Tests.Configurations;
 /*
  * Shared code between all web Elements
  */
-public class WebElement: IWebElement
+public class WebElement : IWebElement
 {
     public WebContext WebContext { get; }
     public ElementSelector ElementSelector { get; }
@@ -19,7 +19,6 @@ public class WebElement: IWebElement
         // (for example, because of data processing)
         var defaultDelay = 300;
         await IsVisibleAsync(defaultDelay);
-        throw new NotImplementedException();
     }
 
     public async Task IsVisibleAsync(int delay)

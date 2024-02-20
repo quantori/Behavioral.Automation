@@ -2,6 +2,6 @@
 
 public interface IBrowser
 {
-    public Task<IPage> NewPageAsync();
+    public Task<IPage> OpenNewPageAsync();
     public Task CloseAsync();
 }

@@ -2,12 +2,12 @@
 
 public interface IWebElementStorageService
 {
-    static readonly Dictionary<Type, Type> RegisteredImplementations = new();
+    static readonly Dictionary<Type, Type> RegisteredElements = new();
+
     static void RegisterWebElementImplementationAs<TType, TInterface>() where TType : class, TInterface
     {
-        RegisteredImplementations.Add(typeof(TInterface), typeof(TType));
+        RegisteredElements.Add(typeof(TInterface), typeof(TType));
     }
 
     T Get<T>(string locatorKey);
-    
 }
