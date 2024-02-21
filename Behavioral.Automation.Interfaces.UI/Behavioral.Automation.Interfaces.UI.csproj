@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Platforms>AnyCPU</Platforms>
+        <RootNamespace>Behavioral.Automation.Interfaces.UI</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SpecFlow" Version="3.9.74" />
+    </ItemGroup>
+    
+    
+
+</Project>
