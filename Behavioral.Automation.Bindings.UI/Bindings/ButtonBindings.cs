@@ -24,7 +24,7 @@ public class ButtonBindings
     [Then(@"""(.+?)"" button should become visible")]
     public async Task ButtonShouldBecomeVisible(IButtonElement button)
     {
-        await button.IsVisibleAsync();
+        await button.ShouldBecomeVisibleAsync();
     }
 
     [When(@"user uploads ""(.*)"" file after clicking on ""(.*)"" button")]

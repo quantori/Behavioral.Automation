@@ -9,12 +9,12 @@ public class TableBinding
     [Then(@"""(.*)"" table should become visible$")]
     public async Task ThenTableShouldBecomeVisible(ITableWrapper table)
     {
-        await table.IsVisibleAsync();
+        await table.ShouldBecomeVisibleAsync();
     }
 
     [Then(@"""(.*)"" table should become visible within ""(.*)"" seconds")]
     public async Task ThenTableShouldBecomeVisible(ITableWrapper table, int seconds)
     {
-        await table.IsVisibleAsync(seconds);
+        await table.ShouldBecomeVisibleAsync(seconds);
     }
 }

@@ -7,6 +7,6 @@ public interface IWebElement
     public WebContext WebContext { get; }
     public ElementSelector ElementSelector { get; }
     public string? Description { get; set; }
-    public Task IsVisibleAsync();
-    public Task IsVisibleAsync(int delay);
+    public Task ShouldBecomeVisibleAsync();
+    public Task ShouldBecomeVisibleAsync(int delay);
 }

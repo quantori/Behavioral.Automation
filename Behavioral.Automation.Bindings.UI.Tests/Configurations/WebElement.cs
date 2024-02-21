@@ -12,16 +12,16 @@ public class WebElement : IWebElement
     public ElementSelector ElementSelector { get; }
     public string? Description { get; set; }
 
-    public async Task IsVisibleAsync()
+    public async Task ShouldBecomeVisibleAsync()
     {
         // defaultDelay = 300 is just an example of idea that we will have default delay for all elements
         // and ability to specify delay in test steps if we have some taking time loading
         // (for example, because of data processing)
         var defaultDelay = 300;
-        await IsVisibleAsync(defaultDelay);
+        await ShouldBecomeVisibleAsync(defaultDelay);
     }
 
-    public async Task IsVisibleAsync(int delay)
+    public async Task ShouldBecomeVisibleAsync(int delay)
     {
         throw new NotImplementedException();
     }
