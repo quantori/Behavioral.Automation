@@ -28,7 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FA8E07DE
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behavioral.Automation.AsyncAbstractions.UI", "Behavioral.Automation.AsyncAbstractions.UI\Behavioral.Automation.AsyncAbstractions.UI.csproj", "{DB675416-81CA-40EA-A1D9-F45E75248F74}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Behavioral.Automation.Buildings.UI", "Behavioral.Automation.Buildings.UI", "{C6D1A214-4D90-4973-83A0-4D1D1EA5DE30}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Behavioral.Automation.AsyncAbstractions.UI", "Behavioral.Automation.AsyncAbstractions.UI", "{C6D1A214-4D90-4973-83A0-4D1D1EA5DE30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
