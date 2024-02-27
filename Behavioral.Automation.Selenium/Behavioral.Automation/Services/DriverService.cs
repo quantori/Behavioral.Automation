@@ -269,8 +269,8 @@ namespace Behavioral.Automation.Services
             var fileName = new string(TestContext.CurrentContext.Test.Name
                 .Where(x => !Path.GetInvalidFileNameChars().Contains(x))
                 .ToArray()) + ".png";
-            var screenshot = ((ITakesScreenshot)Driver).GetScreenshot();
-            screenshot.SaveAsFile(fileName);
+            Screenshot screenshot = ((ITakesScreenshot)Driver).GetScreenshot();
+            screenshot.SaveAsFile(fileName, ScreenshotImageFormat.Png);
             return fileName;
         }
 
