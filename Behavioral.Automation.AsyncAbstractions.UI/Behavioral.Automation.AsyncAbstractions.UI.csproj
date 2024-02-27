@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <Platforms>AnyCPU</Platforms>
-        <PackageId>Behavioral.Automation.Bindings.UI</PackageId>
+        <PackageId>Behavioral.Automation.AsyncAbstractions.UI</PackageId>
         <Version>0.0.1</Version>
         <Authors>Quantori Inc.</Authors>
         <Product>tas</Product>
@@ -13,12 +13,6 @@
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <IsPackable>true</IsPackable>
         <Description>Quantori BDD is a automation framework that makes use of a wide array of existing grammatical structures, including abstractions, implementations, and bindings, while also offering strong customization options for any implementations.
-
-            The whole Framework is divided into the following parts:
-            - Bindings (Abstractions including configuration interfaces)
-            - Implementation of abstractions
-            - Project configurations
-            - Feature files
             </Description>
         <RepositoryUrl>https://github.com/quantori/Behavioral.Automation</RepositoryUrl>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>

@@ -26,11 +26,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UITests", "Behavioral.Autom
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FA8E07DE-0779-44A0-AFF2-2C2573DD6611}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behavioral.Automation.Bindings.UI", "Behavioral.Automation.Bindings.UI\Behavioral.Automation.Bindings.UI.csproj", "{DB675416-81CA-40EA-A1D9-F45E75248F74}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behavioral.Automation.AsyncAbstractions.UI", "Behavioral.Automation.AsyncAbstractions.UI\Behavioral.Automation.AsyncAbstractions.UI.csproj", "{DB675416-81CA-40EA-A1D9-F45E75248F74}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Behavioral.Automation.Buildings.UI", "Behavioral.Automation.Buildings.UI", "{C6D1A214-4D90-4973-83A0-4D1D1EA5DE30}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behavioral.Automation.Bindings.UI.Tests", "Behavioral.Automation.Bindings.UI.Tests\Behavioral.Automation.Bindings.UI.Tests.csproj", "{D536A13B-0F79-4F01-9A8D-CAAD4A3811CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,10 +72,6 @@ Global
 		{DB675416-81CA-40EA-A1D9-F45E75248F74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB675416-81CA-40EA-A1D9-F45E75248F74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB675416-81CA-40EA-A1D9-F45E75248F74}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D536A13B-0F79-4F01-9A8D-CAAD4A3811CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D536A13B-0F79-4F01-9A8D-CAAD4A3811CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D536A13B-0F79-4F01-9A8D-CAAD4A3811CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D536A13B-0F79-4F01-9A8D-CAAD4A3811CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,7 +86,6 @@ Global
 		{FA8E07DE-0779-44A0-AFF2-2C2573DD6611} = {2A26C467-6A03-4942-9F9B-62F77F992F70}
 		{1498E9EA-13DE-4C6A-AB63-960D226F6FCE} = {FA8E07DE-0779-44A0-AFF2-2C2573DD6611}
 		{DB675416-81CA-40EA-A1D9-F45E75248F74} = {C6D1A214-4D90-4973-83A0-4D1D1EA5DE30}
-		{D536A13B-0F79-4F01-9A8D-CAAD4A3811CD} = {C6D1A214-4D90-4973-83A0-4D1D1EA5DE30}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {724FD185-E1F2-44BD-89EA-DFD1DBF6453A}

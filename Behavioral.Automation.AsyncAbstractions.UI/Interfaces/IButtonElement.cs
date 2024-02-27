@@ -1,4 +1,4 @@
-﻿namespace Behavioral.Automation.Bindings.UI.Abstractions;
+﻿namespace Behavioral.Automation.AsyncAbstractions.UI.Interfaces;
 
 public interface IButtonElement : IWebElement
 {

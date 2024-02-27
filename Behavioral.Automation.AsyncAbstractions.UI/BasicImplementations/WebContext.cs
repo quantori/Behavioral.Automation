@@ -1,6 +1,6 @@
-using Behavioral.Automation.Bindings.UI.Abstractions;
+using Behavioral.Automation.AsyncAbstractions.UI.Interfaces;
 
-namespace Behavioral.Automation.Bindings.UI.Context;
+namespace Behavioral.Automation.AsyncAbstractions.UI.BasicImplementations;
 
 /*
 WebContext holds UI-related instances that can be reused across steps:

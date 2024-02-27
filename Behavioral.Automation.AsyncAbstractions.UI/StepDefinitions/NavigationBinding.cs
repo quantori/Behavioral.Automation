@@ -1,7 +1,7 @@
-using Behavioral.Automation.Bindings.UI.Context;
+using Behavioral.Automation.AsyncAbstractions.UI.BasicImplementations;
 using TechTalk.SpecFlow;
 
-namespace Behavioral.Automation.Bindings.UI.Bindings;
+namespace Behavioral.Automation.AsyncAbstractions.UI.StepDefinitions;
 
 [Binding]
 public class NavigationBinding
