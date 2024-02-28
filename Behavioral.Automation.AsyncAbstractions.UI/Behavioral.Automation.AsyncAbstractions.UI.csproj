@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Platforms>AnyCPU</Platforms>
+        <PackageId>Behavioral.Automation.AsyncAbstractions.UI</PackageId>
+        <Version>0.0.1</Version>
+        <Authors>Quantori Inc.</Authors>
+        <Product>tas</Product>
+        <Copyright>Quantori Inc.</Copyright>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <IsPackable>true</IsPackable>
+        <Description>Quantori BDD is an automation framework that makes use of a wide array of existing grammatical structures, including abstractions, implementations, and bindings, while also offering strong customization options for any implementations.
+
+            The AsyncAbstractions.UI package, within the framework, provides step definitions (without implementation) and templates (abstractions) for UI-bindings. This package serves as a foundational basis for implementing actual functionalities, allowing for streamlined development and customization.</Description>
+        <RepositoryUrl>https://github.com/quantori/Behavioral.Automation</RepositoryUrl>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SpecFlow" Version="3.9.74" />
+    </ItemGroup>
+    
+    
+
+</Project>
