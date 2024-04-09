@@ -8,8 +8,8 @@ public class ButtonStepDefinitions
 {
 
     [Given(@"the ""(.+?)"" button has been clicked")]
-    [When(@"user clicks on the ""(.+?)"" button")]
-    public async Task ClickOnButton(IButtonElement button)
+    [When(@"user clicks the ""(.+?)"" button")]
+    public async Task ClickButton(IButtonElement button)
     {
         await button.ClickAsync();
     }
