@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Behavioral.Automation.Configs;
 using Behavioral.Automation.Playwright.Configs;
 using Behavioral.Automation.Playwright.Context;
+using Behavioral.Automation.Playwright.WebElementsWrappers;
 using BoDi;
 using Microsoft.Playwright;
 using NUnit.Framework;
@@ -17,6 +18,7 @@ public class Hooks
 {
     private readonly IObjectContainer _objectContainer;
     private readonly WebContext _webContext;
+    private readonly AsyncAbstractions.UI.BasicImplementations.WebContext _newWebContext;
     private static IPlaywright? _playwright;
     private static IBrowser? _browser;
     private readonly ScenarioContext _scenarioContext;
@@ -25,12 +27,13 @@ public class Hooks
     private static readonly bool RecordVideo = ConfigManager.GetConfig<Config>().RecordVideo;
     private readonly TestServicesBuilder _testServicesBuilder;
 
-    public Hooks(WebContext webContext, ScenarioContext scenarioContext, IObjectContainer objectContainer)
+    public Hooks(AsyncAbstractions.UI.BasicImplementations.WebContext newWebContext, WebContext webContext, ScenarioContext scenarioContext, IObjectContainer objectContainer)
     {
         _objectContainer = objectContainer;
         _webContext = webContext;
         _scenarioContext = scenarioContext;
         _testServicesBuilder = new TestServicesBuilder(objectContainer);
+        _newWebContext = newWebContext;
     }
 
     [BeforeTestRun]
@@ -61,6 +64,7 @@ public class Hooks
             : await _browser.NewContextAsync();
 
         _webContext.Page = await _webContext.Context.NewPageAsync();
+        _newWebContext.Page = new Page(_webContext.Page);
     }
 
     [AfterScenario]
