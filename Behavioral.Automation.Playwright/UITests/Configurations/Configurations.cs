@@ -10,8 +10,10 @@ namespace Behavioral.Automation.Playwright.Tests.Configurations;
 public class Configurations
 {
     private readonly ObjectContainer _objectContainer;
-
-// Configuration of DI and Factories should be done with order 0
+    
+    /// <summary>
+    /// According to our convention Configuration of DI and Factories should be done with order 0
+    /// </summary>
     public Configurations(ObjectContainer objectContainer)
     {
         _objectContainer = objectContainer;
@@ -20,7 +22,6 @@ public class Configurations
     [BeforeTestRun(Order = 0)]
     public static void ConfigureUiImplementations()
     {
-        // IWebElementStorageService.RegisterWebElementImplementationAs<InputElement, IInputWebElement>();
         IWebElementStorageService.RegisterWebElementImplementationAs<ButtonElement, IButtonElement>();
     }
     

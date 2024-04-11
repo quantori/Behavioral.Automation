@@ -1,4 +1,4 @@
-﻿Feature: First scenarios to run CI/CD checks
+﻿Feature: Tests for Bahavioral.Automation.Playwright project
   
   Scenario: Check button click
     Given application URL is opened
