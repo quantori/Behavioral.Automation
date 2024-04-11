@@ -1,4 +1,4 @@
-﻿Feature: Button step definition tests
+﻿Feature: First scenarios to run CI/CD checks
   
   Scenario: Check button click
     Given application URL is opened
