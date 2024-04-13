@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Behavioral.Automation.Implementation.Selenium.csproj" />
+      <ProjectReference Include="..\Behavioral.Automation.Implementation.Selenium\Behavioral.Automation.Implementation.Selenium.csproj" />
     </ItemGroup>
 
 </Project>
