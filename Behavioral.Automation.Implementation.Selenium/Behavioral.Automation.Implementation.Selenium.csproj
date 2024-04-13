@@ -25,18 +25,4 @@
       <ProjectReference Include="..\Behavioral.Automation.Configs\Behavioral.Automation.Configs.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <UpToDateCheckInput Remove="Features\Calculator.feature" />
-      <UpToDateCheckInput Remove="UITests\Features\Tests.feature" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <UpToDateCheckBuild Remove="Features\Calculator.feature.cs" />
-      <UpToDateCheckBuild Remove="UITests\Features\Tests.feature.cs" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Bindings" />
-    </ItemGroup>
-
 </Project>
