@@ -35,4 +35,8 @@
       <UpToDateCheckBuild Remove="UITests\Features\Tests.feature.cs" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Bindings" />
+    </ItemGroup>
+
 </Project>
