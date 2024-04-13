@@ -32,7 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Behavioral.Automation.Async
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Behavioral.Automation.Implementation.Selenium", "Behavioral.Automation.Implementation.Selenium", "{1878BA03-4371-4FB3-B6BF-D649846308E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behavioral.Automation.Implementation.Selenium", "Behavioral.Automation.Implementation.Selenium\Behavioral.Automation.Implementation.Selenium.csproj", "{320A43D2-1B5C-4613-8615-BB4DB86A1C3B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Behavioral.Automation.Implementation.Selenium", "Behavioral.Automation.Implementation.Selenium\Behavioral.Automation.Implementation.Selenium\Behavioral.Automation.Implementation.Selenium.csproj", "{320A43D2-1B5C-4613-8615-BB4DB86A1C3B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{765191A2-9E83-41A8-AFC4-55005123DF6F}"
 EndProject
