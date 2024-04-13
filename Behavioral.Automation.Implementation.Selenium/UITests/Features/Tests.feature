@@ -1,4 +1,4 @@
-﻿Feature: Tests for Bahavioral.Automation.Playwright project
+﻿Feature: Tests for Bahavioral.Automation.Selenium project
 
   Scenario: Button click binding test
     Given application URL was opened
