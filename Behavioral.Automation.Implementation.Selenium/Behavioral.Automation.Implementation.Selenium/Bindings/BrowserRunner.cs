@@ -1,4 +1,8 @@
-﻿namespace Behavioral.Automation.Implementation.Selenium.Bindings;
+﻿using System.Diagnostics.CodeAnalysis;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+
+namespace Behavioral.Automation.Implementation.Selenium.Bindings;
 
 public class BrowserRunner
     {
