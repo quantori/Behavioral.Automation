@@ -6,7 +6,7 @@ public class TestClass : IPage
 {
     public Task GoToUrlAsync(string url)
     {
-        throw new NotImplementedException();
+        return new Task(() => { Driver.Navigate().GoToUrl(url); });
     }
 
     public Task GoToApplicationUrlAsync()
