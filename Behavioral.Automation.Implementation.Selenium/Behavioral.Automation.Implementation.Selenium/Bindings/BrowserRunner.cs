@@ -52,17 +52,17 @@ public class BrowserRunner
             }
 
             options.AddUserProfilePreference("intl.accept_languages", "en,en_US");
-            options.AcceptInsecureCertificates = ConfigServiceBase.AcceptInsecureCertificates;
+            options.AcceptInsecureCertificates = ConfigManager.GetConfig<Config>().AcceptInsecureCertificates;
             options.SetLoggingPreference(LogType.Browser, LogLevel.All);
-            if (!string.IsNullOrWhiteSpace(ConfigServiceBase.BrowserBinaryLocation))
+            if (!string.IsNullOrWhiteSpace(ConfigManager.GetConfig<Config>().BrowserBinaryLocation))
             {
                 options.BinaryLocation =
-                    Environment.ExpandEnvironmentVariables(ConfigServiceBase.BrowserBinaryLocation);
+                    Environment.ExpandEnvironmentVariables(ConfigManager.GetConfig<Config>().BrowserBinaryLocation);
             }
 
-            if (!string.IsNullOrWhiteSpace(ConfigServiceBase.UnhandledPromptBehavior))
+            if (!string.IsNullOrWhiteSpace(ConfigManager.GetConfig<Config>().UnhandledPromptBehavior))
             {
-                options.UnhandledPromptBehavior = ConfigServiceBase.UnhandledPromptBehavior switch
+                options.UnhandledPromptBehavior = ConfigManager.GetConfig<Config>().UnhandledPromptBehavior switch
                 {
                     "Accept" => UnhandledPromptBehavior.Accept,
                     "Dismiss" => UnhandledPromptBehavior.Dismiss,
@@ -99,7 +99,7 @@ public class BrowserRunner
         var clipboardExceptionSettings = new Dictionary<string, object>
         {
             {
-                ConfigServiceBase.BaseUrl,
+                ConfigManager.GetConfig<Config>().BaseUrl,
                 new Dictionary<string, long>
                 {
                     {"last_modified", DateTimeOffset.Now.ToUnixTimeMilliseconds()},
