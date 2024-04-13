@@ -34,6 +34,8 @@ public class BrowserRunner
     /// <param name="options">Browser parameters</param>
     public void OpenChrome(ChromeOptions options = null)
     {
+        // new DriverManager().SetUpDriver(new ChromeConfig(), VersionResolveStrategy.MatchingBrowser);
+
         var downloadPath = ConfigManager.GetConfig<Config>().DownloadPath ?? Environment.CurrentDirectory;
 
         if (options == null)

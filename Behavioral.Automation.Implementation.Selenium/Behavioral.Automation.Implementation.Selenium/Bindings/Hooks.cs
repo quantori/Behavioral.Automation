@@ -86,6 +86,7 @@ public class Hooks
         //Assert.SetRunner(_runner);
         //_objectContainer.RegisterTypeAs<UserInterfaceBuilder, IUserInterfaceBuilder>();
         //_servicesBuilder.Build();
+
         _browserRunner.OpenChrome();
         _webContext.Page = new Page();
         ((Page) _webContext.Page).driver = _browserRunner.Driver;
