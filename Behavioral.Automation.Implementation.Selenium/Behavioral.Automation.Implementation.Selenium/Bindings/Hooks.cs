@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Net;
+using Behavioral.Automation.AsyncAbstractions.UI.BasicImplementations;
 using Behavioral.Automation.AsyncAbstractions.UI.Interfaces;
 using Behavioral.Automation.Configs;
 using Behavioral.Automation.Implementation.Selenium.Configs;
@@ -16,14 +17,14 @@ public class Hooks
     private readonly ITestRunner _runner;
     private readonly BrowserRunner _browserRunner;
     private static Process _coreRunProcess;
-    private readonly IPage _page;
+    private readonly WebContext _webContext;
 
-    public Hooks(IObjectContainer objectContainer, ITestRunner runner, BrowserRunner browserRunner, IPage page)
+    public Hooks(IObjectContainer objectContainer, ITestRunner runner, BrowserRunner browserRunner, WebContext webContext)
     {
         _objectContainer = objectContainer;
         _runner = runner;
         _browserRunner = browserRunner;
-        _page = page;
+        _webContext = webContext;
     }
 
     private static bool IsConnectionEstablished()
@@ -86,6 +87,7 @@ public class Hooks
         //_objectContainer.RegisterTypeAs<UserInterfaceBuilder, IUserInterfaceBuilder>();
         //_servicesBuilder.Build();
         _browserRunner.OpenChrome();
-        ((Page) _page).driver = _browserRunner.Driver;
+        _webContext.Page = new Page();
+        ((Page) _webContext.Page).driver = _browserRunner.Driver;
     }
 }
