@@ -10,7 +10,10 @@
   },
   "stepAssemblies": [
     {
-      "assembly": "Behavioral.Automation.Playwright"
+      "assembly": "Behavioral.Automation.asyncAbstractions.UI"
+    },
+    {
+      "assembly": "Behavioral.Automation.Implementation.Selenium"
     }
   ]
 }
