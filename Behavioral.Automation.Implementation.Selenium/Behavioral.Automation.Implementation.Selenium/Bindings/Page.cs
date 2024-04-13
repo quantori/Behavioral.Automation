@@ -15,7 +15,7 @@ public class Page : IPage
 
     public Task GoToApplicationUrlAsync()
     {
-        return new Task(() => { driver.Navigate().GoToUrl(ConfigManager.GetConfig<Config>().BaseUrl); });
+        return Task.Run(() => { driver.Navigate().GoToUrl(ConfigManager.GetConfig<Config>().BaseUrl); });
     }
 
     public Task HaveTitleAsync(string title)
