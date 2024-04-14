@@ -10,7 +10,7 @@ public class Page : IPage
     public IWebDriver driver;
     public Task GoToUrlAsync(string url)
     {
-        return new Task(() => { driver.Navigate().GoToUrl(url); });
+        return Task.Run(() => { driver.Navigate().GoToUrl(url); });
     }
 
     public Task GoToApplicationUrlAsync()
