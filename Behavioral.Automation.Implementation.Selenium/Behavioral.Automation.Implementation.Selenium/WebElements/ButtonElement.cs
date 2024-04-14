@@ -1,20 +1,18 @@
 ﻿using Behavioral.Automation.AsyncAbstractions.UI.BasicImplementations;
 using Behavioral.Automation.AsyncAbstractions.UI.Interfaces;
+using Behavioral.Automation.Implementation.Selenium.Selectors;
 
 namespace Behavioral.Automation.Implementation.Selenium.WebElements;
 
-public class ButtonElement : IButtonElement
+public class ButtonElement: SeleniumWebElement, IButtonElement
 {
-    public WebContext WebContext { get; }
-    public ElementSelector ElementSelector { get; }
-    public string? Description { get; set; }
-    public Task ShouldBecomeVisibleAsync()
+
+    public ButtonElement(WebContext webContext, ButtonSelector selector) : base(webContext, selector)
     {
-        throw new NotImplementedException();
     }
 
-    public Task ClickAsync()
+    public async Task ClickAsync()
     {
-        throw new NotImplementedException();
+        await Locator.ClickAsync();
     }
 }

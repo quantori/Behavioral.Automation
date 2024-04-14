@@ -2,4 +2,4 @@
 
   Scenario: Button click binding test
     Given application URL was opened
-    When user clicks the "test" button
+    When user clicks the "Increment count" button
