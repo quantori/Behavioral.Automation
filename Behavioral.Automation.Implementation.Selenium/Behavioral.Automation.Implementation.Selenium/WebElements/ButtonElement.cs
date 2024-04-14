@@ -13,6 +13,6 @@ public class ButtonElement: SeleniumWebElement, IButtonElement
 
     public Task ClickAsync()
     {
-        return new Task(() => { Locator.Click(); });
+        return Task.Run(() => { Locator.Click(); });
     }
 }
