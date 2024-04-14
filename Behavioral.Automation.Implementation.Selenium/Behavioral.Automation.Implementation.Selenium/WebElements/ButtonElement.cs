@@ -11,8 +11,8 @@ public class ButtonElement: SeleniumWebElement, IButtonElement
     {
     }
 
-    public async Task ClickAsync()
+    public Task ClickAsync()
     {
-        await Locator.ClickAsync();
+        return new Task(() => { Locator.Click(); });
     }
 }

@@ -14,13 +14,13 @@ public class SeleniumWebElement: IWebElement
         await Assertions.Expect(Locator).ToBeVisibleAsync();
     }
 
-    protected PlaywrightWebElement(WebContext webContext, ElementSelector baseSelector)
+    protected SeleniumWebElement(WebContext webContext, ElementSelector baseSelector)
     {
         ElementSelector = baseSelector;
         WebContext = webContext;
     }
 
-    public ILocator Locator
+    public OpenQA.Selenium.IWebElement Locator
     {
         get
         {
