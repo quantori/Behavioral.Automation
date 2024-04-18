@@ -10,7 +10,13 @@
   },
   "stepAssemblies": [
     {
+      "assembly": "Behavioral.Automation.AsyncAbstractions.UI"
+    },
+    {
       "assembly": "Behavioral.Automation.Playwright"
+    },
+    {
+      "assembly": "UITests"
     }
   ]
 }
