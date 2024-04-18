@@ -1,0 +1,22 @@
+﻿{
+  "BASE_URL": "http://localhost:4200",
+  "TEST_EMAIL": "",
+  "TEST_PASSWORD": "",
+  "BASE_AUTH_URL": "",
+  "BROWSER_PARAMS": "--window-size=1920,1080",
+  "ACCESS_CLIPBOARD": false,
+  "DOWNLOAD_PATH": "",
+  "SEARCH_ATTRIBUTE": "data-automation-id",
+  "BAUTH_LOGIN": "",
+  "BAUTH_PWD": "",
+  "BAUTH_IGNORE": "true",
+  "BROWSER_BINARY_LOCATION": "",
+  "ASSERT_TIMEOUT_MILLISECONDS": 40000,
+  "SLOW_MO_MILLISECONDS": 50,
+  "HEADLESS": true,
+  "RECORD_VIDEO": false,
+  "BAUTH_URL": "",
+  "BAUTH_PASSWORD": "",
+  "UNHANDLED_PROMPT_BEHAVIOR" : "",
+  "ASSERT_ATTEMPTS" : 30
+}
