@@ -31,4 +31,16 @@ public class ElementTransformations
         var element = _webElementStorageService.Get<IButtonElement>(caption + "Button");
         return element;
     }
+    
+    /// <summary>
+    /// Transforms a step argument into a label element based on the caption.
+    /// </summary>
+    /// <param name="caption">The caption of the label element.</param>
+    /// <returns>The label element matching the caption.</returns>
+    [StepArgumentTransformation]
+    public ILabelElement GetLabelElement(string caption)
+    {
+        var element = _webElementStorageService.Get<ILabelElement>(caption + "Label");
+        return element;
+    }
 }

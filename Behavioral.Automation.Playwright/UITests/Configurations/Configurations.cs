@@ -23,6 +23,7 @@ public class Configurations
     public static void ConfigureUiImplementations()
     {
         IWebElementStorageService.RegisterWebElementImplementationAs<ButtonElement, IButtonElement>();
+        IWebElementStorageService.RegisterWebElementImplementationAs<LabelElement, ILabelElement>();
     }
     
     /// <summary>
