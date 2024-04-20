@@ -8,4 +8,4 @@
 
   Scenario: Visibility binding check
     Given application URL is opened
-    Then the "Demo label" should be visible
+    Then the "Demo" label should become visible

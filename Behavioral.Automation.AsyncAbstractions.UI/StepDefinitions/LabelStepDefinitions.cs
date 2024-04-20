@@ -26,4 +26,10 @@ public class LabelStepDefinitions
             await label.ShouldNotHaveTextAsync(value);
         }
     }
+
+    [Then(@"the ""(.*)"" label should become visible")]
+    public async Task CheckLabelVisibility(ILabelElement label)
+    {
+        await label.ShouldBecomeVisibleAsync();
+    }
 }
