@@ -1,45 +1,64 @@
 name: Release BDD nugets
 
 on:
-  workflow_dispatch:
+  push:
+    tags:
+      - 'async-abstractions-ui-v*'
+    branch:
+      - 'BAP-139-automatic-publication-for-playwright-part'
 
 jobs:
   build_application:
     runs-on: ubuntu-latest
-    env:
-      DOTNET_NOLOGO: true
     steps:
       - name: checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: setup dotnet
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-          include-prerelease: true
-      - name: restore packages
-        run: dotnet restore
-      - name: build
-        run: dotnet build -c Release --no-restore
-      - name: Get version
+
+      - name: Extract Version and Project Name
+        id: version
         run: |
-              export VER=$(grep -oP '\d+\.\d+\.\d+(?=</PackageVersion>)' Behavioral.Automation.Selenium/Behavioral.Automation/Behavioral.Automation.csproj)
-              echo "VER=$VER" >> $GITHUB_ENV
-              echo $VER
-      - name: Package app
-        run: |
-          dotnet pack ./Behavioral.Automation.Selenium/Behavioral.Automation/Behavioral.Automation.csproj \
-          --configuration Release /p:Platform=\"AnyCPU\" \
-          /p:PackageVersion=${{ env.VER }} --output ./
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        with:
-          tag: ${{ env.VER }}
-          artifacts: "Behavioral.Automation.${{ env.VER }}.nupkg"
-          bodyFile: "Behavioral.Automation.Selenium/CHANGELOG.md"
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish app into nuget.org
-        env:
-          NUGET_API_KEY: ${{ secrets.QUANTORI_NUGET_API_KEY }}
-        run: dotnet nuget push ./Behavioral.Automation.${{ env.VER }}.nupkg -s "https://api.nuget.org/v3/index.json" -k "$NUGET_API_KEY" --skip-duplicate
+          TAG_NAME=${{ github.ref_name }}
+          if [[ "$TAG_NAME" =~ ^async-abstractions-ui-v([0-9]+\.[0-9]+)$ ]]; then
+            PROJECT_PATH="Behavioral.Automation.Selenium/Behavioral.Automation/Behavioral.Automation.csproj"
+            PACKAGE_VERSION="${BASH_REMATCH[1]}"
+          else
+            echo "Unknown tag format: $TAG_NAME"
+            exit 1
+          fi
+
+          echo "PACKAGE_VERSION=$PACKAGE_VERSION" >> $GITHUB_ENV
+          echo "PROJECT_PATH=$PROJECT_PATH" >> $GITHUB_ENV
+          echo "Detected Version: $PACKAGE_VERSION for project $PROJECT_PATH"
+
+#      - name: setup dotnet
+#        uses: actions/setup-dotnet@v4
+#        with:
+#          dotnet-version: '8.0.x'
+#          include-prerelease: true
+#      - name: restore packages
+#        run: dotnet restore
+#      - name: build
+#        run: dotnet build -c Release --no-restore
+#      - name: Get version
+#        run: |
+#              export VER=$(grep -oP '\d+\.\d+\.\d+(?=</PackageVersion>)' Behavioral.Automation.Selenium/Behavioral.Automation/Behavioral.Automation.csproj)
+#              echo "VER=$VER" >> $GITHUB_ENV
+#              echo $VER
+#      - name: Package app
+#        run: |
+#          dotnet pack ./Behavioral.Automation.Selenium/Behavioral.Automation/Behavioral.Automation.csproj \
+#          --configuration Release /p:Platform=\"AnyCPU\" \
+#          /p:PackageVersion=${{ env.VER }} --output ./
+#      - name: Create Release
+#        uses: ncipollo/release-action@v1
+#        with:
+#          tag: ${{ env.VER }}
+#          artifacts: "Behavioral.Automation.${{ env.VER }}.nupkg"
+#          bodyFile: "Behavioral.Automation.Selenium/CHANGELOG.md"
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Publish app into nuget.org
+#        env:
+#          NUGET_API_KEY: ${{ secrets.QUANTORI_NUGET_API_KEY }}
+#        run: dotnet nuget push ./Behavioral.Automation.${{ env.VER }}.nupkg -s "https://api.nuget.org/v3/index.json" -k "$NUGET_API_KEY" --skip-duplicate
