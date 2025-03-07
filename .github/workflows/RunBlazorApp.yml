@@ -1,0 +1,13 @@
+name: Playwright project tests
+
+on:
+  workflow_call:
+
+jobs:
+  RunBlazorApp:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Blazor app
+        run: |
+          cd ./src/BlazorApp
+          dotnet run &

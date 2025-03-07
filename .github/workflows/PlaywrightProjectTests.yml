@@ -3,6 +3,7 @@ name: Playwright project tests
 on:
   workflow_dispatch:
   pull_request:
+  workflow_call:
 
 jobs:
   PlaywrightProjectTests:
@@ -13,11 +14,5 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-      - name: Run Blazor app
-        run: |
-          cd ./src/BlazorApp
-          dotnet run &
-      - name: Test Blazor app
-        run: |
-          cd ./Behavioral.Automation.Playwright/UITests
-          dotnet test
+  call-workflow-1-in-local-repo:
+    uses: ./.github/workflows/RunBlazorApp.yml
