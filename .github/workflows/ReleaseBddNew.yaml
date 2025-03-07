@@ -4,8 +4,8 @@ on:
   push:
     tags:
       - 'async-abstractions-ui-v*'
-    branch:
-      - 'BAP-139-automatic-publication-for-playwright-part'
+    branches:
+      - BAP-139-automatic-publication-for-playwright-part
 
 jobs:
   build_application:
