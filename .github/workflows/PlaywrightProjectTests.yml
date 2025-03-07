@@ -10,9 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup .NET Core SDK '5.0.x'
-        uses: actions/setup-dotnet@v3
+      - name: Setup .NET Core SDK '8.0.x'
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '5.0.x'
-  call-workflow-1-in-local-repo:
-    uses: ./.github/workflows/RunBlazorApp.yml
+          dotnet-version: '8.0.x'
+      - name: Run Blazor app
+        run: |
+          cd ./src/BlazorApp
+          dotnet run &
+      - name: Test Blazor app
+        run: |
+          cd ./Behavioral.Automation.Playwright/UITests
+          dotnet test
