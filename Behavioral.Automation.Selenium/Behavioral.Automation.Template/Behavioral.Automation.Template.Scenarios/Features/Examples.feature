@@ -1,5 +1,6 @@
 ﻿Feature: Examples
 
+@tc:1	
 @Automated
 Scenario: Open Google page
 	When user opens URL "https://www.google.com/"
