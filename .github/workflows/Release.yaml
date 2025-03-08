@@ -45,4 +45,11 @@ jobs:
       - name: Publish app into nuget.org
         env:
           NUGET_API_KEY: ${{ secrets.QUANTORI_NUGET_API_KEY }}
-        run: dotnet nuget push ./Behavioral.Automation.${{ env.VER }}.nupkg -s "https://api.nuget.org/v3/index.json" -k "$NUGET_API_KEY" --skip-duplicate
+        run: |
+          if dotnet nuget push ./Behavioral.Automation.${{ env.VER }}.nupkg -s "https://api.nuget.org/v3/index.json" -k "$NUGET_API_KEY" --skip-duplicate 2>&1 | tee output.log | grep -q "403"; then
+            echo "NError: NuGet API key is invalid or expired. Please contact Quantori support to renew the key. For more details, refer to the Quantori BDD Confluence page called 'Renew NuGet API key'."
+          exit 1
+          else
+            echo "Package successfully published to NuGet.org."
+          fi
+          
