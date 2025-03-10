@@ -20,15 +20,18 @@ public class WebElementStorageService : IWebElementStorageService
         _objectContainer = objectContainer;
     }
 
-    //TODO: Impl factory
     public T Get<T>(string elementName) where T : IWebElement
     {
         var pages = GetAllPagesWithElements();
         var elementSelector = GetElementSelector(pages, elementName);
         
         // Select proper realisation for element according to registered class in DI framework:
+        // TODO: add validation. Throw meaningful error if realization is not registered
         var classType = IWebElementStorageService.RegisteredElements[typeof(T)];
-        var element = (IWebElement) Activator.CreateInstance(classType, _webContext, elementSelector);        
+        var referenceToANewWebElement = Activator.CreateInstance(classType, _webContext, elementSelector);
+        // TODO: Add more meaningful exception message:
+        if (referenceToANewWebElement == null) throw new Exception("Can't create instance of a Web Element");
+        var element = (IWebElement) referenceToANewWebElement;      
         element.Description = elementName;
         return (T) element;
     }
