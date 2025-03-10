@@ -8,14 +8,14 @@ on:
         required: false
         type: choice
         options:
-          - ubunntu-latest
+          - ubuntu-latest
           - windows-latest
         default: ubunntu-latest
   pull_request:
 
 jobs:
   PlaywrightProjectTests:
-    runs-on: ${{ inputs.runner || 'ubunntu-latest' }}
+    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET Core SDK '8.0.x'

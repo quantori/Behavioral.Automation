@@ -9,7 +9,7 @@ on:
         type: choice
         options:
           - windows-latest
-          - ubunntu-latest
+          - ubuntu-latest
         default: windows-latest
   pull_request:
     branches: [ main ]
