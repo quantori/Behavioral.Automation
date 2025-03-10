@@ -2,13 +2,22 @@ name: Playwright project tests
 
 on:
   workflow_dispatch:
+    inputs:
+      runner:
+        description: "Select the runner"
+        required: false
+        type: choice
+        options:
+          - ubunntu-latest
+          - windows-latest
+        default: ubunntu-latest
   pull_request:
 
 jobs:
   PlaywrightProjectTests:
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner || 'ubunntu-latest' }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup .NET Core SDK '8.0.x'
         uses: actions/setup-dotnet@v4
         with:
