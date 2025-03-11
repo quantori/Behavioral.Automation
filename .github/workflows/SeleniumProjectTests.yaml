@@ -2,6 +2,15 @@ name: Selenium project tests
 
 on:
   workflow_dispatch:
+    inputs:
+      runner:
+        description: "Select the runner"
+        required: false
+        type: choice
+        options:
+          - windows-latest
+          - ubuntu-latest
+        default: windows-latest
   pull_request:
     branches: [ main ]
     
@@ -11,10 +20,10 @@ env:
 jobs:
   build:
 
-    runs-on: windows-latest
+    runs-on: ${{ inputs.runner || 'windows-latest' }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
