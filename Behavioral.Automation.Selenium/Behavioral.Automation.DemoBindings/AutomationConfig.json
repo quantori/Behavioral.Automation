@@ -1,6 +1,6 @@
 ﻿{
   "BASE_URL": "http://localhost:4200/",
-  "BROWSER_PARAMS": "--window-size=1920,1080",
+  "BROWSER_PARAMS": "--window-size=1920,1080 --allowed-ips --no-sandbox --headless",
   "ACCESS_CLIPBOARD": false, 
   "DOWNLOAD_PATH": "",
   "SEARCH_ATTRIBUTE": "data-automation-id",
