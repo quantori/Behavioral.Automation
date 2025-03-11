@@ -10,7 +10,7 @@ on:
         options:
           - ubuntu-latest
           - windows-latest
-        default: ubunntu-latest
+        default: ubuntu-latest
   pull_request:
 
 jobs:
@@ -18,15 +18,28 @@ jobs:
     runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     steps:
       - uses: actions/checkout@v4
-      - name: Setup .NET Core SDK '8.0.x'
+
+      - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-      - name: Run Blazor app
+
+      # Windows Runner
+      - name: Run Blazor app (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          Start-Job -ScriptBlock { Start-Process -NoNewWindow -FilePath dotnet -ArgumentList "run" -WorkingDirectory ./src/BlazorApp }
+          Start-Sleep -Seconds 20
+
+      # Ubuntu Runner
+      - name: Run Blazor app (Ubuntu)
+        if: runner.os == 'Linux'
         run: |
           cd ./src/BlazorApp
           dotnet run &
+
       - name: Test Blazor app
         run: |
           cd ./Behavioral.Automation.Playwright/UITests
           dotnet test
+
