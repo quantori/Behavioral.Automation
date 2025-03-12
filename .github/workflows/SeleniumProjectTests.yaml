@@ -13,9 +13,6 @@ on:
         default: windows-latest
   pull_request:
     branches: [ main ]
-    
-env:
-  BROWSER_PARAMS: "--window-size=1920,1080 --allowed-ips --no-sandbox"
 
 jobs:
   build:
@@ -28,6 +25,21 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
+
+      # Windows Runner
+      - name: Run Blazor app (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          Start-Job -ScriptBlock { Start-Process -NoNewWindow -FilePath dotnet -ArgumentList "run" -WorkingDirectory ./src/BlazorApp }
+          Start-Sleep -Seconds 20
+
+      # Ubuntu Runner
+      - name: Run Blazor app (Ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          cd ./src/BlazorApp
+          dotnet run &
+
       - name: Restore dependencies
         run: dotnet restore
       - name: Build
@@ -36,3 +48,4 @@ jobs:
       - name: Test
         working-directory: ./Behavioral.Automation.Selenium/Behavioral.Automation.DemoScenarios
         run: dotnet test -c Release --no-build --verbosity normal
+
