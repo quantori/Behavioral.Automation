@@ -6,4 +6,4 @@
 
   Scenario: Visibility binding check
     Given application URL is opened
-    Then the "Demo label" should be visible
+    Then the "My Label" should be visible
